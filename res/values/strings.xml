@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">maple-android</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello world! Sup</string>
     <string name="menu_settings">Settings</string>
 
 </resources>

@@ -9,7 +9,6 @@
 	 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	 
-     <uses-permission android:name="android.permission.INTERNET" />
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
@@ -23,6 +22,11 @@
         <activity
             android:name="com.example.maple_android.MainActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.maple_android.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
