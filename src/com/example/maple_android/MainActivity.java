@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -24,23 +25,25 @@ public class MainActivity extends Activity {
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	
 	private static final int CAMERA_REQUEST = 1888;
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private Uri fileUri;
     private ImageView imageView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
     }
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
     	Log.d("MyCameraApp", "Receiving image");
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {  
+        	
+        	// Load bitmap into byteArray so that we can pass the data to the new Activity
             Bitmap photo = (Bitmap) data.getExtras().get("data"); 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            
             photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] photoByteArray = stream.toByteArray();
+            
             Intent intent = new Intent(this, EditorActivity.class);
             intent.putExtra("photoByteArray", photoByteArray);
             startActivity(intent);
@@ -58,6 +61,7 @@ public class MainActivity extends Activity {
         // create Intent to take a picture and return control to the calling application
 
         startActivityForResult(intent, CAMERA_REQUEST);
+    	
     }
     
     private static Uri getOutputMediaFileUri(int type){

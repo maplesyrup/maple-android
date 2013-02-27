@@ -14,6 +14,8 @@ public class EditorActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         Bundle extras = getIntent().getExtras();
+        
+        // Grab photo byte array and decode it
         byte[] byteArray = extras.getByteArray("photoByteArray");
         Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
