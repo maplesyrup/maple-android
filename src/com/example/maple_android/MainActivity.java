@@ -1,5 +1,6 @@
 package com.example.maple_android;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,29 +11,45 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
-
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	
+	private static final int CAMERA_REQUEST = 1888;
     private Uri fileUri;
-
+    private ImageView imageView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Button captureBtn = (Button) findViewById(R.id.open_camera);
-        
-        // create Intent to take a picture and return control to the calling application
-        
     }
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
+    	Log.d("MyCameraApp", "Receiving image");
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {  
+        	
+        	// Load bitmap into byteArray so that we can pass the data to the new Activity
+            Bitmap photo = (Bitmap) data.getExtras().get("data"); 
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] photoByteArray = stream.toByteArray();
+            
+            Intent intent = new Intent(this, EditorActivity.class);
+            intent.putExtra("photoByteArray", photoByteArray);
+            startActivity(intent);
+            
+        }
+    } 
     
     public void openCamera(View view) {
     	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -41,7 +58,10 @@ public class MainActivity extends Activity {
         //intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
         // start the image capture Intent
-        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        // create Intent to take a picture and return control to the calling application
+
+        startActivityForResult(intent, CAMERA_REQUEST);
+    	
     }
     
     private static Uri getOutputMediaFileUri(int type){
