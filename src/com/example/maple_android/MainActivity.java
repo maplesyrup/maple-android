@@ -35,16 +35,18 @@ public class MainActivity extends Activity {
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
     	Log.d("MyCameraApp", "Receiving image");
+    	
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {  
         	
         	// Load bitmap into byteArray so that we can pass the data to the new Activity
-            Bitmap photo = (Bitmap) data.getExtras().get("data"); 
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             
-            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            photo.compress(Bitmap.CompressFormat.JPEG, 90, stream);
             byte[] photoByteArray = stream.toByteArray();
             
             Intent intent = new Intent(this, EditorActivity.class);
+            intent.putExtra("photoPath", fileUri.getPath());
             intent.putExtra("photoByteArray", photoByteArray);
             startActivity(intent);
             
@@ -54,8 +56,8 @@ public class MainActivity extends Activity {
     public void openCamera(View view) {
     	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         
-        //fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-        //intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri.getPath()); // set the image file name
 
         // start the image capture Intent
         // create Intent to take a picture and return control to the calling application
