@@ -12,6 +12,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.example.maple_android.Utility;
+
 public class EditorActivity extends Activity {
 	
 	private ImageView photo;
