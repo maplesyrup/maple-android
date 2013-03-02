@@ -33,7 +33,8 @@ public class EditorActivity extends Activity {
         
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("image", photoPath));
-        Utility.post("http://localhost:3000", params);
+        params.add(new BasicNameValuePair("user_id", "1"));
+        Utility.post("http://10.0.2.2:3000/users/1/posts", params);
         
     }
 }
