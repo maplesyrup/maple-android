@@ -2,6 +2,9 @@ package com.example.maple_android;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -34,7 +37,7 @@ public class MainActivity extends Activity {
     }
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
-    	Log.d("MyCameraApp", "Receiving image");
+    	Log.d("MapleSyrup", "Receiving image");
     	
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {  
         	
@@ -44,6 +47,20 @@ public class MainActivity extends Activity {
             
             photo.compress(Bitmap.CompressFormat.JPEG, 90, stream);
             byte[] photoByteArray = stream.toByteArray();
+            
+            OutputStream photoOS;
+            
+            try {
+            	photoOS = getContentResolver().openOutputStream(fileUri);
+            	photoOS.write(photoByteArray);
+            	photoOS.flush();
+            	photoOS.close();
+            }catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             
             Intent intent = new Intent(this, EditorActivity.class);
             intent.putExtra("photoPath", fileUri.getPath());
@@ -75,14 +92,14 @@ public class MainActivity extends Activity {
         // using Environment.getExternalStorageState() before doing this.
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                  Environment.DIRECTORY_PICTURES), "MyCameraApp");
+                  Environment.DIRECTORY_PICTURES), "MapleSyrup");
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
+                Log.d("MapleSyrup", "failed to create directory");
                 return null;
             }
         }
