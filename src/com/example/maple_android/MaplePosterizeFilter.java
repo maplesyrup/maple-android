@@ -1,24 +1,22 @@
 package com.example.maple_android;
 
 import com.jabistudio.androidjhlabs.filter.GaussianFilter;
+import com.jabistudio.androidjhlabs.filter.PosterizeFilter;
 import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 
-public class MapleGaussianFilter extends MapleFilter {
+public class MaplePosterizeFilter extends MapleFilter {
 
-	private final float RADIUS = 8.5f;
 	@Override
 	Bitmap filterBitmap(Bitmap srcBitmap) {
-		//Find the bitmap's width height
+		
 		int width = srcBitmap.getWidth();
 		int height = srcBitmap.getHeight();
 		
-		GaussianFilter filter = new GaussianFilter();
+		PosterizeFilter filter = new PosterizeFilter();
 		
-		filter.setRadius(RADIUS);
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);
 		//Applies a filter.

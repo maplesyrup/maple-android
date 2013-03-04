@@ -3,5 +3,6 @@
     <string-array name="filters_array">
         <item>None</item>
         <item>Gaussian</item>
+        <item>Posterize</item>
     </string-array>
 </resources>

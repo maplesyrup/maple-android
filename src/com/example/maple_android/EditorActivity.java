@@ -22,11 +22,10 @@ import com.example.maple_android.Utility;
 public class EditorActivity extends Activity implements OnItemSelectedListener{
 	public enum Filters {
 	    GAUSSIAN("Gaussian"),
+	    POSTERIZE("Posterize"),
 	    NONE("None")
 	    ;
-	    /**
-	     * @param text
-	     */
+	    
 	    private Filters (final String text) {
 	        this.text = text;
 	    }
@@ -77,12 +76,14 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
-		Filter mapleFilter = null;
+		MapleFilter mapleFilter = null;
 		
 		String strFilter = filterSpinner.getSelectedItem().toString();
 		
 		if (strFilter.equals(Filters.GAUSSIAN.toString())) {
 			mapleFilter = new MapleGaussianFilter();
+		} else if (strFilter.equals(Filters.POSTERIZE.toString())) {
+			mapleFilter = new MaplePosterizeFilter();
 		} else if (strFilter.equals(Filters.NONE.toString())) {
 			currBitmap = srcBitmap;
 			return;
@@ -90,7 +91,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 			return;
 		}
 		
-		currBitmap = mapleFilter.filterBitmap(srcBitmap);
+		if (mapleFilter != null) {
+			currBitmap = mapleFilter.filterBitmap(srcBitmap);
+		}
 		photo.setImageBitmap(currBitmap);
 		
 	}
