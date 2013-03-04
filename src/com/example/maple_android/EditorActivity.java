@@ -10,31 +10,96 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.example.maple_android.Utility;
 
-public class EditorActivity extends Activity {
-	
+public class EditorActivity extends Activity implements OnItemSelectedListener{
+	public enum Filters {
+	    GAUSSIAN("Gaussian"),
+	    POSTERIZE("Posterize"),
+	    NONE("None")
+	    ;
+	    
+	    private Filters (final String text) {
+	        this.text = text;
+	    }
+
+	    private final String text;
+
+	   
+	    @Override
+	    public String toString() {
+	        return text;
+	    }
+	}
 	private ImageView photo;
+	private Spinner filterSpinner;
+	private Bitmap srcBitmap;
+	private Bitmap currBitmap;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         Bundle extras = getIntent().getExtras();
-        
+
+        filterSpinner = (Spinner) findViewById(R.id.filters);
+        filterSpinner.setOnItemSelectedListener(this);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.filters_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        filterSpinner.setAdapter(adapter);
+
         // Grab photo byte array and decode it
         byte[] byteArray = extras.getByteArray("photoByteArray");
         String photoPath = (String) extras.get("photoPath");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-
-        photo = (ImageView)this.findViewById(R.id.photo);
-        photo.setImageBitmap(bitmap);
+        srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        currBitmap = srcBitmap;
         
+        photo = (ImageView)this.findViewById(R.id.photo);
+        photo.setImageBitmap(srcBitmap);
+
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("image", photoPath));
         params.add(new BasicNameValuePair("user_id", "1"));
         Utility.post("http://10.0.2.2:3000/users/1/posts", params);
-        
+
     }
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int pos,
+			long id) {
+		MapleFilter mapleFilter = null;
+		
+		String strFilter = filterSpinner.getSelectedItem().toString();
+		
+		if (strFilter.equals(Filters.GAUSSIAN.toString())) {
+			mapleFilter = new MapleGaussianFilter();
+		} else if (strFilter.equals(Filters.POSTERIZE.toString())) {
+			mapleFilter = new MaplePosterizeFilter();
+		} else if (strFilter.equals(Filters.NONE.toString())) {
+			currBitmap = srcBitmap;
+			return;
+		} else {
+			return;
+		}
+		
+		if (mapleFilter != null) {
+			currBitmap = mapleFilter.filterBitmap(srcBitmap);
+		}
+		photo.setImageBitmap(currBitmap);
+		
+	}
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
