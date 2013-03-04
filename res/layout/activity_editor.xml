@@ -19,5 +19,12 @@
         android:layout_height="wrap_content"
         android:onClick="postAd"
         android:text="Post Ad"/>
+    
+    <Button
+        android:id="@+id/post"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="returnToMain"
+        android:text="Take Another Picture"/>
 
 </LinearLayout>
