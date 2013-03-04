@@ -1,5 +1,9 @@
 package com.example.maple_android;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +13,9 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -38,6 +44,8 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 	        return text;
 	    }
 	}
+	
+	private Uri fileUri;
 	private ImageView photo;
 	private Spinner filterSpinner;
 	private Bitmap srcBitmap;
@@ -60,19 +68,43 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 
         // Grab photo byte array and decode it
         byte[] byteArray = extras.getByteArray("photoByteArray");
-        String photoPath = (String) extras.get("photoPath");
+        
         srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         currBitmap = srcBitmap;
         
         photo = (ImageView)this.findViewById(R.id.photo);
         photo.setImageBitmap(srcBitmap);
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("image", photoPath));
-        params.add(new BasicNameValuePair("user_id", "1"));
-        Utility.post("http://10.0.2.2:3000/users/1/posts", params);
+        
 
     }
+	
+	public void postAd(View view) {
+		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); // create a file to save the image
+		
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        
+        currBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+        byte[] photoByteArray = stream.toByteArray();
+		OutputStream photoOS;
+		 
+		try {
+		 	photoOS = getContentResolver().openOutputStream(fileUri);
+		 	photoOS.write(photoByteArray);
+		 	photoOS.flush();
+		 	photoOS.close();
+		}catch (FileNotFoundException e) {
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+
+		
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("image", fileUri.getPath()));
+        params.add(new BasicNameValuePair("user_id", "1"));
+        Utility.post("http://10.0.2.2:3000/users/1/posts", params);
+	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
