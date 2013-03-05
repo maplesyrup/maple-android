@@ -11,6 +11,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -78,6 +79,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
         
 
     }
+	
+	public void returnToMain(View view){
+		Intent i = new Intent(this, MainActivity.class);
+		startActivity(i);
+	}
 	
 	public void postAd(View view) {
 		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); // create a file to save the image
