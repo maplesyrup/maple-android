@@ -21,7 +21,7 @@
         android:text="Post Ad"/>
     
     <Button
-        android:id="@+id/post"
+        android:id="@+id/return"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="returnToMain"
