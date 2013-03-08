@@ -15,4 +15,13 @@
         android:layout_centerInParent="true"
         android:text="@string/hello_world" />
 
+    <Button
+        android:id="@+id/enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/welcome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:text="@string/enter_app" />
+
 </RelativeLayout>

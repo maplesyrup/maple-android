@@ -1,18 +1,35 @@
 package com.example.maple_android;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import com.facebook.*;
-import com.facebook.model.*;
+
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 
 public class LoginActivity extends Activity {
 
+  private Button mEnterButton;
+	
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
 
+	mEnterButton = (Button) findViewById(R.id.enter);	
+	mEnterButton.setOnClickListener(new View.OnClickListener() {
+        public void onClick(View v) {
+        	Intent intent = new Intent(LoginActivity.this, MainActivity.class); 
+            LoginActivity.this.startActivity(intent);
+        }
+    });
+	
+	
     // start Facebook Login
     Session.openActiveSession(this, true, new Session.StatusCallback() {
 
@@ -30,6 +47,7 @@ public class LoginActivity extends Activity {
               if (user != null) {
                 TextView welcome = (TextView) findViewById(R.id.welcome);
                 welcome.setText("Hello " + user.getName() + "!");
+                
               }
             }
           });
