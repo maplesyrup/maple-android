@@ -66,38 +66,6 @@ public class LoginActivity extends Activity {
     }
 
     updateView();
-    
-//	mEnterButton.setOnClickListener(new View.OnClickListener() {
-//        public void onClick(View v) {
-//        	Intent intent = new Intent(LoginActivity.this, MainActivity.class); 
-//            startActivity(intent);
-//        }
-//    });
-	
-    // start Facebook Login
-//    Session.openActiveSession(this, true, new Session.StatusCallback() {
-//
-//      // callback when session changes state
-//      @Override
-//      public void call(Session session, SessionState state, Exception exception) {
-//        if (session.isOpened()) {
-//
-//          // make request to the /me API
-//          Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-//
-//            // callback after Graph API response with user object
-//            @Override
-//            public void onCompleted(GraphUser user, Response response) {
-//              if (user != null) {
-//                TextView welcome = (TextView) findViewById(R.id.welcome);
-//                welcome.setText("Hello " + user.getName() + "!");
-//                
-//              }
-//            }
-//          });
-//        }
-//      }
-//    });
   }
 
   public boolean onCreateOptionsMenu(Menu menu) {
