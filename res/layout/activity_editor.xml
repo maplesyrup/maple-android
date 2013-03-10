@@ -7,24 +7,52 @@
          android:id="@+id/photo" 
          android:layout_height="wrap_content" 
          android:layout_width="fill_parent" />
-
+	<TextView 
+	     android:id="@+id/companyTag" 
+         android:layout_height="wrap_content" 
+         android:layout_width="fill_parent"
+         android:text="Company Name" />
+		
+	<AutoCompleteTextView 
+	     android:id="@+id/companySuggest" 
+         android:layout_height="wrap_content" 
+         android:layout_width="fill_parent" 
+         android:completionThreshold="1"  />
+	 <Button
+        android:id="@+id/tag"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="tagPicture"
+        android:text="Tag Company"  />
     <Spinner
         android:id="@+id/filters"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content" 
+        android:visibility="gone" />
+    <Button
+        android:id="@+id/logo"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addLogo"
+        android:text="Add A Logo"  />
+        "
+   
     <Button
         android:id="@+id/post"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="postAd"
-        android:text="Post Ad"/>
-    <!-- 
+        android:text="Post Ad"
+        android:visibility="gone"  />   
+   
     <Button
-        android:id="@+id/return"
+        android:id="@+id/returnToMain"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="returnToMain"
-        android:text="Take Another Picture"/> -->
+        android:text="Take Another Picture"/>
+    
+        
 
 </LinearLayout>

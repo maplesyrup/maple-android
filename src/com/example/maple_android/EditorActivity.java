@@ -16,14 +16,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.*;
 
-public class EditorActivity extends Activity implements OnItemSelectedListener{
+public class EditorActivity extends Activity implements OnItemSelectedListener {
 	public enum Filters {
 	    GAUSSIAN("Gaussian"),
 	    POSTERIZE("Posterize"),
@@ -48,6 +47,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 	private Spinner filterSpinner;
 	private Bitmap srcBitmap;
 	private Bitmap currBitmap;
+	/*for tagging a company */
+	private String companyTag;
+	private AutoCompleteTextView companySuggest;
+	private String[] companySuggestions = {"Apple", "Nike", "Vibram"};
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +76,12 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
         
         photo = (ImageView)this.findViewById(R.id.photo);
         photo.setImageBitmap(srcBitmap);
-
         
+        /*for tagging a company */
+        companySuggest = (AutoCompleteTextView)findViewById(R.id.companySuggest);
+       // companySuggest.addTextChangedListener(this);
+        companySuggest.setAdapter(new ArrayAdapter<String>(this,
+        							android.R.layout.simple_dropdown_item_1line, companySuggestions));        
 
     }
 	
@@ -81,6 +89,23 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
 	}
+	
+	public void tagPicture(View view){
+		// save company tag
+		companyTag = companySuggest.getText().toString();
+		
+		// show further editing options
+		filterSpinner.setVisibility(View.VISIBLE);
+		findViewById(R.id.post).setVisibility(View.VISIBLE);
+		findViewById(R.id.returnToMain).setVisibility(View.VISIBLE);
+		findViewById(R.id.logo).setVisibility(View.VISIBLE);
+		
+	}
+	
+	public void addLogo(View view){
+		
+	}
+	
 	
 	public void postAd(View view) {
 		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); // create a file to save the image
@@ -132,9 +157,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 		photo.setImageBitmap(currBitmap);
 		
 	}
+
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }
