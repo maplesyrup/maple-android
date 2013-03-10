@@ -11,17 +11,46 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 
 public class MainActivity extends Activity {
-
-	
 	private static final int CAMERA_REQUEST = 1888;
-    
     private ImageView imageView;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+      //start Facebook Login
+        Session.openActiveSession(this, true, new Session.StatusCallback() {
+  
+          // callback when session changes state
+          @Override
+          public void call(Session session, SessionState state, Exception exception) {
+            if (session.isOpened()) {
+  
+              // make request to the /me API
+              Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+  
+                // callback after Graph API response with user object
+                @Override
+                public void onCompleted(GraphUser user, Response response) {
+                  if (user != null) {
+                    TextView greeting = (TextView) findViewById(R.id.greeting);
+                    greeting.setText("Welcome " + user.getName() + "!");
+                  
+                  }
+                }
+              });
+            }
+          }
+        });
     }
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
