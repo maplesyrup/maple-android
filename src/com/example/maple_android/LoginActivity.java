@@ -22,6 +22,11 @@ public class LoginActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
 
+    /*** Skip Login For Testing ***/
+   Intent i = new Intent(this, MainActivity.class);
+   startActivity(i);
+
+    
     buttonLoginLogout = (Button) findViewById(R.id.enter);
 	welcomeText = (TextView) findViewById(R.id.welcome);
 	accessTokenText = (TextView) findViewById(R.id.access_token);
