@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -48,6 +49,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 	private Spinner filterSpinner;
 	private Bitmap srcBitmap;
 	private Bitmap currBitmap;
+	private static final String TAG = "EditorActivity";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +85,8 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 	}
 	
 	public void postAd(View view) {
+		Log.d(TAG, "trying to Post ad now");
+		Log.d(TAG, getIntent().getExtras().getString("accessToken"));
 		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); // create a file to save the image
 		
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -101,12 +105,14 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
-
-		
+		String accessToken = getIntent().getExtras().getString("accessToken");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("image", fileUri.getPath()));
-        params.add(new BasicNameValuePair("user_id", "1"));
-        Utility.post("http://10.0.2.2:3000/users/1/posts", params);
+//        params.add(new BasicNameValuePair("image", fileUri.getPath()));
+		params.add(new BasicNameValuePair("title", "we are testing post request to the server"));
+		params.add(new BasicNameValuePair("token", accessToken));
+//      Utility.post("http://10.0.2.2:3000/users/1/posts", params);
+      Utility.post("http://maplesyrup.herokuapp.com/posts", params);
+        
 	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,

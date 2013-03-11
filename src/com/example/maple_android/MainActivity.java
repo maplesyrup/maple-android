@@ -16,10 +16,10 @@ import android.widget.TextView;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 
 public class MainActivity extends Activity {
+	private static final String TAG = "MainActivity";
 	private static final int CAMERA_REQUEST = 1888;
     private ImageView imageView;
     
@@ -45,30 +45,26 @@ public class MainActivity extends Activity {
     }
     
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
-    	Log.d("MapleSyrup", "Receiving image");
-    	
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {  
-        	
+    	Log.d(TAG, "Receiving image");
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
         	// Load bitmap into byteArray so that we can pass the data to the new Activity
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             
             photo.compress(Bitmap.CompressFormat.JPEG, 90, stream);
             byte[] photoByteArray = stream.toByteArray();
-            
-           
-            
+  
             Intent intent = new Intent(this, EditorActivity.class);
-            
+
             intent.putExtra("photoByteArray", photoByteArray);
+            intent.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
             startActivity(intent);
-            
         }
     } 
     
     public void openCamera(View view) {
-    	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA_REQUEST);
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	    startActivityForResult(intent, CAMERA_REQUEST);
     }
     
     
