@@ -38,7 +38,7 @@ public class AsyncHttpPost extends AsyncTask<String, String, String> {
 	        MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
 	        for(int index=0; index < mData.size(); index++) {
-	            if(mData.get(index).getName().equalsIgnoreCase("image")) {
+	            if(mData.get(index).getName().equalsIgnoreCase("post[image]")) {
 	                // If the key equals to "image", we use FileBody to transfer the data
 	                entity.addPart(mData.get(index).getName(), new FileBody(new File (mData.get(index).getValue())));
 	            } else {
