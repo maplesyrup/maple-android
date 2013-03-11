@@ -107,11 +107,19 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		findViewById(R.id.post).setVisibility(View.VISIBLE);
 		findViewById(R.id.returnToMain).setVisibility(View.VISIBLE);
 		findViewById(R.id.logo).setVisibility(View.VISIBLE);
+		findViewById(R.id.text).setVisibility(View.VISIBLE);
 		
 	}
 	
 	public void addLogo(View view){
 		Intent i = new Intent(this, LogoActivity.class);
+		i.putExtra("photoByteArray", byteArray);
+		i.putExtra("companyTag", companyTag);
+		startActivity(i);
+	}
+	
+	public void addText(View view){
+		Intent i = new Intent(this, TextActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
 		startActivity(i);
