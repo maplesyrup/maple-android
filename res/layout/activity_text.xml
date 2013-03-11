@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/headerText" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"  
+     />
+    
+    <ImageView 
+         android:id="@+id/photo" 
+         android:layout_height="wrap_content" 
+         android:layout_width="wrap_content" 
+         android:clickable="true"
+         android:gravity="center"
+     />    
+     
+    <TextView
+        android:id="@+id/instructions" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Click where you would like to add text to the picture" 
+     />
+    
+    <EditText 
+        android:id="@+id/textEntry"
+        android:layout_height="wrap_content" 
+        android:layout_width="fill_parent" 
+        android:singleLine="false"
+        android:visibility="gone"       
+        />
+    
+      <TextView
+        android:id="@+id/photoText" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:visibility="gone" 
+		android:textColor="#FF0000"
+     />
+      
+     <Button
+        android:id="@+id/changeColor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changeColor"
+        android:visibility="gone" 
+        android:text="Change Text Color"
+      />
+      
+    
+    <Button
+        android:id="@+id/save"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="save"
+        android:visibility="gone" 
+        android:text="Save"/>
+    
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="returnToEditor"
+        android:text="Cancel"/>
+    
+   
+
+</LinearLayout>

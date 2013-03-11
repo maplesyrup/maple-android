@@ -11,5 +11,6 @@
     <string name="logout">Logout</string>
     <string name="access_string">Access token goes here</string>
     <string name="title_activity_logo">LogoActivity</string>
+    <string name="title_activity_text">TextActivity</string>
 
 </resources>
