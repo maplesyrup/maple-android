@@ -9,6 +9,9 @@
     <string name="action_settings">Settings</string>
     <string name="login">Login via Facebook</string>
     <string name="logout">Logout</string>
-    <string name="enter">You are signed in: Enter the app</string>
     <string name="access_string">Access token goes here</string>
+    <string name="title_activity_logo">LogoActivity</string>
+    <string name="title_activity_text">TextActivity</string>
+    <string name="enter">Enter the app</string>
+
 </resources>

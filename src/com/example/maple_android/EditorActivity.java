@@ -16,14 +16,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.*;
 
-public class EditorActivity extends Activity implements OnItemSelectedListener{
+public class EditorActivity extends Activity implements OnItemSelectedListener {
 	public enum Filters {
 	    GAUSSIAN("Gaussian"),
 	    POSTERIZE("Posterize"),
@@ -49,6 +48,12 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 	private Bitmap srcBitmap;
 	private Bitmap currBitmap;
 
+	private byte[] byteArray;
+	/*for tagging a company */
+	private String companyTag;
+	private AutoCompleteTextView companySuggest;
+	private String[] companySuggestions = {"Apple", "Nike", "Vibram"};
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,19 +71,60 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
         filterSpinner.setAdapter(adapter);
 
         // Grab photo byte array and decode it
-        byte[] byteArray = extras.getByteArray("photoByteArray");
+        byteArray = extras.getByteArray("photoByteArray");
         
         srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         currBitmap = srcBitmap;
         
         photo = (ImageView)this.findViewById(R.id.photo);
         photo.setImageBitmap(srcBitmap);
+        
+        /*for tagging a company */
+        companySuggest = (AutoCompleteTextView)findViewById(R.id.companySuggest);
+       // companySuggest.addTextChangedListener(this);
+        companySuggest.setAdapter(new ArrayAdapter<String>(this,
+        							android.R.layout.simple_dropdown_item_1line, companySuggestions));
+        
+        // check if a company tag has already been made
+        String tag = extras.getString("companyTag");
+        if(tag != null){
+        	companySuggest.setText(tag);
+        	tagPicture(companySuggest);
+        }
     }
 	
 	public void returnToMain(View view){
 		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
 	}
+	
+	public void tagPicture(View view){
+		// save company tag
+		companyTag = companySuggest.getText().toString();
+		
+		// show further editing options
+		filterSpinner.setVisibility(View.VISIBLE);
+		findViewById(R.id.post).setVisibility(View.VISIBLE);
+		findViewById(R.id.returnToMain).setVisibility(View.VISIBLE);
+		findViewById(R.id.logo).setVisibility(View.VISIBLE);
+		findViewById(R.id.text).setVisibility(View.VISIBLE);
+		
+	}
+	
+	public void addLogo(View view){
+		Intent i = new Intent(this, LogoActivity.class);
+		i.putExtra("photoByteArray", byteArray);
+		i.putExtra("companyTag", companyTag);
+		startActivity(i);
+	}
+	
+	public void addText(View view){
+		Intent i = new Intent(this, TextActivity.class);
+		i.putExtra("photoByteArray", byteArray);
+		i.putExtra("companyTag", companyTag);
+		startActivity(i);
+	}
+	
 	
 	public void postAd(View view) {
 		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); // create a file to save the image
@@ -131,9 +177,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener{
 		photo.setImageBitmap(currBitmap);
 		
 	}
+
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }
