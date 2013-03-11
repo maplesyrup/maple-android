@@ -47,6 +47,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private Spinner filterSpinner;
 	private Bitmap srcBitmap;
 	private Bitmap currBitmap;
+
 	private byte[] byteArray;
 	/*for tagging a company */
 	private String companyTag;
@@ -90,7 +91,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
         	companySuggest.setText(tag);
         	tagPicture(companySuggest);
         }
-
     }
 	
 	public void returnToMain(View view){
@@ -145,13 +145,14 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
-
-		
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("image", fileUri.getPath()));
-        params.add(new BasicNameValuePair("user_id", "1"));
-        Utility.post("http://10.0.2.2:3000/users/1/posts", params);
+        params.add(new BasicNameValuePair("post[image]", fileUri.getPath()));
+		params.add(new BasicNameValuePair("post[title]", "ain't nobody got time"));
+		String accessToken = getIntent().getExtras().getString("accessToken");
+		params.add(new BasicNameValuePair("token", accessToken));
+		Utility.post("http://maplesyrup.herokuapp.com/posts", params);
 	}
+	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {

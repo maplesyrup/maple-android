@@ -12,5 +12,6 @@
     <string name="access_string">Access token goes here</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="title_activity_text">TextActivity</string>
+    <string name="enter">Enter the app</string>
 
 </resources>
