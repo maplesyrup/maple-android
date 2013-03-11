@@ -16,6 +16,8 @@ public class LoginActivity extends Activity {
   private Session.StatusCallback statusCallback = new SessionStatusCallback();
   private TextView welcomeText;
   private TextView accessTokenText;
+  private String authToken = "";
+  private String accessToken = "";
   
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -23,10 +25,9 @@ public class LoginActivity extends Activity {
     setContentView(R.layout.activity_login);
 
     /*** Skip Login For Testing ***/
-   Intent i = new Intent(this, MainActivity.class);
-   startActivity(i);
+//   Intent i = new Intent(this, MainActivity.class);
+//   startActivity(i);
 
-    
     buttonLoginLogout = (Button) findViewById(R.id.enter);
 	welcomeText = (TextView) findViewById(R.id.welcome);
 	accessTokenText = (TextView) findViewById(R.id.access_token);
@@ -76,10 +77,26 @@ public class LoginActivity extends Activity {
   private void updateView() {
 	  Session session = Session.getActiveSession();
       if (session.isOpened()) {
-    	  accessTokenText.setText("Access token: " + session.getAccessToken());
-          buttonLoginLogout.setText(R.string.logout);
+    	  accessToken = session.getAccessToken();
+    	  accessTokenText.setText("Access token: " + accessToken);
+//          AsyncTask<String, Void, String> authTokenRetrieve = new RetrieveAuth().execute(session.getAccessToken());
+//		  try {
+//			  authToken = authTokenRetrieve.get();
+//		  } catch (InterruptedException e) {
+//			  // TODO Auto-generated catch block
+//			  e.printStackTrace();
+//		  } catch (ExecutionException e) {
+//			  // TODO Auto-generated catch block
+//			  e.printStackTrace();
+//		  }
+          buttonLoginLogout.setText(R.string.enter);
           buttonLoginLogout.setOnClickListener(new OnClickListener() {
-              public void onClick(View view) { onClickLogout(); }
+//              public void onClick(View view) { onClickLogout(); }
+        	  public void onClick(View view) {
+        		  Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        		  i.putExtra("accessToken", accessToken);
+        		  startActivity(i);
+        	  }
           });
       } else {
     	  accessTokenText.setText(R.string.access_string);
