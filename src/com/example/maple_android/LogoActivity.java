@@ -104,7 +104,8 @@ public class LogoActivity extends Activity {
 		logoHeight = (int) (logoHeight * (1 + modifier)); 
 		
 		// scale source and update ImageView
-		logoScaled = Bitmap.createScaledBitmap(logoSrc, logoWidth, logoHeight, false);
+		// make filter flag true to improve quality. Worth it?
+		logoScaled = Bitmap.createScaledBitmap(logoSrc, logoWidth, logoHeight, true);
 		logoView.setImageBitmap(logoScaled);
 	}
 	
@@ -118,7 +119,7 @@ public class LogoActivity extends Activity {
 		
 		// save picture to byte array and return
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();        
-		bmOverlay.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+		bmOverlay.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byteArray = stream.toByteArray();
         
         returnToEditor(view);        

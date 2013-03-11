@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +50,7 @@ public class TextActivity extends Activity {
 		// get company name
 		companyTag = extras.getString("companyTag");
 		
+		
 		// set photo
 		photo = (ImageView)this.findViewById(R.id.photo);
         photo.setImageBitmap(srcBitmap);
@@ -81,6 +84,7 @@ public class TextActivity extends Activity {
 					int arg3) {	}       	
         	
         });
+        
 	}
 	
 	private boolean placeText(View v, MotionEvent event) {
@@ -111,8 +115,8 @@ public class TextActivity extends Activity {
 	
 	public void save(View view){		
 		// get text bitmap
-		photoText.setDrawingCacheEnabled(true);
-		Bitmap textBitmap = photoText.getDrawingCache();
+		Bitmap textBitmap = loadBitmapFromView(photoText);
+		photo.setImageBitmap(textBitmap);
 		
 		// combine two bitmaps
 		Bitmap bmOverlay = Bitmap.createBitmap(srcBitmap.getWidth(), srcBitmap.getHeight(), srcBitmap.getConfig());
@@ -122,10 +126,18 @@ public class TextActivity extends Activity {
         
 		// save picture to byte array and return
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();        
-		bmOverlay.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+		bmOverlay.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byteArray = stream.toByteArray();
         
         returnToEditor(view);        
+	}
+	
+	private Bitmap loadBitmapFromView(View v) {		
+		Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);                
+	    Canvas c = new Canvas(b);
+	    v.layout(0, 0, v.getWidth(), v.getHeight());
+	    v.draw(c);
+	    return b;
 	}
 	
 	

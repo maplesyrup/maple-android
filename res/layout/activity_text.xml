@@ -56,5 +56,7 @@
         android:layout_height="wrap_content"
         android:onClick="returnToEditor"
         android:text="Cancel"/>
+    
+   
 
 </LinearLayout>
