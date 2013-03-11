@@ -27,4 +27,13 @@
         android:layout_marginTop="62dp"
         android:text="@string/hello_world" />
 
+    <TextView
+        android:id="@+id/access_token"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enter"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="99dp"
+        android:text="@string/access_string" />
+
 </RelativeLayout>

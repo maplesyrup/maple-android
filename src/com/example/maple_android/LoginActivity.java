@@ -2,17 +2,20 @@ package com.example.maple_android;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
 
 public class LoginActivity extends Activity {
 
+  private Button buttonLoginLogout;
   private Session.StatusCallback statusCallback = new SessionStatusCallback();
+  private TextView welcomeText;
+  private TextView accessTokenText;
   
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -20,13 +23,14 @@ public class LoginActivity extends Activity {
     setContentView(R.layout.activity_login);
 
     /*** Skip Login For Testing ***/
-//   Intent i = new Intent(this, MainActivity.class);
-//   startActivity(i);
+   //Intent i = new Intent(this, MainActivity.class);
+   //startActivity(i);
 
-    Button buttonLoginLogout = (Button) findViewById(R.id.enter);
-    buttonLoginLogout.setOnClickListener(new OnClickListener() {
-        public void onClick(View view) { onClickLogin(); }
-    });
+    
+    buttonLoginLogout = (Button) findViewById(R.id.enter);
+	welcomeText = (TextView) findViewById(R.id.welcome);
+	accessTokenText = (TextView) findViewById(R.id.access_token);
+	
 	Session session = Session.getActiveSession();
     if (session == null) {
         if (savedInstanceState != null) {
@@ -72,11 +76,17 @@ public class LoginActivity extends Activity {
   private void updateView() {
 	  Session session = Session.getActiveSession();
       if (session.isOpened()) {
-    	  String accessToken = session.getAccessToken();
-    	  Log.d("Maple Syrup", "Access token: " + accessToken);
-		  Intent i = new Intent(LoginActivity.this, MainActivity.class);
-		  i.putExtra("accessToken", accessToken);
-		  startActivity(i);
+    	  accessTokenText.setText("Access token: " + session.getAccessToken());
+          buttonLoginLogout.setText(R.string.logout);
+          buttonLoginLogout.setOnClickListener(new OnClickListener() {
+              public void onClick(View view) { onClickLogout(); }
+          });
+      } else {
+    	  accessTokenText.setText(R.string.access_string);
+          buttonLoginLogout.setText(R.string.login);
+          buttonLoginLogout.setOnClickListener(new OnClickListener() {
+              public void onClick(View view) { onClickLogin(); }
+          });
       }
   }
   
@@ -89,6 +99,13 @@ public class LoginActivity extends Activity {
       }
   }
 
+  private void onClickLogout() {
+      Session session = Session.getActiveSession();
+      if (!session.isClosed()) {
+          session.closeAndClearTokenInformation();
+      }
+  }
+  
   private class SessionStatusCallback implements Session.StatusCallback {
       @Override
       public void call(Session session, SessionState state, Exception exception) {
