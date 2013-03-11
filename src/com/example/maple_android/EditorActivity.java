@@ -47,6 +47,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private Spinner filterSpinner;
 	private Bitmap srcBitmap;
 	private Bitmap currBitmap;
+	private byte[] byteArray;
 	/*for tagging a company */
 	private String companyTag;
 	private AutoCompleteTextView companySuggest;
@@ -69,7 +70,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
         filterSpinner.setAdapter(adapter);
 
         // Grab photo byte array and decode it
-        byte[] byteArray = extras.getByteArray("photoByteArray");
+        byteArray = extras.getByteArray("photoByteArray");
         
         srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         currBitmap = srcBitmap;
@@ -81,7 +82,14 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
         companySuggest = (AutoCompleteTextView)findViewById(R.id.companySuggest);
        // companySuggest.addTextChangedListener(this);
         companySuggest.setAdapter(new ArrayAdapter<String>(this,
-        							android.R.layout.simple_dropdown_item_1line, companySuggestions));        
+        							android.R.layout.simple_dropdown_item_1line, companySuggestions));
+        
+        // check if a company tag has already been made
+        String tag = extras.getString("companyTag");
+        if(tag != null){
+        	companySuggest.setText(tag);
+        	tagPicture(companySuggest);
+        }
 
     }
 	
@@ -103,7 +111,10 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	}
 	
 	public void addLogo(View view){
-		
+		Intent i = new Intent(this, LogoActivity.class);
+		i.putExtra("photoByteArray", byteArray);
+		i.putExtra("companyTag", companyTag);
+		startActivity(i);
 	}
 	
 	

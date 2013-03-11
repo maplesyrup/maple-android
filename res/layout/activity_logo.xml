@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	
+    <TextView
+        android:id="@+id/companyTag" 
+         android:layout_height="wrap_content" 
+         android:layout_width="fill_parent"
+         android:textSize="20sp"
+         android:textStyle="bold"  
+    />
+    
+     <ImageView 
+         android:id="@+id/logoPic" 
+         android:layout_height="wrap_content" 
+         android:layout_width="wrap_content"
+         android:layout_gravity="center"
+       />
+    
+    <Button
+        android:id="@+id/decreaseSize"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changeLogoSize"
+        android:text="Smaller"/>
+    
+    <Button
+        android:id="@+id/increaseSize"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changeLogoSize"
+        android:text="Larger"
+        
+        />    
+    
+     <TextView
+        android:id="@+id/companyTag" 
+         android:layout_height="wrap_content" 
+         android:layout_width="fill_parent"
+         android:textSize="20sp"
+         android:textStyle="bold"
+         android:text="Choose where to place the logo"  
+    />
+    
+    
+    <ImageView 
+         android:id="@+id/photo" 
+         android:layout_height="wrap_content" 
+         android:layout_width="wrap_content" 
+         android:clickable="true"
+         android:gravity="center"
+     />
+    
+    
+    <Button
+        android:id="@+id/save"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="save"
+        android:text="Save"/>
+    
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="returnToEditor"
+        android:text="Cancel"/>
+
+</LinearLayout>
