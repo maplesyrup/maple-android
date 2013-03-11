@@ -2,8 +2,11 @@ package com.example.maple_android;
 
 import java.io.ByteArrayOutputStream;
 
+import com.example.maple_android.ColorPickerDialog.OnColorChangedListener;
+
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +34,7 @@ public class TextActivity extends Activity {
 	private float text_y;
 	private EditText textEntry;
 	private TextView photoText;
+	private int textColor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class TextActivity extends Activity {
         
         // TextView to overlap on photo
         photoText = (TextView) findViewById(R.id.photoText);
+        textColor = photoText.getTextColors().getDefaultColor();
         
         // set up text listener
         textEntry = (EditText)this.findViewById(R.id.textEntry);
@@ -90,6 +95,8 @@ public class TextActivity extends Activity {
 	private boolean placeText(View v, MotionEvent event) {
 		// update options after click
 		findViewById(R.id.instructions).setVisibility(View.GONE);
+		findViewById(R.id.changeColor).setVisibility(View.VISIBLE);
+		findViewById(R.id.save).setVisibility(View.VISIBLE);
 		textEntry.setVisibility(View.VISIBLE);
 		photoText.setVisibility(View.VISIBLE);
 		
@@ -104,6 +111,20 @@ public class TextActivity extends Activity {
 		
 		return true;
 	}		
+	
+	public void changeColor(View view){
+		 OnColorChangedListener l = new OnColorChangedListener(){
+
+			@Override
+			public void colorChanged(int color) {
+				textColor = color;
+				photoText.setTextColor(color);				
+			}			 
+		 };
+		
+		ColorPickerDialog newFragment = new ColorPickerDialog(view.getContext(), l, textColor);
+		 newFragment.show();		
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -42,12 +42,23 @@
 		android:visibility="gone" 
 		android:textColor="#FF0000"
      />
+      
+     <Button
+        android:id="@+id/changeColor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changeColor"
+        android:visibility="gone" 
+        android:text="Change Text Color"
+      />
+      
     
     <Button
         android:id="@+id/save"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="save"
+        android:visibility="gone" 
         android:text="Save"/>
     
     <Button
