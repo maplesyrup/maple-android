@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -73,6 +74,26 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
+    }
+    
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	//respond to menu item selection
+	  	switch (item.getItemId()) {
+	      case R.id.logout:
+	    	  onClickLogout();
+	    	  return true;
+	  	  default:
+	  		  return super.onOptionsItemSelected(item);
+	  	  }
+    }
+
+    private void onClickLogout() {
+        Session session = Session.getActiveSession();
+        if (!session.isClosed()) {
+            session.closeAndClearTokenInformation();
+        }
+      Intent i = new Intent(this, LoginActivity.class);
+      startActivity(i);
     }
     
 }
