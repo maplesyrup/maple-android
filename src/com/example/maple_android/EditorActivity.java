@@ -149,10 +149,13 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		}
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("post[image]", fileUri.getPath()));
-		params.add(new BasicNameValuePair("post[title]", "ain't nobody got time"));
+		params.add(new BasicNameValuePair("post[title]", "Company: " + companySuggest.getText().toString()));
 		String accessToken = getIntent().getExtras().getString("accessToken");
 		params.add(new BasicNameValuePair("token", accessToken));
 		Utility.post("http://maplesyrup.herokuapp.com/posts", params);
+		Intent i = new Intent(this, MainActivity.class);
+		i.putExtra("successMessage", "Posted picture successfully! Go to the website to check it out.");
+		startActivity(i);
 	}
 	
 	@Override
