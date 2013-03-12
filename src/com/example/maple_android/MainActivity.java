@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +23,6 @@ import com.facebook.model.GraphUser;
 public class MainActivity extends Activity {
 	private static final String TAG = "MainActivity";
 	private static final int CAMERA_REQUEST = 1888;
-	private ImageView imageView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,8 +30,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		String success = getIntent().getExtras().getString("successMessage");
 		if (success != null) {
-			Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG).show();
 		}
 		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
@@ -51,6 +49,13 @@ public class MainActivity extends Activity {
 						}
 					});
 		}
+		// list of supported tags in textview: http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
+		// no support for li tag
+		String htmlStr = "<h1>Sticky Advertising with Maple: publish your ad in 30 seconds</h1>" +
+				"&#8226; Take a picture<br/>" +
+				"&#8226; Add a logo, text, and tag company<br/>" +
+				"&#8226; Publish with a click of a button to http://maplesyrup.herokuapp.com/ and get votes!<br/>";
+		((TextView) findViewById(R.id.tvInstructions)).setText(Html.fromHtml(htmlStr));
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -2,30 +2,24 @@ package com.example.maple_android;
 
 import java.io.ByteArrayOutputStream;
 
-import com.example.maple_android.ColorPickerDialog.OnColorChangedListener;
-
-import android.os.Bundle;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Typeface;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+
+import com.example.maple_android.ColorPickerDialog.OnColorChangedListener;
 
 public class TextActivity extends Activity {
 	private byte[] byteArray;
