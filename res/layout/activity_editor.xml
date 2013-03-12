@@ -60,8 +60,6 @@
 	        android:onClick="tagPicture"
 	        android:visibility="invisible"
 	        android:textStyle="bold"
-	        android:text="company"
-			android:layout_toRightOf="@+id/companyTagText"
 			android:layout_alignParentTop="true"
 			android:layout_centerHorizontal="true"
 	        
@@ -85,7 +83,7 @@
         android:layout_height="wrap_content" 
         android:visibility="invisible" 
         android:layout_toRightOf="@+id/spinnerText"
-        android:layout_below="@+id/logo"
+        android:layout_below="@+id/changeTag"
         />
     	
     	<Button
@@ -95,7 +93,7 @@
         android:layout_height="wrap_content"
         android:onClick="addLogo"
         android:text="Add A Logo" 
-        android:layout_below="@+id/changeTag"
+        android:layout_below="@+id/filters"
         android:layout_alignParentLeft="true"
          />
     
@@ -107,20 +105,19 @@
 	        android:onClick="addText"
 	        android:text="Add Text"  
 	        android:layout_toRightOf="@+id/logo"
-	        android:layout_below="@+id/changeTag"
+	        android:layout_below="@+id/filters"
 	        />
 	        
 	   
 	    <Button
 	        android:id="@+id/post"
-	        android:layout_width="fill_parent"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:onClick="postAd"
 	        android:text="Post Ad"
 	        android:visibility="invisible"  
 	        android:layout_below="@+id/filters"
-	        android:layout_centerHorizontal="true"
-	        android:paddingTop="10sp"
+	        android:layout_toRightOf="@+id/text"
 	        />   
 	   
 	    <Button

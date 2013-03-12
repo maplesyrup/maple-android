@@ -1,14 +1,28 @@
 package com.example.maple_android;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +30,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -54,7 +69,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	/*for tagging a company */
 	private String companyTag;
 	private AutoCompleteTextView companySuggest;
-	private String[] companySuggestions = {"Apple", "Nike", "Vibram"};
+	private ArrayList<String> companySuggestions;
 	private boolean tagSet = false; // whether or not a company tag has been set
 	
 	@Override
@@ -83,8 +98,13 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
         photo.setImageBitmap(srcBitmap);
         
         /*for tagging a company */
+			try {
+				populateCompanyList();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
         companySuggest = (AutoCompleteTextView)findViewById(R.id.companySuggest);
-       // companySuggest.addTextChangedListener(this);
         companySuggest.setAdapter(new ArrayAdapter<String>(this,
         							android.R.layout.simple_dropdown_item_1line, companySuggestions));
         
@@ -97,6 +117,55 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
     }
 	
+	private void populateCompanyList() throws IOException{
+		// initialize company list
+		companySuggestions = new ArrayList<String>();
+		
+		String file;
+		
+		  // allow this thread to use html connect
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+		      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		      StrictMode.setThreadPolicy(policy);
+		    }
+		
+		
+		URL url = new URL("http://maplesyrup.herokuapp.com/posts/companies");
+		   HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+		   try {
+		     InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+		     file = convertStreamToString(in);
+		   }
+		    finally {
+		     urlConnection.disconnect();
+		   }
+		   
+		   // parse file
+		   int index = 0;
+		   String key = "\"name\":\"";
+		   while(true){
+			   // find the next "name" field
+			   index = file.indexOf(key, index);
+			   if(index == -1) break;
+			   
+			   // jump to start of company name
+			   index += key.length();
+			   
+			   // get end of company name
+			   int end = file.indexOf("\"", index);
+			   
+			   // add company to list
+			   companySuggestions.add(file.substring(index, end));
+		   }
+		   
+		   System.out.println(companySuggestions.toString());
+	}
+	
+	public static String convertStreamToString(java.io.InputStream is) {
+	    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+	    return s.hasNext() ? s.next() : "";
+	}
+
 	public void returnToMain(View view){
 		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
@@ -194,14 +263,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
         params.add(new BasicNameValuePair("image", fileUri.getPath()));
         params.add(new BasicNameValuePair("user_id", "1"));
         Utility.post("http://10.0.2.2:3000/users/1/posts", params);
-        params.add(new BasicNameValuePair("post[image]", fileUri.getPath()));
-		params.add(new BasicNameValuePair("post[title]", "Company: " + companySuggest.getText().toString()));
-		String accessToken = getIntent().getExtras().getString("accessToken");
-		params.add(new BasicNameValuePair("token", accessToken));
-		Utility.post("http://maplesyrup.herokuapp.com/posts", params);
-		Intent i = new Intent(this, MainActivity.class);
-		i.putExtra("successMessage", "Posted picture successfully! Go to the website to check it out.");
-		startActivity(i);
 	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
