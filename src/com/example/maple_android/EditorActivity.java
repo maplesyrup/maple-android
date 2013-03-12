@@ -29,11 +29,13 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	    NONE("None")
 	    ;
 	    
+	    private final String text;
+	    
 	    private Filters (final String text) {
 	        this.text = text;
 	    }
 
-	    private final String text;
+	    
 
 	   
 	    @Override
@@ -48,10 +50,12 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private Bitmap srcBitmap;
 	private Bitmap currBitmap;
 	private byte[] byteArray;
+	
 	/*for tagging a company */
 	private String companyTag;
 	private AutoCompleteTextView companySuggest;
 	private String[] companySuggestions = {"Apple", "Nike", "Vibram"};
+	private boolean tagSet = false; // whether or not a company tag has been set
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,13 +106,52 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		// save company tag
 		companyTag = companySuggest.getText().toString();
 		
-		// show further editing options
-		filterSpinner.setVisibility(View.VISIBLE);
-		findViewById(R.id.post).setVisibility(View.VISIBLE);
-		findViewById(R.id.returnToMain).setVisibility(View.VISIBLE);
-		findViewById(R.id.logo).setVisibility(View.VISIBLE);
-		findViewById(R.id.text).setVisibility(View.VISIBLE);
+		// update header
+		((TextView) this.findViewById(R.id.header)).setText("Customize Your Ad");
 		
+		// set company Button
+		((Button) findViewById(R.id.changeTag)).setText(companyTag);
+		
+		toggleOptions();
+	}
+	
+	// when called, this function toggles the ability to change the company tag
+	// and the options to edit the ad.
+	private void toggleOptions(){
+		// toggle saved boolean
+		tagSet = !tagSet;
+		
+		int taggingOptions;
+		int editOptions; 	
+		
+		// if tagset is false, hide the edit options and show the tagging options
+		if(tagSet){
+			taggingOptions = View.INVISIBLE;	
+			editOptions = View.VISIBLE;	
+		} else {
+			taggingOptions = View.VISIBLE;	
+			editOptions = View.INVISIBLE;	
+		}
+		
+		// tagging options
+		findViewById(R.id.companySuggest).setVisibility(taggingOptions);
+		findViewById(R.id.tagButton).setVisibility(taggingOptions);
+		
+		// edit options
+		filterSpinner.setVisibility(editOptions);
+		findViewById(R.id.post).setVisibility(editOptions);
+		//findViewById(R.id.returnToMain).setVisibility(editOptions);
+		findViewById(R.id.logo).setVisibility(editOptions);
+		findViewById(R.id.text).setVisibility(editOptions);
+		//findViewById(R.id.companyTagText).setVisibility(editOptions);
+		findViewById(R.id.changeTag).setVisibility(editOptions);
+		findViewById(R.id.spinnerText).setVisibility(editOptions);
+				
+	}
+	
+	// lets the user go back and edit the company tag
+	public void changeTag(View view){
+		toggleOptions();
 	}
 	
 	public void addLogo(View view){

@@ -4,64 +4,137 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <TextView 
+	     android:id="@+id/header" 
+         android:layout_height="wrap_content" 
+         android:layout_width="fill_parent"
+         android:text="Customize Your Ad"
+         android:textStyle="bold"
+         android:textSize="20sp"
+         android:paddingBottom="5sp"
+         android:paddingTop="5sp"
+         android:gravity="center"
+       />
+    
     <ImageView 
          android:id="@+id/photo" 
          android:layout_height="wrap_content" 
          android:layout_width="fill_parent" />
-	<TextView 
-	     android:id="@+id/companyTag" 
-         android:layout_height="wrap_content" 
-         android:layout_width="fill_parent"
-         android:text="Company Name" />
+    
+
+	<!-- Ad edit options -->	
+	<RelativeLayout 
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:padding="5sp">
+	    
+		<AutoCompleteTextView 
+		     android:id="@+id/companySuggest" 
+	         android:layout_height="wrap_content" 
+	         android:layout_width="fill_parent" 
+	         android:completionThreshold="1" 
+	         android:hint="Company Name"
+	         android:layout_alignParentLeft="true"	
+	         android:layout_alignParentTop="true"
+	         
+    
+	     />
 		
-	<AutoCompleteTextView 
-	     android:id="@+id/companySuggest" 
+		<Button
+	        android:id="@+id/tagButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:onClick="tagPicture"
+	        android:text="Tag" 
+	        android:layout_below="@+id/companySuggest"
+	   		android:layout_alignRight="@+id/companySuggest"
+	        
+	      />
+		
+
+	       
+			<Button
+	        android:id="@+id/changeTag"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:onClick="tagPicture"
+	        android:visibility="invisible"
+	        android:textStyle="bold"
+	        android:text="company"
+			android:layout_toRightOf="@+id/companyTagText"
+			android:layout_alignParentTop="true"
+			android:layout_centerHorizontal="true"
+	        
+	      />	
+		 
+			
+		 <TextView 
+	     android:id="@+id/spinnerText" 
          android:layout_height="wrap_content" 
-         android:layout_width="fill_parent" 
-         android:completionThreshold="1"  />
-	 <Button
-        android:id="@+id/tag"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="tagPicture"
-        android:text="Tag Company"  />
-    <Spinner
+         android:layout_width="wrap_content"
+         android:text="Add a filter"
+         android:visibility="invisible"
+		android:layout_alignBaseline="@+id/filters"
+		android:layout_alignParentLeft="true"	
+
+       />
+	 	
+		 <Spinner
         android:id="@+id/filters"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
-        android:visibility="gone" />
-    <Button
+        android:visibility="invisible" 
+        android:layout_toRightOf="@+id/spinnerText"
+        android:layout_below="@+id/logo"
+        />
+    	
+    	<Button
         android:id="@+id/logo"
-        android:visibility="gone"
-        android:layout_width="fill_parent"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addLogo"
-        android:text="Add A Logo"  />
+        android:text="Add A Logo" 
+        android:layout_below="@+id/changeTag"
+        android:layout_alignParentLeft="true"
+         />
     
-    <Button
-        android:id="@+id/text"
-        android:visibility="gone"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="addText"
-        android:text="Add Text"  />
-        
-   
-    <Button
-        android:id="@+id/post"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="postAd"
-        android:text="Post Ad"
-        android:visibility="gone"  />   
-   
-    <Button
-        android:id="@+id/returnToMain"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="returnToMain"
-        android:text="Start Over"/>
-    
-        
+	    <Button
+	        android:id="@+id/text"
+	        android:visibility="invisible"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:onClick="addText"
+	        android:text="Add Text"  
+	        android:layout_toRightOf="@+id/logo"
+	        android:layout_below="@+id/changeTag"
+	        />
+	        
+	   
+	    <Button
+	        android:id="@+id/post"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:onClick="postAd"
+	        android:text="Post Ad"
+	        android:visibility="invisible"  
+	        android:layout_below="@+id/filters"
+	        android:layout_centerHorizontal="true"
+	        android:paddingTop="10sp"
+	        />   
+	   
+	    <Button
+	        android:id="@+id/returnToMain"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:onClick="returnToMain"
+	        android:text="Start Over"
+	        android:layout_alignParentBottom="true"
+	        android:layout_centerHorizontal="true"
+	      />
+	 
+	 </RelativeLayout>
+	 
+
 
 </LinearLayout>

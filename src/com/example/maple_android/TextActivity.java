@@ -49,18 +49,20 @@ public class TextActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_text);
 		
+		// get company name
+		Bundle extras = getIntent().getExtras();
+		companyTag = extras.getString("companyTag");
+		
 		// set page title
         TextView title = (TextView)this.findViewById(R.id.headerText);
      	title.setText("Add Text To Your " + companyTag + " Ad");
 		
 		// get picture 
-		Bundle extras = getIntent().getExtras();
 		byteArray = extras.getByteArray("photoByteArray");
 		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 		
 		
-		// get company name
-		companyTag = extras.getString("companyTag");
+		
 		
 		
 		// set photo
