@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -29,7 +29,7 @@ public class LoginActivity extends Activity {
 		 }
 		/*******************************/
 
-		 ImageButton buttonLoginLogout = (ImageButton) findViewById(R.id.loginButton);
+		Button buttonLoginLogout = (Button) findViewById(R.id.loginB);
 		buttonLoginLogout.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				onClickLogin();
