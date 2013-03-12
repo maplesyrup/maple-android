@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -27,7 +28,10 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       
+        String success = getIntent().getExtras().getString("successMessage");
+        if (success != null) {
+        	Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG).show();
+        }
         Session session = Session.getActiveSession();
         if (session.isOpened()) {
            // make request to the /me API

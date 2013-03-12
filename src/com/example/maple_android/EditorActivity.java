@@ -194,6 +194,14 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
         params.add(new BasicNameValuePair("image", fileUri.getPath()));
         params.add(new BasicNameValuePair("user_id", "1"));
         Utility.post("http://10.0.2.2:3000/users/1/posts", params);
+        params.add(new BasicNameValuePair("post[image]", fileUri.getPath()));
+		params.add(new BasicNameValuePair("post[title]", "Company: " + companySuggest.getText().toString()));
+		String accessToken = getIntent().getExtras().getString("accessToken");
+		params.add(new BasicNameValuePair("token", accessToken));
+		Utility.post("http://maplesyrup.herokuapp.com/posts", params);
+		Intent i = new Intent(this, MainActivity.class);
+		i.putExtra("successMessage", "Posted picture successfully! Go to the website to check it out.");
+		startActivity(i);
 	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
