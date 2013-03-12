@@ -29,7 +29,7 @@ public class LoginActivity extends Activity {
 		 }
 		/*******************************/
 
-		Button buttonLoginLogout = (Button) findViewById(R.id.enter);
+		Button buttonLoginLogout = (Button) findViewById(R.id.loginButton);
 		buttonLoginLogout.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				onClickLogin();
