@@ -17,15 +17,20 @@ public class LoginActivity extends Activity {
   private TextView welcomeText;
   private TextView accessTokenText;
   
+  /* Skip login for testing purposes */
+  private final boolean skipLogin = false;
+  
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
 
     /*** Skip Login For Testing ***/
-   //Intent i = new Intent(this, MainActivity.class);
-   //startActivity(i);
-
+    if(skipLogin){
+		Intent i = new Intent(this, MainActivity.class);
+		startActivity(i);
+    }
+   /********************************/
     
     buttonLoginLogout = (Button) findViewById(R.id.enter);
 	welcomeText = (TextView) findViewById(R.id.welcome);

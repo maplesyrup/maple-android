@@ -17,6 +17,7 @@ import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 
 public class TextActivity extends Activity {
 	private byte[] byteArray;
@@ -65,6 +67,7 @@ public class TextActivity extends Activity {
 		photo = (ImageView)this.findViewById(R.id.photo);
         photo.setImageBitmap(srcBitmap);
         
+        
         // initialize photo for clicking
         photo.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -78,6 +81,7 @@ public class TextActivity extends Activity {
         
         // TextView to overlap on photo
         photoText = (TextView) findViewById(R.id.photoText);
+     	textSize = photoText.getTextSize();
         textColor = photoText.getTextColors().getDefaultColor();
         
         // set up text listener
@@ -86,7 +90,7 @@ public class TextActivity extends Activity {
 
 			@Override
 			public void afterTextChanged(Editable e) {
-				photoText.setText(e.toString());				
+				photoText.setText(e.toString(), BufferType.SPANNABLE);
 			}
 
 			@Override
@@ -107,14 +111,13 @@ public class TextActivity extends Activity {
 		
 		// save click location
 		text_x = event.getX();
-		text_y = event.getY() + photoText.getHeight() / 2;
+		text_y = event.getY();
 		
 		// place textView
-		photoText.setX(text_x);
-		photoText.setY(text_y);	
+		photoText.setX(text_x + v.getX());
+		photoText.setY(text_y + v.getY() - photoText.getBaseline());	
 		
-		// initialize text size
-		textSize = photoText.getTextSize();
+		
 		
 		return true;
 	}
@@ -152,6 +155,7 @@ public class TextActivity extends Activity {
 		
 		// update TextView
 		photoText.setTextSize((float)textSize);
+
 
 		
 	}
