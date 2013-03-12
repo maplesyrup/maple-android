@@ -4,33 +4,44 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/open_camera"
+    <TextView
+        android:id="@+id/tvInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/greeting"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="56dp"
-        android:onClick="openCamera"
-        android:text="Take Photo" />
+        android:layout_marginTop="155dp"
+        android:padding="10dp"
+        android:text="@string/instructions"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@+id/tvInstructions"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="29dp"
-        android:text="Welcome"
+        android:layout_marginLeft="74dp"
+        android:layout_marginTop="33dp"
+        android:text="@string/welcome"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <TextView
-        android:id="@+id/about"
+
+    <Button
+        android:id="@+id/open_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/open_camera"
-        android:layout_marginBottom="38dp"
-        android:text="@string/hello_world" />
+        android:layout_below="@+id/userPicture"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:onClick="openCamera"
+        android:text="@string/takePhoto" />
+
+    <ImageView
+        android:id="@+id/userPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvInstructions"
+        android:layout_alignLeft="@+id/tvInstructions"
+        android:src="@drawable/com_facebook_button_grey_normal" />
 
 </RelativeLayout>
