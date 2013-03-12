@@ -1,10 +1,13 @@
 package com.example.maple_android;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,8 +47,21 @@ public class MainActivity extends Activity {
 								Response response) {
 							if (user != null) {
 								TextView greeting = (TextView) findViewById(R.id.greeting);
-								greeting.setText("Welcome " + user.getName()
-										+ "!");
+								greeting.setText("Welcome " + user.getName() + "!");
+								String uId = user.getId();
+								String imageUrl = "http://graph.facebook.com/"+ uId +"/picture?type=small";
+							    Bitmap bitmap = null;
+							    Log.d(TAG, "Loading Picture");
+								try {
+							        bitmap = BitmapFactory.decodeStream((InputStream)new URL(imageUrl).getContent());
+							    } catch (Exception e) {
+							    	Log.d(TAG, "Loading Picture FAILED");
+							        e.printStackTrace();
+							    }
+								ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
+							    if (bitmap != null) {
+							    	userPicture.setImageBitmap(bitmap);
+							    }
 							}
 						}
 					});
@@ -53,7 +70,7 @@ public class MainActivity extends Activity {
 		// no support for li tag
 		String htmlStr = "<h1>Sticky Advertising with Maple: publish your ad in 30 seconds</h1>" +
 				"&#8226; Take a picture<br/>" +
-				"&#8226; Add a logo, text, and tag company<br/>" +
+				"&#8226; Add a logo, text, and tag a company<br/>" +
 				"&#8226; Publish with a click of a button to http://maplesyrup.herokuapp.com/ and get votes!<br/>";
 		((TextView) findViewById(R.id.tvInstructions)).setText(Html.fromHtml(htmlStr));
 	}
