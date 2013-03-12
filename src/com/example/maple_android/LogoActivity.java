@@ -29,7 +29,7 @@ public class LogoActivity extends Activity {
 	private Bitmap logoScaled;
 	private int logoWidth;
 	private int logoHeight;
-	private final double SCALE_FACTOR = 0.1;
+	private final double SCALE_FACTOR = 0.3;
 	private float logo_x_offset;
 	private float logo_y_offset;
 
