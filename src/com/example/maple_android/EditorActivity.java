@@ -56,6 +56,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private AutoCompleteTextView companySuggest;
 	private ArrayList<String> companySuggestions;
 	private boolean tagSet = false; // whether or not a company tag has been set
+	private final String companyListURL = "http://maplesyrup.herokuapp.com/companies/all";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -120,7 +121,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 			StrictMode.setThreadPolicy(policy);
 		}
 
-		URL url = new URL("http://maplesyrup.herokuapp.com/posts/companies");
+		URL url = new URL(companyListURL);
 		HttpURLConnection urlConnection = (HttpURLConnection) url
 				.openConnection();
 		try {
