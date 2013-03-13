@@ -27,6 +27,10 @@ public class Utility {
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	
+	public static void get(String url, List<NameValuePair> nameValuePairs) {
+		
+	}
+	
 	public static void post(String url, List<NameValuePair> nameValuePairs) {
 		AsyncHttpPost asyncHttpPost = new AsyncHttpPost(nameValuePairs);
 		asyncHttpPost.execute(url);

@@ -1,13 +1,10 @@
 package com.example.maple_android;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
@@ -44,20 +41,20 @@ public class MainActivity extends Activity {
 						// callback after Graph API response with user object
 						@Override
 						public void onCompleted(GraphUser user,
-								Response response) {
+							Response response) {
 							if (user != null) {
 								TextView greeting = (TextView) findViewById(R.id.greeting);
 								greeting.setText("Welcome " + user.getName() + "!");
 								String uId = user.getId();
 								String imageUrl = "http://graph.facebook.com/"+ uId +"/picture?type=small";
-							    Bitmap bitmap = null;
 							    Log.d(TAG, "Loading Picture");
+								Bitmap bitmap = null;
 								try {
-							        bitmap = BitmapFactory.decodeStream((InputStream)new URL(imageUrl).getContent());
-							    } catch (Exception e) {
-							    	Log.d(TAG, "Loading Picture FAILED");
-							        e.printStackTrace();
-							    }
+									bitmap = new AsyncHttpGet().execute(imageUrl).get();
+								} catch (Exception e) {
+									Log.d(TAG, "Loading Picture FAILED");
+									e.printStackTrace();
+								}
 								ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
 							    if (bitmap != null) {
 							    	userPicture.setImageBitmap(bitmap);
