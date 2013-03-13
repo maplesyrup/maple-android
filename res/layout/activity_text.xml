@@ -2,17 +2,19 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
     <TextView
         android:id="@+id/headerText" 
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"  
+        android:textSize="25sp"
+        android:textStyle="bold" 
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:text="Add Text" 
      />
     
     <ImageView 
@@ -20,85 +22,109 @@
          android:layout_height="wrap_content" 
          android:layout_width="wrap_content" 
          android:clickable="true"
-         android:gravity="center"
-     />    
+         android:layout_centerHorizontal="true"
+         android:layout_below="@+id/headerText"
+     />  
      
     <TextView
-        android:id="@+id/instructions" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Click where you would like to add text to the picture" 
-     />
-    
-    <EditText 
-        android:id="@+id/textEntry"
-        android:layout_height="wrap_content" 
-        android:layout_width="fill_parent" 
-        android:singleLine="false"
-        android:visibility="gone" 
-        android:hint="Enter your text here"      
-        />
-    
-      <TextView
         android:id="@+id/photoText" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:visibility="gone" 		
 		android:textColor="#FF0000"
      />
+     
+    <TextView
+        android:id="@+id/textInstructions" 
+         android:layout_height="wrap_content" 
+         android:layout_width="wrap_content"
+         android:textColor="#ff0000"
+         android:text="Click to place text"
+         android:textStyle="italic"
+         android:textSize="15sp"
+         android:layout_centerHorizontal="true"
+         android:layout_below="@+id/photo"
+    />
+    
+    <EditText 
+        android:id="@+id/textEntry"
+        android:layout_height="wrap_content" 
+        android:layout_width="fill_parent" 
+        android:singleLine="false"
+        android:visibility="invisible" 
+        android:hint="Enter your text here" 
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/photo"     
+      />
+    
+    <EditText 
+        android:id="@+id/fontSize"
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content" 
+        android:singleLine="true"
+        android:visibility="invisible" 
+        android:layout_below="@+id/textEntry" 
+        android:layout_toRightOf="@+id/fontSizeLabel"   
+        android:digits="1234567890"
+        android:text="15" 
+      />
+    
+       <TextView
+        android:id="@+id/fontSizeLabel" 
+         android:layout_height="wrap_content" 
+         android:layout_width="wrap_content"
+         android:text="Font Size:"
+         android:textSize="8sp"
+         android:visibility="invisible" 
+		android:layout_alignParentLeft="true"
+		android:layout_alignBaseline="@+id/fontSize"
+    />
       
      <Button
         android:id="@+id/changeColor"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="changeColor"
-        android:visibility="gone" 
-        android:text="Change Text Color"
+        android:visibility="invisible" 
+        android:layout_toRightOf="@+id/fontSize"
+        android:layout_below="@+id/textEntry" 
+        android:text="Color"
       />
      
      <Button
         android:id="@+id/changeFont"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="changeFont"
-        android:visibility="gone" 
-        android:text="Change Font"
-      />
-     
-     <Button
-        android:id="@+id/increaseSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="changeTextSize"
-        android:visibility="gone" 
-        android:text="+"
-      />
-     
-     <Button
-        android:id="@+id/decreaseSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="changeTextSize"
-        android:visibility="gone" 
-        android:text="-"
+        android:visibility="invisible" 
+        android:layout_toRightOf="@+id/changeColor"
+        android:layout_below="@+id/textEntry" 
+        android:text="Font"
       />
       
     
     <Button
         android:id="@+id/save"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="save"
-        android:visibility="gone" 
-        android:text="Save"/>
+        android:text="Save"
+        android:layout_marginTop="30sp"
+        android:visibility="invisible" 
+        android:layout_below="@+id/changeFont"
+        android:layout_toLeftOf="@+id/cancel"
+        />
     
     <Button
         android:id="@+id/cancel"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="returnToEditor"
-        android:text="Cancel"/>
+        android:text="Cancel"
+        android:layout_alignTop="@+id/save"        
+        android:layout_alignParentRight="true"
+        />
 
-</LinearLayout>
+</RelativeLayout>
 
 </ScrollView>

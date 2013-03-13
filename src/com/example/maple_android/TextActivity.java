@@ -35,7 +35,6 @@ public class TextActivity extends Activity {
 	private TextView photoText;
 	private int textColor;
 	private String fontPath;
-	private double textSize;
 	private final double SCALE_FACTOR = 0.2;
 
 	@Override
@@ -47,18 +46,10 @@ public class TextActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		companyTag = extras.getString("companyTag");
 		
-		// set page title
-        TextView title = (TextView)this.findViewById(R.id.headerText);
-     	title.setText("Add Text To Your " + companyTag + " Ad");
-		
 		// get picture 
 		byteArray = extras.getByteArray("photoByteArray");
 		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-		
-		
-		
-		
-		
+
 		// set photo
 		photo = (ImageView)this.findViewById(R.id.photo);
         photo.setImageBitmap(srcBitmap);
@@ -75,12 +66,29 @@ public class TextActivity extends Activity {
         // start off not showing edit options
         showOptions = false;
         
-        // TextView to overlap on photo
+        // get TextView to overlap on photo
         photoText = (TextView) findViewById(R.id.photoText);
-     	textSize = photoText.getTextSize();
-        textColor = photoText.getTextColors().getDefaultColor();
+     	updateTextSize(); // initialize size to default
         
-        // set up text listener
+     	// set up text color
+     	textColor = photoText.getTextColors().getDefaultColor();
+     	((TextView) findViewById(R.id.changeColor)).setTextColor(textColor);
+     	
+     	// set up font size listener
+     	((EditText)findViewById(R.id.fontSize)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            	updateTextSize();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        
+     	// set up text listener
         textEntry = (EditText)this.findViewById(R.id.textEntry);
         textEntry.addTextChangedListener(new TextWatcher() {
 
@@ -101,6 +109,22 @@ public class TextActivity extends Activity {
         
 	}
 	
+	// grabs the user entered value from the font size entry
+	// text box and updates the text size with it
+	private void updateTextSize() {
+		// grab entry as string
+		String textSize = ((EditText)findViewById(R.id.fontSize)).getText().toString();
+		
+		// try to convert to int
+		Integer size = null;
+		try {
+		    size = new Integer(textSize);
+		  } catch (NumberFormatException e) {}
+		
+		// update size if possible
+		if(size != null) photoText.setTextSize((float)size);
+	}
+
 	private boolean placeText(View v, MotionEvent event) {
 		// update options after click
 		if(!showOptions) toggleOptions();
@@ -111,8 +135,11 @@ public class TextActivity extends Activity {
 		
 		// place textView
 		photoText.setX(text_x + v.getX());
-		photoText.setY(text_y + v.getY() - photoText.getBaseline());	
+		photoText.setY(text_y + v.getY() - photoText.getBaseline());
 		
+		// set focus to text edit
+		textEntry.setFocusable(true);
+		textEntry.requestFocus();
 		
 		
 		return true;
@@ -124,35 +151,26 @@ public class TextActivity extends Activity {
 		
 		// get int value for visibility setting
 		int visibility;
-		if(showOptions) visibility = View.VISIBLE;
-		else visibility = View.GONE;
+		if(showOptions){
+			visibility = View.VISIBLE;
+			findViewById(R.id.textInstructions).setVisibility(View.GONE);
+		}
+		else {
+			visibility = View.INVISIBLE;
+			findViewById(R.id.textInstructions).setVisibility(View.VISIBLE);
+		}
 		
 		// update View visibilities
 		findViewById(R.id.changeColor).setVisibility(visibility);
 		findViewById(R.id.save).setVisibility(visibility);
 		findViewById(R.id.changeFont).setVisibility(visibility);
-		findViewById(R.id.increaseSize).setVisibility(visibility);
-		findViewById(R.id.decreaseSize).setVisibility(visibility);
+		findViewById(R.id.fontSize).setVisibility(visibility);
+		findViewById(R.id.fontSizeLabel).setVisibility(visibility);
 		textEntry.setVisibility(visibility);
 		photoText.setVisibility(visibility);		
 	}
 	
 	public void changeFont(View view){
-		
-	}
-	
-	public void changeTextSize(View view){
-		// check if we are decreasing or increasing size
-		double modifier = SCALE_FACTOR;
-		if(view.getId() == R.id.decreaseSize) modifier *= -1;
-		
-		// change text size
-		textSize = textSize * (1 + modifier); 
-		
-		// update TextView
-		photoText.setTextSize((float)textSize);
-
-
 		
 	}
 	
@@ -162,7 +180,8 @@ public class TextActivity extends Activity {
 			@Override
 			public void colorChanged(int color) {
 				textColor = color;
-				photoText.setTextColor(color);				
+				photoText.setTextColor(color);
+				((TextView) findViewById(R.id.photoText)).setTextColor(textColor);
 			}			 
 		 };
 		
@@ -181,7 +200,6 @@ public class TextActivity extends Activity {
 	public void save(View view){		
 		// get text bitmap
 		Bitmap textBitmap = loadBitmapFromView(photoText);
-		photo.setImageBitmap(textBitmap);
 		
 		// combine two bitmaps
 		Bitmap bmOverlay = Bitmap.createBitmap(srcBitmap.getWidth(), srcBitmap.getHeight(), srcBitmap.getConfig());
