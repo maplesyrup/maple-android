@@ -50,6 +50,8 @@ public class LogoActivity extends Activity {
 		photo = (ImageView)this.findViewById(R.id.photo);
         photo.setImageBitmap(srcBitmap);
         
+        
+        
         // initialize photo for clicking
         photo.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -67,10 +69,17 @@ public class LogoActivity extends Activity {
      	logoView = (ImageView)this.findViewById(R.id.logoPic);
      	logoSrc = BitmapFactory.decodeResource(getResources(), R.drawable.nike);
      	logoView.setImageBitmap(logoSrc);
+     	
+     	
      	// initialize for scaling
      	logoWidth = logoSrc.getWidth();
      	logoHeight = logoSrc.getHeight();
      	logoScaled = logoSrc;
+     	
+     	// scale logo to a quarter of picture size
+     	while(logoScaled.getWidth() > srcBitmap.getWidth()){
+     		changeLogoSize(findViewById(R.id.decreaseSize));
+     	}
      	
 		
 	}
@@ -83,12 +92,17 @@ public class LogoActivity extends Activity {
 	}
 	
 	private boolean placeLogo(View v, MotionEvent event) {
+		// hide instructions
+		findViewById(R.id.logoInstructions).setVisibility(View.INVISIBLE);
+		
+		// show logo
+		logoView.setVisibility(View.VISIBLE);
+		
 		logo_x_offset = event.getX() - logoWidth / 2;
 		logo_y_offset = event.getY() - logoHeight / 2;		
 		
 		logoView.setX(logo_x_offset + v.getX());
 		logoView.setY(logo_y_offset + v.getY());
-		logoView.bringToFront();
 		
 		return true;		
 	}
@@ -97,7 +111,7 @@ public class LogoActivity extends Activity {
 	public void changeLogoSize(View view){
 		// check if we are decreasing or increasing size
 		double modifier = SCALE_FACTOR;
-		if(view.getId() == R.id.decreaseSize) modifier *= -1;
+		if(view.equals(findViewById(R.id.decreaseSize))) modifier *= -1.0;
 		
 		// change logo dimensions
 		logoWidth = (int) (logoWidth * (1 + modifier)); 
