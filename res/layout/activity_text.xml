@@ -74,8 +74,9 @@
          android:layout_height="wrap_content" 
          android:layout_width="wrap_content"
          android:text="Font Size:"
-         android:textSize="8sp"
+         android:textSize="12sp"
          android:visibility="invisible" 
+         android:paddingLeft="5sp"
 		android:layout_alignParentLeft="true"
 		android:layout_alignBaseline="@+id/fontSize"
     />
@@ -101,7 +102,28 @@
         android:layout_below="@+id/textEntry" 
         android:text="Font"
       />
-      
+     
+     <CheckBox
+        android:id="@+id/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bold"
+        android:onClick="changeFontStyle"
+        android:visibility="invisible" 
+        android:layout_below="@+id/changeColor" 
+        android:layout_alignParentLeft="true"
+      />
+     
+     <CheckBox
+        android:id="@+id/italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Italic"
+        android:onClick="changeFontStyle"
+        android:visibility="invisible" 
+        android:layout_below="@+id/changeColor" 
+        android:layout_toRightOf="@+id/bold"
+      />
     
     <Button
         android:id="@+id/save"
@@ -111,7 +133,7 @@
         android:text="Save"
         android:layout_marginTop="30sp"
         android:visibility="invisible" 
-        android:layout_below="@+id/changeFont"
+        android:layout_below="@+id/bold"
         android:layout_toLeftOf="@+id/cancel"
         />
     

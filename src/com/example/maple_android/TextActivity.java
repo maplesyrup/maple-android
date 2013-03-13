@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
@@ -109,6 +111,21 @@ public class TextActivity extends Activity {
         
 	}
 	
+	public void changeFontStyle(View view){
+		/* Android uses a really dumb sysem where you can't individually specify bold and italic,
+		 * if you want both there is a different setting for it. Makes this a little messier.
+		 */
+		
+		CheckBox bold = (CheckBox)findViewById(R.id.bold);
+		CheckBox italic = (CheckBox)findViewById(R.id.italic);			
+		
+		if(bold.isChecked() && italic.isChecked()) photoText.setTypeface(null, Typeface.BOLD_ITALIC);
+		else if(bold.isChecked()) photoText.setTypeface(null, Typeface.BOLD);
+		else if(italic.isChecked()) photoText.setTypeface(null, Typeface.ITALIC);
+		else photoText.setTypeface(Typeface.DEFAULT);
+
+	}
+	
 	// grabs the user entered value from the font size entry
 	// text box and updates the text size with it
 	private void updateTextSize() {
@@ -166,6 +183,8 @@ public class TextActivity extends Activity {
 		findViewById(R.id.changeFont).setVisibility(visibility);
 		findViewById(R.id.fontSize).setVisibility(visibility);
 		findViewById(R.id.fontSizeLabel).setVisibility(visibility);
+		findViewById(R.id.bold).setVisibility(visibility);
+		findViewById(R.id.italic).setVisibility(visibility);
 		textEntry.setVisibility(visibility);
 		photoText.setVisibility(visibility);		
 	}
