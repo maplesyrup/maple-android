@@ -67,7 +67,7 @@ public class LogoActivity extends Activity {
         
      	// load logo
      	logoView = (ImageView)this.findViewById(R.id.logoPic);
-     	logoSrc = BitmapFactory.decodeResource(getResources(), R.drawable.nike);
+     	logoSrc = BitmapFactory.decodeResource(getResources(), R.drawable.cs210);
      	logoView.setImageBitmap(logoSrc);
      	
      	
