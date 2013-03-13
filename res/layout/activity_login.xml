@@ -19,13 +19,12 @@
         android:layout_marginTop="62dp"
         android:text="@string/instructions" />
 
-    <ImageButton
-        android:id="@+id/loginButton"
+    <Button
+        android:id="@+id/loginB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/com_facebook_loginbutton_blue_normal" 
-        android:contentDescription="@string/instructions"/>
+        android:text="@string/login" />
 
 </RelativeLayout>
