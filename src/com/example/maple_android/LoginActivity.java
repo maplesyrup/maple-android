@@ -53,7 +53,7 @@ public class LoginActivity extends Activity {
 		}
 		
 		// sync local company list with server
-		CompanyList.syncListWithServer((Context)this);
+		CompanyList.syncListWithServer(this);
 
 		updateView();
 	}
