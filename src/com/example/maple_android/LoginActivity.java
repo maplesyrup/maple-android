@@ -1,6 +1,7 @@
 package com.example.maple_android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +51,9 @@ public class LoginActivity extends Activity {
 						.setCallback(statusCallback));
 			}
 		}
+		
+		// sync local company list with server
+		CompanyList.syncListWithServer((Context)this);
 
 		updateView();
 	}
