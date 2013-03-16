@@ -29,6 +29,17 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		// list of supported tags in textview: http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
+		// no support for li tag
+		String htmlStr = "<h1>Sticky Advertising with Maple: publish your ad in 30 seconds</h1>" +
+				"&#8226; Take a picture<br/>" +
+				"&#8226; Add a logo, text, and tag a company<br/>" +
+				"&#8226; Publish with a click of a button to http://maplesyrup.herokuapp.com/ and get votes!<br/>";
+		((TextView) findViewById(R.id.tvInstructions)).setText(Html.fromHtml(htmlStr));
+		Intent i = getIntent();
+		if (i == null || i.getExtras() == null) {
+			return;
+		}
 		String success = getIntent().getExtras().getString("successMessage");
 		if (success != null) {
 			Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG).show();
@@ -63,13 +74,7 @@ public class MainActivity extends Activity {
 						}
 					});
 		}
-		// list of supported tags in textview: http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
-		// no support for li tag
-		String htmlStr = "<h1>Sticky Advertising with Maple: publish your ad in 30 seconds</h1>" +
-				"&#8226; Take a picture<br/>" +
-				"&#8226; Add a logo, text, and tag a company<br/>" +
-				"&#8226; Publish with a click of a button to http://maplesyrup.herokuapp.com/ and get votes!<br/>";
-		((TextView) findViewById(R.id.tvInstructions)).setText(Html.fromHtml(htmlStr));
+
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -117,7 +122,7 @@ public class MainActivity extends Activity {
 
 	private void onClickLogout() {
 		Session session = Session.getActiveSession();
-		if (!session.isClosed()) {
+		if (session != null && !session.isClosed()) {
 			session.closeAndClearTokenInformation();
 		}
 		Intent i = new Intent(this, LoginActivity.class);
