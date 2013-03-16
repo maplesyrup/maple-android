@@ -122,11 +122,7 @@ public class MainActivity extends Activity {
 
 	private void onClickLogout() {
 		Session session = Session.getActiveSession();
-		// Just to get test to pass
-		if (session == null) {
-			return;
-		}
-		if (!session.isClosed()) {
+		if (session != null && !session.isClosed()) {
 			session.closeAndClearTokenInformation();
 		}
 		Intent i = new Intent(this, LoginActivity.class);
