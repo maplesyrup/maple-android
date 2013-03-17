@@ -87,11 +87,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		photo.setImageBitmap(srcBitmap);
 
 		/* for tagging a company */
-		try {
-			populateCompanyList();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		companySuggestions = CompanyList.getCompanyList(this);
 
 		companySuggest = (AutoCompleteTextView) findViewById(R.id.companySuggest);
 		companySuggest

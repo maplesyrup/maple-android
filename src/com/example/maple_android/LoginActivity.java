@@ -14,7 +14,7 @@ import com.facebook.SessionState;
 
 public class LoginActivity extends Activity {
 	// set whether or not to skip login
-	private final boolean skipLogin = false;
+	private final boolean skipLogin = true;
 	
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 	
@@ -23,9 +23,14 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
+		// sync local company list with server
+		CompanyList.syncListWithServer(this);
+		
 		/*** Skip Login For Testing ***/
 		 if(skipLogin){
 			 Intent i = new Intent(this, MainActivity.class);
+			 Session session = null; // use null session
+			 i.putExtra("accessToken", session);
 			 startActivity(i);
 		 }
 		/*******************************/
@@ -52,8 +57,7 @@ public class LoginActivity extends Activity {
 			}
 		}
 		
-		// sync local company list with server
-		CompanyList.syncListWithServer(this);
+		
 
 		updateView();
 	}
