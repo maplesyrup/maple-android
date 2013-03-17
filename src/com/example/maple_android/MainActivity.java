@@ -5,9 +5,11 @@ import java.io.ByteArrayOutputStream;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,8 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class MainActivity extends Activity {
 	private static final String TAG = "MainActivity";
@@ -48,17 +52,27 @@ public class MainActivity extends Activity {
 								String uId = user.getId();
 								String imageUrl = "http://graph.facebook.com/"+ uId +"/picture?type=small";
 							    Log.d(TAG, "Loading Picture");
-								Bitmap bitmap = null;
-								try {
-									bitmap = new AsyncHttpGet().execute(imageUrl).get();
-								} catch (Exception e) {
-									Log.d(TAG, "Loading Picture FAILED");
-									e.printStackTrace();
-								}
-								ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-							    if (bitmap != null) {
-							    	userPicture.setImageBitmap(bitmap);
-							    }
+								
+							    // load bitmap from get request
+								AsyncHttpClient client = new AsyncHttpClient();
+								client.get(imageUrl, new AsyncHttpResponseHandler(){
+									@Override
+									public void onSuccess(String response){
+										byte[] imageAsBytes = Base64.decode(response.getBytes(), Base64.DEFAULT);
+										final Bitmap bitmap = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+										ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
+									    if (bitmap != null) {
+									    	userPicture.setImageBitmap(bitmap);
+									    }
+									}
+									
+									@Override
+									public void onFailure(Throwable error){
+										Log.d(TAG, "Loading Picture FAILED");
+									}
+								});
+								
+								
 							}
 						}
 					});
