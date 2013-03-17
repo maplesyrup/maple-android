@@ -1,8 +1,14 @@
 package com.example.maple_android;
 import com.loopj.android.http.*;
 
+/**
+ * This class provides easy methods for get and post requests to our main website.
+ * 
+ *
+ */
+
 public class MapleHttpClient {
-	 private static final String BASE_URL = "http://maplesyrup.herokuapp.com";
+	 private static final String BASE_URL = "http://maplesyrup.herokuapp.com/";
  
 	  private static AsyncHttpClient client = new AsyncHttpClient();
 
