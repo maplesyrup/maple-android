@@ -95,7 +95,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 						android.R.layout.simple_dropdown_item_1line,
 						companySuggestions));
 
-		// check if a company tag has already been made
+		// check if a company tag has already been set
 		String tag = extras.getString("companyTag");
 		if (tag != null) {
 			companySuggest.setText(tag);
@@ -104,49 +104,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 	}
 
-	private void populateCompanyList() throws IOException {
-		// initialize company list
-		companySuggestions = new ArrayList<String>();
-
-		String file;
-
-		// allow this thread to use html connect
-		if (android.os.Build.VERSION.SDK_INT > 9) {
-			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-					.permitAll().build();
-			StrictMode.setThreadPolicy(policy);
-		}
-
-		URL url = new URL(companyListURL);
-		HttpURLConnection urlConnection = (HttpURLConnection) url
-				.openConnection();
-		try {
-			InputStream in = new BufferedInputStream(
-					urlConnection.getInputStream());
-			file = convertStreamToString(in);
-		} finally {
-			urlConnection.disconnect();
-		}
-
-		// parse file
-		int index = 0;
-		String key = "\"name\":\"";
-		while (true) {
-			// find the next "name" field
-			index = file.indexOf(key, index);
-			if (index == -1)
-				break;
-
-			// jump to start of company name
-			index += key.length();
-
-			// get end of company name
-			int end = file.indexOf("\"", index);
-
-			// add company to list
-			companySuggestions.add(file.substring(index, end));
-		}
-	}
 
 	public static String convertStreamToString(java.io.InputStream is) {
 		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
