@@ -1,6 +1,7 @@
 package com.example.maple_android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +23,14 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
+		// sync local company list with server
+		CompanyList.syncListWithServer(this);
+		
 		/*** Skip Login For Testing ***/
 		 if(skipLogin){
 			 Intent i = new Intent(this, MainActivity.class);
+			 Session session = null; // use null session
+			 i.putExtra("accessToken", session);
 			 startActivity(i);
 		 }
 		/*******************************/
@@ -50,6 +56,8 @@ public class LoginActivity extends Activity {
 						.setCallback(statusCallback));
 			}
 		}
+		
+		
 
 		updateView();
 	}
