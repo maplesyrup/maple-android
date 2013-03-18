@@ -32,6 +32,7 @@ public class LogoActivity extends Activity {
 	private final double SCALE_FACTOR = 0.3;
 	private float logo_x_offset;
 	private float logo_y_offset;
+	private String filePath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class LogoActivity extends Activity {
 		// get picture 
 		Bundle extras = getIntent().getExtras();
 		byteArray = extras.getByteArray("photoByteArray");
+		filePath = extras.getString("filePath");
 		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 		
 		// get company name
@@ -143,6 +145,7 @@ public class LogoActivity extends Activity {
 		Intent i = new Intent(this, EditorActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
+		i.putExtra("filePath", filePath);
 		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}

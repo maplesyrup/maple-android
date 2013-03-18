@@ -38,6 +38,7 @@ public class TextActivity extends Activity {
 	private int textColor;
 	private String fontPath;
 	private final double SCALE_FACTOR = 0.2;
+	private String filePath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class TextActivity extends Activity {
 		
 		// get picture 
 		byteArray = extras.getByteArray("photoByteArray");
+		filePath = extras.getString("filePath");
 		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
 		// set photo
@@ -247,6 +249,7 @@ public class TextActivity extends Activity {
 		Intent i = new Intent(this, EditorActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
+		i.putExtra("filePath", filePath);
 		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}

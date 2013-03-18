@@ -3,6 +3,7 @@ package com.example.maple_android;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,7 +68,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor);
 		Bundle extras = getIntent().getExtras();
+		
+		// We've already saved the photo to disk, so let's keep using the same file path
+		fileUri = Uri.fromFile(new File((String) extras.get("filePath")));
 
+		
 		filterSpinner = (Spinner) findViewById(R.id.filters);
 		filterSpinner.setOnItemSelectedListener(this);
 		// Create an ArrayAdapter using the string array and a default spinner
@@ -178,6 +183,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		Intent i = new Intent(this, LogoActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
+		i.putExtra("filePath", fileUri.getPath());
 		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
@@ -186,30 +192,18 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		Intent i = new Intent(this, TextActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
+		i.putExtra("filePath", fileUri.getPath());
 		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
 
 	public void postAd(View view) {
-		// create a file to save the image
-		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); 
-
+		Utility.saveBitmap(fileUri, currBitmap, this);
+		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
 		currBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
 		byte[] photoByteArray = stream.toByteArray();
-		OutputStream photoOS;
-
-		try {
-			photoOS = getContentResolver().openOutputStream(fileUri);
-			photoOS.write(photoByteArray);
-			photoOS.flush();
-			photoOS.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
 		RequestParams params = new RequestParams();
 		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
 		params.put("post[title]", "Company: " + companyTag);
