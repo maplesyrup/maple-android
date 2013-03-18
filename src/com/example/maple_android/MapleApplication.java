@@ -1,9 +1,12 @@
 package com.example.maple_android;
 
+import java.util.ArrayList;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 
 /**
  * This class exists to store application global variables
@@ -17,8 +20,12 @@ import android.app.Application;
  *
  */
 
-public class MapleApplication extends Application
-{
+public class MapleApplication extends Application{
+	/* The company that the current ad is tagged with */
+	private String companyTag;
+	/* Available logos for the current company */
+	private ArrayList<Bitmap> companyLogos;
+	
 	@Override
 	public void onCreate()
 	{
@@ -28,6 +35,37 @@ public class MapleApplication extends Application
 		// are bound to the application process.
 		initUniversalImageLoader();
 	}
+	
+	/** Set what company the current ad is tagged with
+	 * 
+	 * @param companyTag The company name the current ad is tagged with
+	 * 
+	 */
+	public void setCurrentCompany(String companyTag){
+		// also start loading company logos from server
+		companyLogos = CompanyList.getCompanyLogosFromServer(companyTag);
+		
+		this.companyTag = companyTag;
+	}
+	
+	/** Get the currently tagged company
+	 * 
+	 * @return The name of the last tagged company
+	 * 
+	 */	
+	public String getCurrentCompany(){
+		return companyTag;
+	}
+	
+	/** Get available logos for the current company
+	 * 
+	 * @return All available logos for the currently tagged company
+	 */
+	public ArrayList<Bitmap> getCurrentCompanyLogos(){
+		return companyLogos;
+	}
+	
+	
 
 	/** Universal Image Loader is a library
 	 * that helps with loading images from the web.

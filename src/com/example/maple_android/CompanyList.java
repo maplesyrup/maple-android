@@ -143,25 +143,21 @@ public class CompanyList {
 		return companyList;
 	}
 	
-	/**
-	 * Retrieves any available logos for the 
-	 * given company from the server and stores
-	 * them locally
-	 * @param companyName The name of the company to get logos for
-	 */
-	public static void syncCompanyLogos(String companyName){
-		//TODO: implement this
-	}
 
 	/**
 	 * For a given company name, return an ArrayList of
 	 * Bitmaps containing all the logos available for
 	 * that company. If no logos are available the list
 	 * will be empty.
+	 * 
+	 * The images are loaded and added to the ArrayLlist asynchronously
+	 * in call back methods so the list won't be immediately 
+	 * populated when it is returned!
+	 * 
 	 * @param companyTag The company name
 	 * @return All available logos for the given company
 	 */
-	public static ArrayList<Bitmap> getCompanyLogos(String companyTag, Context c) {
+	public static ArrayList<Bitmap> getCompanyLogosFromServer(String companyTag) {
 		// using Universal Image Loader library for easy loading of images from url
 		// https://github.com/nostra13/Android-Universal-Image-Loader
 		
