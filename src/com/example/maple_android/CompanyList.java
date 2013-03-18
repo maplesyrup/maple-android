@@ -150,6 +150,8 @@ public class CompanyList {
 	 * @return All available logos for the given company
 	 */
 	public static ArrayList<Bitmap> getCompanyLogos(String companyTag) {
+		// https://github.com/nostra13/Android-Universal-Image-Loader
+		
 		String testPic = "http://www.wpclipart.com/sign_language/thumbs_up_large.png";
 		
 		// init ArrayList

@@ -34,9 +34,6 @@ public class LogoActivity extends Activity {
 	private float logo_x_offset;
 	private float logo_y_offset;
 	
-	/* List of company Logos */
-	private ArrayList<Bitmap> logos;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,7 +42,7 @@ public class LogoActivity extends Activity {
 		// get picture 
 		Bundle extras = getIntent().getExtras();
 		byteArray = extras.getByteArray("photoByteArray");
-		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+		srcBitmap = Utility.byteArrayToBitmap(byteArray);
 		
 		// get company name
 		companyTag = extras.getString("companyTag");
@@ -133,6 +130,7 @@ public class LogoActivity extends Activity {
 	 */
 	public void launchLogoPicker(View view){
 		Intent i = new Intent(this, EditorActivity.class);
+		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
 		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
@@ -147,9 +145,7 @@ public class LogoActivity extends Activity {
 		
 		
 		// save picture to byte array and return
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();        
-		bmOverlay.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byteArray = stream.toByteArray();
+        byteArray = Utility.bitmapToByteArray(bmOverlay);
         
         returnToEditor(view);        
 	}
