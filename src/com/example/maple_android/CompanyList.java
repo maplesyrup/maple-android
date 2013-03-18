@@ -2,6 +2,9 @@ package com.example.maple_android;
 
 import java.io.BufferedInputStream;
 import com.loopj.android.http.*;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,8 +16,10 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.StrictMode;
+import android.view.View;
 
 /**
  * CompanyList ---------------- This class assists with retrieving the list of
@@ -127,5 +132,31 @@ public class CompanyList {
 		}
 
 		return companyList;
+	}
+
+	/**
+	 * For a given company name, return an ArrayList of
+	 * Bitmaps containing all the logos available for
+	 * that company. If no logos are available the list
+	 * will be empty.
+	 * @param companyTag The company name
+	 * @return All available logos for the given company
+	 */
+	public static ArrayList<Bitmap> getCompanyLogos(String companyTag) {
+		String testPic = "http://www.wpclipart.com/sign_language/thumbs_up_large.png";
+		
+		// init ArrayList
+		final ArrayList<Bitmap> logos = new ArrayList<Bitmap>();
+		
+		// Load image, decode it to Bitmap and return Bitmap to callback
+		ImageLoader imageLoader = ImageLoader.getInstance();
+		imageLoader.loadImage(testPic, new SimpleImageLoadingListener() {
+		    @Override
+		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+		        logos.add(loadedImage);
+		    }
+		});
+		
+		return logos;
 	}
 }

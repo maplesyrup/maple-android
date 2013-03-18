@@ -1,6 +1,7 @@
 package com.example.maple_android;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -32,6 +33,9 @@ public class LogoActivity extends Activity {
 	private final double SCALE_FACTOR = 0.3;
 	private float logo_x_offset;
 	private float logo_y_offset;
+	
+	/* List of company Logos */
+	private ArrayList<Bitmap> logos;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +52,7 @@ public class LogoActivity extends Activity {
 		
 		// set photo
 		photo = (ImageView)this.findViewById(R.id.photo);
-        photo.setImageBitmap(srcBitmap);
-        
+        photo.setImageBitmap(srcBitmap);       
         
         
         // initialize photo for clicking
@@ -121,6 +124,18 @@ public class LogoActivity extends Activity {
 		// make filter flag true to improve quality. Worth it?
 		logoScaled = Bitmap.createScaledBitmap(logoSrc, logoWidth, logoHeight, true);
 		logoView.setImageBitmap(logoScaled);
+	}
+	
+	/**
+	 * Launch an activity that allows the user to choose
+	 * a logo for the selected company
+	 * @param view
+	 */
+	public void launchLogoPicker(View view){
+		Intent i = new Intent(this, EditorActivity.class);
+		i.putExtra("companyTag", companyTag);
+		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
+		startActivity(i);
 	}
 	
 	public void save(View view){

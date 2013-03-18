@@ -61,8 +61,7 @@
         android:layout_height="wrap_content"
         android:onClick="changeLogoSize"
         android:layout_below="@+id/increaseSize"        
-        android:text="Decrease Logo Size"/>    
-    
+        android:text="Decrease Logo Size"/>
     <Button
         android:id="@+id/save"
         android:layout_width="wrap_content"
@@ -83,6 +82,15 @@
         android:layout_alignTop="@+id/save"
         android:layout_toLeftOf="@+id/save"
         />
+
+    <Button
+        android:id="@+id/pickLogoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/cancel"
+        android:layout_alignTop="@+id/save"
+        android:onClick="launchLogoPicker"
+        android:text="Pick A Logo" />
 
 </RelativeLayout>
 </ScrollView>

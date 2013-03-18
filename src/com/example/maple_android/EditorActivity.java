@@ -57,6 +57,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private ArrayList<String> companySuggestions;
 	private boolean tagSet = false; // whether or not a company tag has been set
 	private final String companyListURL = "http://maplesyrup.herokuapp.com/companies/all";
+	
+	/* Company Logos */
+	private ArrayList<Bitmap> logos;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +129,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 		// set company Button
 		((Button) findViewById(R.id.changeTag)).setText(companyTag);
+		
+		// load logos for this company
+		logos = CompanyList.getCompanyLogos(companyTag);
 
 		toggleOptions();
 	}
@@ -174,6 +180,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		Intent i = new Intent(this, LogoActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
+		i.putExtra("companyLogos", logos);
 		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
