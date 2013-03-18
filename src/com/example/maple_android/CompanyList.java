@@ -3,7 +3,9 @@ package com.example.maple_android;
 import java.io.BufferedInputStream;
 import com.loopj.android.http.*;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -140,6 +142,16 @@ public class CompanyList {
 
 		return companyList;
 	}
+	
+	/**
+	 * Retrieves any available logos for the 
+	 * given company from the server and stores
+	 * them locally
+	 * @param companyName The name of the company to get logos for
+	 */
+	public static void syncCompanyLogos(String companyName){
+		//TODO: implement this
+	}
 
 	/**
 	 * For a given company name, return an ArrayList of
@@ -149,7 +161,8 @@ public class CompanyList {
 	 * @param companyTag The company name
 	 * @return All available logos for the given company
 	 */
-	public static ArrayList<Bitmap> getCompanyLogos(String companyTag) {
+	public static ArrayList<Bitmap> getCompanyLogos(String companyTag, Context c) {
+		// using Universal Image Loader library for easy loading of images from url
 		// https://github.com/nostra13/Android-Universal-Image-Loader
 		
 		String testPic = "http://www.wpclipart.com/sign_language/thumbs_up_large.png";
@@ -157,12 +170,20 @@ public class CompanyList {
 		// init ArrayList
 		final ArrayList<Bitmap> logos = new ArrayList<Bitmap>();
 		
-		// Load image, decode it to Bitmap and return Bitmap to callback
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		imageLoader.loadImage(testPic, new SimpleImageLoadingListener() {
 		    @Override
 		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 		        logos.add(loadedImage);
+		        System.out.println("Loading succeeded");
+		    }
+		    @Override
+		    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+		        System.out.println("Loading failed" + failReason.toString());
+		    }
+		    @Override
+		    public void onLoadingStarted(String imageUri, View view) {
+		    	 System.out.println("Loading started");
 		    }
 		});
 		

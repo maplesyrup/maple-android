@@ -129,7 +129,7 @@ public class LogoActivity extends Activity {
 	 * @param view
 	 */
 	public void launchLogoPicker(View view){
-		Intent i = new Intent(this, EditorActivity.class);
+		Intent i = new Intent(this, LogoPickerActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
 		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));

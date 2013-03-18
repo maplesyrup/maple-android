@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class LogoPickerActivity extends Activity {
 	private byte[] byteArray;
 	private String companyTag;
+	public Context c = this;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,8 +93,8 @@ public class LogoPickerActivity extends Activity {
 		}
 
 		// references to our images
-		private ArrayList<Bitmap> logos = CompanyList.getCompanyLogos("test");
-
+		private ArrayList<Bitmap> logos = CompanyList.getCompanyLogos("test", c);
+		
 	}
 
 }
