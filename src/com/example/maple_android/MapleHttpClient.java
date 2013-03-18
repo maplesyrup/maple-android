@@ -3,7 +3,7 @@ import com.loopj.android.http.*;
 
 /**
  * This class provides easy methods for get and post requests to our main website.
- * 
+ * See: http://loopj.com/android-async-http/ for more documentation
  *
  */
 
