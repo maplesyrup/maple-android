@@ -92,9 +92,15 @@ public class CompanyList {
 	public static ArrayList<String> getCompanyList(Context context) {
 		// retrieve file for local storage
 		FileInputStream in = null;
+		// init ArrayList
+		ArrayList<String> companyList = new ArrayList<String>();
+
 		try {
 			in = context.openFileInput(FILE_NAME);
-		} catch (FileNotFoundException e) {e.printStackTrace();}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace(); 
+			return companyList;
+		}
 
 		// transfer file stream to String
 		StringBuffer strBuff = new StringBuffer();
@@ -105,13 +111,14 @@ public class CompanyList {
 			while ((length = in.read(buffer)) != -1) {
 				strBuff.append(new String(buffer));
 			}
-		} catch (IOException e) {e.printStackTrace();}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return companyList;
+		}
 		
 		String file = strBuff.toString();
 
-		// init ArrayList
-		ArrayList<String> companyList = new ArrayList<String>();
-
+		
 		// parse file for companies and load into arraylist
 		int index = 0;
 		String key = "\"name\":\"";

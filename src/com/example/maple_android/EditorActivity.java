@@ -1,6 +1,7 @@
 package com.example.maple_android;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +15,9 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -213,18 +217,28 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("post[image]", fileUri.getPath()));
-		params.add(new BasicNameValuePair("post[title]", "Company: " + companyTag));
+		RequestParams params = new RequestParams();
+		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
+		params.put("post[title]", "Company: " + companyTag);
 		String accessToken = getIntent().getExtras().getString("accessToken");
-		params.add(new BasicNameValuePair("token", accessToken));
-		Utility.post("http://maplesyrup.herokuapp.com/posts", params);
+		params.put("token", accessToken);
+		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
+			@Override
+			public void onSuccess(int statusCode, String response) {
+				Intent i = new Intent(EditorActivity.this, MainActivity.class);
+				i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
+				i.putExtra("successMessage",
+						"Posted picture successfully! Go to the website to check it out.");
+				startActivity(i);
+			}
+			
+			@Override
+		    public void onFailure(Throwable error, String response) {
+				Toast.makeText(getApplicationContext(), "Sugar! We ran into a problem!", Toast.LENGTH_LONG).show();
+		    }
+		});
 		
-		Intent i = new Intent(this, MainActivity.class);
-		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
-		i.putExtra("successMessage",
-				"Posted picture successfully! Go to the website to check it out.");
-		startActivity(i);
+		
 	}
 
 	@Override

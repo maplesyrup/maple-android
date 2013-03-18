@@ -31,12 +31,6 @@ public class Utility {
 		
 	}
 	
-	public static void post(String url, List<NameValuePair> nameValuePairs) {
-		AsyncHttpPost asyncHttpPost = new AsyncHttpPost(nameValuePairs);
-		asyncHttpPost.execute(url);
-	    
-	}
-	
 	public static Uri getOutputMediaFileUri(int type){
         return Uri.fromFile(getOutputMediaFile(type));
     }
