@@ -34,6 +34,9 @@ public class MapleApplication extends Application{
 		// Initialize the singletons so their instances
 		// are bound to the application process.
 		initUniversalImageLoader();
+		
+		// for testing purposes, initialize tag to error value
+		companyTag = "Error: Company not Set";
 	}
 	
 	/** Set what company the current ad is tagged with

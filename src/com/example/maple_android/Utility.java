@@ -38,13 +38,21 @@ public class Utility {
         return Uri.fromFile(getOutputMediaFile(type));
     }
 	
-	/** Create a bitmap from a byte array */
+	/** Create a bitmap from a byte array
+	 * 
+	 *@return Returns a bitmap if successful and null otherwise
+	 */
 	public static Bitmap byteArrayToBitmap(byte[] byteArray){
+		if(byteArray == null) return null;
 		return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 	}
 	
-	/** Convert a bitmap to a byte array in PNG format */
+	/** Convert a bitmap to a byte array in PNG format
+	 *@return Returns a byte[] if successful and null otherwise 
+	 */
 	public static byte[] bitmapToByteArray(Bitmap bitmap){
+		if(bitmap == null) return null;
+		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();        
 		bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();

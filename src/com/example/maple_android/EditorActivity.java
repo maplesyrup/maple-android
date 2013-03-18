@@ -121,8 +121,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	}
 
 	public void tagPicture(View view) {
+		MapleApplication app = (MapleApplication) getApplication();
+		
 		// save company tag
 		companyTag = companySuggest.getText().toString();
+		app.setCurrentCompany(companyTag);
 
 		// update header
 		((TextView) this.findViewById(R.id.header))

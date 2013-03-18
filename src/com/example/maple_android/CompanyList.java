@@ -49,19 +49,20 @@ public class CompanyList {
 	 * there is an error contacting the server, no changes to the local copy are
 	 * made.
 	 * 
-	 * @param context The context of the application that will be accessing the list
+	 * @param context
+	 *            The context of the application that will be accessing the list
 	 */
 	public static void syncListWithServer(Context context) {
 		// context must be declared final to be used in callback
 		final Context c = context;
-		
-		// start an Async get request 
-		MapleHttpClient.get(LIST_URL, null, new AsyncHttpResponseHandler(){
+
+		// start an Async get request
+		MapleHttpClient.get(LIST_URL, null, new AsyncHttpResponseHandler() {
 			@Override
-			public void onSuccess(String response){
+			public void onSuccess(String response) {
 				// open an output stream and write the file to disk
 				FileOutputStream fos = null;
-				try {						
+				try {
 					fos = c.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
@@ -78,8 +79,8 @@ public class CompanyList {
 				}
 			}
 		});
-		
-		// If there is a failure we don't have to do anything, just leave 
+
+		// If there is a failure we don't have to do anything, just leave
 		// the local file alone.
 	}
 
@@ -100,7 +101,7 @@ public class CompanyList {
 		try {
 			in = context.openFileInput(FILE_NAME);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
 			return companyList;
 		}
 
@@ -108,7 +109,7 @@ public class CompanyList {
 		StringBuffer strBuff = new StringBuffer();
 		byte[] buffer = new byte[1024];
 		int length;
-		
+
 		try {
 			while ((length = in.read(buffer)) != -1) {
 				strBuff.append(new String(buffer));
@@ -117,10 +118,9 @@ public class CompanyList {
 			e.printStackTrace();
 			return companyList;
 		}
-		
+
 		String file = strBuff.toString();
 
-		
 		// parse file for companies and load into arraylist
 		int index = 0;
 		String key = "\"name\":\"";
@@ -142,47 +142,63 @@ public class CompanyList {
 
 		return companyList;
 	}
-	
 
 	/**
-	 * For a given company name, return an ArrayList of
-	 * Bitmaps containing all the logos available for
-	 * that company. If no logos are available the list
+	 * For a given company name, return an ArrayList of Bitmaps containing all
+	 * the logos available for that company. If no logos are available the list
 	 * will be empty.
 	 * 
-	 * The images are loaded and added to the ArrayLlist asynchronously
-	 * in call back methods so the list won't be immediately 
-	 * populated when it is returned!
+	 * The images are loaded and added to the ArrayLlist asynchronously in call
+	 * back methods so the list won't be immediately populated when it is
+	 * returned!
 	 * 
-	 * @param companyTag The company name
+	 * @param companyTag
+	 *            The company name
 	 * @return All available logos for the given company
 	 */
 	public static ArrayList<Bitmap> getCompanyLogosFromServer(String companyTag) {
-		// using Universal Image Loader library for easy loading of images from url
+		// using Universal Image Loader library for easy loading of images from
+		// url
 		// https://github.com/nostra13/Android-Universal-Image-Loader
-		
-		String testPic = "http://www.wpclipart.com/sign_language/thumbs_up_large.png";
-		
+
+		String[] testPics = {
+				"http://farm3.staticflickr.com/2636/4425645764_c0db844c3b_q.jpg",
+				"http://farm6.staticflickr.com/5112/7411003852_91ef21d9f8_q.jpg",
+				"http://farm7.staticflickr.com/6049/6250538830_78d4ccaa01_q.jpg",
+				"http://farm9.staticflickr.com/8303/7797439002_8b659ec91e_q.jpg",
+				"http://farm4.staticflickr.com/3161/5836507805_fd4df96bef_q.jpg",
+				"http://farm8.staticflickr.com/7014/6444873537_6be113c907_q.jpg",
+				"http://farm9.staticflickr.com/8364/8345145499_9a6a4ea6e0_q.jpg"
+				};
+
 		// init ArrayList
 		final ArrayList<Bitmap> logos = new ArrayList<Bitmap>();
-		
+
 		ImageLoader imageLoader = ImageLoader.getInstance();
-		imageLoader.loadImage(testPic, new SimpleImageLoadingListener() {
-		    @Override
-		    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-		        logos.add(loadedImage);
-		        System.out.println("Loading succeeded");
-		    }
-		    @Override
-		    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-		        System.out.println("Loading failed" + failReason.toString());
-		    }
-		    @Override
-		    public void onLoadingStarted(String imageUri, View view) {
-		    	 System.out.println("Loading started");
-		    }
-		});
-		
+
+		for (String url : testPics) {
+			imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+				@Override
+				public void onLoadingComplete(String imageUri, View view,
+						Bitmap loadedImage) {
+					logos.add(loadedImage);
+					System.out.println("Loading succeeded");
+				}
+
+				@Override
+				public void onLoadingFailed(String imageUri, View view,
+						FailReason failReason) {
+					System.out.println("Loading failed" + failReason.toString());
+				}
+
+				@Override
+				public void onLoadingStarted(String imageUri, View view) {
+					System.out.println("Loading started");
+				}
+			});
+
+		}
+
 		return logos;
 	}
 }
