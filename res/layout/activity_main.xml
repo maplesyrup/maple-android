@@ -2,8 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity" >
-
+	
     <TextView
         android:id="@+id/tvInstructions"
         android:layout_width="wrap_content"
@@ -36,12 +37,12 @@
         android:onClick="openCamera"
         android:text="@string/takePhoto" />
 
-    <ImageView
-        android:id="@+id/userPicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvInstructions"
-        android:layout_alignLeft="@+id/tvInstructions"
-        android:src="@drawable/com_facebook_button_grey_normal" />
+    <com.facebook.widget.ProfilePictureView
+            android:id="@+id/selection_profile_pic"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            facebook:preset_size="small" />
 
 </RelativeLayout>

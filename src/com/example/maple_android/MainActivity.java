@@ -22,12 +22,14 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
+import com.facebook.widget.ProfilePictureView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class MainActivity extends Activity {
 	private static final String TAG = "MainActivity";
 	private static final int CAMERA_REQUEST = 1888;
+	private ProfilePictureView profilePictureView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,10 @@ public class MainActivity extends Activity {
 				"&#8226; Add a logo, text, and tag a company<br/>" +
 				"&#8226; Publish with a click of a button to http://maplesyrup.herokuapp.com/ and get votes!<br/>";
 		((TextView) findViewById(R.id.tvInstructions)).setText(Html.fromHtml(htmlStr));
+		
+		profilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);
+		profilePictureView.setCropped(true);
+		
 		Intent i = getIntent();
 		if (i == null || i.getExtras() == null) {
 			return;
@@ -60,30 +66,7 @@ public class MainActivity extends Activity {
 							if (user != null) {
 								TextView greeting = (TextView) findViewById(R.id.greeting);
 								greeting.setText("Welcome " + user.getName() + "!");
-								String uId = user.getId();
-								String imageUrl = "http://graph.facebook.com/"+ uId +"/picture?type=small";
-							    Log.d(TAG, "Loading Picture");
-								
-							    // load bitmap from get request
-								AsyncHttpClient client = new AsyncHttpClient();
-								client.get(imageUrl, new AsyncHttpResponseHandler(){
-									@Override
-									public void onSuccess(String response){
-										byte[] imageAsBytes = Base64.decode(response.getBytes(), Base64.DEFAULT);
-										final Bitmap bitmap = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-										ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-									    if (bitmap != null) {
-									    	userPicture.setImageBitmap(bitmap);
-									    }
-									}
-									
-									@Override
-									public void onFailure(Throwable error){
-										Log.d(TAG, "Loading Picture FAILED");
-									}
-								});
-								
-								
+							    profilePictureView.setProfileId(user.getId());							
 							}
 						}
 					});
