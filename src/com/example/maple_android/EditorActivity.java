@@ -16,6 +16,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -61,11 +62,20 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private ArrayList<String> companySuggestions;
 	private boolean tagSet = false; // whether or not a company tag has been set
 	private final String companyListURL = "http://maplesyrup.herokuapp.com/companies/all";
+	private Session session;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor);
+		
+		session = Session.getActiveSession();
+		// If user isn't logged in we need to redirect back to LoginActivity
+		if (session == null) {
+			Intent i = new Intent(this, LoginActivity.class);
+			startActivity(i);
+		}
+		
 		Bundle extras = getIntent().getExtras();
 
 		filterSpinner = (Spinner) findViewById(R.id.filters);
@@ -116,7 +126,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 	public void returnToMain(View view) {
 		Intent i = new Intent(this, MainActivity.class);
-		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
 
@@ -178,7 +187,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		Intent i = new Intent(this, LogoActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
-		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
 
@@ -186,7 +194,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		Intent i = new Intent(this, TextActivity.class);
 		i.putExtra("photoByteArray", byteArray);
 		i.putExtra("companyTag", companyTag);
-		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
 
@@ -213,13 +220,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		RequestParams params = new RequestParams();
 		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
 		params.put("post[title]", "Company: " + companyTag);
-		String accessToken = getIntent().getExtras().getString("accessToken");
-		params.put("token", accessToken);
+		params.put("token", session.getAccessToken());
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, String response) {
-				Intent i = new Intent(EditorActivity.this, MainActivity.class);
-				i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
+				Intent i = new Intent(EditorActivity.this , MainActivity.class);
 				i.putExtra("successMessage",
 						"Posted picture successfully! Go to the website to check it out.");
 				startActivity(i);
