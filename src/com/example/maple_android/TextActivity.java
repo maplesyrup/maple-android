@@ -24,6 +24,9 @@ import android.widget.TextView.BufferType;
 import com.example.maple_android.ColorPickerDialog.OnColorChangedListener;
 
 public class TextActivity extends Activity {
+	/* Global app */
+	MapleApplication app;
+	
 	private byte[] byteArray;
 	private ImageView photo;
 	private String companyTag;
@@ -44,11 +47,14 @@ public class TextActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_text);
 		
+		//Init app
+		app = (MapleApplication)this.getApplication();
+		
 		// get company name
-		Bundle extras = getIntent().getExtras();
-		companyTag = extras.getString("companyTag");
+		companyTag = app.getCurrentCompany();
 		
 		// get picture 
+		Bundle extras = getIntent().getExtras();
 		byteArray = extras.getByteArray("photoByteArray");
 		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
@@ -135,7 +141,7 @@ public class TextActivity extends Activity {
 		// try to convert to int
 		Integer size = null;
 		try {
-		    size = new Integer(textSize);
+		    size = Integer.valueOf(textSize);
 		  } catch (NumberFormatException e) {}
 		
 		// update size if possible
@@ -247,7 +253,6 @@ public class TextActivity extends Activity {
 	public void returnToEditor(View view){
 		Intent i = new Intent(this, EditorActivity.class);
 		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("companyTag", companyTag);
 		startActivity(i);
 	}
 

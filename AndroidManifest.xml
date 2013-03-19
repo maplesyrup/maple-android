@@ -3,12 +3,15 @@
     package="com.example.maple_android"
     android:versionCode="1"
     android:versionName="1.0" >
-	 <uses-permission android:name="android.permission.CAMERA" />
-	 <uses-feature android:name="android.hardware.camera" />
-	 <uses-feature android:name="android.hardware.camera.autofocus" />
-	 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	 <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -16,7 +19,8 @@
 
     <uses-feature />
 
-    <application
+    <application 
+        android:name="MapleApplication"
         android:allowBackup="true"
         android:debuggable="true"
         android:icon="@drawable/ic_launcher"
@@ -30,11 +34,11 @@
             android:name="com.example.maple_android.EditorActivity"
             android:label="@string/app_name" >
         </activity>
-         <activity
+        <activity
             android:name="com.example.maple_android.LogoActivity"
             android:label="@string/app_name" >
         </activity>
-         <activity
+        <activity
             android:name="com.example.maple_android.TextActivity"
             android:label="@string/app_name" >
         </activity>
@@ -52,7 +56,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
+        <activity
+            android:name="com.example.maple_android.LogoPickerActivity"
+            android:label="@string/title_activity_logo_picker" >
+        </activity>
     </application>
 
 </manifest>
