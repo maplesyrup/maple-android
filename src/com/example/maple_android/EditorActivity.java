@@ -17,6 +17,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -48,6 +49,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 			return text;
 		}
 	}
+	
+	/* Global app data */
+	MapleApplication app;
 
 	private Uri fileUri;
 	private ImageView photo;
@@ -61,12 +65,23 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private AutoCompleteTextView companySuggest;
 	private ArrayList<String> companySuggestions;
 	private boolean tagSet = false; // whether or not a company tag has been set
-	private final String companyListURL = "http://maplesyrup.herokuapp.com/companies/all";
+	private Session session;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor);
+		
+		//init app data
+		app = (MapleApplication) getApplication();
+		
+		session = Session.getActiveSession();
+		// If user isn't logged in we need to redirect back to LoginActivity
+		if (session == null) {
+			Intent i = new Intent(this, LoginActivity.class);
+			startActivity(i);
+		}
+		
 		Bundle extras = getIntent().getExtras();
 		
 		// We've already saved the photo to disk, so let's keep using the same file path
@@ -105,29 +120,24 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 						companySuggestions));
 
 		// check if a company tag has already been set
-		String tag = extras.getString("companyTag");
+		String tag = app.getCurrentCompany();
 		if (tag != null) {
+			// if it was previously set, update the display to show this
 			companySuggest.setText(tag);
 			tagPicture(companySuggest);
 		}
 
 	}
 
-
-	public static String convertStreamToString(java.io.InputStream is) {
-		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-		return s.hasNext() ? s.next() : "";
-	}
-
 	public void returnToMain(View view) {
 		Intent i = new Intent(this, MainActivity.class);
-		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
 
-	public void tagPicture(View view) {
+	public void tagPicture(View view) {		
 		// save company tag
 		companyTag = companySuggest.getText().toString();
+		app.setCurrentCompany(companyTag);
 
 		// update header
 		((TextView) this.findViewById(R.id.header))
@@ -165,10 +175,8 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		// edit options
 		filterSpinner.setVisibility(editOptions);
 		findViewById(R.id.post).setVisibility(editOptions);
-		// findViewById(R.id.returnToMain).setVisibility(editOptions);
 		findViewById(R.id.logo).setVisibility(editOptions);
 		findViewById(R.id.text).setVisibility(editOptions);
-		// findViewById(R.id.companyTagText).setVisibility(editOptions);
 		findViewById(R.id.changeTag).setVisibility(editOptions);
 		findViewById(R.id.spinnerText).setVisibility(editOptions);
 
@@ -182,18 +190,16 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	public void addLogo(View view) {
 		Intent i = new Intent(this, LogoActivity.class);
 		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("companyTag", companyTag);
 		i.putExtra("filePath", fileUri.getPath());
-		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
+
 		startActivity(i);
 	}
 
 	public void addText(View view) {
 		Intent i = new Intent(this, TextActivity.class);
 		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("companyTag", companyTag);
 		i.putExtra("filePath", fileUri.getPath());
-		i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
+
 		startActivity(i);
 	}
 
@@ -207,13 +213,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		RequestParams params = new RequestParams();
 		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
 		params.put("post[title]", "Company: " + companyTag);
-		String accessToken = getIntent().getExtras().getString("accessToken");
-		params.put("token", accessToken);
+		params.put("token", session.getAccessToken());
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, String response) {
-				Intent i = new Intent(EditorActivity.this, MainActivity.class);
-				i.putExtra("accessToken", getIntent().getExtras().getString("accessToken"));
+				Intent i = new Intent(EditorActivity.this , MainActivity.class);
 				i.putExtra("successMessage",
 						"Posted picture successfully! Go to the website to check it out.");
 				startActivity(i);

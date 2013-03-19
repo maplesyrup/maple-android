@@ -22,15 +22,12 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-
 		// sync local company list with server
 		CompanyList.syncListWithServer(this);
 		
 		/*** Skip Login For Testing ***/
 		 if(skipLogin){
 			 Intent i = new Intent(this, MainActivity.class);
-			 Session session = null; // use null session
-			 i.putExtra("accessToken", session);
 			 startActivity(i);
 		 }
 		/*******************************/
@@ -91,10 +88,8 @@ public class LoginActivity extends Activity {
 	private void updateView() {
 		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
-			String accessToken = session.getAccessToken();
-			Log.d("Maple Syrup", "Access token: " + accessToken);
+			Log.d("Maple Syrup", "Access token: " + session.getAccessToken());
 			Intent i = new Intent(LoginActivity.this, MainActivity.class);
-			i.putExtra("accessToken", accessToken);
 			startActivity(i);
 		}
 	}

@@ -37,10 +37,20 @@ public class MainActivity extends Activity {
 	private static final int CAMERA_REQUEST = 1888;
 	private ProfilePictureView profilePictureView;
 	private Uri fileUri;
+	private Session session;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		session = Session.getActiveSession();
+		// If user isn't logged in we need to redirect back to LoginActivity
+		if (session == null) {
+			Intent i = new Intent(this, LoginActivity.class);
+			startActivity(i);
+		}
+		
 		// list of supported tags in textview: http://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
 		// no support for li tag
 		String htmlStr = "<h1>Sticky Advertising with Maple: publish your ad in 30 seconds</h1>" +
@@ -60,7 +70,6 @@ public class MainActivity extends Activity {
 		if (success != null) {
 			Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG).show();
 		}
-		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
 			// make request to the /me API
 			Request.executeMeRequestAsync(session,
@@ -96,11 +105,9 @@ public class MainActivity extends Activity {
 			byte[] photoByteArray = stream.toByteArray();
 			
 			Intent intent = new Intent(this, EditorActivity.class);
-
 			intent.putExtra("photoByteArray", photoByteArray);
 			intent.putExtra("filePath", fileUri.getPath());
-			intent.putExtra("accessToken",
-					getIntent().getExtras().getString("accessToken"));
+
 			startActivity(intent);
 		}
 	}
