@@ -33,6 +33,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class MainActivity extends Activity {
+	/* Global app data */
+	MapleApplication app;
+	
 	private static final String TAG = "MainActivity";
 	private static final int CAMERA_REQUEST = 1888;
 	private ProfilePictureView profilePictureView;
@@ -43,6 +46,9 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		//init app data
+		app = (MapleApplication) getApplication();
 		
 		session = Session.getActiveSession();
 		// If user isn't logged in we need to redirect back to LoginActivity
@@ -104,6 +110,10 @@ public class MainActivity extends Activity {
 			
 			byte[] photoByteArray = stream.toByteArray();
 			
+
+			// Reset companyTag from any previous ad creations
+			app.setCurrentCompany(null);
+
 			Intent intent = new Intent(this, EditorActivity.class);
 			intent.putExtra("photoByteArray", photoByteArray);
 			intent.putExtra("filePath", fileUri.getPath());
