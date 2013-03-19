@@ -85,7 +85,6 @@
             android:text="Color"
             android:visibility="invisible" />
 
-
         <Button
             android:id="@+id/changeFont"
             android:layout_width="wrap_content"
@@ -94,26 +93,6 @@
             android:layout_toRightOf="@+id/changeColor"
             android:onClick="changeFont"
             android:text="Font"
-            android:visibility="invisible" />
-
-        <CheckBox
-            android:id="@+id/bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/changeColor"
-            android:onClick="changeFontStyle"
-            android:text="Bold"
-            android:visibility="invisible" />
-
-        <CheckBox
-            android:id="@+id/italic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/changeColor"
-            android:layout_toRightOf="@+id/bold"
-            android:onClick="changeFontStyle"
-            android:text="Italic"
             android:visibility="invisible" />
 
         <Button

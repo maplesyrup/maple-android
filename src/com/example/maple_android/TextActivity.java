@@ -24,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.CheckBox;
@@ -50,8 +51,6 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 	private EditText textEntry;
 	private TextView photoText;
 	private int textColor;
-	private String fontPath;
-	private final double SCALE_FACTOR = 0.2;
 	private String filePath;
 
 	@Override
@@ -137,27 +136,6 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 
 	}
 
-	public void changeFontStyle(View view) {
-		/*
-		 * Android uses a really dumb sysem where you can't individually specify
-		 * bold and italic, if you want both there is a different setting for
-		 * it. Makes this a little messier.
-		 */
-
-		CheckBox bold = (CheckBox) findViewById(R.id.bold);
-		CheckBox italic = (CheckBox) findViewById(R.id.italic);
-
-		if (bold.isChecked() && italic.isChecked())
-			photoText.setTypeface(null, Typeface.BOLD_ITALIC);
-		else if (bold.isChecked())
-			photoText.setTypeface(null, Typeface.BOLD);
-		else if (italic.isChecked())
-			photoText.setTypeface(null, Typeface.ITALIC);
-		else
-			photoText.setTypeface(Typeface.DEFAULT);
-
-	}
-
 	// grabs the user entered value from the font size entry
 	// text box and updates the text size with it
 	private void updateTextSize() {
@@ -217,8 +195,6 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 		findViewById(R.id.changeFont).setVisibility(visibility);
 		findViewById(R.id.fontSize).setVisibility(visibility);
 		findViewById(R.id.fontSizeLabel).setVisibility(visibility);
-		findViewById(R.id.bold).setVisibility(visibility);
-		findViewById(R.id.italic).setVisibility(visibility);
 		textEntry.setVisibility(visibility);
 		photoText.setVisibility(visibility);
 	}
@@ -233,10 +209,17 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 	// call back method when a font has been selected
 	@Override
 	public void onFontSelected(FontPickerDialog dialog) {
-		fontPath = dialog.getSelectedFont();
-		System.out.println(fontPath + " was selected");
+		// get font file path and typeface style
+		String fontPath = dialog.getSelectedFont();
 		Typeface tface = Typeface.createFromFile(fontPath);
+		
+		// update text on ad
 		photoText.setTypeface(tface);
+		
+		// update font button to show what font we're using
+		Button fontButton = (Button) findViewById(R.id.changeFont);
+		fontButton.setTypeface(tface);
+		
 	}
 
 	

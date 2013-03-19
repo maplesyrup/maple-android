@@ -55,7 +55,6 @@ public class FontPickerDialog extends DialogFragment {
 
 	public static FontPickerDialog newInstance() {
 		FontPickerDialog frag = new FontPickerDialog();
-
 		return frag;
 	}
 
@@ -85,9 +84,8 @@ public class FontPickerDialog extends DialogFragment {
 		// Pass null as the parent view because its going in the dialog layout
 		builder.setView(inflater.inflate(R.layout.font_picker_dialog, null));
 
-		// set adapter
+		// set adapter to show fonts
 		FontAdapter adapter = new FontAdapter(mContext);
-
 		builder.setAdapter(adapter, new OnClickListener() {
 
 			@Override
@@ -113,18 +111,6 @@ public class FontPickerDialog extends DialogFragment {
 
 		return dialog;
 	}
-	
-	@Override
-	public void onCancel(DialogInterface dialog){
-		System.out.println("Dialog canceled");
-	
-	}
-	
-	@Override
-	public void onDismiss(DialogInterface dialog){
-		System.out.println("Dialog dismissed");
-	}
-	
 	
 	
 	// create method to get selected font
@@ -172,20 +158,9 @@ public class FontPickerDialog extends DialogFragment {
 				view = (TextView) convertView;
 			}
 
-			// Replace the string with the current font name using our
-			// typeface
+			// Set text to be font name and written in font style
 			Typeface tface = Typeface.createFromFile(m_fontPaths.get(position));
 			view.setTypeface(tface);
-
-			// If you want to make the selected item having different
-			// foreground or background color,
-			// be aware of themes. In some of them your foreground color
-			// may
-			// be the background color.
-			// So we don't mess with anything here and just add the
-			// extra
-			// stars to have the selected
-			// font to stand out.
 			view.setText(m_fontNames.get(position));
 
 			return view;
