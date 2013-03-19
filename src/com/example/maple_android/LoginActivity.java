@@ -14,7 +14,7 @@ import com.facebook.SessionState;
 
 public class LoginActivity extends Activity {
 	// set whether or not to skip login
-	private final boolean skipLogin = true;
+	private final boolean skipLogin = false;
 	
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 	
