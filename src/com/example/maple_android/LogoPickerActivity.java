@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +22,8 @@ import android.widget.AdapterView.OnItemClickListener;
 public class LogoPickerActivity extends Activity {
 	/* Global app */
 	MapleApplication app;
-
+	
+	private GridView gridview;
 	private ArrayList<Bitmap> logos;
 	private byte[] byteArray;
 	private String companyTag;
@@ -46,19 +48,36 @@ public class LogoPickerActivity extends Activity {
 		TextView header = (TextView) findViewById(R.id.logoPickerTitle);
 		header.setText("Pick A " + companyTag + " Logo");
 
-		GridView gridview = (GridView) findViewById(R.id.gridview);
+		gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new ImageAdapter(this));
 
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				//highlight view with border
-				v.setBackgroundColor(0x0000ff);
+				setSelectedView(position);
 				
 				// update currently selected logo
 				setLogo(v, position);
 			}
 		});
+	}
+	
+	/** Places a border around the view in the 
+	 * gridView at the given position. All other
+	 * views have their border cleared.
+	 * @param position The position of the view in the gridView
+	 */
+	public void setSelectedView(int position){
+		// walk through each child in gridview
+		final int size = gridview.getChildCount();
+		for(int i = 0; i < size; i++) {
+		     ImageView v = (ImageView) gridview.getChildAt(i);
+		     // Since the views have padding, setting background color
+		     //effectively gives them a border
+		     if(i == position) v.setBackgroundColor(Color.BLUE);
+		     else v.setBackgroundColor(Color.TRANSPARENT);
+		}
 	}
 	
 	/** Returns the selected logo to the
