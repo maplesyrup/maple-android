@@ -190,7 +190,8 @@ public class TextActivity extends Activity {
 	}
 	
 	public void changeFont(View view){
-		
+		FontPickerDialog fontPicker = new FontPickerDialog(this, null);
+		fontPicker.getDialog().show();
 	}
 	
 	public void changeColor(View view){
