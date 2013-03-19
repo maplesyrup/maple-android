@@ -44,7 +44,7 @@ public class LogoPickerActivity extends Activity {
 		
 		// set activity header text
 		TextView header = (TextView) findViewById(R.id.logoPickerTitle);
-		header.setText("Pick A " + companyTag + "Logo");
+		header.setText("Pick A " + companyTag + " Logo");
 
 		GridView gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new ImageAdapter(this));

@@ -48,6 +48,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 			return text;
 		}
 	}
+	
+	/* Global app data */
+	MapleApplication app;
 
 	private Uri fileUri;
 	private ImageView photo;
@@ -61,13 +64,15 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private AutoCompleteTextView companySuggest;
 	private ArrayList<String> companySuggestions;
 	private boolean tagSet = false; // whether or not a company tag has been set
-	private final String companyListURL = "http://maplesyrup.herokuapp.com/companies/all";
 	private Session session;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor);
+		
+		//init app data
+		app = (MapleApplication) getApplication();
 		
 		session = Session.getActiveSession();
 		// If user isn't logged in we need to redirect back to LoginActivity
@@ -118,20 +123,12 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 	}
 
-
-	public static String convertStreamToString(java.io.InputStream is) {
-		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-		return s.hasNext() ? s.next() : "";
-	}
-
 	public void returnToMain(View view) {
 		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
 	}
 
-	public void tagPicture(View view) {
-		MapleApplication app = (MapleApplication) getApplication();
-		
+	public void tagPicture(View view) {		
 		// save company tag
 		companyTag = companySuggest.getText().toString();
 		app.setCurrentCompany(companyTag);

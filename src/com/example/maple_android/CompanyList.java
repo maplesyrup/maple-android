@@ -162,7 +162,7 @@ public class CompanyList {
 		// https://github.com/nostra13/Android-Universal-Image-Loader
 
 		String[] testPics = {
-				"http://farm3.staticflickr.com/2636/4425645764_c0db844c3b_q.jpg",
+				"http://www.thailandsnakes.com/wp-content/uploads/2011/10/golden-tree-snake1.jpg",
 				"http://farm6.staticflickr.com/5112/7411003852_91ef21d9f8_q.jpg",
 				"http://farm7.staticflickr.com/6049/6250538830_78d4ccaa01_q.jpg",
 				"http://farm9.staticflickr.com/8303/7797439002_8b659ec91e_q.jpg",

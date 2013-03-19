@@ -89,7 +89,10 @@ public class LogoActivity extends Activity {
 			// scale logo to a quarter of picture size
 			while (logoScaled.getWidth() > srcBitmap.getWidth()) {
 				changeLogoSize(findViewById(R.id.decreaseSize));
-			}		
+			}
+			
+			// set logo bitmap to view
+			logoView.setImageBitmap(logoSrc);
 		}
 	}
 
