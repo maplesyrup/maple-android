@@ -34,9 +34,6 @@ public class MapleApplication extends Application{
 		// Initialize the singletons so their instances
 		// are bound to the application process.
 		initUniversalImageLoader();
-		
-		// for testing purposes, initialize tag to error value
-		companyTag = "Error: Company not Set";
 	}
 	
 	/** Set what company the current ad is tagged with
@@ -46,7 +43,7 @@ public class MapleApplication extends Application{
 	 */
 	public void setCurrentCompany(String companyTag){
 		// also start loading company logos from server
-		companyLogos = CompanyList.getCompanyLogosFromServer(companyTag);
+		if(companyTag != null) companyLogos = CompanyList.getCompanyLogosFromServer(companyTag);
 		
 		this.companyTag = companyTag;
 	}
