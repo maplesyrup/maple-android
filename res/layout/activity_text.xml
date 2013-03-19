@@ -99,7 +99,7 @@
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/bold"
+            android:layout_below="@+id/changeFont"
             android:layout_marginTop="30sp"
             android:layout_toLeftOf="@+id/cancel"
             android:onClick="save"
