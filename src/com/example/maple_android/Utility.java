@@ -1,5 +1,6 @@
 package com.example.maple_android;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,8 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -34,6 +37,27 @@ public class Utility {
 	public static Uri getOutputMediaFileUri(int type){
         return Uri.fromFile(getOutputMediaFile(type));
     }
+	
+	/** Create a bitmap from a byte array
+	 * 
+	 *@return Returns a bitmap if successful and null otherwise
+	 */
+	public static Bitmap byteArrayToBitmap(byte[] byteArray){
+		if(byteArray == null) return null;
+		return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+	}
+	
+	/** Convert a bitmap to a byte array in PNG format
+	 *@return Returns a byte[] if successful and null otherwise 
+	 */
+	public static byte[] bitmapToByteArray(Bitmap bitmap){
+		if(bitmap == null) return null;
+		
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();        
+		bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+	}
+	
     /** Create a File for saving an image or video */
     public static File getOutputMediaFile(int type){
         // To be safe, you should check that the SDCard is mounted

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Maple: Sticky advertising</string>
     <string name="menu_settings">Settings</string>
     <string name="app_id">429573013803786</string>
@@ -12,5 +13,7 @@
     <string name="instructions">Sticky Advertising with Maple</string>
     <string name="takePhoto">Take Photo</string>
     <string name="welcome">Welcome</string>
+    <string name="title_activity_logo_picker">LogoPickerActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
