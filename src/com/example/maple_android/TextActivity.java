@@ -232,8 +232,11 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 	
 	// call back method when a font has been selected
 	@Override
-	public void onFontSelected(DialogFragment dialog) {
-		
+	public void onFontSelected(FontPickerDialog dialog) {
+		fontPath = dialog.getSelectedFont();
+		System.out.println(fontPath + " was selected");
+		Typeface tface = Typeface.createFromFile(fontPath);
+		photoText.setTypeface(tface);
 	}
 
 	

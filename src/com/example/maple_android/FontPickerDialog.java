@@ -26,10 +26,11 @@ public class FontPickerDialog extends DialogFragment {
 	private List<String> m_fontPaths;
 	private List<String> m_fontNames;
 	private Context mContext;
+	private String selectedFont;
 
 	// create callback method on font selected
 	public interface FontPickerDialogListener {
-		public void onFontSelected(DialogFragment dialog);
+		public void onFontSelected(FontPickerDialog dialog);
 	}
 
 	// Use this instance of the interface to deliver action events
@@ -91,20 +92,19 @@ public class FontPickerDialog extends DialogFragment {
 
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
-				// TODO Auto-generated method stub
-
+				int magicNumber = arg1;
+				selectedFont = m_fontPaths.get(magicNumber);
+				mListener.onFontSelected(FontPickerDialog.this);
 			}
-
 		});
 
-		builder.setTitle("Font");
+		builder.setTitle("Select A Font");
 
 		// Add the buttons
-		builder.setPositiveButton(R.string.ok,
+		builder.setNegativeButton(R.string.cancel,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						// Send the positive button event back to the host activity
-	                       mListener.onFontSelected(FontPickerDialog.this);
+						// don't have to do anything on cancel
 					}
 				});
 
@@ -113,8 +113,29 @@ public class FontPickerDialog extends DialogFragment {
 
 		return dialog;
 	}
+	
+	@Override
+	public void onCancel(DialogInterface dialog){
+		System.out.println("Dialog canceled");
+	
+	}
+	
+	@Override
+	public void onDismiss(DialogInterface dialog){
+		System.out.println("Dialog dismissed");
+	}
+	
+	
+	
+	// create method to get selected font
+	public String getSelectedFont(){
+		return selectedFont;
+	}
 
-	public class FontAdapter extends BaseAdapter {
+	// Create an adapter to show the fonts in the dialog
+	// Each font will be a text view with the text being the
+	// font name, written in the style of the font
+	private class FontAdapter extends BaseAdapter {
 		private Context mContext;
 
 		public FontAdapter(Context c) {
