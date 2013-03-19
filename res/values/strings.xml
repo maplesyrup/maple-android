@@ -15,5 +15,7 @@
     <string name="welcome">Welcome</string>
     <string name="title_activity_logo_picker">LogoPickerActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

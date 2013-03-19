@@ -60,7 +60,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
-
+  
         <activity
             android:name="com.example.maple_android.LogoPickerActivity"
             android:label="@string/title_activity_logo_picker" >

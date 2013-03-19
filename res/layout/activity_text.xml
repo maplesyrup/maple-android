@@ -1,152 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
-
-<RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/headerText" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:textStyle="bold" 
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:text="Add Text" 
-     />
-    
-    <ImageView 
-         android:id="@+id/photo" 
-         android:layout_height="wrap_content" 
-         android:layout_width="wrap_content" 
-         android:clickable="true"
-         android:layout_centerHorizontal="true"
-         android:layout_below="@+id/headerText"
-     />  
-     
-    <TextView
-        android:id="@+id/photoText" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-		android:visibility="gone" 		
-		android:textColor="#FF0000"
-     />
-     
-    <TextView
-        android:id="@+id/textInstructions" 
-         android:layout_height="wrap_content" 
-         android:layout_width="wrap_content"
-         android:textColor="#ff0000"
-         android:text="Click to place text"
-         android:textStyle="italic"
-         android:textSize="15sp"
-         android:layout_centerHorizontal="true"
-         android:layout_below="@+id/photo"
-    />
-    
-    <EditText 
-        android:id="@+id/textEntry"
-        android:layout_height="wrap_content" 
-        android:layout_width="fill_parent" 
-        android:singleLine="false"
-        android:visibility="invisible" 
-        android:hint="Enter your text here" 
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/photo"     
-      />
-    
-    <EditText 
-        android:id="@+id/fontSize"
-        android:layout_height="wrap_content" 
-        android:layout_width="wrap_content" 
-        android:singleLine="true"
-        android:visibility="invisible" 
-        android:layout_below="@+id/textEntry" 
-        android:layout_toRightOf="@+id/fontSizeLabel"   
-        android:digits="1234567890"
-        android:text="15" 
-      />
-    
-       <TextView
-        android:id="@+id/fontSizeLabel" 
-         android:layout_height="wrap_content" 
-         android:layout_width="wrap_content"
-         android:text="Font Size:"
-         android:textSize="12sp"
-         android:visibility="invisible" 
-         android:paddingLeft="5sp"
-		android:layout_alignParentLeft="true"
-		android:layout_alignBaseline="@+id/fontSize"
-    />
-      
-     <Button
-        android:id="@+id/changeColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="changeColor"
-        android:visibility="invisible" 
-        android:layout_toRightOf="@+id/fontSize"
-        android:layout_below="@+id/textEntry" 
-        android:text="Color"
-      />
-     
-     <Button
-        android:id="@+id/changeFont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="changeFont"
-        android:visibility="invisible" 
-        android:layout_toRightOf="@+id/changeColor"
-        android:layout_below="@+id/textEntry" 
-        android:text="Font"
-      />
-     
-     <CheckBox
-        android:id="@+id/bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bold"
-        android:onClick="changeFontStyle"
-        android:visibility="invisible" 
-        android:layout_below="@+id/changeColor" 
-        android:layout_alignParentLeft="true"
-      />
-     
-     <CheckBox
-        android:id="@+id/italic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Italic"
-        android:onClick="changeFontStyle"
-        android:visibility="invisible" 
-        android:layout_below="@+id/changeColor" 
-        android:layout_toRightOf="@+id/bold"
-      />
-    
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="save"
-        android:text="Save"
-        android:layout_marginTop="30sp"
-        android:visibility="invisible" 
-        android:layout_below="@+id/bold"
-        android:layout_toLeftOf="@+id/cancel"
-        />
-    
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="returnToEditor"
-        android:text="Cancel"
-        android:layout_alignTop="@+id/save"        
-        android:layout_alignParentRight="true"
-        />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Add Text"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerText"
+            android:layout_centerHorizontal="true"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/photoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photo"
+            android:layout_centerHorizontal="true"
+            android:text="Click to place text"
+            android:textColor="#ff0000"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/textEntry"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photo"
+            android:layout_centerHorizontal="true"
+            android:hint="Enter your text here"
+            android:singleLine="false"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/fontSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/fontSizeLabel"
+            android:digits="1234567890"
+            android:singleLine="true"
+            android:text="15"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/fontSizeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/fontSize"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="5sp"
+            android:text="Font Size:"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/changeColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/fontSize"
+            android:onClick="changeColor"
+            android:text="Color"
+            android:visibility="invisible" />
+
+
+        <Button
+            android:id="@+id/changeFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/changeColor"
+            android:onClick="changeFont"
+            android:text="Font"
+            android:visibility="invisible" />
+
+        <CheckBox
+            android:id="@+id/bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/changeColor"
+            android:onClick="changeFontStyle"
+            android:text="Bold"
+            android:visibility="invisible" />
+
+        <CheckBox
+            android:id="@+id/italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/changeColor"
+            android:layout_toRightOf="@+id/bold"
+            android:onClick="changeFontStyle"
+            android:text="Italic"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bold"
+            android:layout_marginTop="30sp"
+            android:layout_toLeftOf="@+id/cancel"
+            android:onClick="save"
+            android:text="Save"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/save"
+            android:onClick="returnToEditor"
+            android:text="Cancel" />
+    </RelativeLayout>
 
 </ScrollView>
