@@ -22,7 +22,7 @@ import android.graphics.Bitmap;
 
 public class MapleApplication extends Application{
 	/* The company that the current ad is tagged with */
-	private String companyTag;
+	private String companyTag = null;
 	/* Available logos for the current company */
 	private ArrayList<Bitmap> companyLogos;
 	

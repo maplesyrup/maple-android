@@ -105,8 +105,6 @@ public class LogoPickerActivity extends Activity {
 		Intent i = new Intent(this, LogoActivity.class);
 		i.putExtra("photoByteArray", getIntent().getExtras().getByteArray("photoByteArray"));
 		i.putExtra("logoArray", Utility.bitmapToByteArray(selectedLogo));
-		i.putExtra("accessToken",
-				getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
 
@@ -133,9 +131,7 @@ public class LogoPickerActivity extends Activity {
 		}
 
 		public int getCount() {
-			int size = logos.size();
-			System.out.println("List size " + size);
-			return size;
+			return logos.size();
 		}
 
 		public Object getItem(int position) {
@@ -159,7 +155,6 @@ public class LogoPickerActivity extends Activity {
 				imageView = (ImageView) convertView;
 			}
 
-			System.out.println("Setting grid position " + position);
 			imageView.setImageBitmap(logos.get(position));
 
 			return imageView;

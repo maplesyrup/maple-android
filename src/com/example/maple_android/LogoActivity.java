@@ -71,7 +71,6 @@ public class LogoActivity extends Activity {
 		title.setText("Add A " + companyTag + " Logo!");
 
 		// Load Logo. 
-		//
 		//It will only be non null if the user picked
 		// a logo in the LogoPickerActivity. Otherwise we have to
 		// direct them there to pick a logo before they can use one
@@ -149,8 +148,6 @@ public class LogoActivity extends Activity {
 	public void launchLogoPicker(View view) {
 		Intent i = new Intent(this, LogoPickerActivity.class);
 		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("accessToken",
-				getIntent().getExtras().getString("accessToken"));
 		startActivity(i);
 	}
 
@@ -171,7 +168,6 @@ public class LogoActivity extends Activity {
 	public void returnToEditor(View view) {
 		Intent i = new Intent(this, EditorActivity.class);
 		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("companyTag", companyTag);
 		startActivity(i);
 	}
 

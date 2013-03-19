@@ -115,8 +115,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 						companySuggestions));
 
 		// check if a company tag has already been set
-		String tag = extras.getString("companyTag");
+		String tag = app.getCurrentCompany();
 		if (tag != null) {
+			// if it was previously set, update the display to show this
 			companySuggest.setText(tag);
 			tagPicture(companySuggest);
 		}
@@ -169,10 +170,8 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		// edit options
 		filterSpinner.setVisibility(editOptions);
 		findViewById(R.id.post).setVisibility(editOptions);
-		// findViewById(R.id.returnToMain).setVisibility(editOptions);
 		findViewById(R.id.logo).setVisibility(editOptions);
 		findViewById(R.id.text).setVisibility(editOptions);
-		// findViewById(R.id.companyTagText).setVisibility(editOptions);
 		findViewById(R.id.changeTag).setVisibility(editOptions);
 		findViewById(R.id.spinnerText).setVisibility(editOptions);
 
@@ -186,14 +185,12 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	public void addLogo(View view) {
 		Intent i = new Intent(this, LogoActivity.class);
 		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("companyTag", companyTag);
 		startActivity(i);
 	}
 
 	public void addText(View view) {
 		Intent i = new Intent(this, TextActivity.class);
 		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("companyTag", companyTag);
 		startActivity(i);
 	}
 
