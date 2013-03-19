@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -40,6 +41,10 @@ public class LogoPickerActivity extends Activity {
 
 		// get company name
 		companyTag = app.getCurrentCompany();
+		
+		// set activity header text
+		TextView header = (TextView) findViewById(R.id.logoPickerTitle);
+		header.setText("Pick A " + companyTag + "Logo");
 
 		GridView gridview = (GridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new ImageAdapter(this));
@@ -47,9 +52,22 @@ public class LogoPickerActivity extends Activity {
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
+				//highlight view with border
+				v.setBackgroundColor(0x0000ff);
+				
+				// update currently selected logo
 				setLogo(v, position);
 			}
 		});
+	}
+	
+	/** Returns the selected logo to the
+	 * LogoActivity
+	 * 
+	 * @param view
+	 */
+	public void save(View view){
+		returnToLogoActivity();
 	}
 
 	/**
@@ -58,6 +76,13 @@ public class LogoPickerActivity extends Activity {
 	 * @param view
 	 */
 	public void cancel(View view) {
+		// make the logo null so nothing is passed back
+		selectedLogo = null;
+		
+		returnToLogoActivity();
+	}
+	
+	public void returnToLogoActivity(){
 		Intent i = new Intent(this, LogoActivity.class);
 		i.putExtra("photoByteArray", getIntent().getExtras().getByteArray("photoByteArray"));
 		i.putExtra("logoArray", Utility.bitmapToByteArray(selectedLogo));
@@ -73,11 +98,14 @@ public class LogoPickerActivity extends Activity {
 	public void setLogo(View view, int logoPosition) {
 		// set logo
 		selectedLogo = logos.get(logoPosition);
-
-		// return to LogoActivity
-		cancel(view);
+		
+		// change save button to visible so logo can be saved
+		findViewById(R.id.save).setVisibility(View.VISIBLE);
 	}
 
+	/*
+	 * Extend BaseAdapter to allow grid to show pictures
+	 */
 	private class ImageAdapter extends BaseAdapter {
 		private Context mContext;
 
@@ -86,7 +114,9 @@ public class LogoPickerActivity extends Activity {
 		}
 
 		public int getCount() {
-			return logos.size();
+			int size = logos.size();
+			System.out.println("List size " + size);
+			return size;
 		}
 
 		public Object getItem(int position) {
@@ -110,6 +140,7 @@ public class LogoPickerActivity extends Activity {
 				imageView = (ImageView) convertView;
 			}
 
+			System.out.println("Setting grid position " + position);
 			imageView.setImageBitmap(logos.get(position));
 
 			return imageView;

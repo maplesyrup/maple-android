@@ -42,7 +42,7 @@
          android:id="@+id/logoPic" 
          android:layout_height="wrap_content" 
          android:layout_width="wrap_content"
-         android:visibility="gone"
+         android:visibility="invisible"
        />
     
         <Button
