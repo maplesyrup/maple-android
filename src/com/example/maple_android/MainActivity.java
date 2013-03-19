@@ -1,11 +1,17 @@
 package com.example.maple_android;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
@@ -27,15 +33,22 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class MainActivity extends Activity {
+	/* Global app data */
+	MapleApplication app;
+	
 	private static final String TAG = "MainActivity";
 	private static final int CAMERA_REQUEST = 1888;
 	private ProfilePictureView profilePictureView;
+	private Uri fileUri;
 	private Session session;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		//init app data
+		app = (MapleApplication) getApplication();
 		
 		session = Session.getActiveSession();
 		// If user isn't logged in we need to redirect back to LoginActivity
@@ -87,20 +100,35 @@ public class MainActivity extends Activity {
 		if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
 			// Load bitmap into byteArray so that we can pass the data to the
 			// new Activity
-			Bitmap photo = (Bitmap) data.getExtras().get("data");
+			
+			Bitmap currBitmap = Utility.retrieveBitmap(fileUri, 240, 320);
+			
+
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-			photo.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+			currBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+			
 			byte[] photoByteArray = stream.toByteArray();
+			
+
+			// Reset companyTag from any previous ad creations
+			app.setCurrentCompany(null);
 
 			Intent intent = new Intent(this, EditorActivity.class);
 			intent.putExtra("photoByteArray", photoByteArray);
+			intent.putExtra("filePath", fileUri.getPath());
+
 			startActivity(intent);
 		}
 	}
+	
+	
 
 	public void openCamera(View view) {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); 
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
 		startActivityForResult(intent, CAMERA_REQUEST);
 	}
 
