@@ -89,6 +89,10 @@ public class AdCreationManager {
 		this.pushBitmap(mapleFilter.filterBitmap(this.getCurrentBitmap()));
 		
 	}
+
+	public Filters getCurrentFilter() {
+		return mFilter;
+	}
 	
 	
 	

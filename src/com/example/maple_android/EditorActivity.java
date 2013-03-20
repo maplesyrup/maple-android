@@ -17,6 +17,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.example.maple_android.AdCreationManager.Filters;
 import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -80,6 +81,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		filterSpinner.setAdapter(adapter);
+		filterSpinner.setSelection(adapter.getPosition(app.mAdCreationManager.getCurrentFilter().toString()));
 
 
 		photo = (ImageView) this.findViewById(R.id.photo);
