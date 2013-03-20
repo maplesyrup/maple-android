@@ -1,22 +1,9 @@
 package com.example.maple_android;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
 import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -27,14 +14,32 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.*;
 
 public class EditorActivity extends Activity implements OnItemSelectedListener {
+	/* Global app data */
+	MapleApplication mApp;
+
+	private Uri mFileUri;
+	private ImageView mPhoto;
+	private Spinner mFilterSpinner;
+	private Bitmap mSrcBitmap;
+	private Bitmap mCurrBitmap;
+	private byte[] mByteArray;
+
+	/* for tagging a company */
+	private String mCompanyTag;
+	private AutoCompleteTextView mCompanySuggest;
+	private ArrayList<String> mCompanySuggestions;
+	private boolean mIsTagSet = false; // whether or not a company tag has been set
+	private Session mSession;
+	
+	/** Enumeration to organize the photo filters
+	 * 
+	 *
+	 */
 	public enum Filters {
 		GAUSSIAN("Gaussian"), POSTERIZE("Posterize"), NONE("None");
 
@@ -49,23 +54,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 			return text;
 		}
 	}
-	
-	/* Global app data */
-	MapleApplication app;
-
-	private Uri fileUri;
-	private ImageView photo;
-	private Spinner filterSpinner;
-	private Bitmap srcBitmap;
-	private Bitmap currBitmap;
-	private byte[] byteArray;
-
-	/* for tagging a company */
-	private String companyTag;
-	private AutoCompleteTextView companySuggest;
-	private ArrayList<String> companySuggestions;
-	private boolean tagSet = false; // whether or not a company tag has been set
-	private Session session;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,11 +61,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		setContentView(R.layout.activity_editor);
 		
 		//init app data
-		app = (MapleApplication) getApplication();
+		mApp = (MapleApplication) getApplication();
 		
-		session = Session.getActiveSession();
+		mSession = Session.getActiveSession();
 		// If user isn't logged in we need to redirect back to LoginActivity
-		if (session == null) {
+		if (mSession == null) {
 			Intent i = new Intent(this, LoginActivity.class);
 			startActivity(i);
 		}
@@ -85,11 +73,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		Bundle extras = getIntent().getExtras();
 		
 		// We've already saved the photo to disk, so let's keep using the same file path
-		fileUri = Uri.fromFile(new File((String) extras.get("filePath")));
+		mFileUri = Uri.fromFile(new File((String) extras.get("filePath")));
 
 		
-		filterSpinner = (Spinner) findViewById(R.id.filters);
-		filterSpinner.setOnItemSelectedListener(this);
+		mFilterSpinner = (Spinner) findViewById(R.id.filters);
+		mFilterSpinner.setOnItemSelectedListener(this);
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -98,69 +86,82 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
-		filterSpinner.setAdapter(adapter);
+		mFilterSpinner.setAdapter(adapter);
 
 		// Grab photo byte array and decode it
-		byteArray = extras.getByteArray("photoByteArray");
+		mByteArray = extras.getByteArray("photoByteArray");
 
-		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0,
-				byteArray.length);
-		currBitmap = srcBitmap;
+		mSrcBitmap = BitmapFactory.decodeByteArray(mByteArray, 0,
+				mByteArray.length);
+		mCurrBitmap = mSrcBitmap;
 
-		photo = (ImageView) this.findViewById(R.id.photo);
-		photo.setImageBitmap(srcBitmap);
+		mPhoto = (ImageView) this.findViewById(R.id.photo);
+		mPhoto.setImageBitmap(mSrcBitmap);
 
-		/* for tagging a company */
-		companySuggestions = CompanyList.getCompanyList(this);
-
-		companySuggest = (AutoCompleteTextView) findViewById(R.id.companySuggest);
-		companySuggest
+		/* Set up tools for tagging a company */
+		mCompanySuggestions = CompanyList.getCompanyList(this);
+		// link list of companies to text field for auto recommendations
+		mCompanySuggest = (AutoCompleteTextView) findViewById(R.id.companySuggest);
+		mCompanySuggest
 				.setAdapter(new ArrayAdapter<String>(this,
 						android.R.layout.simple_dropdown_item_1line,
-						companySuggestions));
+						mCompanySuggestions));
 
 		// check if a company tag has already been set
-		String tag = app.getCurrentCompany();
+		String tag = mApp.getCurrentCompany();
 		if (tag != null) {
 			// if it was previously set, update the display to show this
-			companySuggest.setText(tag);
-			tagPicture(companySuggest);
+			mCompanySuggest.setText(tag);
+			tagPicture(mCompanySuggest);
 		}
 
 	}
 
+	/** Returns to the main activity without saving any changes
+	 * 
+	 * @param view
+	 */
 	public void returnToMain(View view) {
 		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
 	}
 
+	/** Saves the currently entered text as the company
+	 * for the ad. The header text is changed to reflect the
+	 * company, and additional editing options are revealed.
+	 * 
+	 * @param view The tag button that was clicked
+	 */
 	public void tagPicture(View view) {		
 		// save company tag
-		companyTag = companySuggest.getText().toString();
-		app.setCurrentCompany(companyTag);
+		mCompanyTag = mCompanySuggest.getText().toString();
+		mApp.setCurrentCompany(mCompanyTag);
 
 		// update header
 		((TextView) this.findViewById(R.id.header))
 				.setText("Customize Your Ad");
 
 		// set company Button
-		((Button) findViewById(R.id.changeTag)).setText(companyTag);
+		((Button) findViewById(R.id.changeTag)).setText(mCompanyTag);
 
 		toggleOptions();
 	}
 
-	// when called, this function toggles the ability to change the company tag
-	// and the options to edit the ad.
+	/** This function toggles the visiblity of the tag
+	 *  editor and the options to edit the ad. When one
+	 *  is shown, the other is hidden. This way, a company
+	 *  must be tagged before more advanced edits can be made 
+	 */
 	private void toggleOptions() {
 		// toggle saved boolean
-		tagSet = !tagSet;
+		mIsTagSet = !mIsTagSet;
 
 		int taggingOptions;
 		int editOptions;
 
 		// if tagset is false, hide the edit options and show the tagging
 		// options
-		if (tagSet) {
+		if (mIsTagSet) {
 			taggingOptions = View.INVISIBLE;
 			editOptions = View.VISIBLE;
 		} else {
@@ -173,7 +174,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		findViewById(R.id.tagButton).setVisibility(taggingOptions);
 
 		// edit options
-		filterSpinner.setVisibility(editOptions);
+		mFilterSpinner.setVisibility(editOptions);
 		findViewById(R.id.post).setVisibility(editOptions);
 		findViewById(R.id.logo).setVisibility(editOptions);
 		findViewById(R.id.text).setVisibility(editOptions);
@@ -182,38 +183,56 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 	}
 
-	// lets the user go back and edit the company tag
+	/** Called when the user clicks the the company button.
+	 * The view is toggled to allow editing of which company
+	 * has been tagged
+	 * @param view The button that was clicked
+	 */
 	public void changeTag(View view) {
 		toggleOptions();
 	}
 
+	/** Launches the LogoActivity, which allows
+	 * the user to add a logo to the ad
+	 * @param view The button that was clicked
+	 */
 	public void addLogo(View view) {
 		Intent i = new Intent(this, LogoActivity.class);
-		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("filePath", fileUri.getPath());
+		i.putExtra("photoByteArray", mByteArray);
+		i.putExtra("filePath", mFileUri.getPath());
 
 		startActivity(i);
 	}
 
+	/** Launches the TextActivity, which allows
+	 * the user to add a text to the ad
+	 * @param view The button that was clicked
+	 */
 	public void addText(View view) {
 		Intent i = new Intent(this, TextActivity.class);
-		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("filePath", fileUri.getPath());
+		i.putExtra("photoByteArray", mByteArray);
+		i.putExtra("filePath", mFileUri.getPath());
 
 		startActivity(i);
 	}
 
+	/** Posts the current ad to the server under the 
+	 * currently logged in user. On success the user
+	 * is returned to the MainActivity. On failure
+	 * a toast is raised and the screen is not changed.
+	 * @param view The button that was clicked
+	 */
 	public void postAd(View view) {
-		Utility.saveBitmap(fileUri, currBitmap, this);
+		Utility.saveBitmap(mFileUri, mCurrBitmap, this);
 		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		currBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+		mCurrBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
 		byte[] photoByteArray = stream.toByteArray();
 		
 		RequestParams params = new RequestParams();
-		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
-		params.put("post[title]", "Company: " + companyTag);
-		params.put("token", session.getAccessToken());
+		params.put("post[image]", new ByteArrayInputStream(photoByteArray), mFileUri.getPath());
+		params.put("post[title]", "Company: " + mCompanyTag);
+		params.put("token", mSession.getAccessToken());
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, String response) {
@@ -237,23 +256,23 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 			long id) {
 		MapleFilter mapleFilter = null;
 
-		String strFilter = filterSpinner.getSelectedItem().toString();
+		String strFilter = mFilterSpinner.getSelectedItem().toString();
 
 		if (strFilter.equals(Filters.GAUSSIAN.toString())) {
 			mapleFilter = new MapleGaussianFilter();
 		} else if (strFilter.equals(Filters.POSTERIZE.toString())) {
 			mapleFilter = new MaplePosterizeFilter();
 		} else if (strFilter.equals(Filters.NONE.toString())) {
-			currBitmap = srcBitmap;
+			mCurrBitmap = mSrcBitmap;
 			return;
 		} else {
 			return;
 		}
 
 		if (mapleFilter != null) {
-			currBitmap = mapleFilter.filterBitmap(srcBitmap);
+			mCurrBitmap = mapleFilter.filterBitmap(mSrcBitmap);
 		}
-		photo.setImageBitmap(currBitmap);
+		mPhoto.setImageBitmap(mCurrBitmap);
 
 	}
 
