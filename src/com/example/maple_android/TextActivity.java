@@ -121,8 +121,12 @@ public class TextActivity extends Activity implements
 
 	}
 
-	// grabs the user entered value from the font size entry
-	// text box and updates the text size with it
+	/** Grabs the user entered value from the font size entry
+	  * text box and updates the text size with it.
+	  * Changes are instant, and error checking is done for null
+	  * values. The XML declaration specifies that only digits
+	  * can be entered.
+	  */
 	private void updateTextSize() {
 		// grab entry as string
 		String textSize = ((EditText) findViewById(R.id.fontSize)).getText()
@@ -140,6 +144,17 @@ public class TextActivity extends Activity implements
 			mPhotoText.setTextSize((float) size);
 	}
 
+	/** Called when a click is registered on the picture.
+	 * This function saves that click location for future
+	 * reference, and moves the currently written text to
+	 * the new location. The OnTouch Method that calls this
+	 * demands that a boolean is returned, so we return true
+	 * just to satisfy it.
+	 * 
+	 * @param v The view that was clicked on
+	 * @param event The mouse click
+	 * @return Always returns true
+	 */
 	private boolean placeText(View v, MotionEvent event) {
 		// update options after click
 		if (!mShowOptions)
@@ -160,6 +175,13 @@ public class TextActivity extends Activity implements
 		return true;
 	}
 
+	/** This function toggles the visibility
+	 * of the text editing options. They are initializing
+	 * set to be hidden until the user clicks on the picture.
+	 * Then they are shown, and the initial instruction are
+	 * hidden. Calling this again will reverse the process. The
+	 * visibility status is stored in mShowOptions.
+	 */
 	private void toggleOptions() {
 		// switch setting
 		mShowOptions = !mShowOptions;
@@ -184,17 +206,24 @@ public class TextActivity extends Activity implements
 		mPhotoText.setVisibility(visibility);
 	}
 
-	// start a dialog that shows all availabe fonts and
-	// allows the user to pick which one they want to use
+	/** start a dialog that shows all availabe fonts and
+	/ allows the user to pick which one they want to use
+	 * 
+	 * @param view The view that was clicked on
+	 */
 	public void changeFont(View view) {
 		FontPickerDialog dlg = new FontPickerDialog();
 		dlg.show(getFragmentManager(), "font_picker");
 	}
 
-	// call back method when a font has been selected
+	/** Call back method for the font picker dialog
+	 * This is called when a font is selected.
+	 * 
+	 * @param dialog The dialog instance. Contains the selected font.
+	 */
 	@Override
 	public void onFontSelected(FontPickerDialog dialog) {
-		// get font file path and typeface style
+		// get font file path and typeface style from the dialog
 		String fontPath = dialog.getSelectedFont();
 		Typeface tface = Typeface.createFromFile(fontPath);
 
@@ -207,15 +236,28 @@ public class TextActivity extends Activity implements
 
 	}
 
+	/** Called when the change color button is clicked.
+	 * This launches a color picker dialog that allows the
+	 * user to change which color is being used.
+	 * 
+	 * @param view The button that was clicked on
+	 */
 	public void changeColor(View view) {
 
+		// Create a new color dialog with a listener
+		// that updates the current color after the user
+		// has made a selection. This does nothing on cancel.
 		new ColorMixerDialog(this, mTextColor,
 				new ColorMixer.OnColorChangedListener() {
 
+					// called when the user selects a new color
 					@Override
 					public void onColorChange(int color) {
+						// update the stored color
 						mTextColor = color;
+						// change the text color
 						mPhotoText.setTextColor(color);
+						// update the color of the button's text
 						Button b = (Button) findViewById(R.id.changeColor);
 						b.setTextColor(color);
 
@@ -231,6 +273,12 @@ public class TextActivity extends Activity implements
 		return true;
 	}
 
+	/** Combines the currently created text with the
+	 * image bitmap. The result is written to the original
+	 * byteArray and returned to the editoractivity
+	 * 
+	 * @param view
+	 */
 	public void save(View view) {
 		// get text bitmap
 		Bitmap textBitmap = loadBitmapFromView(mPhotoText);
@@ -251,6 +299,12 @@ public class TextActivity extends Activity implements
 		returnToEditor(view);
 	}
 
+	/** This function is used to generate a bitmap from the
+	 * TextView that holds the currently created text
+	 * 
+	 * @param v The TextView containing the text we want to write
+	 * @return The text converted to a bitmap
+	 */
 	private Bitmap loadBitmapFromView(View v) {
 		Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
 				Bitmap.Config.ARGB_8888);
@@ -260,6 +314,10 @@ public class TextActivity extends Activity implements
 		return b;
 	}
 
+	/** Returns the stored byteArray of the ad to the
+	 * EditorActivity
+	 * @param view
+	 */
 	public void returnToEditor(View view) {
 		Intent i = new Intent(this, EditorActivity.class);
 		i.putExtra("photoByteArray", mByteArray);
