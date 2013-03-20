@@ -24,17 +24,19 @@ import android.os.StrictMode;
 import android.view.View;
 
 /**
- * CompanyList ---------------- This class assists with retrieving the list of
+ * This class assists with retrieving the list of
  * companies from the sever and then storing that list locally on the android
  * device.
- * 
+ * <p>
  * The list is retrieved as a background task using AsyncTask
- * 
+ * <p>
  * It is stored on the device's internal storage under MODE_PRIVATE so that the
  * file is private to the application.
- * 
- * Functionality is also provided to retrieve the local list, which is returned
- * as
+ * <p>
+ * Functionality is also provided to retrieve the local list, which parses the
+ * local list and returns the list of companies as an ArrayList of Strings
+ * <p>
+ * This class also assists with retrieving available logos for a given company.
  */
 
 public class CompanyList {
@@ -42,6 +44,7 @@ public class CompanyList {
 	private final static String FILE_NAME = "company_list";
 
 	// server url where list is stored
+	// this is relative to the base URL in MapleHttpClient
 	private final static String LIST_URL = "companies/all";
 
 	/**
@@ -49,8 +52,7 @@ public class CompanyList {
 	 * there is an error contacting the server, no changes to the local copy are
 	 * made.
 	 * 
-	 * @param context
-	 *            The context of the application that will be accessing the list
+	 * @param context The context of the application that will be accessing the list
 	 */
 	public static void syncListWithServer(Context context) {
 		// context must be declared final to be used in callback
@@ -88,8 +90,7 @@ public class CompanyList {
 	 * Retrieves the local company list from file, parses it, and returns the
 	 * contents as an ArrayList of strings. Each string is a company name.
 	 * 
-	 * @param context
-	 *            The context of the application
+	 * @param context The context of the application
 	 * @return An ArrayList where each String is a company name
 	 */
 	public static ArrayList<String> getCompanyList(Context context) {
@@ -147,20 +148,24 @@ public class CompanyList {
 	 * For a given company name, return an ArrayList of Bitmaps containing all
 	 * the logos available for that company. If no logos are available the list
 	 * will be empty.
-	 * 
+	 * <p>
 	 * The images are loaded and added to the ArrayLlist asynchronously in call
 	 * back methods so the list won't be immediately populated when it is
 	 * returned!
+	 * <p>
+	 * If you are loading large images or many images it may be a while before the
+	 * list is fully populated.
 	 * 
-	 * @param companyTag
-	 *            The company name
-	 * @return All available logos for the given company
+	 * @param companyTag The company name
+	 * @return All available logos for the given company. Initially this list will be empty,
+	 * and will be populated over time as each url finished loading. (~1 sec)
 	 */
 	public static ArrayList<Bitmap> getCompanyLogosFromServer(String companyTag) {
 		// using Universal Image Loader library for easy loading of images from
 		// url
 		// https://github.com/nostra13/Android-Universal-Image-Loader
 
+		// right now the companyTag is ignored and the following urls are loaded as tests
 		String[] testPics = {
 				"http://www.thailandsnakes.com/wp-content/uploads/2011/10/golden-tree-snake1.jpg",
 				"http://farm6.staticflickr.com/5112/7411003852_91ef21d9f8_q.jpg",
@@ -176,29 +181,20 @@ public class CompanyList {
 
 		ImageLoader imageLoader = ImageLoader.getInstance();
 
+		// get each url started loading
 		for (String url : testPics) {
 			imageLoader.loadImage(url, new SimpleImageLoadingListener() {
 				@Override
 				public void onLoadingComplete(String imageUri, View view,
 						Bitmap loadedImage) {
 					logos.add(loadedImage);
-					System.out.println("Loading succeeded");
-				}
-
-				@Override
-				public void onLoadingFailed(String imageUri, View view,
-						FailReason failReason) {
-					System.out.println("Loading failed" + failReason.toString());
-				}
-
-				@Override
-				public void onLoadingStarted(String imageUri, View view) {
-					System.out.println("Loading started");
 				}
 			});
 
 		}
 
+		// return the arraylist. It will be populated in the background
+		// as each url loads
 		return logos;
 	}
 }
