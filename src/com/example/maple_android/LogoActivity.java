@@ -52,7 +52,7 @@ public class LogoActivity extends Activity {
 
 		// set photo
 		photo = (ImageView) this.findViewById(R.id.photo);
-		photo.setImageBitmap(app.mAdCreationManager.getCurrentBitmap());
+		photo.setImageBitmap(app.getAdCreationManager().getCurrentBitmap());
 
 		// initialize photo for clicking
 		photo.setOnTouchListener(new View.OnTouchListener() {
@@ -88,7 +88,7 @@ public class LogoActivity extends Activity {
 			logoScaled = logoSrc;
 			
 			// scale logo to a quarter of picture size
-			while (logoScaled.getWidth() > app.mAdCreationManager.getCurrentBitmap().getWidth()) {
+			while (logoScaled.getWidth() > app.getAdCreationManager().getCurrentBitmap().getWidth()) {
 				changeLogoSize(findViewById(R.id.decreaseSize));
 			}
 			
@@ -154,14 +154,14 @@ public class LogoActivity extends Activity {
 
 	public void save(View view) {
 		// combine two bitmaps
-		Bitmap currBitmap = app.mAdCreationManager.getCurrentBitmap();
+		Bitmap currBitmap = app.getAdCreationManager().getCurrentBitmap();
 		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
 				currBitmap.getHeight(), currBitmap.getConfig());
 		Canvas canvas = new Canvas(bmOverlay);
 		canvas.drawBitmap(currBitmap, new Matrix(), null);
 		canvas.drawBitmap(logoScaled, logo_x_offset, logo_y_offset, null);
 
-		app.mAdCreationManager.pushBitmap(bmOverlay);
+		app.getAdCreationManager().pushBitmap(bmOverlay);
 		
 		returnToEditor(view);
 	}

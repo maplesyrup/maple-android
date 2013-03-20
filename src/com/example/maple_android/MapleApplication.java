@@ -27,7 +27,7 @@ public class MapleApplication extends Application{
 	/* Available logos for the current company */
 	private ArrayList<Bitmap> companyLogos;
 	
-	public AdCreationManager mAdCreationManager;
+	private AdCreationManager mAdCreationManager;
 	
 	@Override
 	public void onCreate()
@@ -68,6 +68,9 @@ public class MapleApplication extends Application{
 		return companyLogos;
 	}
 	
+	public AdCreationManager getAdCreationManager() {
+		return mAdCreationManager;
+	}
 	
 
 	/** Universal Image Loader is a library

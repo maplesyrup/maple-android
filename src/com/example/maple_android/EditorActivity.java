@@ -81,11 +81,11 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		filterSpinner.setAdapter(adapter);
-		filterSpinner.setSelection(adapter.getPosition(app.mAdCreationManager.getCurrentFilter().toString()));
+		filterSpinner.setSelection(adapter.getPosition(app.getAdCreationManager().getCurrentFilter().toString()));
 
 
 		photo = (ImageView) this.findViewById(R.id.photo);
-		photo.setImageBitmap(app.mAdCreationManager.getCurrentBitmap());
+		photo.setImageBitmap(app.getAdCreationManager().getCurrentBitmap());
 
 		/* for tagging a company */
 		companySuggestions = CompanyList.getCompanyList(this);
@@ -175,14 +175,14 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	}
 
 	public void postAd(View view) {
-		Utility.saveBitmap(app.mAdCreationManager.getFileUri(), app.mAdCreationManager.getCurrentBitmap(), this);
+		Utility.saveBitmap(app.getAdCreationManager().getFileUri(), app.getAdCreationManager().getCurrentBitmap(), this);
 		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		app.mAdCreationManager.getCurrentBitmap().compress(Bitmap.CompressFormat.JPEG, 90, stream);
+		app.getAdCreationManager().getCurrentBitmap().compress(Bitmap.CompressFormat.JPEG, 90, stream);
 		byte[] photoByteArray = stream.toByteArray();
 		
 		RequestParams params = new RequestParams();
-		params.put("post[image]", new ByteArrayInputStream(photoByteArray), app.mAdCreationManager.getFileUri().getPath());
+		params.put("post[image]", new ByteArrayInputStream(photoByteArray), app.getAdCreationManager().getFileUri().getPath());
 		params.put("post[title]", "Company: " + companyTag);
 		params.put("token", session.getAccessToken());
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
@@ -213,8 +213,8 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 		String strFilter = filterSpinner.getSelectedItem().toString();
 		
-		app.mAdCreationManager.addFilter(strFilter);
-		photo.setImageBitmap(app.mAdCreationManager.getCurrentBitmap());
+		app.getAdCreationManager().addFilter(strFilter);
+		photo.setImageBitmap(app.getAdCreationManager().getCurrentBitmap());
 
 	}
 

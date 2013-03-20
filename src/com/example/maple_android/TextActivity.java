@@ -64,7 +64,7 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 		
 		// set photo
 		photo = (ImageView) this.findViewById(R.id.photo);
-		photo.setImageBitmap(app.mAdCreationManager.getCurrentBitmap());
+		photo.setImageBitmap(app.getAdCreationManager().getCurrentBitmap());
 
 		// initialize photo for clicking
 		photo.setOnTouchListener(new View.OnTouchListener() {
@@ -242,7 +242,7 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 	public void save(View view) {
 		// get text bitmap
 		Bitmap textBitmap = loadBitmapFromView(photoText);
-		Bitmap currBitmap = app.mAdCreationManager.getCurrentBitmap();
+		Bitmap currBitmap = app.getAdCreationManager().getCurrentBitmap();
 
 		// combine two bitmaps
 		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
@@ -253,7 +253,7 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 				null);
 
 		// save picture to byte array and return
-		app.mAdCreationManager.pushBitmap(bmOverlay);
+		app.getAdCreationManager().pushBitmap(bmOverlay);
 
 		returnToEditor(view);
 	}
