@@ -39,10 +39,8 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 	/* Global app */
 	MapleApplication app;
 
-	private byte[] byteArray;
 	private ImageView photo;
 	private String companyTag;
-	private Bitmap srcBitmap;
 
 	// text option
 	private boolean showOptions;
@@ -51,8 +49,7 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 	private EditText textEntry;
 	private TextView photoText;
 	private int textColor;
-	private String filePath;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,16 +61,10 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 		// get company name
 		companyTag = app.getCurrentCompany();
 
-		// get picture
-		Bundle extras = getIntent().getExtras();
-		byteArray = extras.getByteArray("photoByteArray");
-		filePath = extras.getString("filePath");
-		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0,
-				byteArray.length);
-
+		
 		// set photo
 		photo = (ImageView) this.findViewById(R.id.photo);
-		photo.setImageBitmap(srcBitmap);
+		photo.setImageBitmap(app.mAdCreationManager.getCurrentBitmap());
 
 		// initialize photo for clicking
 		photo.setOnTouchListener(new View.OnTouchListener() {
@@ -251,19 +242,18 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 	public void save(View view) {
 		// get text bitmap
 		Bitmap textBitmap = loadBitmapFromView(photoText);
+		Bitmap currBitmap = app.mAdCreationManager.getCurrentBitmap();
 
 		// combine two bitmaps
-		Bitmap bmOverlay = Bitmap.createBitmap(srcBitmap.getWidth(),
-				srcBitmap.getHeight(), srcBitmap.getConfig());
+		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
+				currBitmap.getHeight(), currBitmap.getConfig());
 		Canvas canvas = new Canvas(bmOverlay);
-		canvas.drawBitmap(srcBitmap, new Matrix(), null);
+		canvas.drawBitmap(currBitmap, new Matrix(), null);
 		canvas.drawBitmap(textBitmap, text_x, text_y - photoText.getHeight(),
 				null);
 
 		// save picture to byte array and return
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		bmOverlay.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		byteArray = stream.toByteArray();
+		app.mAdCreationManager.pushBitmap(bmOverlay);
 
 		returnToEditor(view);
 	}
@@ -279,9 +269,6 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 
 	public void returnToEditor(View view) {
 		Intent i = new Intent(this, EditorActivity.class);
-		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("filePath", filePath);
-
 		startActivity(i);
 	}
 

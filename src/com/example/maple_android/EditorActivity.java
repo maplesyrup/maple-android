@@ -35,30 +35,14 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.*;
 
 public class EditorActivity extends Activity implements OnItemSelectedListener {
-	public enum Filters {
-		GAUSSIAN("Gaussian"), POSTERIZE("Posterize"), NONE("None");
-
-		private final String text;
-
-		private Filters(final String text) {
-			this.text = text;
-		}
-
-		@Override
-		public String toString() {
-			return text;
-		}
-	}
+	
 	
 	/* Global app data */
 	MapleApplication app;
 
-	private Uri fileUri;
 	private ImageView photo;
 	private Spinner filterSpinner;
-	private Bitmap srcBitmap;
-	private Bitmap currBitmap;
-	private byte[] byteArray;
+	private boolean mInitializedView;
 
 	/* for tagging a company */
 	private String companyTag;
@@ -74,6 +58,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		
 		//init app data
 		app = (MapleApplication) getApplication();
+		mInitializedView = true;
 		
 		session = Session.getActiveSession();
 		// If user isn't logged in we need to redirect back to LoginActivity
@@ -83,10 +68,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		}
 		
 		Bundle extras = getIntent().getExtras();
-		
-		// We've already saved the photo to disk, so let's keep using the same file path
-		fileUri = Uri.fromFile(new File((String) extras.get("filePath")));
-
 		
 		filterSpinner = (Spinner) findViewById(R.id.filters);
 		filterSpinner.setOnItemSelectedListener(this);
@@ -100,15 +81,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		// Apply the adapter to the spinner
 		filterSpinner.setAdapter(adapter);
 
-		// Grab photo byte array and decode it
-		byteArray = extras.getByteArray("photoByteArray");
-
-		srcBitmap = BitmapFactory.decodeByteArray(byteArray, 0,
-				byteArray.length);
-		currBitmap = srcBitmap;
 
 		photo = (ImageView) this.findViewById(R.id.photo);
-		photo.setImageBitmap(srcBitmap);
+		photo.setImageBitmap(app.mAdCreationManager.getCurrentBitmap());
 
 		/* for tagging a company */
 		companySuggestions = CompanyList.getCompanyList(this);
@@ -189,29 +164,23 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 	public void addLogo(View view) {
 		Intent i = new Intent(this, LogoActivity.class);
-		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("filePath", fileUri.getPath());
-
 		startActivity(i);
 	}
 
 	public void addText(View view) {
 		Intent i = new Intent(this, TextActivity.class);
-		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("filePath", fileUri.getPath());
-
 		startActivity(i);
 	}
 
 	public void postAd(View view) {
-		Utility.saveBitmap(fileUri, currBitmap, this);
+		Utility.saveBitmap(app.mAdCreationManager.getFileUri(), app.mAdCreationManager.getCurrentBitmap(), this);
 		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		currBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+		app.mAdCreationManager.getCurrentBitmap().compress(Bitmap.CompressFormat.JPEG, 90, stream);
 		byte[] photoByteArray = stream.toByteArray();
 		
 		RequestParams params = new RequestParams();
-		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
+		params.put("post[image]", new ByteArrayInputStream(photoByteArray), app.mAdCreationManager.getFileUri().getPath());
 		params.put("post[title]", "Company: " + companyTag);
 		params.put("token", session.getAccessToken());
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
@@ -235,25 +204,15 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
-		MapleFilter mapleFilter = null;
+		if (mInitializedView) {
+			mInitializedView = false;
+			return;
+		}
 
 		String strFilter = filterSpinner.getSelectedItem().toString();
-
-		if (strFilter.equals(Filters.GAUSSIAN.toString())) {
-			mapleFilter = new MapleGaussianFilter();
-		} else if (strFilter.equals(Filters.POSTERIZE.toString())) {
-			mapleFilter = new MaplePosterizeFilter();
-		} else if (strFilter.equals(Filters.NONE.toString())) {
-			currBitmap = srcBitmap;
-			return;
-		} else {
-			return;
-		}
-
-		if (mapleFilter != null) {
-			currBitmap = mapleFilter.filterBitmap(srcBitmap);
-		}
-		photo.setImageBitmap(currBitmap);
+		
+		app.mAdCreationManager.addFilter(strFilter);
+		photo.setImageBitmap(app.mAdCreationManager.getCurrentBitmap());
 
 	}
 

@@ -30,7 +30,6 @@ public class LogoPickerActivity extends Activity {
 	public Context c = this;
 	private byte[] logoArray = null;
 	private Bitmap selectedLogo = null;
-	private String filePath;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,7 +42,6 @@ public class LogoPickerActivity extends Activity {
 		logos = app.getCurrentCompanyLogos();
 		
 		Bundle extras = getIntent().getExtras();
-		filePath = extras.getString("filePath");
 		// get company name
 		companyTag = app.getCurrentCompany();
 		
@@ -107,8 +105,6 @@ public class LogoPickerActivity extends Activity {
 	
 	public void returnToLogoActivity(){
 		Intent i = new Intent(this, LogoActivity.class);
-		i.putExtra("photoByteArray", getIntent().getExtras().getByteArray("photoByteArray"));
-		i.putExtra("filePath", filePath);
 		i.putExtra("logoArray", Utility.bitmapToByteArray(selectedLogo));
 		startActivity(i);
 	}

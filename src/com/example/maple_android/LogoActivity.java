@@ -25,7 +25,6 @@ public class LogoActivity extends Activity {
 	private byte[] byteArray;
 	private ImageView photo;
 	private String companyTag;
-	private Bitmap srcBitmap;
 
 	/* Logo details */
 	private ImageView logoView;
@@ -36,8 +35,7 @@ public class LogoActivity extends Activity {
 	private final double SCALE_FACTOR = 0.3;
 	private float logo_x_offset;
 	private float logo_y_offset;
-	private String filePath;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,17 +46,13 @@ public class LogoActivity extends Activity {
 
 		// get picture
 		Bundle extras = getIntent().getExtras();
-		byteArray = extras.getByteArray("photoByteArray");
-		filePath = extras.getString("filePath");
-
-		srcBitmap = Utility.byteArrayToBitmap(byteArray);
 
 		// get company name
 		companyTag = app.getCurrentCompany();
 
 		// set photo
 		photo = (ImageView) this.findViewById(R.id.photo);
-		photo.setImageBitmap(srcBitmap);
+		photo.setImageBitmap(app.mAdCreationManager.getCurrentBitmap());
 
 		// initialize photo for clicking
 		photo.setOnTouchListener(new View.OnTouchListener() {
@@ -77,7 +71,12 @@ public class LogoActivity extends Activity {
 		//It will only be non null if the user picked
 		// a logo in the LogoPickerActivity. Otherwise we have to
 		// direct them there to pick a logo before they can use one
-		byte[] logoArray = extras.getByteArray("logoArray");
+		
+		byte[] logoArray = null;
+		
+		if (extras != null) {
+			logoArray = extras.getByteArray("logoArray");
+		}
 		if (logoArray != null) {
 			//save copy of the logo as bmp
 			logoView = (ImageView) this.findViewById(R.id.logoPic);
@@ -89,7 +88,7 @@ public class LogoActivity extends Activity {
 			logoScaled = logoSrc;
 			
 			// scale logo to a quarter of picture size
-			while (logoScaled.getWidth() > srcBitmap.getWidth()) {
+			while (logoScaled.getWidth() > app.mAdCreationManager.getCurrentBitmap().getWidth()) {
 				changeLogoSize(findViewById(R.id.decreaseSize));
 			}
 			
@@ -150,30 +149,25 @@ public class LogoActivity extends Activity {
 	 */
 	public void launchLogoPicker(View view) {
 		Intent i = new Intent(this, LogoPickerActivity.class);
-		i.putExtra("filePath", filePath);
-		i.putExtra("photoByteArray", byteArray);
 		startActivity(i);
 	}
 
 	public void save(View view) {
 		// combine two bitmaps
-		Bitmap bmOverlay = Bitmap.createBitmap(srcBitmap.getWidth(),
-				srcBitmap.getHeight(), srcBitmap.getConfig());
+		Bitmap currBitmap = app.mAdCreationManager.getCurrentBitmap();
+		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
+				currBitmap.getHeight(), currBitmap.getConfig());
 		Canvas canvas = new Canvas(bmOverlay);
-		canvas.drawBitmap(srcBitmap, new Matrix(), null);
+		canvas.drawBitmap(currBitmap, new Matrix(), null);
 		canvas.drawBitmap(logoScaled, logo_x_offset, logo_y_offset, null);
 
-		// save picture to byte array and return
-		byteArray = Utility.bitmapToByteArray(bmOverlay);
-
+		app.mAdCreationManager.pushBitmap(bmOverlay);
+		
 		returnToEditor(view);
 	}
 
 	public void returnToEditor(View view) {
 		Intent i = new Intent(this, EditorActivity.class);
-		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("filePath", filePath);
-
 		startActivity(i);
 	}
 
