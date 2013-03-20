@@ -33,9 +33,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.example.maple_android.ColorPickerDialog.OnColorChangedListener;
+import com.commonsware.cwac.colormixer.ColorMixer;
+import com.commonsware.cwac.colormixer.ColorMixerDialog;
+import com.commonsware.cwac.colormixer.*;
 
-public class TextActivity extends Activity implements FontPickerDialog.FontPickerDialogListener{
+public class TextActivity extends Activity implements
+		FontPickerDialog.FontPickerDialogListener {
 	/* Global app */
 	MapleApplication app;
 
@@ -205,40 +208,38 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 		FontPickerDialog dlg = new FontPickerDialog();
 		dlg.show(getFragmentManager(), "font_picker");
 	}
-	
+
 	// call back method when a font has been selected
 	@Override
 	public void onFontSelected(FontPickerDialog dialog) {
 		// get font file path and typeface style
 		String fontPath = dialog.getSelectedFont();
 		Typeface tface = Typeface.createFromFile(fontPath);
-		
+
 		// update text on ad
 		photoText.setTypeface(tface);
-		
+
 		// update font button to show what font we're using
 		Button fontButton = (Button) findViewById(R.id.changeFont);
 		fontButton.setTypeface(tface);
-		
+
 	}
 
-	
-
 	public void changeColor(View view) {
-		OnColorChangedListener l = new OnColorChangedListener() {
 
-			@Override
-			public void colorChanged(int color) {
-				textColor = color;
-				photoText.setTextColor(color);
-				((TextView) findViewById(R.id.photoText))
-						.setTextColor(textColor);
-			}
-		};
+		new ColorMixerDialog(this, textColor,
+				new ColorMixer.OnColorChangedListener() {
 
-		ColorPickerDialog colorPicker = new ColorPickerDialog(
-				view.getContext(), l, textColor);
-		colorPicker.show();
+					@Override
+					public void onColorChange(int color) {
+						textColor = color;
+						photoText.setTextColor(color);
+						Button b = (Button) findViewById(R.id.changeColor);
+						b.setTextColor(color);
+
+					}
+
+				}).show();
 	}
 
 	@Override
@@ -284,7 +285,5 @@ public class TextActivity extends Activity implements FontPickerDialog.FontPicke
 
 		startActivity(i);
 	}
-
-
 
 }
