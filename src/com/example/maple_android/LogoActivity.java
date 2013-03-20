@@ -20,23 +20,22 @@ import android.widget.TextView;
 
 public class LogoActivity extends Activity {
 	/* Global app */
-	MapleApplication app;
+	MapleApplication mApp;
 
-	private byte[] byteArray;
-	private ImageView photo;
-	private String companyTag;
-	private Bitmap srcBitmap;
+	private byte[] mByteArray;
+	private ImageView mPhoto; // the image view showing the current ad
+	private Bitmap mSrcBitmap;
 
 	/* Logo details */
-	private ImageView logoView;
-	private Bitmap logoSrc = null;
-	private Bitmap logoScaled = null;
-	private int logoWidth;
-	private int logoHeight;
-	private final double SCALE_FACTOR = 0.3;
-	private float logo_x_offset;
-	private float logo_y_offset;
-	private String filePath;
+	private ImageView mLogoView; // ImageView storing the logo to overlay. This view is shown on top of mPhoto
+	private Bitmap mLogoSrc = null; // the original source bitmap of the logo. 
+	private Bitmap mLogoScaled = null; // the scaled logo that is shown
+	private int mLogoWidth;
+	private int mLogoHeight;
+	private final double SCALE_FACTOR = 0.3; // the multiplier that the logo is scaled with on each increase or decrease
+	private float mLogoXOffset; // the logo x position in relation to the photo bitmap
+	private float mLogoYOffset; // the logo y position in relation to the photo bitmap
+	private String mFilePath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,57 +43,57 @@ public class LogoActivity extends Activity {
 		setContentView(R.layout.activity_logo);
 		
 		//Init app
-		app = (MapleApplication)this.getApplication();
+		mApp = (MapleApplication)this.getApplication();
 
 		// get picture
 		Bundle extras = getIntent().getExtras();
-		byteArray = extras.getByteArray("photoByteArray");
-		filePath = extras.getString("filePath");
+		mByteArray = extras.getByteArray("photoByteArray");
+		mFilePath = extras.getString("filePath");
 
-		srcBitmap = Utility.byteArrayToBitmap(byteArray);
-
-		// get company name
-		companyTag = app.getCurrentCompany();
+		mSrcBitmap = Utility.byteArrayToBitmap(mByteArray);
 
 		// set photo
-		photo = (ImageView) this.findViewById(R.id.photo);
-		photo.setImageBitmap(srcBitmap);
+		mPhoto = (ImageView) this.findViewById(R.id.photo);
+		mPhoto.setImageBitmap(mSrcBitmap);
 
 		// initialize photo for clicking
-		photo.setOnTouchListener(new View.OnTouchListener() {
+		mPhoto.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				return placeLogo(v, event);
-
+				placeLogo(v, event);
+				/* This callback function requires us to return a boolean.
+				 * Return true just to appease it.
+				 */
+				return true; 	
 			}
 		});
 
-		// set page title
+		// Update page title to reflect the company
 		TextView title = (TextView) this.findViewById(R.id.companyTag);
-		title.setText("Add A " + companyTag + " Logo!");
+		title.setText("Add A " + mApp.getCurrentCompany() + " Logo!");
 
 		// Load Logo. 
-		//It will only be non null if the user picked
+		// logoArray will only be non null if the user picked
 		// a logo in the LogoPickerActivity. Otherwise we have to
 		// direct them there to pick a logo before they can use one
 		byte[] logoArray = extras.getByteArray("logoArray");
 		if (logoArray != null) {
 			//save copy of the logo as bmp
-			logoView = (ImageView) this.findViewById(R.id.logoPic);
-			logoSrc = Utility.byteArrayToBitmap(logoArray);
+			mLogoView = (ImageView) this.findViewById(R.id.logoPic);
+			mLogoSrc = Utility.byteArrayToBitmap(logoArray);
 			
 			// initialize for scaling
-			logoWidth = logoSrc.getWidth();
-			logoHeight = logoSrc.getHeight();
-			logoScaled = logoSrc;
+			mLogoWidth = mLogoSrc.getWidth();
+			mLogoHeight = mLogoSrc.getHeight();
+			mLogoScaled = mLogoSrc;
 			
 			// scale logo to a quarter of picture size
-			while (logoScaled.getWidth() > srcBitmap.getWidth()) {
+			while (mLogoScaled.getWidth() > mSrcBitmap.getWidth()) {
 				changeLogoSize(findViewById(R.id.decreaseSize));
 			}
 			
 			// set logo bitmap to view
-			logoView.setImageBitmap(logoSrc);
+			mLogoView.setImageBitmap(mLogoSrc);
 		}
 	}
 
@@ -105,74 +104,99 @@ public class LogoActivity extends Activity {
 		return true;
 	}
 
-	private boolean placeLogo(View v, MotionEvent event) {
+	/** Called when the user clicks on the picture. This call back
+	 * uses the click event to move the logo to the click location.
+	 * 
+	 * @param v The picture that was clicked
+	 * @param event The click event that holds the coordinates
+	 */
+	private void placeLogo(View v, MotionEvent event) {
 		// only allow them to place a logo if one has been picked
 		// from the LogoPickerActivity
-		if (logoSrc != null) {
+		if (mLogoSrc != null) {
 			// hide instructions
 			findViewById(R.id.logoInstructions).setVisibility(View.INVISIBLE);
 
 			// show logo
-			logoView.setVisibility(View.VISIBLE);
+			mLogoView.setVisibility(View.VISIBLE);
 
-			logo_x_offset = event.getX() - logoWidth / 2;
-			logo_y_offset = event.getY() - logoHeight / 2;
+			mLogoXOffset = event.getX() - mLogoWidth / 2;
+			mLogoYOffset = event.getY() - mLogoHeight / 2;
 
-			logoView.setX(logo_x_offset + v.getX());
-			logoView.setY(logo_y_offset + v.getY());
+			mLogoView.setX(mLogoXOffset + v.getX());
+			mLogoView.setY(mLogoYOffset + v.getY());
 		}
-
-		return true;
 	}
 
+	/** Called when the user changes the logo size
+	 *  Both the increase and decrease logo size buttons
+	 *  call this method. We check the view id to see which
+	 *  one we were called by and scale the logo accordingly.
+	 *  
+	 * @param view The button that was clicked
+	 */
 	public void changeLogoSize(View view) {
 		// check if we are decreasing or increasing size
+		// based on which button made the method call
 		double modifier = SCALE_FACTOR;
 		if (view.equals(findViewById(R.id.decreaseSize)))
 			modifier *= -1.0;
 
 		// change logo dimensions
-		logoWidth = (int) (logoWidth * (1 + modifier));
-		logoHeight = (int) (logoHeight * (1 + modifier));
+		mLogoWidth = (int) (mLogoWidth * (1 + modifier));
+		mLogoHeight = (int) (mLogoHeight * (1 + modifier));
 
-		// scale source and update ImageView
-		// make filter flag true to improve quality. Worth it?
-		logoScaled = Bitmap.createScaledBitmap(logoSrc, logoWidth, logoHeight,
+		// Use source bitmap to make new scaled image to get best quality.
+		// update the logo view with the new bitmap
+		// make filter flag true to improve quality. 
+		mLogoScaled = Bitmap.createScaledBitmap(mLogoSrc, mLogoWidth, mLogoHeight,
 				true);
-		logoView.setImageBitmap(logoScaled);
+		mLogoView.setImageBitmap(mLogoScaled);
 	}
 
 	/**
 	 * Launch an activity that allows the user to choose a logo for the selected
-	 * company
+	 * company. When the activity returns to the LogoPicker it will include a logo
+	 * bytestream  in the intent if the user successfully picked a logo. This
+	 * is checked for in onCreate
 	 * 
-	 * @param view
+	 * @param view The button that was clicked
 	 */
 	public void launchLogoPicker(View view) {
 		Intent i = new Intent(this, LogoPickerActivity.class);
-		i.putExtra("filePath", filePath);
-		i.putExtra("photoByteArray", byteArray);
+		i.putExtra("filePath", mFilePath);
+		i.putExtra("photoByteArray", mByteArray);
 		startActivity(i);
 	}
 
+	/** Combines the currently created logo with the
+	 * image bitmap. The result is written to the original
+	 * byteArray and returned to the editoractivity
+	 * 
+	 * @param view The button that was clicked
+	 */
 	public void save(View view) {
 		// combine two bitmaps
-		Bitmap bmOverlay = Bitmap.createBitmap(srcBitmap.getWidth(),
-				srcBitmap.getHeight(), srcBitmap.getConfig());
+		Bitmap bmOverlay = Bitmap.createBitmap(mSrcBitmap.getWidth(),
+				mSrcBitmap.getHeight(), mSrcBitmap.getConfig());
 		Canvas canvas = new Canvas(bmOverlay);
-		canvas.drawBitmap(srcBitmap, new Matrix(), null);
-		canvas.drawBitmap(logoScaled, logo_x_offset, logo_y_offset, null);
+		canvas.drawBitmap(mSrcBitmap, new Matrix(), null);
+		canvas.drawBitmap(mLogoScaled, mLogoXOffset, mLogoYOffset, null);
 
 		// save picture to byte array and return
-		byteArray = Utility.bitmapToByteArray(bmOverlay);
+		mByteArray = Utility.bitmapToByteArray(bmOverlay);
 
 		returnToEditor(view);
 	}
 
+	/** Returns the stored byteArray of the ad to the
+	 * EditorActivity
+	 * @param view
+	 */
 	public void returnToEditor(View view) {
 		Intent i = new Intent(this, EditorActivity.class);
-		i.putExtra("photoByteArray", byteArray);
-		i.putExtra("filePath", filePath);
+		i.putExtra("photoByteArray", mByteArray);
+		i.putExtra("filePath", mFilePath);
 
 		startActivity(i);
 	}
