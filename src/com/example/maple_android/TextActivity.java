@@ -64,7 +64,11 @@ public class TextActivity extends Activity implements
 		mPhoto.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				return placeText(v, event);
+				placeText(v, event);
+				/* This callback function requires us to return a boolean.
+				 * Return true just to appease it.
+				 */
+				return true;
 			}
 		});
 
@@ -86,6 +90,7 @@ public class TextActivity extends Activity implements
 					public void onTextChanged(CharSequence s, int start,
 							int before, int count) {
 						updateTextSize();
+					
 					}
 
 					@Override
@@ -147,15 +152,11 @@ public class TextActivity extends Activity implements
 	/** Called when a click is registered on the picture.
 	 * This function saves that click location for future
 	 * reference, and moves the currently written text to
-	 * the new location. The OnTouch Method that calls this
-	 * demands that a boolean is returned, so we return true
-	 * just to satisfy it.
-	 * 
+	 * the new location.	
 	 * @param v The view that was clicked on
 	 * @param event The mouse click
-	 * @return Always returns true
 	 */
-	private boolean placeText(View v, MotionEvent event) {
+	private void placeText(View v, MotionEvent event) {
 		// update options after click
 		if (!mShowOptions)
 			toggleOptions();
@@ -171,8 +172,6 @@ public class TextActivity extends Activity implements
 		// set focus to text edit
 		mTextEntryField.setFocusable(true);
 		mTextEntryField.requestFocus();
-
-		return true;
 	}
 
 	/** This function toggles the visibility
@@ -277,7 +276,7 @@ public class TextActivity extends Activity implements
 	 * image bitmap. The result is written to the original
 	 * byteArray and returned to the editoractivity
 	 * 
-	 * @param view
+	 * @param view The button that was clicked
 	 */
 	public void save(View view) {
 		// get text bitmap

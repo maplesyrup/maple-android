@@ -251,6 +251,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		
 	}
 
+	/** Changes the currently applied filter when an item from 
+	 * the filter spinner is selected.
+	 */
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
