@@ -1,7 +1,6 @@
 package com.example.maple_android;
 
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,51 +8,57 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+
+/** This activity allows the user to select a logo to add to 
+ * the ad they are creating. The available logos shown to the 
+ * user based on the current company tag, and the logos for
+ * that company on our server.
+ * 
+ * Logos are displayed in a grid view. When selected they are given a 
+ * border to indicate the user has successfully chosen one. If the user
+ * is happy with the choice they can hit save to return their choice to LogoActivity,
+ * or they can change their selection.
+ * 
+ * A cancel button returns the user to LogoActivity with no changes made.
+ *
+ */
 
 public class LogoPickerActivity extends Activity {
 	/* Global app */
-	MapleApplication app;
+	MapleApplication mApp;
 	
-	private GridView gridview;
-	private ArrayList<Bitmap> logos;
-	private byte[] byteArray;
-	private String companyTag;
-	public Context c = this;
-	private byte[] logoArray = null;
-	private Bitmap selectedLogo = null;
+
+	private GridView mGridview; // the view we are using to display the logos
+	private ArrayList<Bitmap> mLogos; // list of available logos
+	private Bitmap mSelectedLogo = null; // the currently selected logo. Null until a first choice is made
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logo_picker);
 		
 		//init app
-		app = (MapleApplication) this.getApplication();
+		mApp = (MapleApplication) this.getApplication();
 		
 		// get available company logos
-		logos = app.getCurrentCompanyLogos();
-		
-		Bundle extras = getIntent().getExtras();
-		// get company name
-		companyTag = app.getCurrentCompany();
-		
-		
-		// set activity header text
+		mLogos = mApp.getCurrentCompanyLogos();
+				
+		// set activity header text to reflect company
 		TextView header = (TextView) findViewById(R.id.logoPickerTitle);
-		header.setText("Pick A " + companyTag + " Logo");
+		header.setText("Pick A " + mApp.getCurrentCompany() + " Logo");
 
-		gridview = (GridView) findViewById(R.id.gridview);
-		gridview.setAdapter(new ImageAdapter(this));
+		// set up grid view with adapter to show logos
+		mGridview = (GridView) findViewById(R.id.gridview);
+		mGridview.setAdapter(new ImageAdapter(this));
 
-		gridview.setOnItemClickListener(new OnItemClickListener() {
+		// callback function for when a logo is clicked
+		mGridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				//highlight view with border
@@ -72,9 +77,9 @@ public class LogoPickerActivity extends Activity {
 	 */
 	public void setSelectedView(int position){
 		// walk through each child in gridview
-		final int size = gridview.getChildCount();
+		final int size = mGridview.getChildCount();
 		for(int i = 0; i < size; i++) {
-		     ImageView v = (ImageView) gridview.getChildAt(i);
+		     ImageView v = (ImageView) mGridview.getChildAt(i);
 		     // Since the views have padding, setting background color
 		     //effectively gives them a border
 		     if(i == position) v.setBackgroundColor(Color.BLUE);
@@ -98,24 +103,30 @@ public class LogoPickerActivity extends Activity {
 	 */
 	public void cancel(View view) {
 		// make the logo null so nothing is passed back
-		selectedLogo = null;
+		mSelectedLogo = null;
 		
 		returnToLogoActivity();
 	}
 	
+	/** Returns to the LogoActivity, passing back any logo
+	 * that has been selected. If no logo was selected then
+	 * null is passed.
+	 */
 	public void returnToLogoActivity(){
 		Intent i = new Intent(this, LogoActivity.class);
-		i.putExtra("logoArray", Utility.bitmapToByteArray(selectedLogo));
+		i.putExtra("logoArray", Utility.bitmapToByteArray(mSelectedLogo));
 		startActivity(i);
 	}
 
 	/**
 	 * Saves the clicked image to be the company logo and returns to the
 	 * LogoActivity
+	 * @param view The button that was clicked to call this method
+	 * @param logoPosition The selected logo's position in the list
 	 */
 	public void setLogo(View view, int logoPosition) {
 		// set logo
-		selectedLogo = logos.get(logoPosition);
+		mSelectedLogo = mLogos.get(logoPosition);
 		
 		// change save button to visible so logo can be saved
 		findViewById(R.id.save).setVisibility(View.VISIBLE);
@@ -132,7 +143,7 @@ public class LogoPickerActivity extends Activity {
 		}
 
 		public int getCount() {
-			return logos.size();
+			return mLogos.size();
 		}
 
 		public Object getItem(int position) {
@@ -156,7 +167,7 @@ public class LogoPickerActivity extends Activity {
 				imageView = (ImageView) convertView;
 			}
 
-			imageView.setImageBitmap(logos.get(position));
+			imageView.setImageBitmap(mLogos.get(position));
 
 			return imageView;
 		}
