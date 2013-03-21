@@ -103,21 +103,12 @@ public class MainActivity extends Activity {
 			
 			Bitmap currBitmap = Utility.retrieveBitmap(fileUri, 240, 320);
 			
-
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-			currBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-			
-			byte[] photoByteArray = stream.toByteArray();
-			
+			app.initAdCreationManager(currBitmap, fileUri);		
 
 			// Reset companyTag from any previous ad creations
 			app.setCurrentCompany(null);
 
 			Intent intent = new Intent(this, EditorActivity.class);
-			intent.putExtra("photoByteArray", photoByteArray);
-			intent.putExtra("filePath", fileUri.getPath());
-
 			startActivity(intent);
 		}
 	}
