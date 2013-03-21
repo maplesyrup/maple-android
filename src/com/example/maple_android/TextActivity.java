@@ -28,9 +28,7 @@ public class TextActivity extends Activity implements
 	/* Global app */
 	MapleApplication mApp;
 
-	private byte[] mByteArray;
 	private ImageView mPhoto;
-	private Bitmap mSrcBitmap;
 
 	// text option
 	private boolean mShowOptions;
@@ -39,7 +37,6 @@ public class TextActivity extends Activity implements
 	private EditText mTextEntryField;
 	private TextView mPhotoText;
 	private int mTextColor;
-	private String mFilePath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +45,10 @@ public class TextActivity extends Activity implements
 
 		// Init app
 		mApp = (MapleApplication) this.getApplication();
-
-		// get picture
-		Bundle extras = getIntent().getExtras();
-		mByteArray = extras.getByteArray("photoByteArray");
-		mFilePath = extras.getString("filePath");
-		mSrcBitmap = BitmapFactory.decodeByteArray(mByteArray, 0,
-				mByteArray.length);
-
+		
 		// set photo
 		mPhoto = (ImageView) this.findViewById(R.id.photo);
-		mPhoto.setImageBitmap(mSrcBitmap);
+		mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 
 		// initialize photo for clicking
 		mPhoto.setOnTouchListener(new View.OnTouchListener() {
@@ -281,19 +271,18 @@ public class TextActivity extends Activity implements
 	public void save(View view) {
 		// get text bitmap
 		Bitmap textBitmap = loadBitmapFromView(mPhotoText);
+		Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
 
 		// combine two bitmaps
-		Bitmap bmOverlay = Bitmap.createBitmap(mSrcBitmap.getWidth(),
-				mSrcBitmap.getHeight(), mSrcBitmap.getConfig());
+		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
+				currBitmap.getHeight(), currBitmap.getConfig());
 		Canvas canvas = new Canvas(bmOverlay);
-		canvas.drawBitmap(mSrcBitmap, new Matrix(), null);
+		canvas.drawBitmap(currBitmap, new Matrix(), null);
 		canvas.drawBitmap(textBitmap, mTextXPos, mTextYPos - mPhotoText.getHeight(),
 				null);
 
 		// save picture to byte array and return
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		bmOverlay.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		mByteArray = stream.toByteArray();
+		mApp.getAdCreationManager().pushBitmap(bmOverlay);
 
 		returnToEditor(view);
 	}
@@ -319,9 +308,6 @@ public class TextActivity extends Activity implements
 	 */
 	public void returnToEditor(View view) {
 		Intent i = new Intent(this, EditorActivity.class);
-		i.putExtra("photoByteArray", mByteArray);
-		i.putExtra("filePath", mFilePath);
-
 		startActivity(i);
 	}
 

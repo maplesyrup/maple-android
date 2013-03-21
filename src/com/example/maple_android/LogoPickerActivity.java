@@ -34,10 +34,10 @@ public class LogoPickerActivity extends Activity {
 	/* Global app */
 	MapleApplication mApp;
 	
+
 	private GridView mGridview; // the view we are using to display the logos
 	private ArrayList<Bitmap> mLogos; // list of available logos
 	private Bitmap mSelectedLogo = null; // the currently selected logo. Null until a first choice is made
-	private String mFilePath;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,10 +48,7 @@ public class LogoPickerActivity extends Activity {
 		
 		// get available company logos
 		mLogos = mApp.getCurrentCompanyLogos();
-		
-		Bundle extras = getIntent().getExtras();
-		mFilePath = extras.getString("filePath");		
-		
+				
 		// set activity header text to reflect company
 		TextView header = (TextView) findViewById(R.id.logoPickerTitle);
 		header.setText("Pick A " + mApp.getCurrentCompany() + " Logo");
@@ -117,8 +114,6 @@ public class LogoPickerActivity extends Activity {
 	 */
 	public void returnToLogoActivity(){
 		Intent i = new Intent(this, LogoActivity.class);
-		i.putExtra("photoByteArray", getIntent().getExtras().getByteArray("photoByteArray"));
-		i.putExtra("filePath", mFilePath);
 		i.putExtra("logoArray", Utility.bitmapToByteArray(mSelectedLogo));
 		startActivity(i);
 	}

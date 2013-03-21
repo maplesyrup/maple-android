@@ -4,6 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import com.example.maple_android.AdCreationManager.Filters;
+
 import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -22,12 +30,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	/* Global app data */
 	MapleApplication mApp;
 
-	private Uri mFileUri;
 	private ImageView mPhoto;
 	private Spinner mFilterSpinner;
-	private Bitmap mSrcBitmap;
-	private Bitmap mCurrBitmap;
-	private byte[] mByteArray;
+	private boolean mInitializedView;
 
 	/* for tagging a company */
 	private String mCompanyTag;
@@ -36,32 +41,16 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	private boolean mIsTagSet = false; // whether or not a company tag has been set
 	private Session mSession;
 	
-	/** Enumeration to organize the photo filters
-	 * 
-	 *
-	 */
-	public enum Filters {
-		GAUSSIAN("Gaussian"), POSTERIZE("Posterize"), NONE("None");
-
-		private final String text;
-
-		private Filters(final String text) {
-			this.text = text;
-		}
-
-		@Override
-		public String toString() {
-			return text;
-		}
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor);
 		
+		mInitializedView = true;
+		
 		//init app data
 		mApp = (MapleApplication) getApplication();
+
 		
 		mSession = Session.getActiveSession();
 		// If user isn't logged in we need to redirect back to LoginActivity
@@ -72,12 +61,9 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		
 		Bundle extras = getIntent().getExtras();
 		
-		// We've already saved the photo to disk, so let's keep using the same file path
-		mFileUri = Uri.fromFile(new File((String) extras.get("filePath")));
-
-		
 		mFilterSpinner = (Spinner) findViewById(R.id.filters);
 		mFilterSpinner.setOnItemSelectedListener(this);
+
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -86,17 +72,15 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
+
+
+
+
 		mFilterSpinner.setAdapter(adapter);
-
-		// Grab photo byte array and decode it
-		mByteArray = extras.getByteArray("photoByteArray");
-
-		mSrcBitmap = BitmapFactory.decodeByteArray(mByteArray, 0,
-				mByteArray.length);
-		mCurrBitmap = mSrcBitmap;
+		mFilterSpinner.setSelection(adapter.getPosition(mApp.getAdCreationManager().getCurrentFilter().toString()));
 
 		mPhoto = (ImageView) this.findViewById(R.id.photo);
-		mPhoto.setImageBitmap(mSrcBitmap);
+		mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 
 		/* Set up tools for tagging a company */
 		mCompanySuggestions = CompanyList.getCompanyList(this);
@@ -198,9 +182,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	 */
 	public void addLogo(View view) {
 		Intent i = new Intent(this, LogoActivity.class);
-		i.putExtra("photoByteArray", mByteArray);
-		i.putExtra("filePath", mFileUri.getPath());
-
 		startActivity(i);
 	}
 
@@ -210,9 +191,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	 */
 	public void addText(View view) {
 		Intent i = new Intent(this, TextActivity.class);
-		i.putExtra("photoByteArray", mByteArray);
-		i.putExtra("filePath", mFileUri.getPath());
-
 		startActivity(i);
 	}
 
@@ -223,16 +201,19 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	 * @param view The button that was clicked
 	 */
 	public void postAd(View view) {
-		Utility.saveBitmap(mFileUri, mCurrBitmap, this);
+		Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
+		Uri fileUri = mApp.getAdCreationManager().getFileUri();
+		Utility.saveBitmap(fileUri, currBitmap, this);
 		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		mCurrBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+		currBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
 		byte[] photoByteArray = stream.toByteArray();
 		
 		RequestParams params = new RequestParams();
-		params.put("post[image]", new ByteArrayInputStream(photoByteArray), mFileUri.getPath());
+		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
 		params.put("post[title]", "Company: " + mCompanyTag);
 		params.put("token", mSession.getAccessToken());
+
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, String response) {
@@ -257,25 +238,17 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
-		MapleFilter mapleFilter = null;
+
+		if (mInitializedView) {
+			mInitializedView = false;
+			return;
+		}
 
 		String strFilter = mFilterSpinner.getSelectedItem().toString();
+		
+		mApp.getAdCreationManager().addFilter(strFilter);
+		mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 
-		if (strFilter.equals(Filters.GAUSSIAN.toString())) {
-			mapleFilter = new MapleGaussianFilter();
-		} else if (strFilter.equals(Filters.POSTERIZE.toString())) {
-			mapleFilter = new MaplePosterizeFilter();
-		} else if (strFilter.equals(Filters.NONE.toString())) {
-			mCurrBitmap = mSrcBitmap;
-			return;
-		} else {
-			return;
-		}
-
-		if (mapleFilter != null) {
-			mCurrBitmap = mapleFilter.filterBitmap(mSrcBitmap);
-		}
-		mPhoto.setImageBitmap(mCurrBitmap);
 
 	}
 

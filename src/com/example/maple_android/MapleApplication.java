@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import android.app.Application;
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 /**
  * This class exists to store application global variables
@@ -26,16 +27,18 @@ public class MapleApplication extends Application{
 	/* Available logos for the current company */
 	private ArrayList<Bitmap> companyLogos;
 	
+	private AdCreationManager mAdCreationManager;
+	
 	@Override
 	public void onCreate()
 	{
 		super.onCreate();
-
+		
 		// Initialize the singletons so their instances
 		// are bound to the application process.
 		initUniversalImageLoader();
 	}
-	
+		
 	/** Set what company the current ad is tagged with
 	 * 
 	 * @param companyTag The company name the current ad is tagged with
@@ -65,6 +68,9 @@ public class MapleApplication extends Application{
 		return companyLogos;
 	}
 	
+	public AdCreationManager getAdCreationManager() {
+		return mAdCreationManager;
+	}
 	
 
 	/** Universal Image Loader is a library
@@ -86,6 +92,10 @@ public class MapleApplication extends Application{
             .build();
         ImageLoader.getInstance().init(config);
 		
+	}
+
+	public void initAdCreationManager(Bitmap currBitmap, Uri fileUri) {
+		mAdCreationManager = new AdCreationManager(currBitmap, fileUri);
 	}
 
 	
