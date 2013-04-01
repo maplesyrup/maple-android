@@ -12,10 +12,13 @@
     <string name="title_activity_text">TextActivity</string>
     <string name="instructions">Sticky Advertising with Maple</string>
     <string name="takePhoto">Take Photo</string>
+    <string name="new_ad">Create A New Ad</string>
     <string name="welcome">Welcome</string>
     <string name="title_activity_logo_picker">LogoPickerActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="title_activity_new_ad">NewAdActivity</string>
+    <string name="title_activity_crop">CropActivity</string>
 
 </resources>
