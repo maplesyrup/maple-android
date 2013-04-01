@@ -35,6 +35,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.example.maple_android.CropActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.example.maple_android.LogoActivity"
             android:label="@string/app_name" >
         </activity>
