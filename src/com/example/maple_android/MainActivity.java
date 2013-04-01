@@ -32,13 +32,24 @@ import com.facebook.widget.ProfilePictureView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+/**
+ * 
+ * This activity is the first activity seen after logging in. It will eventually be used as a "feed"
+ * of ads for the user. Currently it only shows the user, some instructions, and a button
+ * to start creating an ad.
+ *
+ */
+
 public class MainActivity extends Activity {
 	/* Global app data */
 	MapleApplication app;
 	
 	private static final String TAG = "MainActivity";
 	private static final int CAMERA_REQUEST = 1888;
+	
+	// Facebook Objec that allows us to display the user's profile picture easily
 	private ProfilePictureView profilePictureView;
+	
 	private Uri fileUri;
 	private Session session;
 
@@ -95,6 +106,14 @@ public class MainActivity extends Activity {
 
 	}
 
+	/**
+	 * After a photo has been taken it gets routed to this function. This will retreive the
+	 * photo that was saved to disk and initialize a new AdCreationManager with it
+	 * 
+	 * @param requestCode The code that identifies the action as coming from the camera
+	 * @param resultCode The success or failure of the action
+	 * @param data Various data about the photo that Android supplies us.
+	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d(TAG, "Receiving image");
 		if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
@@ -114,7 +133,11 @@ public class MainActivity extends Activity {
 	}
 	
 	
-
+	/**
+	 * This will open the camera for taking a picture.
+	 * 
+	 * @param view
+	 */
 	public void openCamera(View view) {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); 
@@ -141,6 +164,9 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Logs the user out
+	 */
 	private void onClickLogout() {
 		Session session = Session.getActiveSession();
 		if (session != null && !session.isClosed()) {
