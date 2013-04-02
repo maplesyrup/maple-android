@@ -4,17 +4,7 @@
     android:layout_height="match_parent"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity" >
-	
-    <TextView
-        android:id="@+id/tvInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/greeting"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="155dp"
-        android:padding="10dp"
-        android:text="@string/instructions"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+
 
     <TextView
         android:id="@+id/greeting"
@@ -26,23 +16,43 @@
         android:layout_marginTop="33dp"
         android:text="@string/welcome"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+        <com.facebook.widget.ProfilePictureView
+            android:id="@+id/selection_profile_pic"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/greeting"
+            facebook:preset_size="small" />
 
     <Button
         android:id="@+id/open_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userPicture"
+        android:layout_below="@+id/selection_profile_pic"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:onClick="openCamera"
         android:text="@string/takePhoto" />
-
-    <com.facebook.widget.ProfilePictureView
-            android:id="@+id/selection_profile_pic"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            facebook:preset_size="small" />
+    
+    <Button
+        android:id="@+id/create_new_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/open_camera"
+        android:layout_centerHorizontal="true"
+        android:onClick="createNewAd"
+        android:text="@string/new_ad" />
+    
+    	
+    <TextView
+        android:id="@+id/tvInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_new_ad"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:text="@string/instructions"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

@@ -1,36 +1,25 @@
 package com.example.maple_android;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ad_creation.NewAdActivity;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 /**
  * 
@@ -46,12 +35,9 @@ public class MainActivity extends Activity {
 	
 	private static final String TAG = "MainActivity";
 	private static final int CAMERA_REQUEST = 1888;
-	
-	// Facebook Objec that allows us to display the user's profile picture easily
-	private ProfilePictureView profilePictureView;
-	
-	private Uri fileUri;
-	private Session session;
+	private ProfilePictureView mProfilePictureView; // Facebook Objec that allows us to display the user's profile picture easily
+	private Uri mFileUri;
+	private Session mSession;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,9 +47,9 @@ public class MainActivity extends Activity {
 		//init app data
 		app = (MapleApplication) getApplication();
 		
-		session = Session.getActiveSession();
+		mSession = Session.getActiveSession();
 		// If user isn't logged in we need to redirect back to LoginActivity
-		if (session == null) {
+		if (mSession == null) {
 			Intent i = new Intent(this, LoginActivity.class);
 			startActivity(i);
 		}
@@ -76,8 +62,8 @@ public class MainActivity extends Activity {
 				"&#8226; Publish with a click of a button to http://maplesyrup.herokuapp.com/ and get votes!<br/>";
 		((TextView) findViewById(R.id.tvInstructions)).setText(Html.fromHtml(htmlStr));
 		
-		profilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);
-		profilePictureView.setCropped(true);
+		mProfilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);
+		mProfilePictureView.setCropped(true);
 		
 		Intent i = getIntent();
 		if (i == null || i.getExtras() == null) {
@@ -87,9 +73,9 @@ public class MainActivity extends Activity {
 		if (success != null) {
 			Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG).show();
 		}
-		if (session.isOpened()) {
+		if (mSession.isOpened()) {
 			// make request to the /me API
-			Request.executeMeRequestAsync(session,
+			Request.executeMeRequestAsync(mSession,
 					new Request.GraphUserCallback() {
 						// callback after Graph API response with user object
 						@Override
@@ -98,7 +84,7 @@ public class MainActivity extends Activity {
 							if (user != null) {
 								TextView greeting = (TextView) findViewById(R.id.greeting);
 								greeting.setText("Welcome " + user.getName() + "!");
-							    profilePictureView.setProfileId(user.getId());							
+							    mProfilePictureView.setProfileId(user.getId());							
 							}
 						}
 					});
@@ -120,9 +106,9 @@ public class MainActivity extends Activity {
 			// Load bitmap into byteArray so that we can pass the data to the
 			// new Activity
 			
-			Bitmap currBitmap = Utility.retrieveBitmap(fileUri, 240, 320);
+			Bitmap currBitmap = Utility.retrieveBitmap(mFileUri, 240, 320);
 			
-			app.initAdCreationManager(currBitmap, fileUri);		
+			app.initAdCreationManager(currBitmap, mFileUri);		
 
 			// Reset companyTag from any previous ad creations
 			app.setCurrentCompany(null);
@@ -130,6 +116,15 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(this, EditorActivity.class);
 			startActivity(intent);
 		}
+	}
+	
+	/** Launch a new ad creation process 
+	 * 
+	 * @param view
+	 */
+	public void createNewAd(View view){
+		Intent intent = new Intent(this, NewAdActivity.class);
+		startActivity(intent);
 	}
 	
 	
@@ -140,8 +135,8 @@ public class MainActivity extends Activity {
 	 */
 	public void openCamera(View view) {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		fileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); 
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+		mFileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); 
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
 
 		startActivityForResult(intent, CAMERA_REQUEST);
 	}
