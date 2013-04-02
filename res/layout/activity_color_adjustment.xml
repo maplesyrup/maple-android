@@ -1,0 +1,51 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Color Adjustments"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/colorAdjustPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerText"
+            android:layout_centerHorizontal="true" />
+
+        <SeekBar
+            android:id="@+id/gammaRedSeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/colorAdjustPhoto"
+            android:max="20"
+            android:minWidth="100sp" />
+
+        <SeekBar
+            android:id="@+id/gammaGreenSeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gammaRedSeek"
+            android:max="20"
+            android:minWidth="100sp" />
+
+        <SeekBar
+            android:id="@+id/gammaBlueSeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gammaGreenSeek"
+            android:max="20"
+            android:minWidth="100sp" />
+    </RelativeLayout>
+
+</ScrollView>
