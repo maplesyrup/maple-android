@@ -40,6 +40,7 @@ public class MapleApplication extends Application{
 	}
 		
 	/** Set what company the current ad is tagged with
+	 * Deprecated: Use the ad manager for this
 	 * 
 	 * @param companyTag The company name the current ad is tagged with
 	 * 
@@ -52,7 +53,7 @@ public class MapleApplication extends Application{
 	}
 	
 	/** Get the currently tagged company
-	 * 
+	 * Deprecated: Use the ad manager for this
 	 * @return The name of the last tagged company
 	 * 
 	 */	
@@ -61,7 +62,7 @@ public class MapleApplication extends Application{
 	}
 	
 	/** Get available logos for the current company
-	 * 
+	 * Deprecated: Use the ad manager for this
 	 * @return All available logos for the currently tagged company
 	 */
 	public ArrayList<Bitmap> getCurrentCompanyLogos(){
