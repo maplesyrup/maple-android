@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
@@ -42,7 +43,7 @@ public class ColorAdjustmentActivity extends Activity {
 		mAdView.setImageBitmap(mOriginalAd);
 
 		// set up gamma slider callback
-		mGammaSeek = ((SeekBar) findViewById(R.id.gammaSeek));
+		mGammaSeek = ((SeekBar) this.findViewById(R.id.gammaSeekBar));
 		mGammaSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 					@Override
@@ -70,7 +71,7 @@ public class ColorAdjustmentActivity extends Activity {
 				});
 
 		// set up brightness slider callback
-		mBrightnessSeek = ((SeekBar) findViewById(R.id.brightnessSeek));
+		mBrightnessSeek = ((SeekBar) this.findViewById(R.id.brightnessSeekBar));
 		mBrightnessSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 					@Override
@@ -216,6 +217,29 @@ public class ColorAdjustmentActivity extends Activity {
 		// update image
 		mAdjustedAd = bmOut;
 		mAdView.setImageBitmap(mAdjustedAd);
+	}
+	
+	public void nextStage(View view){
+		
+	}
+	
+	public void prevStage(View view){
+		
+	}
+	
+	/**
+	 * Clear any changes made during this stage
+	 * @param view
+	 */
+	public void reset(View view){
+		// restore original ad and update ImageView
+		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);		
+		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
+		mAdView.setImageBitmap(mOriginalAd); 
+		
+		// reset seekers to middle
+		mGammaSeek.setProgress(10);
+		mBrightnessSeek.setProgress(255);
 	}
 
 	@Override
