@@ -151,6 +151,11 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 	
+	/**
+	 * Creates a new dialog that allows the user to pick an image
+	 * from the gallery or take a new photo.
+	 * @param v
+	 */
 	public void dialogShow(View v) {
 		// 1. Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -186,6 +191,9 @@ public class MainActivity extends Activity {
 		startActivityForResult(intent, CAMERA_REQUEST);
 	}
 	
+	/**
+	 * Opens the gallery for taking a picture
+	 */
 	public void openGallery() {
 		Intent i = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
