@@ -87,7 +87,7 @@ public class NewAdActivity extends Activity {
 		app.initAdCreationManager(currBitmap, mFileUri);
 
 		// launch the first step in the ad creation funnel
-		Intent intent = new Intent(this, CropActivity.class);
+		Intent intent = new Intent(this, ColorAdjustmentActivity.class);
 		startActivity(intent);
 	}
 	
