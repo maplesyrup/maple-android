@@ -6,7 +6,14 @@ import java.util.Stack;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-
+/**
+ * This class exists to manage the creation of an ad between activities. It stores
+ * various metadata about the ad and also stores a stack of all versions of the ad.
+ * 
+ * You can access this from any activity by calling
+ * getApplication().getAdCreationManager
+ *
+ */
 public class AdCreationManager {
 	public enum Filters {
 		GAUSSIAN("Gaussian"), POSTERIZE("Posterize"), NONE("None");
@@ -55,22 +62,48 @@ public class AdCreationManager {
 		mFilter = Filters.NONE;
 	}
 
+	/**
+	 * Get the current bitmap
+	 * 
+	 * @return The current bitmap
+	 */
 	public Bitmap getCurrentBitmap() {
 		return mBitmapStack.peek();
 	}
 
+	/**
+	 * Pushes a bitmap onto the stack of changes that has taken place on the ad.
+	 * 
+	 * @param bitmap The bitmap to put on the stack.
+	 * @return The bitmap that is being pushed onto the stack
+	 */
 	public Bitmap pushBitmap(Bitmap bitmap) {
 		return mBitmapStack.push(bitmap);
 	}
 
+	/**
+	 * Gets the very original bitmap that was saved from the camera.
+	 * 
+	 * @return The original bitmap saved from camera
+	 */
 	public Bitmap getOriginalBitmap() {
 		return mOriginalBitmap;
 	}
 
+	/**
+	 * This will get the file uri where the original bitmap is stored. This way we can save the ad to just one location.
+	 * 
+	 * @return The file path of the original photo taken by the camera.
+	 */
 	public Uri getFileUri() {
 		return mFileUri;
 	}
 
+	/**
+	 * Adds a filter to the current bitmap
+	 * 
+	 * @param strFilter Name of the filter we want to use
+	 */
 	public void addFilter(String strFilter) {
 		MapleFilter mapleFilter = null;
 
@@ -90,6 +123,11 @@ public class AdCreationManager {
 		
 	}
 
+	/**
+	 * Gets the current filter so we can set that filter in the spinner.
+	 * 
+	 * @return The Filter enum that is being applied
+	 */
 	public Filters getCurrentFilter() {
 		return mFilter;
 	}
