@@ -69,6 +69,7 @@
             android:name="com.example.ad_creation.NewAdActivity"
             android:label="@string/title_activity_new_ad" >
         </activity>
+
         <activity
             android:name="com.example.ad_creation.CropActivity"
             android:label="@string/title_activity_crop" >
@@ -77,6 +78,7 @@
             android:name="com.example.ad_creation.ColorAdjustmentActivity"
             android:label="@string/title_activity_color_adjustment" >
         </activity>
+
     </application>
 
 </manifest>
