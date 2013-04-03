@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ad_creation.CropActivity;
 import com.example.ad_creation.NewAdActivity;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -135,6 +136,7 @@ public class MainActivity extends Activity {
 	            
 	        }
 	        break;
+
 		}
 		// Reset companyTag from any previous ad creations
 		Intent intent = new Intent(this, EditorActivity.class);
