@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class LogoActivity extends Activity {
 	/* Global app */
-	MapleApplication mApp;
+	private MapleApplication mApp;
 
 	private byte[] mByteArray;
 	private ImageView mPhoto; // the image view showing the current ad
