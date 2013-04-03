@@ -3,16 +3,22 @@ package com.example.maple_android;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import com.example.ad_creation.ColorAdjustmentActivity;
+import com.example.ad_creation.CropActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+
 /**
- * This class exists to manage the creation of an ad between activities. It stores
- * various metadata about the ad and also stores a stack of all versions of the ad.
+ * This class exists to manage the creation of an ad between activities. It
+ * stores various metadata about the ad and also stores a stack of all versions
+ * of the ad.
  * 
  * You can access this from any activity by calling
  * getApplication().getAdCreationManager
- *
+ * 
  */
 public class AdCreationManager {
 	public enum Filters {
@@ -29,37 +35,85 @@ public class AdCreationManager {
 			return text;
 		}
 	}
-	
+
+	/* The order of the ad creation funnel */
+	Class<?>[] mFunnel = { 
+			CropActivity.class,
+			ColorAdjustmentActivity.class,
+			LogoActivity.class,
+			TextActivity.class
+	};
+	// keeps track of which stage of the funnel we
+	// are in as an index into mFunnel. 
+	// -1 for funnel not started yet.
+	private int mCurrentStage; 
+
 	private String mCompanyName;
-	
+
 	// Array of urls to logo images
 	private ArrayList<String> mLogos;
-	
+
 	// Stack of bitmap layers
 	private Stack<Bitmap> mBitmapStack;
-	
+
 	// Origin bitmap
 	private Bitmap mOriginalBitmap;
-	
+
 	// File path of saved bitmap image
 	private Uri mFileUri;
-	
+
 	// Current filter applied to image
 	private Filters mFilter;
-	
+
 	public AdCreationManager(Bitmap currBitmap, Uri fileUri) {
 		mBitmapStack = new Stack<Bitmap>();
 		mBitmapStack.push(currBitmap);
-		
+
 		mOriginalBitmap = currBitmap;
-		
+
 		mFileUri = fileUri;
-		
+
 		mLogos = new ArrayList<String>();
-		
+
 		mCompanyName = null;
-		
+
 		mFilter = Filters.NONE;
+
+		
+		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
+	}
+
+	/**
+	 * Go to the next stage in the ad creation funnel. You must push the updated
+	 * ad before calling this if you want to save the modifications from the
+	 * current stage. 
+	 * 
+	 * @param context
+	 *            The activity context
+	 */
+	public void nextStage(Context context) {
+		// if we are in the last stage already
+		// don't do anything
+		if(mCurrentStage + 1 > mFunnel.length) return;
+		
+		// increment stage counter and start that activity
+		Intent intent = new Intent(context, mFunnel[++mCurrentStage]);
+		context.startActivity(intent);
+	}
+
+	/**
+	 * Go to the previous stage in the ad funnel
+	 * 
+	 * @param context
+	 *            The activity context
+	 */
+	public void previousStage(Context context) {
+		// if we are in the first stage there is nothing to go back to
+		if(mCurrentStage <= 0) return;
+		
+		// decrement stage counter and start that activity
+		Intent intent = new Intent(context, mFunnel[--mCurrentStage]);
+		context.startActivity(intent);
 	}
 
 	/**
@@ -74,7 +128,8 @@ public class AdCreationManager {
 	/**
 	 * Pushes a bitmap onto the stack of changes that has taken place on the ad.
 	 * 
-	 * @param bitmap The bitmap to put on the stack.
+	 * @param bitmap
+	 *            The bitmap to put on the stack.
 	 * @return The bitmap that is being pushed onto the stack
 	 */
 	public Bitmap pushBitmap(Bitmap bitmap) {
@@ -91,7 +146,8 @@ public class AdCreationManager {
 	}
 
 	/**
-	 * This will get the file uri where the original bitmap is stored. This way we can save the ad to just one location.
+	 * This will get the file uri where the original bitmap is stored. This way
+	 * we can save the ad to just one location.
 	 * 
 	 * @return The file path of the original photo taken by the camera.
 	 */
@@ -102,7 +158,8 @@ public class AdCreationManager {
 	/**
 	 * Adds a filter to the current bitmap
 	 * 
-	 * @param strFilter Name of the filter we want to use
+	 * @param strFilter
+	 *            Name of the filter we want to use
 	 */
 	public void addFilter(String strFilter) {
 		MapleFilter mapleFilter = null;
@@ -117,10 +174,10 @@ public class AdCreationManager {
 			this.pushBitmap(this.getOriginalBitmap());
 			mFilter = Filters.NONE;
 			return;
-		} 
-		
+		}
+
 		this.pushBitmap(mapleFilter.filterBitmap(this.getCurrentBitmap()));
-		
+
 	}
 
 	/**
@@ -131,8 +188,5 @@ public class AdCreationManager {
 	public Filters getCurrentFilter() {
 		return mFilter;
 	}
-	
-	
-	
 
 }

@@ -34,22 +34,14 @@
         android:layout_marginTop="50dp"
         android:onClick="dialogShow"
         android:text="Create Ad" />
-    
-    <Button
-        android:id="@+id/create_new_ad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/open_camera"
-        android:layout_centerHorizontal="true"
-        android:onClick="createNewAd"
-        android:text="@string/new_ad" />
+
     
     	
     <TextView
         android:id="@+id/tvInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/create_new_ad"
+        android:layout_below="@+id/dialog_show"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
         android:text="@string/instructions"
