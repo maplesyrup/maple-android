@@ -15,7 +15,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-
+/**
+ * This activity crops an image
+ * @author benrudolph
+ *
+ */
 public class CropActivity extends Activity implements OnTouchListener {
 
 	private MapleApplication mApp;
@@ -41,10 +45,6 @@ public class CropActivity extends Activity implements OnTouchListener {
 		
 		mApp = (MapleApplication) getApplication();	
 		
-		//LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		//View v = inflater.inflate(R.layout.activity_crop, null);
-		
-		
 		setContentView(R.layout.activity_crop);
 		
 		mCropView = (CropView) findViewById(R.id.cropView);
@@ -54,6 +54,10 @@ public class CropActivity extends Activity implements OnTouchListener {
 		
 	}
 
+	/**
+	 * Will crop the ad and send it to next stage in funnel. This function is activated on a button click.
+	 * @param v
+	 */
 	public void cropAd(View v) {
 		mApp.getAdCreationManager().pushBitmap(mCropView.crop());
 		

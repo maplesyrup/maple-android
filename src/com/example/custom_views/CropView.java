@@ -12,16 +12,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+/**
+ * This is a custom view for displaying a bitmap and a moveable rectangle over it.
+ * It makes it easy to crop images.
+ * @author benrudolph
+ *
+ */
 public class CropView extends View {
 	Paint mPaint;
 	
+	/* Top left and bottom right corner of crop box */
 	private PointF mTopLeft;
 	private PointF mBtmRight;
 	
+	/* Top left and bottom right corner of bounding box */
 	private PointF mTopLeftBound;
 	private PointF mBtmRightBound;
 	
+	/* Length of crop square */
 	private float mLength;
+	
 	private Bitmap mCurrBitmap;
 	
 	private boolean mFirstRender;
@@ -44,9 +54,15 @@ public class CropView extends View {
 		mFirstRender = true;
 	}
 	
+	/**
+	 * Sets the current bitmap to be cropped and sets the length of the crop box to
+	 * be the height of image.
+	 * @param bitmap New bitmap
+	 */
 	public void setBitmap(Bitmap bitmap) {
 		mCurrBitmap = bitmap;
 		mLength = bitmap.getHeight();
+		mFirstRender = true;
 	}
 	
 	@Override
@@ -86,34 +102,48 @@ public class CropView extends View {
 		
 	}
 	
-	private boolean isValidMove(PointF p1, PointF p2, Direction dir, float delta) {
+	/**
+	 * Determines if the movement of the rectangle is valid given a direction and amount to move
+	 * @param dir The direction of movement
+	 * @param delta The distance the rect will move
+	 * @return
+	 */
+	private boolean isValidMove(Direction dir, float delta) {
 		switch (dir) {
 		case X:
-			return p1.x + delta > mTopLeftBound.x && p1.x + delta < mBtmRightBound.x &&
-					p2.x + delta > mTopLeftBound.x && p2.x + delta < mBtmRightBound.x;						
+			return mTopLeft.x + delta > mTopLeftBound.x && mTopLeft.x + delta < mBtmRightBound.x &&
+					mBtmRight.x + delta > mTopLeftBound.x && mBtmRight.x + delta < mBtmRightBound.x;						
 		case Y:
-			return p1.y + delta > mTopLeftBound.y && p1.y + delta < mBtmRightBound.y &&
-					p2.y + delta > mTopLeftBound.y && p2.y + delta < mBtmRightBound.y;				
+			return mTopLeft.y + delta > mTopLeftBound.y && mTopLeft.y + delta < mBtmRightBound.y &&
+					mBtmRight.y + delta > mTopLeftBound.y && mBtmRight.y + delta < mBtmRightBound.y;				
 		default:
 			return false;
 		}
 		
 	}
-
+	
+	/**
+	 * If possible, moves rect delta distance from current position
+	 * @param deltaX distance to move in X direction
+	 * @param deltaY distance to move in Y direction
+	 */
 	public void moveRect(float deltaX, float deltaY) {
 		
-		if (isValidMove(mTopLeft, mBtmRight, Direction.X, deltaX)) {
+		if (isValidMove(Direction.X, deltaX)) {
 			mTopLeft.x += deltaX;
 			mBtmRight.x += deltaX;
 		}
-		if (isValidMove(mTopLeft, mBtmRight, Direction.Y, deltaY)) {
+		if (isValidMove(Direction.Y, deltaY)) {
 			mTopLeft.y += deltaY;
 			mBtmRight.y += deltaY;
 		}
 			
 	
 	}
-
+	/**
+	 * Returns cropped bitmap based on crop box
+	 * @return
+	 */
 	public Bitmap crop() {
 		return Bitmap.createBitmap(mCurrBitmap, (int) mTopLeft.x, (int) mTopLeft.y, (int) mLength, (int) mLength);
 	}
