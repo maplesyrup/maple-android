@@ -13,6 +13,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
+/**
+ * This activity allows the user to adjust gamma and 
+ * brightness of the ad.
+ *
+ */
 public class ColorAdjustmentActivity extends Activity {
 	/* Global app */
 	private MapleApplication mApp;
@@ -48,11 +53,6 @@ public class ColorAdjustmentActivity extends Activity {
 
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
-						// the slider only operates with ints but the gamma
-						// function needs a double
-						// Slider goes from 0 to 20, so we change it to 0 to 2.0
-						// to work with the
-						// function
 						double progress = seekBar.getProgress() / 10.0;
 						doGamma(progress);
 					}
@@ -76,11 +76,6 @@ public class ColorAdjustmentActivity extends Activity {
 
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
-						// slider goes from 0 to 510. Normalize 255 to represent
-						// the middle,
-						// while anything greater is more brightness and
-						// anything less
-						// is less brightness
 						int progress = seekBar.getProgress() - 255;
 						doBrightness(progress);
 					}
