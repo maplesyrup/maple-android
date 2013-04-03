@@ -1,0 +1,65 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Color Adjustments"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/colorAdjustPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerText"
+            android:layout_centerHorizontal="true" />
+
+        <SeekBar
+            android:id="@+id/gammaSeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/colorAdjustPhoto"
+            android:layout_toRightOf="@+id/gammaLabel"
+            android:max="20"
+            android:minWidth="150sp"
+            android:progress="10" />
+
+        <TextView
+            android:id="@+id/gammaLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/gammaSeek"
+            android:paddingLeft="5sp"
+            android:text="Gamma" />
+        <SeekBar
+            android:id="@+id/brightnessSeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gammaSeek"
+            android:layout_toRightOf="@+id/brightnessLabel"
+            android:max="510"
+            android:minWidth="150sp"
+            android:progress="255" />
+
+        <TextView
+            android:id="@+id/brightnessLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/brightnessSeek"
+            android:paddingLeft="5sp"
+            android:text="Brightness" />
+
+    </RelativeLayout>
+
+</ScrollView>
