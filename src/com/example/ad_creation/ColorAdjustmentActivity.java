@@ -221,7 +221,7 @@ public class ColorAdjustmentActivity extends Activity {
 	 */
 	public void nextStage(View view){
 		mAdCreationManager.pushBitmap(mAdjustedAd);
-		mAdCreationManager.previousStage(this);
+		mAdCreationManager.nextStage(this);
 	}
 	
 	/** 
