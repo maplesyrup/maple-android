@@ -1,5 +1,6 @@
 package com.example.maple_android;
 
+import com.example.custom_views.CropView;
 import com.facebook.Session;
 
 import android.app.Activity;
@@ -10,10 +11,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -23,64 +29,12 @@ public class CropActivity extends Activity implements OnTouchListener {
 	private Session mSession;
 	private CropView mCropView;
 	
-	class CropView extends View {
-		Paint mPaint;
-		
-		private float mTopLeftX;
-		private float mTopLeftY;
-		private float mBtmRightX;
-		private float mBtmRightY;
-		
-		private float mLength;
-		private Bitmap mCurrBitmap;
-		
-		private boolean mFirstRender;
-		
-		public CropView(Context context, Bitmap currBitmap) {
-			super(context);
-			mPaint = new Paint();
-			mCurrBitmap = currBitmap;
-			mLength = mCurrBitmap.getHeight();
-			
-			mFirstRender = true;
-		}
+	private float mPrevTouchX;
+	private float mPrevTouchY;
+	
 
-		protected void onDraw(Canvas canvas) {
-			float centerX = canvas.getWidth() / 2;
-			float centerY = canvas.getHeight() / 2;
-			
-			if (mFirstRender) {
-				mTopLeftX = centerX - mLength / 2;
-				mTopLeftY = centerY - mLength / 2;
-				mBtmRightX = centerX + mLength / 2;
-				mBtmRightY = centerY + mLength / 2;
-				mFirstRender = false;
-			}
-			canvas.drawARGB(50, 255, 255, 255);
-			mPaint.setColor(Color.BLACK);
-			mPaint.setStyle(Style.STROKE);
-			mPaint.setStrokeWidth(3.0f);
-			
-			Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
-			
-			
-			float leftX = centerX - (currBitmap.getWidth() / 2);
-			float topY = centerY - (currBitmap.getHeight() / 2);
-			canvas.drawBitmap(currBitmap, leftX, topY, null);
-			
-			canvas.drawRect(mTopLeftX, mTopLeftY, mBtmRightX, mBtmRightY, mPaint);
-			invalidate();
-			
-		}
 
-		public void setRect(float x, float y) {
-			mTopLeftX = x;
-			mTopLeftY = y;
-			mBtmRightX = x + mLength;
-			mBtmRightY = y + mLength;
-		}
-		
-	}
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -94,15 +48,40 @@ public class CropActivity extends Activity implements OnTouchListener {
 		
 		mApp = (MapleApplication) getApplication();	
 		
-		mCropView = new CropView(this, mApp.getAdCreationManager().getCurrentBitmap());
-		setContentView(mCropView);
+		//LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		//View v = inflater.inflate(R.layout.activity_crop, null);
+		
+		
+		setContentView(R.layout.activity_crop);
+		
+		mCropView = (CropView) findViewById(R.id.cropView);
+		mCropView.setBitmap(mApp.getAdCreationManager().getCurrentBitmap());
+		mCropView.invalidate();
 		mCropView.setOnTouchListener(this);
 		
 	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent e) {
-		mCropView.setRect(e.getX(), e.getY());
+		switch (e.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			mPrevTouchX = e.getX();
+			mPrevTouchY = e.getY();
+			break;
+		case MotionEvent.ACTION_MOVE:
+			float x = e.getX();
+			float y = e.getY();
+			float deltaX = x - mPrevTouchX;
+			float deltaY = y - mPrevTouchY;
+			mCropView.moveRect(deltaX, deltaY);
+			mPrevTouchX = x;
+			mPrevTouchY = y;
+			break;
+		case MotionEvent.ACTION_CANCEL:
+			break;
+		case MotionEvent.ACTION_UP:
+			break;
+		}
 		return true;
 	}
 }

@@ -4,7 +4,8 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:id="@+id/layout">
     
     <TextView 
 	     android:id="@+id/header" 
@@ -18,14 +19,21 @@
          android:gravity="center"
        />
     
-    <ImageView 
-         android:id="@+id/ad" 
-         android:layout_height="wrap_content" 
-         android:layout_width="fill_parent" />
-    
-
-	        
-	    
+   <com.example.custom_views.CropView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/cropView"
+	    android:fillViewport="true"
+	/> 
+	   
+   <Button
+       android:id="@+id/crop"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:onClick="cropAd"
+       android:text="Crop" 
+       
+     />
 	   
 	    
 	 
