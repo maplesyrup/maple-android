@@ -1,16 +1,42 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CropActivity" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:id="@+id/layout">
+    
+    <TextView 
+	     android:id="@+id/header" 
+         android:layout_height="wrap_content" 
+         android:layout_width="fill_parent"
+         android:text="Crop"
+         android:textStyle="bold"
+         android:textSize="20sp"
+         android:paddingBottom="5sp"
+         android:paddingTop="5sp"
+         android:gravity="center"
+       />
+    
+   <com.example.custom_views.CropView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/cropView"
+	    android:fillViewport="true"
+	/> 
+	   
+   <Button
+       android:id="@+id/crop"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:onClick="cropAd"
+       android:text="Crop" 
+       
+     />
+	   
+	    
+	 
+</LinearLayout>
+</ScrollView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-</RelativeLayout>

@@ -1,8 +1,12 @@
 package com.example.maple_android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ad_creation.CropActivity;
 import com.example.ad_creation.NewAdActivity;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -34,7 +39,8 @@ public class MainActivity extends Activity {
 	MapleApplication app;
 	
 	private static final String TAG = "MainActivity";
-	private static final int CAMERA_REQUEST = 1888;
+	private static final int CAMERA_REQUEST = 1;
+	private static final int PICK_IMAGE = 2;
 	private ProfilePictureView mProfilePictureView; // Facebook Objec that allows us to display the user's profile picture easily
 	private Uri mFileUri;
 	private Session mSession;
@@ -102,20 +108,40 @@ public class MainActivity extends Activity {
 	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d(TAG, "Receiving image");
-		if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-			// Load bitmap into byteArray so that we can pass the data to the
-			// new Activity
-			
-			Bitmap currBitmap = Utility.retrieveBitmap(mFileUri, 240, 320);
-			
-			app.initAdCreationManager(currBitmap, mFileUri);		
+		switch (requestCode) {
+		case CAMERA_REQUEST:
+			if (resultCode == RESULT_OK) {
+				// Load bitmap into byteArray so that we can pass the data to the
+				// new Activity
+				
+				Bitmap currBitmap = Utility.retrieveBitmap(mFileUri, 240, 320);
+				
+				app.initAdCreationManager(currBitmap, mFileUri);		
+			}
+			break;
+		case PICK_IMAGE:
+	        if(resultCode == RESULT_OK){  
+	            Uri selectedImage = data.getData();
+	            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-			// Reset companyTag from any previous ad creations
-			app.setCurrentCompany(null);
+	            Cursor cursor = getContentResolver().query(
+	                               selectedImage, filePathColumn, null, null, null);
+	            cursor.moveToFirst();
 
-			Intent intent = new Intent(this, EditorActivity.class);
-			startActivity(intent);
+	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+	            String filePath = cursor.getString(columnIndex);
+	            cursor.close();
+
+	            app.initAdCreationManager(BitmapFactory.decodeFile(filePath), Uri.parse(filePath));
+	            
+	        }
+	        break;
+
 		}
+		// Reset companyTag from any previous ad creations
+		Intent intent = new Intent(this, EditorActivity.class);
+		startActivity(intent);
+		app.setCurrentCompany(null);
 	}
 	
 	/** Launch a new ad creation process 
@@ -127,18 +153,53 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 	
-	
+	/**
+	 * Creates a new dialog that allows the user to pick an image
+	 * from the gallery or take a new photo.
+	 * @param v
+	 */
+	public void dialogShow(View v) {
+		// 1. Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		// 2. Chain together various setter methods to set the dialog characteristics
+		builder.setMessage("Take a photo or pick one from the Gallery")
+		       .setTitle("Choose");
+		
+		builder.setPositiveButton("Take photo", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               openCamera();
+	           }
+	       });
+		builder.setNegativeButton("Pick from gallery", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               openGallery();
+	           }
+	       });
+		// 3. Get the AlertDialog from create()
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
 	/**
 	 * This will open the camera for taking a picture.
 	 * 
 	 * @param view
 	 */
-	public void openCamera(View view) {
+	public void openCamera() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		mFileUri = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE); 
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
 
 		startActivityForResult(intent, CAMERA_REQUEST);
+	}
+	
+	/**
+	 * Opens the gallery for taking a picture
+	 */
+	public void openGallery() {
+		Intent i = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+	     startActivityForResult(i, PICK_IMAGE); 
 	}
 
 	@Override

@@ -9,9 +9,15 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
+/**
+ * This activity allows the user to adjust gamma and 
+ * brightness of the ad.
+ *
+ */
 public class ColorAdjustmentActivity extends Activity {
 	/* Global app */
 	private MapleApplication mApp;
@@ -42,16 +48,11 @@ public class ColorAdjustmentActivity extends Activity {
 		mAdView.setImageBitmap(mOriginalAd);
 
 		// set up gamma slider callback
-		mGammaSeek = ((SeekBar) findViewById(R.id.gammaSeek));
+		mGammaSeek = ((SeekBar) this.findViewById(R.id.gammaSeekBar));
 		mGammaSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
-						// the slider only operates with ints but the gamma
-						// function needs a double
-						// Slider goes from 0 to 20, so we change it to 0 to 2.0
-						// to work with the
-						// function
 						double progress = seekBar.getProgress() / 10.0;
 						doGamma(progress);
 					}
@@ -70,16 +71,11 @@ public class ColorAdjustmentActivity extends Activity {
 				});
 
 		// set up brightness slider callback
-		mBrightnessSeek = ((SeekBar) findViewById(R.id.brightnessSeek));
+		mBrightnessSeek = ((SeekBar) this.findViewById(R.id.brightnessSeekBar));
 		mBrightnessSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
-						// slider goes from 0 to 510. Normalize 255 to represent
-						// the middle,
-						// while anything greater is more brightness and
-						// anything less
-						// is less brightness
 						int progress = seekBar.getProgress() - 255;
 						doBrightness(progress);
 					}
@@ -216,6 +212,29 @@ public class ColorAdjustmentActivity extends Activity {
 		// update image
 		mAdjustedAd = bmOut;
 		mAdView.setImageBitmap(mAdjustedAd);
+	}
+	
+	public void nextStage(View view){
+		
+	}
+	
+	public void prevStage(View view){
+		
+	}
+	
+	/**
+	 * Clear any changes made during this stage
+	 * @param view
+	 */
+	public void reset(View view){
+		// restore original ad and update ImageView
+		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);		
+		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
+		mAdView.setImageBitmap(mOriginalAd); 
+		
+		// reset seekers to middle
+		mGammaSeek.setProgress(10);
+		mBrightnessSeek.setProgress(255);
 	}
 
 	@Override
