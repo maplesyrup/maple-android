@@ -4,7 +4,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
         <TextView
             android:id="@+id/headerText"
@@ -23,29 +23,24 @@
             android:layout_below="@+id/headerText"
             android:layout_centerHorizontal="true" />
 
+        <TextView
+            android:id="@+id/gammaLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/gammaSeek"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="5sp"
+            android:text="Gamma " />
+
         <SeekBar
-            android:id="@+id/gammaRedSeek"
+            android:id="@+id/gammaSeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/colorAdjustPhoto"
+            android:layout_toRightOf="@+id/gammaLabel"
             android:max="20"
-            android:minWidth="100sp" />
-
-        <SeekBar
-            android:id="@+id/gammaGreenSeek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/gammaRedSeek"
-            android:max="20"
-            android:minWidth="100sp" />
-
-        <SeekBar
-            android:id="@+id/gammaBlueSeek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/gammaGreenSeek"
-            android:max="20"
-            android:minWidth="100sp" />
+            android:minWidth="150sp"
+            android:progress="10" />
     </RelativeLayout>
 
 </ScrollView>

@@ -21,11 +21,6 @@ public class ColorAdjustmentActivity extends Activity {
 	private Bitmap mAdjustedAd;
 	private ImageView mAdView;
 
-	/* Variables for color adjustment */
-	private double mGammaRed = 1.0;
-	private double mGammaGreen = 1.0;
-	private double mGammaBlue = 1.0;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,85 +36,38 @@ public class ColorAdjustmentActivity extends Activity {
 		mAdView.setImageBitmap(mOriginalAd);
 
 		// set up gamma slider callbacks
-		// red
-		((SeekBar) findViewById(R.id.gammaRedSeek))
-				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+		
+		// seek bar to control all gamma levels
+		((SeekBar) findViewById(R.id.gammaSeek))
+		.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-						int progress = seekBar.getProgress();
-						mGammaRed = progress / 10.0;
-						doGamma();
-					}
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				double progress = seekBar.getProgress() / 10.0;
+				doGamma(progress);
+			}
 
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-						// TODO Auto-generated method stub
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
 
-					}
+			}
 
-					@Override
-					public void onProgressChanged(SeekBar seekBar,
-							int progress, boolean fromUser) {
+			@Override
+			public void onProgressChanged(SeekBar seekBar,
+					int progress, boolean fromUser) {
 
-					}
-				});
-
-		// green
-		((SeekBar) findViewById(R.id.gammaGreenSeek))
-				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-						int progress = seekBar.getProgress();
-						mGammaGreen = progress / 10.0;
-						doGamma();
-					}
-
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onProgressChanged(SeekBar seekBar,
-							int progress, boolean fromUser) {
-
-					}
-				});
-
-		// blue
-		((SeekBar) findViewById(R.id.gammaBlueSeek))
-				.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-						int progress = seekBar.getProgress();
-						mGammaBlue = progress / 10.0;
-						doGamma();
-					}
-
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onProgressChanged(SeekBar seekBar,
-							int progress, boolean fromUser) {
-
-					}
-				});
-
+			}
+		});
+		
+		
 	}
 
 	/**
 	 * Updates the current ad with the gamma values stored in the gamma private
 	 * instance variables
 	 */
-	private void doGamma() {
+	private void doGamma(double level) {
 		// create output image
 		Bitmap bmOut = Bitmap.createBitmap(mOriginalAd.getWidth(),
 				mOriginalAd.getHeight(), mOriginalAd.getConfig());
@@ -145,15 +93,15 @@ public class ColorAdjustmentActivity extends Activity {
 			gammaR[i] = (int) Math.min(
 					MAX_VALUE_INT,
 					(int) ((MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE
-							/ mGammaRed)) + 0.5));
+							/ level)) + 0.5));
 			gammaG[i] = (int) Math.min(
 					MAX_VALUE_INT,
 					(int) ((MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE
-							/ mGammaGreen)) + 0.5));
+							/ level)) + 0.5));
 			gammaB[i] = (int) Math.min(
 					MAX_VALUE_INT,
 					(int) ((MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE
-							/ mGammaBlue)) + 0.5));
+							/ level)) + 0.5));
 		}
 
 		// apply gamma table
