@@ -1,6 +1,7 @@
 package com.example.ad_creation;
 
 import com.example.custom_views.CropView;
+import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.EditorActivity;
 import com.example.maple_android.LoginActivity;
 import com.example.maple_android.MapleApplication;
@@ -9,11 +10,13 @@ import com.facebook.Session;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 
 /**
  * This activity crops an image
@@ -23,6 +26,7 @@ import android.view.View.OnTouchListener;
 public class CropActivity extends Activity implements OnTouchListener {
 
 	private MapleApplication mApp;
+	private AdCreationManager mAdCreationManager;
 	private Session mSession;
 	private CropView mCropView;
 	
@@ -44,6 +48,7 @@ public class CropActivity extends Activity implements OnTouchListener {
 		}
 		
 		mApp = (MapleApplication) getApplication();	
+		mAdCreationManager = mApp.getAdCreationManager();
 		
 		setContentView(R.layout.activity_crop);
 		
@@ -61,8 +66,7 @@ public class CropActivity extends Activity implements OnTouchListener {
 	public void cropAd(View v) {
 		mApp.getAdCreationManager().pushBitmap(mCropView.crop());
 		
-		Intent intent = new Intent(this, EditorActivity.class);
-		startActivity(intent);
+		mAdCreationManager.nextStage(this);
 	}
 	
 	@Override
@@ -89,3 +93,6 @@ public class CropActivity extends Activity implements OnTouchListener {
 		return true;
 	}
 }
+
+
+

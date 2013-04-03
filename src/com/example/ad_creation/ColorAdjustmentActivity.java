@@ -214,12 +214,23 @@ public class ColorAdjustmentActivity extends Activity {
 		mAdView.setImageBitmap(mAdjustedAd);
 	}
 	
+	/**
+	 * Push the updated bitmap and continue to the next 
+	 * stage in the funnel
+	 * @param view
+	 */
 	public void nextStage(View view){
-		
+		mAdCreationManager.pushBitmap(mAdjustedAd);
+		mAdCreationManager.nextStage(this);
 	}
 	
+	/** 
+	 * Return to the previous stage without 
+	 * saving any changes
+	 * @param view
+	 */
 	public void prevStage(View view){
-		
+		mAdCreationManager.previousStage(this);
 	}
 	
 	/**
