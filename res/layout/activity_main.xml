@@ -26,14 +26,14 @@
             facebook:preset_size="small" />
 
     <Button
-        android:id="@+id/open_camera"
+        android:id="@+id/dialog_show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/selection_profile_pic"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:onClick="openCamera"
-        android:text="@string/takePhoto" />
+        android:onClick="dialogShow"
+        android:text="Create Ad" />
     
     <Button
         android:id="@+id/create_new_ad"
