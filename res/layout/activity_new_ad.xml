@@ -27,7 +27,7 @@
         android:onClick="useImageFromFile"
         android:layout_below="@+id/newAdHeader"
         android:layout_centerHorizontal="true"
-        android:text="Start with a picture from file"        
+        android:text="Load picture from file"        
         />   
          <Button
         android:id="@+id/takeNewPicture"
@@ -36,6 +36,8 @@
         android:onClick="takeNewPicture"
         android:layout_below="@+id/useImageFromFile"
         android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/useImageFromFile"
+        android:layout_alignRight="@+id/useImageFromFile"
         android:text="Take A New Picture"        
         />    
         
@@ -45,6 +47,8 @@
         android:layout_height="wrap_content"
         android:onClick="loadSavedAd"
         android:layout_below="@+id/takeNewPicture"
+        android:layout_alignLeft="@+id/useImageFromFile"
+        android:layout_alignRight="@+id/useImageFromFile"
         android:layout_centerHorizontal="true"
         android:text="Load A Saved Ad"        
         /> 

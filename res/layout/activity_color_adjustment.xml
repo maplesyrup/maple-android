@@ -24,11 +24,11 @@
             android:layout_centerHorizontal="true" />
 
         <SeekBar
-            android:id="@+id/gammaSeek"
+            android:id="@+id/gammaSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/brightnessSeekBar"
             android:layout_below="@+id/colorAdjustPhoto"
-            android:layout_toRightOf="@+id/gammaLabel"
             android:max="20"
             android:minWidth="150sp"
             android:progress="10" />
@@ -38,14 +38,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/gammaSeek"
+            android:layout_alignTop="@+id/gammaSeekBar"
             android:paddingLeft="5sp"
             android:text="Gamma" />
+
         <SeekBar
-            android:id="@+id/brightnessSeek"
+            android:id="@+id/brightnessSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/gammaSeek"
+            android:layout_below="@+id/gammaSeekBar"
             android:layout_toRightOf="@+id/brightnessLabel"
             android:max="510"
             android:minWidth="150sp"
@@ -56,10 +57,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/brightnessSeek"
+            android:layout_alignTop="@+id/brightnessSeekBar"
             android:paddingLeft="5sp"
             android:text="Brightness" />
 
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/nextStage"
+            android:layout_centerHorizontal="true"
+            android:onClick="reset"
+            android:text="Clear Changes" />
+
+        <Button
+            android:id="@+id/nextStage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/brightnessSeekBar"
+            android:onClick="nextStage"
+            android:text="Next" />
+
+        <Button
+            android:id="@+id/prevStage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/nextStage"
+            android:onClick="prevStage"
+            android:text="Back" />
     </RelativeLayout>
 
 </ScrollView>
