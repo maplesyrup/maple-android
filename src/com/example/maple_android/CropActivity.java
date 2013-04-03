@@ -61,6 +61,13 @@ public class CropActivity extends Activity implements OnTouchListener {
 		
 	}
 
+	public void cropAd(View v) {
+		mApp.getAdCreationManager().pushBitmap(mCropView.crop());
+		
+		Intent intent = new Intent(this, EditorActivity.class);
+		startActivity(intent);
+	}
+	
 	@Override
 	public boolean onTouch(View v, MotionEvent e) {
 		switch (e.getAction()) {
