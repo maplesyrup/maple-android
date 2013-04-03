@@ -139,18 +139,9 @@ public class MainActivity extends Activity {
 
 		}
 		// Reset companyTag from any previous ad creations
-		Intent intent = new Intent(this, EditorActivity.class);
-		startActivity(intent);
-		app.setCurrentCompany(null);
-	}
-	
-	/** Launch a new ad creation process 
-	 * 
-	 * @param view
-	 */
-	public void createNewAd(View view){
-		Intent intent = new Intent(this, NewAdActivity.class);
-		startActivity(intent);
+		app.getAdCreationManager().nextStage(this);
+		
+		app.setCurrentCompany(null); // !!! we should stop tracking company in app and do it only in the AdCreationManager
 	}
 	
 	/**
