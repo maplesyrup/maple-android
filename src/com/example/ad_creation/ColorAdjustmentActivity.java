@@ -17,9 +17,12 @@ public class ColorAdjustmentActivity extends Activity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
 
-	private Bitmap mOriginalAd;
-	private Bitmap mAdjustedAd;
-	private ImageView mAdView;
+	private Bitmap mOriginalAd; // the bitmap that we are starting with 
+	private Bitmap mAdjustedAd; // any changes to the original are stored here
+	private ImageView mAdView; // mAdjustedAd is displayed to the user through this view
+	
+	private SeekBar mGammaSeek; 
+	private SeekBar mBrightnessSeek;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,41 +34,129 @@ public class ColorAdjustmentActivity extends Activity {
 		mAdCreationManager = mApp.getAdCreationManager();
 
 		// get most recent ad of stack
+		// initialize adjusted ad to the original
 		mOriginalAd = mAdCreationManager.getCurrentBitmap();
+		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);
+		
 		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
 		mAdView.setImageBitmap(mOriginalAd);
 
-		// set up gamma slider callbacks
-		
-		// seek bar to control all gamma levels
-		((SeekBar) findViewById(R.id.gammaSeek))
-		.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+		// set up gamma slider callback
+		mGammaSeek = ((SeekBar) findViewById(R.id.gammaSeek));
+		mGammaSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				double progress = seekBar.getProgress() / 10.0;
-				doGamma(progress);
-			}
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						// the slider only operates with ints but the gamma
+						// function needs a double
+						// Slider goes from 0 to 20, so we change it to 0 to 2.0
+						// to work with the
+						// function
+						double progress = seekBar.getProgress() / 10.0;
+						doGamma(progress);
+					}
 
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+						// TODO Auto-generated method stub
 
-			}
+					}
 
-			@Override
-			public void onProgressChanged(SeekBar seekBar,
-					int progress, boolean fromUser) {
+					@Override
+					public void onProgressChanged(SeekBar seekBar,
+							int progress, boolean fromUser) {
 
-			}
-		});
-		
-		
+					}
+				});
+
+		// set up brightness slider callback
+		mBrightnessSeek = ((SeekBar) findViewById(R.id.brightnessSeek));
+		mBrightnessSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						// slider goes from 0 to 510. Normalize 255 to represent
+						// the middle,
+						// while anything greater is more brightness and
+						// anything less
+						// is less brightness
+						int progress = seekBar.getProgress() - 255;
+						doBrightness(progress);
+					}
+
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onProgressChanged(SeekBar seekBar,
+							int progress, boolean fromUser) {
+
+					}
+				});
+
 	}
 
 	/**
-	 * Updates the current ad with the gamma values stored in the gamma private
-	 * instance variables
+	 * Updates the current ad with the given gamma value
+	 */
+	private void doBrightness(int value) {
+		// image size
+		int width = mAdjustedAd.getWidth();
+		int height = mAdjustedAd.getHeight();
+		// create output bitmap
+		Bitmap bmOut = Bitmap.createBitmap(width, height,
+				mAdjustedAd.getConfig());
+		// color information
+		int A, R, G, B;
+		int pixel;
+
+		// scan through all pixels
+		for (int x = 0; x < width; ++x) {
+			for (int y = 0; y < height; ++y) {
+				// get pixel color
+				pixel = mAdjustedAd.getPixel(x, y);
+				A = Color.alpha(pixel);
+				R = Color.red(pixel);
+				G = Color.green(pixel);
+				B = Color.blue(pixel);
+
+				// increase/decrease each channel
+				R += value;
+				if (R > 255) {
+					R = 255;
+				} else if (R < 0) {
+					R = 0;
+				}
+
+				G += value;
+				if (G > 255) {
+					G = 255;
+				} else if (G < 0) {
+					G = 0;
+				}
+
+				B += value;
+				if (B > 255) {
+					B = 255;
+				} else if (B < 0) {
+					B = 0;
+				}
+
+				// apply new pixel color to output bitmap
+				bmOut.setPixel(x, y, Color.argb(A, R, G, B));
+			}
+		}
+
+		// update image
+		mAdjustedAd = bmOut;
+		mAdView.setImageBitmap(mAdjustedAd);
+	}
+
+	/**
+	 * Updates the current ad with the given gamma value
 	 */
 	private void doGamma(double level) {
 		// create output image
@@ -118,6 +209,9 @@ public class ColorAdjustmentActivity extends Activity {
 				bmOut.setPixel(x, y, Color.argb(A, R, G, B));
 			}
 		}
+		
+		// reset brightness slider to middle
+		mBrightnessSeek.setProgress(255);
 
 		// update image
 		mAdjustedAd = bmOut;
