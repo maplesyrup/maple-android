@@ -66,10 +66,6 @@
             android:label="@string/title_activity_logo_picker" >
         </activity>
         <activity
-            android:name="com.example.ad_creation.NewAdActivity"
-            android:label="@string/title_activity_new_ad" >
-        </activity>
-        <activity
             android:name="com.example.ad_creation.CropActivity"
             android:label="@string/title_activity_crop" >
         </activity>
