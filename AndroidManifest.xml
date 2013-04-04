@@ -77,6 +77,14 @@
             android:name="com.example.ad_creation.CompanyTagActivity"
             android:label="@string/title_activity_company_tag" >
         </activity>
+        <activity
+            android:name="com.example.maple_android.PopularAds"
+            android:label="@string/title_activity_popular_ads" >
+        </activity>
+        <activity
+            android:name="com.example.maple_android.PersonalAds"
+            android:label="@string/title_activity_personal_ads" >
+        </activity>
     </application>
 
 </manifest>

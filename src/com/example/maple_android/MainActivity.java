@@ -13,10 +13,10 @@ import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -184,15 +184,31 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
+	/**
+	 * Respond to each tab button
+	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// respond to menu item selection
+		Intent intent;
 		switch (item.getItemId()) {
 		case R.id.logout:
 			onClickLogout();
+			return true;
+		case R.id.main:
+			Log.d("Maple Syrup", "clicked on main");
+			return super.onOptionsItemSelected(item);
+		case R.id.personal:
+			intent = new Intent(this, PersonalAds.class);
+			startActivity(intent);
+			return true;
+		case R.id.popular:
+			intent = new Intent(this, PopularAds.class);
+			startActivity(intent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

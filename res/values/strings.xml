@@ -22,5 +22,7 @@
     <string name="title_activity_crop">CropActivity</string>
     <string name="title_activity_color_adjustment">ColorAdjustmentActivity</string>
     <string name="title_activity_company_tag">CompanyTagActivity</string>
+    <string name="title_activity_popular_ads">PopularAds</string>
+    <string name="title_activity_personal_ads">PersonalAds</string>
 
 </resources>
