@@ -51,7 +51,10 @@ public class AdCreationManager {
 	private String mCompanyName;
 
 	// Array of urls to logo images
-	private ArrayList<String> mLogos;
+	private ArrayList<String> mLogoList;
+	
+	// the logo the user has chosen to use
+	private Bitmap mLogo;
 
 	// Stack of bitmap layers
 	private Stack<Bitmap> mBitmapStack;
@@ -73,7 +76,7 @@ public class AdCreationManager {
 
 		mFileUri = fileUri;
 
-		mLogos = new ArrayList<String>();
+		mLogoList = new ArrayList<String>();
 
 		mCompanyName = null;
 
@@ -99,6 +102,24 @@ public class AdCreationManager {
 	 */
 	public String getCompanyName(){
 		return mCompanyName;
+	}
+	
+	/**
+	 * Sets which logo the user wants to use in 
+	 * the ad
+	 * @param logo The chosen logo
+	 */
+	public void setCompanyLogo(Bitmap logo){
+		mLogo = logo;
+	}
+	
+	/**
+	 * Returns the logo the user has chosen to
+	 * use for this ad.
+	 * @return The chosen logo. Null if none selected yet
+	 */
+	public Bitmap getCompanyLogo(){
+		return mLogo;
 	}
 
 	/**
