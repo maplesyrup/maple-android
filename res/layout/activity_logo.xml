@@ -1,96 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
-<RelativeLayout 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-	
-    <TextView
-        android:id="@+id/companyTag" 
-         android:layout_height="wrap_content" 
-         android:layout_width="wrap_content"
-         android:textStyle="bold"
-         android:textSize="20sp"
-         android:paddingBottom="5sp"
-         android:paddingTop="5sp"
-         android:layout_centerHorizontal="true"
-    />
-    
-     <ImageView 
-         android:id="@+id/photo" 
-         android:layout_height="wrap_content" 
-         android:layout_width="wrap_content" 
-         android:clickable="true"
-         android:layout_centerHorizontal="true"
-         android:layout_below="@+id/companyTag"
-     />
-     
-     <TextView
-        android:id="@+id/logoInstructions" 
-         android:layout_height="wrap_content" 
-         android:layout_width="wrap_content"
-         android:textColor="#ff0000"
-         android:text="Click to place logo"
-         android:textStyle="italic"
-         android:textSize="15sp"
-         android:layout_centerHorizontal="true"
-         android:layout_below="@+id/photo"
-    />
-    
-     <ImageView 
-         android:id="@+id/logoPic" 
-         android:layout_height="wrap_content" 
-         android:layout_width="wrap_content"
-         android:visibility="invisible"
-       />
-    
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/companyTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="5sp"
+            android:paddingTop="5sp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/companyTag"
+            android:layout_centerHorizontal="true"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/logoInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photo"
+            android:layout_centerHorizontal="true"
+            android:text="Click to place logo"
+            android:textColor="#ff0000"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/logoPic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
         <Button
-        android:id="@+id/increaseSize"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="changeLogoSize"
-        android:layout_below="@+id/logoInstructions"
-        android:text="Increase Logo Size"
-        
-        />    
-    
-    <Button
-        android:id="@+id/decreaseSize"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="changeLogoSize"
-        android:layout_below="@+id/increaseSize"        
-        android:text="Decrease Logo Size"/>
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="save"
-        android:text="Save"
-        android:layout_marginTop="30sp"
-        android:layout_below="@+id/decreaseSize"
-        android:layout_alignParentRight="true"
-        />
-    
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="returnToEditor"
-        android:text="Cancel"
-        android:layout_alignTop="@+id/save"
-        android:layout_toLeftOf="@+id/save"
-        />
+            android:id="@+id/increaseSize"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logoInstructions"
+            android:onClick="changeLogoSize"
+            android:text="Increase Logo Size" />
 
-    <Button
-        android:id="@+id/pickLogoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/cancel"
-        android:layout_alignTop="@+id/save"
-        android:onClick="launchLogoPicker"
-        android:text="Pick A Logo" />
+        <Button
+            android:id="@+id/decreaseSize"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/increaseSize"
+            android:onClick="changeLogoSize"
+            android:text="Decrease Logo Size" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/pickLogoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/decreaseSize"
+			android:layout_centerHorizontal="true"
+            android:onClick="launchLogoPicker"
+            android:text="Pick A Logo" />
+
+        <Button
+            android:id="@+id/nextStage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/decreaseSize"
+            android:onClick="nextStage"
+            android:text="Next" />
+
+        <Button
+            android:id="@+id/prevStage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/nextStage"
+            android:onClick="prevStage"
+            android:text="Back" />
+    </RelativeLayout>
+
 </ScrollView>

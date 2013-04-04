@@ -3,8 +3,7 @@ package com.example.maple_android;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import com.example.ad_creation.ColorAdjustmentActivity;
-import com.example.ad_creation.CropActivity;
+import com.example.ad_creation.*;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +38,7 @@ public class AdCreationManager {
 	/* The order of the ad creation funnel */
 	Class<?>[] mFunnel = { 
 			CropActivity.class,
+			CompanyTagActivity.class,
 			ColorAdjustmentActivity.class,
 			LogoActivity.class,
 			TextActivity.class
@@ -51,7 +51,10 @@ public class AdCreationManager {
 	private String mCompanyName;
 
 	// Array of urls to logo images
-	private ArrayList<String> mLogos;
+	private ArrayList<String> mLogoList;
+	
+	// the logo the user has chosen to use
+	private Bitmap mLogo;
 
 	// Stack of bitmap layers
 	private Stack<Bitmap> mBitmapStack;
@@ -73,7 +76,7 @@ public class AdCreationManager {
 
 		mFileUri = fileUri;
 
-		mLogos = new ArrayList<String>();
+		mLogoList = new ArrayList<String>();
 
 		mCompanyName = null;
 
@@ -81,6 +84,42 @@ public class AdCreationManager {
 
 		
 		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
+	}
+	
+	/** 
+	 * Set which company this ad is tagged with
+	 * @param name The company name
+	 */
+	public void setCompanyName(String name){
+		mCompanyName = name;
+	}
+	
+	/**
+	 * Returns what company the ad has been tagged with, or
+	 * null if no tag has been set yet.
+	 * 
+	 * @return The company name
+	 */
+	public String getCompanyName(){
+		return mCompanyName;
+	}
+	
+	/**
+	 * Sets which logo the user wants to use in 
+	 * the ad
+	 * @param logo The chosen logo
+	 */
+	public void setCompanyLogo(Bitmap logo){
+		mLogo = logo;
+	}
+	
+	/**
+	 * Returns the logo the user has chosen to
+	 * use for this ad.
+	 * @return The chosen logo. Null if none selected yet
+	 */
+	public Bitmap getCompanyLogo(){
+		return mLogo;
 	}
 
 	/**

@@ -1,6 +1,12 @@
-package com.example.maple_android;
+package com.example.ad_creation;
 
 import java.util.ArrayList;
+
+import com.example.maple_android.AdCreationManager;
+import com.example.maple_android.MapleApplication;
+import com.example.maple_android.R;
+import com.example.maple_android.Utility;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,9 +37,8 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 
 public class LogoPickerActivity extends Activity {
-	/* Global app */
-	MapleApplication mApp;
-	
+	private MapleApplication mApp;
+	private AdCreationManager mAdCreationManager;
 
 	private GridView mGridview; // the view we are using to display the logos
 	private ArrayList<Bitmap> mLogos; // list of available logos
@@ -45,13 +50,15 @@ public class LogoPickerActivity extends Activity {
 		
 		//init app
 		mApp = (MapleApplication) this.getApplication();
+		mAdCreationManager = mApp.getAdCreationManager();
 		
 		// get available company logos
+		// TODO: Change this to be done in the ad manager
 		mLogos = mApp.getCurrentCompanyLogos();
 				
 		// set activity header text to reflect company
 		TextView header = (TextView) findViewById(R.id.logoPickerTitle);
-		header.setText("Pick A " + mApp.getCurrentCompany() + " Logo");
+		header.setText("Pick A " + mAdCreationManager.getCompanyName() + " Logo");
 
 		// set up grid view with adapter to show logos
 		mGridview = (GridView) findViewById(R.id.gridview);
@@ -113,8 +120,8 @@ public class LogoPickerActivity extends Activity {
 	 * null is passed.
 	 */
 	public void returnToLogoActivity(){
+		mAdCreationManager.setCompanyLogo(mSelectedLogo);
 		Intent i = new Intent(this, LogoActivity.class);
-		i.putExtra("logoArray", Utility.bitmapToByteArray(mSelectedLogo));
 		startActivity(i);
 	}
 
