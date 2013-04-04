@@ -3,8 +3,7 @@ package com.example.maple_android;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import com.example.ad_creation.ColorAdjustmentActivity;
-import com.example.ad_creation.CropActivity;
+import com.example.ad_creation.*;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +38,7 @@ public class AdCreationManager {
 	/* The order of the ad creation funnel */
 	Class<?>[] mFunnel = { 
 			CropActivity.class,
+			CompanyTagActivity.class,
 			ColorAdjustmentActivity.class,
 			LogoActivity.class,
 			TextActivity.class
@@ -81,6 +81,24 @@ public class AdCreationManager {
 
 		
 		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
+	}
+	
+	/** 
+	 * Set which company this ad is tagged with
+	 * @param name The company name
+	 */
+	public void setCompanyName(String name){
+		mCompanyName = name;
+	}
+	
+	/**
+	 * Returns what company the ad has been tagged with, or
+	 * null if no tag has been set yet.
+	 * 
+	 * @return The company name
+	 */
+	public String getCompanyName(){
+		return mCompanyName;
 	}
 
 	/**
