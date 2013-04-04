@@ -21,5 +21,6 @@
     <string name="title_activity_new_ad">NewAdActivity</string>
     <string name="title_activity_crop">CropActivity</string>
     <string name="title_activity_color_adjustment">ColorAdjustmentActivity</string>
+    <string name="title_activity_company_tag">CompanyTagActivity</string>
 
 </resources>

@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.example.ad_creation.LogoActivity;
 import com.example.maple_android.AdCreationManager.Filters;
 
 import com.facebook.Session;
@@ -72,10 +73,6 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
-
-
-
-
 		mFilterSpinner.setAdapter(adapter);
 		mFilterSpinner.setSelection(adapter.getPosition(mApp.getAdCreationManager().getCurrentFilter().toString()));
 
