@@ -68,23 +68,13 @@ public class MainActivity extends Activity {
 		
 		mProfilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);
 		mProfilePictureView.setCropped(true);
-		
-		Intent i = getIntent();
-		if (i == null || i.getExtras() == null) {
-			return;
-		}
-		String success = getIntent().getExtras().getString("successMessage");
-		if (success != null) {
-			Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG).show();
-		}
 		if (mSession.isOpened()) {
 			// make request to the /me API
 			Request.executeMeRequestAsync(mSession,
 					new Request.GraphUserCallback() {
 						// callback after Graph API response with user object
 						@Override
-						public void onCompleted(GraphUser user,
-							Response response) {
+						public void onCompleted(GraphUser user, Response response) {
 							if (user != null) {
 								TextView greeting = (TextView) findViewById(R.id.greeting);
 								greeting.setText("Welcome " + user.getName() + "!");
