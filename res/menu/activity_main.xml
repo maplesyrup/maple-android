@@ -9,15 +9,15 @@
 	<!-- android:icon="@drawable/ic_menu_main" -->
 	 
     <item android:id="@+id/main"
-     android:title="New"
+     android:title="@string/new_str"
      android:showAsAction="ifRoom|withText" />
     
     <item android:id="@+id/personal"
-     android:title="My Ads" 
+     android:title="@string/my_ads" 
      android:showAsAction="ifRoom|withText" />
     
     <item android:id="@+id/popular"
-     android:title="Popular"
+     android:title="@string/popular"
      android:showAsAction="ifRoom|withText" />
         
     <item android:id="@+id/logout"

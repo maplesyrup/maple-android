@@ -3,6 +3,7 @@ package com.example.maple_android;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.MenuItem;
 
 public class PersonalAds extends Activity {
 
@@ -19,4 +20,10 @@ public class PersonalAds extends Activity {
 		return true;
 	}
 
+	/**
+	 * Respond to each tab button
+	 */
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return Utility.myOnOptionsItemSelected(this, item);
+	}
 }

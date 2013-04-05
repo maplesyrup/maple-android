@@ -193,38 +193,7 @@ public class MainActivity extends Activity {
 	 * Respond to each tab button
 	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// respond to menu item selection
-		Intent intent;
-		switch (item.getItemId()) {
-		case R.id.logout:
-			onClickLogout();
-			return true;
-		case R.id.main:
-			Log.d("Maple Syrup", "clicked on main");
-			return super.onOptionsItemSelected(item);
-		case R.id.personal:
-			intent = new Intent(this, PersonalAds.class);
-			startActivity(intent);
-			return true;
-		case R.id.popular:
-			intent = new Intent(this, PopularAds.class);
-			startActivity(intent);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	/**
-	 * Logs the user out
-	 */
-	private void onClickLogout() {
-		Session session = Session.getActiveSession();
-		if (session != null && !session.isClosed()) {
-			session.closeAndClearTokenInformation();
-		}
-		Intent i = new Intent(this, LoginActivity.class);
-		startActivity(i);
+		return Utility.myOnOptionsItemSelected(this, item);
 	}
 
 }
