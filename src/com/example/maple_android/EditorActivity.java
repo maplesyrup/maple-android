@@ -11,6 +11,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.example.ad_creation.LogoActivity;
+import com.example.ad_creation.TextActivity;
 import com.example.maple_android.AdCreationManager.Filters;
 
 import com.facebook.Session;
