@@ -41,7 +41,8 @@ public class AdCreationManager {
 			CompanyTagActivity.class,
 			ColorAdjustmentActivity.class,
 			LogoActivity.class,
-			TextActivity.class
+			TextActivity.class,
+			PublishActivity.class
 	};
 	// keeps track of which stage of the funnel we
 	// are in as an index into mFunnel. 
