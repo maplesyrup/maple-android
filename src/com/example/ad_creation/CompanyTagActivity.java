@@ -32,7 +32,7 @@ public class CompanyTagActivity extends Activity {
 		mApp = (MapleApplication) this.getApplication();
 		mAdCreationManager = mApp.getAdCreationManager();
 
-		// get most recent ad of stack
+		// get most recent ad off stack
 		// initialize adjusted ad to the original
 		Bitmap ad = mAdCreationManager.getCurrentBitmap();
 		mAdView = (ImageView) findViewById(R.id.ad);

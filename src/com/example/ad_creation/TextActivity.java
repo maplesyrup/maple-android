@@ -1,4 +1,4 @@
-package com.example.maple_android;
+package com.example.ad_creation;
 
 import java.io.ByteArrayOutputStream;
 import android.app.Activity;
@@ -22,13 +22,16 @@ import android.widget.TextView.BufferType;
 
 import com.commonsware.cwac.colormixer.ColorMixer;
 import com.commonsware.cwac.colormixer.ColorMixerDialog;
+import com.example.maple_android.AdCreationManager;
+import com.example.maple_android.MapleApplication;
+import com.example.maple_android.R;
 
 public class TextActivity extends Activity implements
 		FontPickerDialog.FontPickerDialogListener {
-	/* Global app */
-	MapleApplication mApp;
+	private MapleApplication mApp;
+	private AdCreationManager mAdCreationManager;
 
-	private ImageView mPhoto;
+	private ImageView mAdView;
 
 	// text option
 	private boolean mShowOptions;
@@ -45,17 +48,19 @@ public class TextActivity extends Activity implements
 
 		// Init app
 		mApp = (MapleApplication) this.getApplication();
-		
+		mAdCreationManager = mApp.getAdCreationManager();
+
 		// set photo
-		mPhoto = (ImageView) this.findViewById(R.id.photo);
-		mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
+		mAdView = (ImageView) this.findViewById(R.id.photo);
+		mAdView.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 
 		// initialize photo for clicking
-		mPhoto.setOnTouchListener(new View.OnTouchListener() {
+		mAdView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				placeText(v, event);
-				/* This callback function requires us to return a boolean.
+				/*
+				 * This callback function requires us to return a boolean.
 				 * Return true just to appease it.
 				 */
 				return true;
@@ -80,7 +85,7 @@ public class TextActivity extends Activity implements
 					public void onTextChanged(CharSequence s, int start,
 							int before, int count) {
 						updateTextSize();
-					
+
 					}
 
 					@Override
@@ -116,12 +121,12 @@ public class TextActivity extends Activity implements
 
 	}
 
-	/** Grabs the user entered value from the font size entry
-	  * text box and updates the text size with it.
-	  * Changes are instant, and error checking is done for null
-	  * values. The XML declaration specifies that only digits
-	  * can be entered.
-	  */
+	/**
+	 * Grabs the user entered value from the font size entry text box and
+	 * updates the text size with it. Changes are instant, and error checking is
+	 * done for null values. The XML declaration specifies that only digits can
+	 * be entered.
+	 */
 	private void updateTextSize() {
 		// grab entry as string
 		String textSize = ((EditText) findViewById(R.id.fontSize)).getText()
@@ -139,12 +144,15 @@ public class TextActivity extends Activity implements
 			mPhotoText.setTextSize((float) size);
 	}
 
-	/** Called when a click is registered on the picture.
-	 * This function saves that click location for future
-	 * reference, and moves the currently written text to
-	 * the new location.	
-	 * @param v The view that was clicked on
-	 * @param event The mouse click
+	/**
+	 * Called when a click is registered on the picture. This function saves
+	 * that click location for future reference, and moves the currently written
+	 * text to the new location.
+	 * 
+	 * @param v
+	 *            The view that was clicked on
+	 * @param event
+	 *            The mouse click
 	 */
 	private void placeText(View v, MotionEvent event) {
 		// update options after click
@@ -164,12 +172,12 @@ public class TextActivity extends Activity implements
 		mTextEntryField.requestFocus();
 	}
 
-	/** This function toggles the visibility
-	 * of the text editing options. They are initializing
-	 * set to be hidden until the user clicks on the picture.
-	 * Then they are shown, and the initial instruction are
-	 * hidden. Calling this again will reverse the process. The
-	 * visibility status is stored in mShowOptions.
+	/**
+	 * This function toggles the visibility of the text editing options. They
+	 * are initializing set to be hidden until the user clicks on the picture.
+	 * Then they are shown, and the initial instruction are hidden. Calling this
+	 * again will reverse the process. The visibility status is stored in
+	 * mShowOptions.
 	 */
 	private void toggleOptions() {
 		// switch setting
@@ -187,7 +195,6 @@ public class TextActivity extends Activity implements
 
 		// update View visibilities
 		findViewById(R.id.changeColor).setVisibility(visibility);
-		findViewById(R.id.save).setVisibility(visibility);
 		findViewById(R.id.changeFont).setVisibility(visibility);
 		findViewById(R.id.fontSize).setVisibility(visibility);
 		findViewById(R.id.fontSizeLabel).setVisibility(visibility);
@@ -195,20 +202,24 @@ public class TextActivity extends Activity implements
 		mPhotoText.setVisibility(visibility);
 	}
 
-	/** start a dialog that shows all availabe fonts and
-	/ allows the user to pick which one they want to use
+	/**
+	 * start a dialog that shows all availabe fonts and / allows the user to
+	 * pick which one they want to use
 	 * 
-	 * @param view The view that was clicked on
+	 * @param view
+	 *            The view that was clicked on
 	 */
 	public void changeFont(View view) {
 		FontPickerDialog dlg = new FontPickerDialog();
 		dlg.show(getFragmentManager(), "font_picker");
 	}
 
-	/** Call back method for the font picker dialog
-	 * This is called when a font is selected.
+	/**
+	 * Call back method for the font picker dialog This is called when a font is
+	 * selected.
 	 * 
-	 * @param dialog The dialog instance. Contains the selected font.
+	 * @param dialog
+	 *            The dialog instance. Contains the selected font.
 	 */
 	@Override
 	public void onFontSelected(FontPickerDialog dialog) {
@@ -225,11 +236,12 @@ public class TextActivity extends Activity implements
 
 	}
 
-	/** Called when the change color button is clicked.
-	 * This launches a color picker dialog that allows the
-	 * user to change which color is being used.
+	/**
+	 * Called when the change color button is clicked. This launches a color
+	 * picker dialog that allows the user to change which color is being used.
 	 * 
-	 * @param view The button that was clicked on
+	 * @param view
+	 *            The button that was clicked on
 	 */
 	public void changeColor(View view) {
 
@@ -262,11 +274,12 @@ public class TextActivity extends Activity implements
 		return true;
 	}
 
-	/** Combines the currently created text with the
-	 * image bitmap. The result is written to the original
-	 * byteArray and returned to the editoractivity
+	/**
+	 * Combines the currently created text with the image bitmap. The result is
+	 * written to the original byteArray and returned to the editoractivity
 	 * 
-	 * @param view The button that was clicked
+	 * @param view
+	 *            The button that was clicked
 	 */
 	public void save(View view) {
 		// get text bitmap
@@ -278,19 +291,20 @@ public class TextActivity extends Activity implements
 				currBitmap.getHeight(), currBitmap.getConfig());
 		Canvas canvas = new Canvas(bmOverlay);
 		canvas.drawBitmap(currBitmap, new Matrix(), null);
-		canvas.drawBitmap(textBitmap, mTextXPos, mTextYPos - mPhotoText.getHeight(),
-				null);
+		canvas.drawBitmap(textBitmap, mTextXPos,
+				mTextYPos - mPhotoText.getHeight(), null);
 
 		// save picture to byte array and return
 		mApp.getAdCreationManager().pushBitmap(bmOverlay);
 
-		returnToEditor(view);
 	}
 
-	/** This function is used to generate a bitmap from the
-	 * TextView that holds the currently created text
+	/**
+	 * This function is used to generate a bitmap from the TextView that holds
+	 * the currently created text
 	 * 
-	 * @param v The TextView containing the text we want to write
+	 * @param v
+	 *            The TextView containing the text we want to write
 	 * @return The text converted to a bitmap
 	 */
 	private Bitmap loadBitmapFromView(View v) {
@@ -302,13 +316,38 @@ public class TextActivity extends Activity implements
 		return b;
 	}
 
-	/** Returns the stored byteArray of the ad to the
-	 * EditorActivity
+	/**
+	 * Save ad and continue to the next stage in the funnel
+	 * 
 	 * @param view
 	 */
-	public void returnToEditor(View view) {
-		Intent i = new Intent(this, EditorActivity.class);
-		startActivity(i);
+	public void nextStage(View view) {
+		// get text bitmap
+		Bitmap textBitmap = loadBitmapFromView(mPhotoText);
+		Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
+
+		// combine two bitmaps
+		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
+				currBitmap.getHeight(), currBitmap.getConfig());
+		Canvas canvas = new Canvas(bmOverlay);
+		canvas.drawBitmap(currBitmap, new Matrix(), null);
+		canvas.drawBitmap(textBitmap, mTextXPos,
+				mTextYPos - mPhotoText.getHeight(), null);
+
+		// add picture to stack
+		mApp.getAdCreationManager().pushBitmap(bmOverlay);
+		
+		
+		mAdCreationManager.nextStage(this);
+	}
+
+	/**
+	 * Return to the previous stage without saving any changes
+	 * 
+	 * @param view
+	 */
+	public void prevStage(View view) {
+		mAdCreationManager.previousStage(this);
 	}
 
 }

@@ -1,8 +1,12 @@
-package com.example.maple_android;
+package com.example.ad_creation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.example.maple_android.FontManager;
+import com.example.maple_android.R;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

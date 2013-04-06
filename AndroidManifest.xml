@@ -39,7 +39,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.example.maple_android.TextActivity"
+            android:name="com.example.ad_creation.TextActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
@@ -84,6 +84,10 @@
         <activity
             android:name="com.example.maple_android.PersonalAds"
             android:label="@string/title_activity_personal_ads" >
+		</activity>
+		<activity
+            android:name="com.example.ad_creation.PublishActivity"
+            android:label="@string/title_activity_publish" >
         </activity>
     </application>
 
