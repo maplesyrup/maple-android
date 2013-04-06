@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Paint.Style;
@@ -17,12 +18,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;;
 
 
-public class LogoView extends View implements OnTouchListener {
-	private Paint mPaint;
+public class LogoView extends View implements OnTouchListener {	
 	
-	/* Top left and bottom right corner of logo */
-	
-	
+	// Width and height of view
 	private int mWidth;
 	private int mHeight;
 	
@@ -33,20 +31,16 @@ public class LogoView extends View implements OnTouchListener {
 
 	private ScaleGestureDetector mScaleDetector;
 	private float mScaleFactor = 1.f;
-	private Rect mDstRect;
-	private Rect mDstRectScaled;
-
 	
-	private boolean mFirstRender;
-	public enum Direction {
-		X,
-		Y
-	}
+	// Actual size of logo bitmap
+	private Rect mDstRect;
+	
+	// Scaled version of logo bitmap
+	private Rect mDstRectScaled;
 	
 	public LogoView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
-		mFirstRender = false;
 		mDstRect = new Rect(0, 0, 100, 100);
 		mDstRectScaled = new Rect(0, 0, 100, 100);
 		mWidth = 400;
@@ -73,7 +67,6 @@ public class LogoView extends View implements OnTouchListener {
 		super.onDraw(canvas);
 
 		canvas.save();
-	    //canvas.scale(mScaleFactor, mScaleFactor);
 		if (mCurrAd != null) {
 			canvas.drawBitmap(mCurrAd, 0, 0, null);
 		}
@@ -82,6 +75,7 @@ public class LogoView extends View implements OnTouchListener {
 			int height =  (int)(mScaleFactor * (mDstRect.bottom - mDstRect.top));
 			mDstRectScaled.set(mDstRect.left, mDstRect.top, mDstRect.left + width, mDstRect.top + height);
 			canvas.drawBitmap(mCurrLogo, null, mDstRectScaled, null);
+			
 		}
 		
 		invalidate();
@@ -89,31 +83,36 @@ public class LogoView extends View implements OnTouchListener {
 		
 		canvas.restore();
 	}
-	
+	/**
+	 * When it detects a scaling gesture, it will scale. Moves the logo if there is only
+	 * one pointer and it's on the logo.
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 	    // Let the ScaleGestureDetector inspect all events.
 	    mScaleDetector.onTouchEvent(ev);
 	    
-	    if (ev.getPointerCount() == 1) {
+	    if (ev.getPointerCount() == 1 && mDstRectScaled.contains((int)ev.getX(), (int)ev.getY())) {
 		    switch (ev.getAction()) {
-		    case MotionEvent.ACTION_DOWN:
-		    	
-		    	mPrevTouch = new PointF(ev.getX(), ev.getY());
-		    	break;
-			case MotionEvent.ACTION_MOVE:
-				moveLogo(ev.getX() - mPrevTouch.x, ev.getY() - mPrevTouch.y);
-	    		mPrevTouch.set(ev.getX(), ev.getY());
-				break;
-			case MotionEvent.ACTION_CANCEL:
-				//mPrevTouch = null;
-				break;
-			case MotionEvent.ACTION_UP:
-				mPrevTouch = null;
-				break;
+			    case MotionEvent.ACTION_DOWN:
+			    	if (mPrevTouch == null) {
+			    		mPrevTouch = new PointF(ev.getX(), ev.getY());
+			    	} else {
+			    		mPrevTouch.set(ev.getX(), ev.getY());	
+		    		}
+			    	break;
+				case MotionEvent.ACTION_MOVE:
+					moveLogo(ev.getX() - mPrevTouch.x, ev.getY() - mPrevTouch.y);
+		    		mPrevTouch.set(ev.getX(), ev.getY());
+					break;
+				case MotionEvent.ACTION_CANCEL:
+					break;
+				case MotionEvent.ACTION_UP:
+					break;
+				default:
+					break;
 		    }
 	    }
-	    
 	    return true;
 	}
 	
@@ -128,11 +127,27 @@ public class LogoView extends View implements OnTouchListener {
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
+	public Bitmap addLogo() {
+		Bitmap scaledLogo = Bitmap.createScaledBitmap(mCurrLogo, 
+				mDstRectScaled.right - mDstRectScaled.left, 
+				mDstRectScaled.bottom - mDstRectScaled.top, false);
+		
+        Bitmap newAd = Bitmap.createBitmap(mCurrAd.getWidth(), mCurrAd.getHeight(), mCurrAd.getConfig());
+        Canvas canvas = new Canvas(newAd);
+        canvas.drawBitmap(mCurrAd, new Matrix(), null);
+        canvas.drawBitmap(scaledLogo, mDstRect.left, mDstRect.top, null);
 
+		return newAd;
+	}
+	
+	/**
+	 * Android has built in scale listener.
+	 * 
+	 *
+	 */
 	private class ScaleListener 
         extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 	    @Override

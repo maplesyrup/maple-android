@@ -31,23 +31,13 @@
             android:id="@+id/logoInstructions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/photo"
+            android:layout_below="@+id/logoView"
             android:layout_centerHorizontal="true"
             android:text="Click to place logo"
             android:textColor="#ff0000"
             android:textSize="15sp"
             android:textStyle="italic" />
-         <ImageView
-            android:id="@+id/photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/logoPic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible" />
+         
 
         
 
@@ -55,7 +45,7 @@
             android:id="@+id/pickLogoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/decreaseSize"
+            android:layout_below="@+id/logoInstructions"
 			android:layout_centerHorizontal="true"
             android:onClick="launchLogoPicker"
             android:text="Pick A Logo" />
@@ -65,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/decreaseSize"
+            android:layout_below="@+id/logoInstructions"
             android:onClick="nextStage"
             android:text="Next" />
 
@@ -74,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/nextStage"
+            android:layout_alignTop="@+id/logoInstructions"
             android:onClick="prevStage"
             android:text="Back" />
     </RelativeLayout>
