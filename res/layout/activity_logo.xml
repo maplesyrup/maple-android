@@ -18,13 +18,14 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/companyTag"
-            android:layout_centerHorizontal="true"
-            android:clickable="true" />
+        
+        <com.example.custom_views.LogoView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:id="@+id/logoView"
+		     android:layout_below="@+id/companyTag"
+		    android:layout_centerHorizontal="true"
+		/> 
 
         <TextView
             android:id="@+id/logoInstructions"
@@ -36,6 +37,11 @@
             android:textColor="#ff0000"
             android:textSize="15sp"
             android:textStyle="italic" />
+         <ImageView
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/logoPic"
@@ -43,21 +49,7 @@
             android:layout_height="wrap_content"
             android:visibility="invisible" />
 
-        <Button
-            android:id="@+id/increaseSize"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/logoInstructions"
-            android:onClick="changeLogoSize"
-            android:text="Increase Logo Size" />
-
-        <Button
-            android:id="@+id/decreaseSize"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/increaseSize"
-            android:onClick="changeLogoSize"
-            android:text="Decrease Logo Size" />
+        
 
         <Button
             android:id="@+id/pickLogoButton"

@@ -9,22 +9,34 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.View.OnTouchListener;;
 
-public class LogoView extends View {
+
+public class LogoView extends View implements OnTouchListener {
 	private Paint mPaint;
-	/* Top left and bottom right corner of bounding box */
-	private PointF mTopLeftBound;
-	private PointF mBtmRightBound;
 	
 	/* Top left and bottom right corner of logo */
-	private PointF mTopLeft;
-	private PointF mBtmRight;
 	
-	private Bitmap mCurrBitmap;
+	
+	private int mWidth;
+	private int mHeight;
+	
+	private PointF mPrevTouch;
+	
 	private Bitmap mCurrLogo;
+	private Bitmap mCurrAd;
 
+	private ScaleGestureDetector mScaleDetector;
+	private float mScaleFactor = 1.f;
+	private Rect mDstRect;
+	private Rect mDstRectScaled;
+
+	
 	private boolean mFirstRender;
 	public enum Direction {
 		X,
@@ -33,81 +45,105 @@ public class LogoView extends View {
 	
 	public LogoView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-	}
-
-	public void setBitmap(Bitmap bitmap) {
-		mCurrBitmap = bitmap;
-		mFirstRender = true;
+		mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+		mFirstRender = false;
+		mDstRect = new Rect(0, 0, 100, 100);
+		mDstRectScaled = new Rect(0, 0, 100, 100);
+		mWidth = 400;
+		mHeight = 400;
+		
 	}
 	
+	public void setAd(Bitmap ad) {
+		mCurrAd = ad;
+		mWidth = ad.getHeight();
+		mHeight = ad.getWidth();
+	}
+
 	public void setLogo(Bitmap logo, float x, float y) {
 		mCurrLogo = logo;
-		mTopLeft = new PointF(x, y);
-		mBtmRight = new PointF(x + mCurrLogo.getWidth(), y + mCurrLogo.getHeight());
 	}
 	
 	@Override
 	protected void onMeasure(int width, int height) {
-		
-		if (mCurrBitmap != null) {
-			setMeasuredDimension(mCurrBitmap.getWidth(), mCurrBitmap.getHeight());
-		} else {
-			setMeasuredDimension(0, 0);
-		}
+		setMeasuredDimension(mWidth, mHeight);
 	}
 	
 	protected void onDraw(Canvas canvas) {
-		if (mCurrBitmap != null) {
-			float centerX = mCurrBitmap.getWidth() / 2;
-			float centerY = mCurrBitmap.getHeight() / 2;
-			
-			if (mFirstRender) {		
-				mTopLeftBound.set(0, 0);
-				mBtmRightBound.set(mCurrBitmap.getWidth(), mCurrBitmap.getHeight());
-				
-				mFirstRender = false;
-			}
-			canvas.drawARGB(50, 255, 255, 255);
-			mPaint.setColor(Color.BLACK);
-			mPaint.setStyle(Style.STROKE);
-			mPaint.setStrokeWidth(3.0f);
-			
-			canvas.drawBitmap(mCurrBitmap, mTopLeftBound.x, mTopLeftBound.y, null);
+		super.onDraw(canvas);
+
+		canvas.save();
+	    //canvas.scale(mScaleFactor, mScaleFactor);
+		if (mCurrAd != null) {
+			canvas.drawBitmap(mCurrAd, 0, 0, null);
 		}
-		invalidate();
-	}
-	
-	private boolean isValidMove(Direction dir, float delta) {
-		switch (dir) {
-		case X:
-			return mTopLeft.x + delta > mTopLeftBound.x && mTopLeft.x + delta < mBtmRightBound.x &&
-					mBtmRight.x + delta > mTopLeftBound.x && mBtmRight.x + delta < mBtmRightBound.x;						
-		case Y:
-			return mTopLeft.y + delta > mTopLeftBound.y && mTopLeft.y + delta < mBtmRightBound.y &&
-					mBtmRight.y + delta > mTopLeftBound.y && mBtmRight.y + delta < mBtmRightBound.y;				
-		default:
-			return false;
+		if (mCurrLogo != null) {
+			int width = (int)(mScaleFactor * (mDstRect.right - mDstRect.left));
+			int height =  (int)(mScaleFactor * (mDstRect.bottom - mDstRect.top));
+			mDstRectScaled.set(mDstRect.left, mDstRect.top, mDstRect.left + width, mDstRect.top + height);
+			canvas.drawBitmap(mCurrLogo, null, mDstRectScaled, null);
 		}
 		
+		invalidate();
+		
+		
+		canvas.restore();
 	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+	    // Let the ScaleGestureDetector inspect all events.
+	    mScaleDetector.onTouchEvent(ev);
+	    
+	    if (ev.getPointerCount() == 1) {
+		    switch (ev.getAction()) {
+		    case MotionEvent.ACTION_DOWN:
+		    	
+		    	mPrevTouch = new PointF(ev.getX(), ev.getY());
+		    	break;
+			case MotionEvent.ACTION_MOVE:
+				moveLogo(ev.getX() - mPrevTouch.x, ev.getY() - mPrevTouch.y);
+	    		mPrevTouch.set(ev.getX(), ev.getY());
+				break;
+			case MotionEvent.ACTION_CANCEL:
+				//mPrevTouch = null;
+				break;
+			case MotionEvent.ACTION_UP:
+				mPrevTouch = null;
+				break;
+		    }
+	    }
+	    
+	    return true;
+	}
+	
 	
 	public void moveLogo(float deltaX, float deltaY) {
-		
-		if (isValidMove(Direction.X, deltaX)) {
-			mTopLeft.x += deltaX;
-			mBtmRight.x += deltaX;
-		}
-		if (isValidMove(Direction.Y, deltaY)) {
-			mTopLeft.y += deltaY;
-			mBtmRight.y += deltaY;
-		}
+		mDstRect.left += deltaX;
+		mDstRect.right += deltaX;
+		mDstRect.top += deltaY;
+		mDstRect.bottom += deltaY;
+	
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
-	public void resizeLogo(float deltaLeftX, float deltaRightX, float deltaTopY, float deltaBtmY) {
-		mTopLeft.x += deltaLeftX;
-		mBtmRight.x += deltaRightX;
-		
-		mTopLeft.y += deltaTopY;
-		mBtmRight.y += deltaBtmY;
+
+	private class ScaleListener 
+        extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+	    @Override
+	    public boolean onScale(ScaleGestureDetector detector) {
+	        mScaleFactor *= detector.getScaleFactor();
+	
+	        // Don't let the object get too small or too large.
+	        mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
+	
+	        invalidate();
+	        return true;
+	    }
 	}
 }

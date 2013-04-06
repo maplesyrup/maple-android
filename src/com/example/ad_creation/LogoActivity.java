@@ -3,6 +3,8 @@ package com.example.ad_creation;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+import com.example.custom_views.CropView;
+import com.example.custom_views.LogoView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.EditorActivity;
 import com.example.maple_android.MapleApplication;
@@ -18,20 +20,25 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 
 public class LogoActivity extends Activity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
 
 	private ImageView mPhoto; // the image view showing the current ad
+	private LogoView mLogoView;
 
 	/* Logo details */
-	private ImageView mLogoView; // ImageView storing the logo to overlay. This
 									// view is shown on top of mPhoto
 	private Bitmap mLogoSrc = null; // the original source bitmap of the logo.
 	private Bitmap mLogoScaled = null; // the scaled logo that is shown
@@ -55,21 +62,11 @@ public class LogoActivity extends Activity {
 		mAdCreationManager = mApp.getAdCreationManager();
 
 		// set photo
-		mPhoto = (ImageView) this.findViewById(R.id.photo);
-		mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
+		//mPhoto = (ImageView) this.findViewById(R.id.photo);
+		//mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 
-		// initialize photo for clicking
-		mPhoto.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				placeLogo(v, event);
-				/*
-				 * This callback function requires us to return a boolean.
-				 * Return true just to appease it.
-				 */
-				return true;
-			}
-		});
+		mLogoView = (LogoView) findViewById(R.id.logoView);
+		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
 
 		// Update page title to reflect the company
 		TextView title = (TextView) this.findViewById(R.id.companyTag);
@@ -84,8 +81,8 @@ public class LogoActivity extends Activity {
 
 		if (logo != null) {
 			// save copy of the logo as bmp
-			mLogoView = (ImageView) this.findViewById(R.id.logoPic);
-			mLogoSrc = logo;
+			mLogoView.setLogo(logo, 0, 0);
+			/*mLogoSrc = logo;
 
 			// initialize for scaling
 			mLogoWidth = mLogoSrc.getWidth();
@@ -97,13 +94,13 @@ public class LogoActivity extends Activity {
 					.getCurrentBitmap().getWidth()) {
 
 				changeLogoSize(findViewById(R.id.decreaseSize));
-			}
+			}*/
 
 			// set logo bitmap to view
-			mLogoView.setImageBitmap(mLogoSrc);
 		}
 	}
 
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -111,32 +108,7 @@ public class LogoActivity extends Activity {
 		return true;
 	}
 
-	/**
-	 * Called when the user clicks on the picture. This call back uses the click
-	 * event to move the logo to the click location.
-	 * 
-	 * @param v
-	 *            The picture that was clicked
-	 * @param event
-	 *            The click event that holds the coordinates
-	 */
-	private void placeLogo(View v, MotionEvent event) {
-		// only allow them to place a logo if one has been picked
-		// from the LogoPickerActivity
-		if (mLogoSrc != null) {
-			// hide instructions
-			findViewById(R.id.logoInstructions).setVisibility(View.INVISIBLE);
-
-			// show logo
-			mLogoView.setVisibility(View.VISIBLE);
-
-			mLogoXOffset = event.getX() - mLogoWidth / 2;
-			mLogoYOffset = event.getY() - mLogoHeight / 2;
-
-			mLogoView.setX(mLogoXOffset + v.getX());
-			mLogoView.setY(mLogoYOffset + v.getY());
-		}
-	}
+	
 
 	/**
 	 * Called when the user changes the logo size Both the increase and decrease
@@ -162,7 +134,7 @@ public class LogoActivity extends Activity {
 		// make filter flag true to improve quality.
 		mLogoScaled = Bitmap.createScaledBitmap(mLogoSrc, mLogoWidth,
 				mLogoHeight, true);
-		mLogoView.setImageBitmap(mLogoScaled);
+		//mLogoView.setImageBitmap(mLogoScaled);
 	}
 
 	/**
