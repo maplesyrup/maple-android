@@ -13,10 +13,10 @@ import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -184,31 +184,16 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// respond to menu item selection
-		switch (item.getItemId()) {
-		case R.id.logout:
-			onClickLogout();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
 	/**
-	 * Logs the user out
+	 * Respond to each tab button
 	 */
-	private void onClickLogout() {
-		Session session = Session.getActiveSession();
-		if (session != null && !session.isClosed()) {
-			session.closeAndClearTokenInformation();
-		}
-		Intent i = new Intent(this, LoginActivity.class);
-		startActivity(i);
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return Utility.myOnOptionsItemSelected(this, item);
 	}
 
 }

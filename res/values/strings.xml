@@ -22,6 +22,11 @@
     <string name="title_activity_crop">CropActivity</string>
     <string name="title_activity_color_adjustment">ColorAdjustmentActivity</string>
     <string name="title_activity_company_tag">CompanyTagActivity</string>
+    <string name="title_activity_popular_ads">PopularAds</string>
+    <string name="title_activity_personal_ads">PersonalAds</string>
+    <string name="new_str">New</string>
+    <string name="my_ads">My Ads</string>
+    <string name="popular">Popular</string>
     <string name="title_activity_publish">PublishActivity</string>
 
 </resources>

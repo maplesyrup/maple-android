@@ -7,33 +7,20 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.view.MenuItem;
+
+import com.facebook.Session;
 
 public class Utility {
 	public static final int MEDIA_TYPE_IMAGE = 1;
@@ -190,5 +177,42 @@ public class Utility {
         }
 
         return mediaFile;
+    }
+    
+	/**
+	 * Logs the user out
+	 */
+	public static void onClickLogout(Activity activity) {
+		Session session = Session.getActiveSession();
+		if (session != null && !session.isClosed()) {
+			session.closeAndClearTokenInformation();
+		}
+		Intent i = new Intent(activity, LoginActivity.class);
+		activity.startActivity(i);
+	}
+    
+    public static boolean myOnOptionsItemSelected(final Activity activity, MenuItem item) {
+    	Intent intent = null;
+    	// respond to menu item selection
+    	switch (item.getItemId()) {
+		case R.id.logout:
+			onClickLogout(activity);
+			return true;
+		case R.id.main:
+			Log.d("Maple Syrup", "clicked on main");
+			intent = new Intent(activity, MainActivity.class);
+			activity.startActivity(intent);
+			return true;
+		case R.id.personal:
+			intent = new Intent(activity, PersonalAds.class);
+			activity.startActivity(intent);
+			return true;
+		case R.id.popular:
+			intent = new Intent(activity, PopularAds.class);
+			activity.startActivity(intent);
+			return true;
+		default:
+			return activity.onOptionsItemSelected(item);
+		}
     }
 }
