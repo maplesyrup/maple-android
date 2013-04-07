@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,13 @@ public class CropView extends View {
 	private PointF mTopLeft;
 	private PointF mBtmRight;
 	
-	/* Top left and bottom right corner of bounding box */
-	private PointF mTopLeftBound;
-	private PointF mBtmRightBound;
+	private Rect mBoundingBox;
+	private static final int MARGIN = 20;
+	
+	private int mWidth;
+	private int mHeight;
+	
+	private float mRatio;
 	
 	/* Length of crop square */
 	private float mLength;
@@ -48,10 +53,10 @@ public class CropView extends View {
 		mTopLeft = new PointF();
 		mBtmRight = new PointF();
 		
-		mTopLeftBound = new PointF();
-		mBtmRightBound = new PointF();
+		mBoundingBox = new Rect();
 		
 		mFirstRender = true;
+	
 	}
 	
 	/**
@@ -61,40 +66,46 @@ public class CropView extends View {
 	 */
 	public void setBitmap(Bitmap bitmap) {
 		mCurrBitmap = bitmap;
-		mLength = bitmap.getHeight();
 		mFirstRender = true;
+		invalidate();
 	}
 	
 	@Override
-	protected void onMeasure(int width, int height) {
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		//super.onMeasure(width, height);
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		
-		if (mCurrBitmap != null) {
-			setMeasuredDimension(mCurrBitmap.getWidth(), mCurrBitmap.getHeight());
-		} else {
-			setMeasuredDimension(0, 0);
-		}
+	    int screenWidth = MeasureSpec.getSize(widthMeasureSpec);
+	    int screenHeight = MeasureSpec.getSize(480);
 	}
 
 	protected void onDraw(Canvas canvas) {
+		
 		if (mCurrBitmap != null) {
-			float centerX = mCurrBitmap.getWidth() / 2;
-			float centerY = mCurrBitmap.getHeight() / 2;
 			
-			if (mFirstRender) {
-				mTopLeft.set(centerX - mLength / 2, centerY - mLength / 2);
-				mBtmRight.set(centerX + mLength / 2, centerY + mLength / 2);
+			if (mFirstRender) {				
+				int bBoxWidth = canvas.getWidth() - 2*MARGIN;
+				mRatio = bBoxWidth / (float) mCurrBitmap.getWidth();
+				int bBoxHeight = (int) (mRatio * mCurrBitmap.getHeight());
 				
-				mTopLeftBound.set(0, 0);
-				mBtmRightBound.set(mCurrBitmap.getWidth(), mCurrBitmap.getHeight());
+				mBoundingBox.set(MARGIN, 0, MARGIN + bBoxWidth, bBoxHeight);
+
+				mLength = mBoundingBox.width() > mBoundingBox.height() ? mBoundingBox.height() : mBoundingBox.width();
+
+				mTopLeft.set(mBoundingBox.exactCenterX() - mLength / 2, mBoundingBox.exactCenterY() - mLength / 2);
+				mBtmRight.set(mBoundingBox.exactCenterX() + mLength / 2, mBoundingBox.exactCenterY() + mLength / 2);
 				
+				
+	
 				mFirstRender = false;
 			}
+			
 			canvas.drawARGB(50, 255, 255, 255);
 			mPaint.setColor(Color.BLACK);
 			mPaint.setStyle(Style.STROKE);
 			mPaint.setStrokeWidth(3.0f);
 			
-			canvas.drawBitmap(mCurrBitmap, mTopLeftBound.x, mTopLeftBound.y, null);
+			canvas.drawBitmap(mCurrBitmap, null, mBoundingBox, null);
 			
 			canvas.drawRect(mTopLeft.x, mTopLeft.y, mBtmRight.x, mBtmRight.y, mPaint);
 		}
@@ -111,11 +122,11 @@ public class CropView extends View {
 	private boolean isValidMove(Direction dir, float delta) {
 		switch (dir) {
 		case X:
-			return mTopLeft.x + delta > mTopLeftBound.x && mTopLeft.x + delta < mBtmRightBound.x &&
-					mBtmRight.x + delta > mTopLeftBound.x && mBtmRight.x + delta < mBtmRightBound.x;						
+			return mTopLeft.x + delta > mBoundingBox.left && mTopLeft.x + delta < mBoundingBox.right &&
+					mBtmRight.x + delta > mBoundingBox.left && mBtmRight.x + delta < mBoundingBox.right;						
 		case Y:
-			return mTopLeft.y + delta > mTopLeftBound.y && mTopLeft.y + delta < mBtmRightBound.y &&
-					mBtmRight.y + delta > mTopLeftBound.y && mBtmRight.y + delta < mBtmRightBound.y;				
+			return mTopLeft.y + delta > mBoundingBox.top && mTopLeft.y + delta < mBoundingBox.bottom &&
+					mBtmRight.y + delta >mBoundingBox.top && mBtmRight.y + delta < mBoundingBox.bottom;				
 		default:
 			return false;
 		}
@@ -145,7 +156,7 @@ public class CropView extends View {
 	 * @return
 	 */
 	public Bitmap crop() {
-		return Bitmap.createBitmap(mCurrBitmap, (int) mTopLeft.x, (int) mTopLeft.y, (int) mLength, (int) mLength);
+		return Bitmap.createBitmap(mCurrBitmap, (int) (mTopLeft.x / mRatio), (int) (mTopLeft.y / mRatio), (int) (mLength / mRatio), (int) (mLength / mRatio));
 	}
 	
 }
