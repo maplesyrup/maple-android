@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/headerText"
@@ -26,7 +21,6 @@
             android:layout_below="@+id/headerText"
             android:layout_centerHorizontal="true" />
 
-        
         <Button
             android:id="@+id/publishButton"
             android:layout_width="wrap_content"
@@ -44,6 +38,20 @@
             android:layout_alignTop="@+id/publishButton"
             android:onClick="prevStage"
             android:text="Back" />
-    </RelativeLayout>
-
-</ScrollView>
+        
+     <RelativeLayout 
+	      android:id="@+id/InnerRelativeLayout"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:layout_alignParentBottom="true" >
+	
+	      <Button 
+	          android:text="@string/question" 
+	          android:id="@+id/Button"
+	          android:layout_alignParentRight="true" 
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:textSize="30dp">
+	      </Button>
+	 </RelativeLayout> 
+</RelativeLayout>

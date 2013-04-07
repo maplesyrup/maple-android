@@ -32,6 +32,7 @@
        android:onClick="cropAd"
        android:text="Crop" 
      />
+   
    <RelativeLayout 
 	      android:id="@+id/InnerRelativeLayout"
 	      android:layout_width="wrap_content"
