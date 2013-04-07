@@ -78,11 +78,11 @@
             android:label="@string/title_activity_company_tag" >
         </activity>
         <activity
-            android:name="com.example.maple_android.PopularAds"
+            android:name="com.example.maple_android.PopularAdsActivity"
             android:label="@string/title_activity_popular_ads" >
         </activity>
         <activity
-            android:name="com.example.maple_android.PersonalAds"
+            android:name="com.example.maple_android.PersonalAdsActivity"
             android:label="@string/title_activity_personal_ads" >
 		</activity>
 		<activity

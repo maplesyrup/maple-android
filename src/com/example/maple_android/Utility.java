@@ -204,11 +204,11 @@ public class Utility {
 			activity.startActivity(intent);
 			return true;
 		case R.id.personal:
-			intent = new Intent(activity, PersonalAds.class);
+			intent = new Intent(activity, PersonalAdsActivity.class);
 			activity.startActivity(intent);
 			return true;
 		case R.id.popular:
-			intent = new Intent(activity, PopularAds.class);
+			intent = new Intent(activity, PopularAdsActivity.class);
 			activity.startActivity(intent);
 			return true;
 		default:
