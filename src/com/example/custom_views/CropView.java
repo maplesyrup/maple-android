@@ -74,9 +74,11 @@ public class CropView extends View {
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		//super.onMeasure(width, height);
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		
-	    int screenWidth = MeasureSpec.getSize(widthMeasureSpec);
-	    int screenHeight = MeasureSpec.getSize(480);
+		int height = mCurrBitmap == null ? 480 : mCurrBitmap.getHeight();
+	    int width = MeasureSpec.getSize(widthMeasureSpec);
+	    
+		setMeasuredDimension(width, height);
+
 	}
 
 	protected void onDraw(Canvas canvas) {
@@ -156,7 +158,15 @@ public class CropView extends View {
 	 * @return
 	 */
 	public Bitmap crop() {
-		return Bitmap.createBitmap(mCurrBitmap, (int) (mTopLeft.x / mRatio), (int) (mTopLeft.y / mRatio), (int) (mLength / mRatio), (int) (mLength / mRatio));
+		int x = (int) (mTopLeft.x / mRatio);
+		int y = (int) (mTopLeft.y / mRatio);
+		int length = (int) (mLength / mRatio);
+		
+		/* Take care of rounding errors */
+		length = x + length > mCurrBitmap.getWidth() ? mCurrBitmap.getWidth() - x : length;
+		length = y + length > mCurrBitmap.getHeight() ? mCurrBitmap.getHeight() - y : length;
+
+		return Bitmap.createBitmap(mCurrBitmap, x, y, length, length);
 	}
 	
 }
