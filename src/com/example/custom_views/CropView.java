@@ -29,9 +29,6 @@ public class CropView extends View {
 	private Rect mBoundingBox;
 	private static final int MARGIN = 20;
 	
-	private int mWidth;
-	private int mHeight;
-	
 	private float mRatio;
 	
 	/* Length of crop square */
@@ -87,6 +84,8 @@ public class CropView extends View {
 			
 			if (mFirstRender) {				
 				int bBoxWidth = canvas.getWidth() - 2*MARGIN;
+				
+				// Determine aspect ratio so we can accurately get height without skew
 				mRatio = bBoxWidth / (float) mCurrBitmap.getWidth();
 				int bBoxHeight = (int) (mRatio * mCurrBitmap.getHeight());
 				
