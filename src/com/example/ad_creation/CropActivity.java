@@ -1,22 +1,19 @@
 package com.example.ad_creation;
 
-import com.example.custom_views.CropView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.EditorActivity;
-import com.example.maple_android.LoginActivity;
-import com.example.maple_android.MapleApplication;
-import com.example.maple_android.R;
-import com.facebook.Session;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.ImageView;
+
+import com.example.custom_views.CropView;
+import com.example.maple_android.AdCreationManager;
+import com.example.maple_android.LoginActivity;
+import com.example.maple_android.MapleApplication;
+import com.example.maple_android.R;
+import com.example.maple_android.Utility;
+import com.facebook.Session;
 
 /**
  * This activity crops an image
@@ -90,6 +87,12 @@ public class CropActivity extends Activity implements OnTouchListener {
 			break;
 		}
 		return true;
+	}
+	
+	public void getHelp(View v) {
+		String message = "Crop your image.";
+		String title = "Step 1";
+		Utility.createHelpDialog(this, message, title);
 	}
 }
 
