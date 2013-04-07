@@ -28,5 +28,6 @@
     <string name="my_ads">My Ads</string>
     <string name="popular">Popular</string>
     <string name="title_activity_publish">PublishActivity</string>
+    <string name="question">\?</string>
 
 </resources>

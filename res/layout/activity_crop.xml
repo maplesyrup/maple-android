@@ -39,7 +39,7 @@
 	      android:layout_alignParentBottom="true" >
 	
 	      <Button 
-	          android:text="\?" 
+	          android:text="@string/question" 
 	          android:id="@+id/Button"
 	          android:layout_alignParentRight="true" 
 	          android:layout_width="wrap_content"
