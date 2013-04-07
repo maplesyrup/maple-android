@@ -54,7 +54,6 @@ public class CropActivity extends Activity implements OnTouchListener {
 		
 		mCropView = (CropView) findViewById(R.id.cropView);
 		mCropView.setBitmap(mApp.getAdCreationManager().getCurrentBitmap());
-		mCropView.invalidate();
 		mCropView.setOnTouchListener(this);
 		
 	}
