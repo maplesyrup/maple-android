@@ -6,6 +6,7 @@ import com.example.custom_views.LogoView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
+import com.example.maple_android.Utility;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -101,4 +102,10 @@ public class LogoActivity extends Activity {
 		mAdCreationManager.previousStage(this);
 	}
 
+	public void getHelp(View v) {
+		String message = "Select which company logo you want to place on the ad, and move it around!";
+		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		Utility.createHelpDialog(this, message, title);
+	}
+	
 }

@@ -6,6 +6,7 @@ import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.CompanyList;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
+import com.example.maple_android.Utility;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -81,4 +82,11 @@ public class CompanyTagActivity extends Activity {
 		mAdCreationManager.previousStage(this);
 	}
 
+	public void getHelp(View v) {
+		String message = "Tag your ad from a company in the database. " +
+					"As you type, the field will autocomplete with possible companies.";
+		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		Utility.createHelpDialog(this, message, title);
+	}
+	
 }

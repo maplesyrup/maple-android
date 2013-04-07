@@ -49,6 +49,9 @@ public class AdCreationManager {
 	// -1 for funnel not started yet.
 	private int mCurrentStage; 
 
+	// The number of steps in the ad creation process.
+	private int mNumStages; 
+
 	private String mCompanyName;
 
 	// Array of urls to logo images
@@ -85,6 +88,8 @@ public class AdCreationManager {
 
 		
 		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
+		
+		mNumStages = mFunnel.length;
 	}
 	
 	/** 
@@ -229,4 +234,12 @@ public class AdCreationManager {
 		return mFilter;
 	}
 
+	public int getCurrentStage() {
+		return mCurrentStage + 1;
+	}
+
+	public int getNumStages() {
+		return mNumStages;
+	}
+	
 }

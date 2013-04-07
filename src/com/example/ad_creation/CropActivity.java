@@ -90,8 +90,8 @@ public class CropActivity extends Activity implements OnTouchListener {
 	}
 	
 	public void getHelp(View v) {
-		String message = "Crop your image.";
-		String title = "Step 1";
+		String message = "Select which part of your picture you want to be your ad!";
+		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 }

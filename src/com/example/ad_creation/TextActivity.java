@@ -25,6 +25,7 @@ import com.commonsware.cwac.colormixer.ColorMixerDialog;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
+import com.example.maple_android.Utility;
 
 public class TextActivity extends Activity implements
 		FontPickerDialog.FontPickerDialogListener {
@@ -350,4 +351,9 @@ public class TextActivity extends Activity implements
 		mAdCreationManager.previousStage(this);
 	}
 
+	public void getHelp(View v) {
+		String message = "Add humorous, sincere, or sophic text to your ad, and decide where to put it.";
+		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		Utility.createHelpDialog(this, message, title);
+	}
 }

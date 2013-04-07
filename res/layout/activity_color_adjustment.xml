@@ -94,6 +94,7 @@
 	          android:text="@string/question" 
 	          android:id="@+id/Button"
 	          android:layout_alignParentRight="true" 
+	          android:onClick="getHelp"
 	          android:layout_width="wrap_content"
 	          android:layout_height="wrap_content"
 	          android:textSize="30sp">
