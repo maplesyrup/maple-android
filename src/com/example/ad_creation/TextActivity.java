@@ -276,31 +276,6 @@ public class TextActivity extends Activity implements
 	}
 
 	/**
-	 * Combines the currently created text with the image bitmap. The result is
-	 * written to the original byteArray and returned to the editoractivity
-	 * 
-	 * @param view
-	 *            The button that was clicked
-	 */
-	public void save(View view) {
-		// get text bitmap
-		Bitmap textBitmap = loadBitmapFromView(mPhotoText);
-		Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
-
-		// combine two bitmaps
-		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
-				currBitmap.getHeight(), currBitmap.getConfig());
-		Canvas canvas = new Canvas(bmOverlay);
-		canvas.drawBitmap(currBitmap, new Matrix(), null);
-		canvas.drawBitmap(textBitmap, mTextXPos,
-				mTextYPos - mPhotoText.getHeight(), null);
-
-		// save picture to byte array and return
-		mApp.getAdCreationManager().pushBitmap(bmOverlay);
-
-	}
-
-	/**
 	 * This function is used to generate a bitmap from the TextView that holds
 	 * the currently created text
 	 * 
@@ -333,13 +308,9 @@ public class TextActivity extends Activity implements
 		Canvas canvas = new Canvas(bmOverlay);
 		canvas.drawBitmap(currBitmap, new Matrix(), null);
 		canvas.drawBitmap(textBitmap, mTextXPos,
-				mTextYPos - mPhotoText.getHeight(), null);
-
-		// add picture to stack
-		mApp.getAdCreationManager().pushBitmap(bmOverlay);
+				mTextYPos - mPhotoText.getHeight(), null);		
 		
-		
-		mAdCreationManager.nextStage(this);
+		mAdCreationManager.nextStage(this, bmOverlay);
 	}
 
 	/**

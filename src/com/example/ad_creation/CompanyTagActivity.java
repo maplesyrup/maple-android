@@ -70,7 +70,7 @@ public class CompanyTagActivity extends Activity {
 		// TODO: Change this to be done in ad creation manager
 		mApp.setCurrentCompany(mCompanySuggest.getText().toString());
 		
-		mAdCreationManager.nextStage(this);
+		mAdCreationManager.nextStage(this, mAdCreationManager.getCurrentBitmap());
 	}
 
 	/**
