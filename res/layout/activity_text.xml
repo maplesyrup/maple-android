@@ -1,130 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/headerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="Add Text"
-        android:textSize="25sp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/headerText"
-        android:layout_centerHorizontal="true"
-        android:clickable="true" />
-
-    <TextView
-        android:id="@+id/photoText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#FF0000"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/textInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/photo"
-        android:layout_centerHorizontal="true"
-        android:text="Click to place text"
-        android:textColor="#ff0000"
-        android:textSize="15sp"
-        android:textStyle="italic" />
-
-    <EditText
-        android:id="@+id/textEntry"
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/photo"
-        android:layout_centerHorizontal="true"
-        android:hint="Enter your text here"
-        android:singleLine="false"
-        android:visibility="invisible" />
+        android:layout_height="fill_parent" >
 
-    <EditText
-        android:id="@+id/fontSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textEntry"
-        android:layout_toRightOf="@+id/fontSizeLabel"
-        android:digits="1234567890"
-        android:singleLine="true"
-        android:text="15"
-        android:visibility="invisible" />
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Add Text"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/fontSizeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/fontSize"
-        android:layout_alignParentLeft="true"
-        android:paddingLeft="5sp"
-        android:text="Font Size:"
-        android:textSize="12sp"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerText"
+            android:layout_centerHorizontal="true"
+            android:clickable="true" />
 
-    <Button
-        android:id="@+id/changeColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textEntry"
-        android:layout_toRightOf="@+id/fontSize"
-        android:onClick="changeColor"
-        android:text="Color"
-        android:visibility="invisible" />
+        <TextView
+            android:id="@+id/photoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            android:visibility="gone" />
 
-    <Button
-        android:id="@+id/changeFont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textEntry"
-        android:layout_toRightOf="@+id/changeColor"
-        android:onClick="changeFont"
-        android:text="Font"
-        android:visibility="invisible" />
+        <TextView
+            android:id="@+id/textInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photo"
+            android:layout_centerHorizontal="true"
+            android:text="Click to place text"
+            android:textColor="#ff0000"
+            android:textSize="15sp"
+            android:textStyle="italic" />
 
-    <Button
-        android:id="@+id/nextStage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="20sp"
-        android:layout_below="@+id/changeFont"
-        android:onClick="nextStage"
-        android:text="Next" />
+        <EditText
+            android:id="@+id/textEntry"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photo"
+            android:layout_centerHorizontal="true"
+            android:hint="Enter your text here"
+            android:singleLine="false"
+            android:visibility="invisible" />
 
-    <Button
-        android:id="@+id/prevStage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/nextStage"
-        android:onClick="prevStage"
-        android:text="Back" />
-     
-     <RelativeLayout 
-	      android:id="@+id/InnerRelativeLayout"
-	      android:layout_width="wrap_content"
-	      android:layout_height="wrap_content"
-	      android:layout_alignParentBottom="true" >
-	
-	      <Button 
-	          android:text="@string/question" 
-	          android:id="@+id/Button"
-	          android:layout_alignParentRight="true"
-	          android:onClick="getHelp" 
-	          android:layout_width="wrap_content"
-	          android:layout_height="wrap_content"
-	          android:textSize="30sp">
-	      </Button>
-	 </RelativeLayout>   
-        
-</RelativeLayout>
+        <EditText
+            android:id="@+id/fontSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/fontSizeLabel"
+            android:digits="1234567890"
+            android:singleLine="true"
+            android:text="15"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/fontSizeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/fontSize"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="5sp"
+            android:text="Font Size:"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/changeColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/fontSize"
+            android:onClick="changeColor"
+            android:text="Color"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/changeFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/changeColor"
+            android:onClick="changeFont"
+            android:text="Font"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/nextStage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/changeFont"
+            android:layout_marginTop="20sp"
+            android:onClick="nextStage"
+            android:text="Next" />
+
+        <Button
+            android:id="@+id/prevStage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/nextStage"
+            android:onClick="prevStage"
+            android:text="Back" />
+
+        <RelativeLayout
+            android:id="@+id/InnerRelativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" >
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/nextStage"
+            android:onClick="getHelp"
+            android:text="@string/question"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+</ScrollView>

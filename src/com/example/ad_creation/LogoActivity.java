@@ -85,12 +85,8 @@ public class LogoActivity extends Activity {
 	 * 
 	 * @param view
 	 */
-	public void nextStage(View view) {
-		
-		// pushed modified ad to stack
-		mAdCreationManager.pushBitmap(mLogoView.addLogo());
-		
-		mAdCreationManager.nextStage(this);
+	public void nextStage(View view) {				
+		mAdCreationManager.nextStage(this, mLogoView.addLogo());
 	}
 
 	/**
