@@ -3,6 +3,7 @@ package com.example.ad_creation;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
+import com.example.maple_android.Utility;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -253,6 +254,13 @@ public class ColorAdjustmentActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.color_adjustment, menu);
 		return true;
+	}
+	
+
+	public void getHelp(View v) {
+		String message = "Select the color scheme that puts your ad in the best light!";
+		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		Utility.createHelpDialog(this, message, title);
 	}
 
 }

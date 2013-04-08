@@ -1,57 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="5sp"
+        android:paddingTop="5sp"
+        android:text="Tag Your Ad"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/headerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="5sp"
-            android:paddingTop="5sp"
-            android:text="Tag Your Ad"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headerText"
+        android:layout_centerHorizontal="true" />
 
-        <ImageView
-            android:id="@+id/ad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/headerText"
-            android:layout_centerHorizontal="true" />
+    <AutoCompleteTextView
+        android:id="@+id/companySuggest"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ad"
+        android:completionThreshold="1"
+        android:hint="Company Name" />
+    
+    <Button
+        android:id="@+id/nextStage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/companySuggest"
+        android:onClick="nextStage"
+        android:text="Next" />
 
-        <AutoCompleteTextView
-            android:id="@+id/companySuggest"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/ad"
-            android:completionThreshold="1"
-            android:hint="Company Name" />
-        
-        <Button
-            android:id="@+id/nextStage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/companySuggest"
-            android:onClick="nextStage"
-            android:text="Next" />
+    <Button
+        android:id="@+id/prevStage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/nextStage"
+        android:onClick="prevStage"
+        android:text="Back" />
+     
+     <RelativeLayout 
+	      android:id="@+id/InnerRelativeLayout"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:layout_alignParentBottom="true" >
+	
+	      <Button
+	          android:id="@+id/Button"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_alignParentRight="true"
+	          android:onClick="getHelp"
+	          android:text="@string/question"
+	          android:textSize="30sp" >
 
-        <Button
-            android:id="@+id/prevStage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/nextStage"
-            android:onClick="prevStage"
-            android:text="Back" />
-    </RelativeLayout>
-
-</ScrollView>
+	      </Button>
+	 </RelativeLayout>
+    
+</RelativeLayout>

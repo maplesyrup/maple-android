@@ -9,7 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -214,5 +216,22 @@ public class Utility {
 		default:
 			return activity.onOptionsItemSelected(item);
 		}
+    }
+    
+    public static void createHelpDialog(final Activity activity, final String message, final String title) {
+    	// 1. Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+		// 2. Chain together various setter methods to set the dialog characteristics
+		builder.setMessage(message)
+		       .setTitle(title);
+		
+		builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) { /* User cancelled the dialog */ }
+	    });
+		
+		// 3. Get the AlertDialog from create()
+		AlertDialog dialog = builder.create();
+		dialog.show();
     }
 }
