@@ -229,4 +229,22 @@ public class AdCreationManager {
 		return mFilter;
 	}
 
+	/**
+	 * Gets the current stage number in the ad creation funnel. This is 1-indexed
+	 * 
+	 * @return the current step in the ad creation funnel
+	 */
+	public int getCurrentStage() {
+		return mCurrentStage + 1;
+	}
+
+	/**
+	 * Gets the number of steps in the ad creation funnel
+	 * 
+	 * @return the number of steps in the ad creation funnel
+	 */
+	public int getNumStages() {
+		return mFunnel.length;
+	}
+	
 }

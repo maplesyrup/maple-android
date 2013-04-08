@@ -103,4 +103,11 @@ public class PublishActivity extends Activity {
 		return true;
 	}
 
+
+	public void getHelp(View v) {
+		String message = "You're done! Congrats";
+		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		Utility.createHelpDialog(this, message, title);
+	}
+	
 }
