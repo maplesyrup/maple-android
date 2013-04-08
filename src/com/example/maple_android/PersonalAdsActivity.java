@@ -1,15 +1,19 @@
 package com.example.maple_android;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class PersonalAdsActivity extends Activity {
 
+	private static final String TAG = "PersonalAds";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "trying to identify the user");
 		setContentView(R.layout.activity_personal_ads);
 	}
 
