@@ -60,9 +60,8 @@ public class CropActivity extends Activity implements OnTouchListener {
 	 * @param v
 	 */
 	public void cropAd(View v) {
-		mApp.getAdCreationManager().pushBitmap(mCropView.crop());
 		
-		mAdCreationManager.nextStage(this);
+		mAdCreationManager.nextStage(this, mCropView.crop());
 	}
 	
 	@Override

@@ -130,11 +130,15 @@ public class AdCreationManager {
 	 * 
 	 * @param context
 	 *            The activity context
+	 * @param bitmap The ad bitmap we want to save from the current stage
 	 */
-	public void nextStage(Context context) {
+	public void nextStage(Context context, Bitmap bitmap) {
 		// if we are in the last stage already
 		// don't do anything
 		if(mCurrentStage + 1 > mFunnel.length) return;
+		
+		// push bitmap onto stack
+		pushBitmap(bitmap);
 		
 		// increment stage counter and start that activity
 		Intent intent = new Intent(context, mFunnel[++mCurrentStage]);
@@ -150,6 +154,9 @@ public class AdCreationManager {
 	public void previousStage(Context context) {
 		// if we are in the first stage there is nothing to go back to
 		if(mCurrentStage <= 0) return;
+		
+		// pop last ad to revert changes
+		popBitmap();
 		
 		// decrement stage counter and start that activity
 		Intent intent = new Intent(context, mFunnel[--mCurrentStage]);
@@ -172,8 +179,16 @@ public class AdCreationManager {
 	 *            The bitmap to put on the stack.
 	 * @return The bitmap that is being pushed onto the stack
 	 */
-	public Bitmap pushBitmap(Bitmap bitmap) {
+	private Bitmap pushBitmap(Bitmap bitmap) {
 		return mBitmapStack.push(bitmap);
+	}
+	
+	/**
+	 * Returns the top bitmap on the stack
+	 * @return The last ad pushed to the stack
+	 */
+	private Bitmap popBitmap(){
+		return mBitmapStack.pop();
 	}
 
 	/**
