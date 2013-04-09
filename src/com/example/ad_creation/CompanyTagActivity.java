@@ -2,19 +2,24 @@ package com.example.ad_creation;
 
 import java.util.ArrayList;
 
+import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.CompanyList;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class CompanyTagActivity extends Activity {
@@ -23,6 +28,7 @@ public class CompanyTagActivity extends Activity {
 	private ImageView mAdView;
 	private AutoCompleteTextView mCompanySuggest;
 	private ArrayList<String> mCompanySuggestions;
+	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,14 @@ public class CompanyTagActivity extends Activity {
 		mApp = (MapleApplication) this.getApplication();
 		mAdCreationManager = mApp.getAdCreationManager();
 
+		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
+		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
+		help.setImageDrawable(svg.createPictureDrawable());
+		help.setBackgroundColor(Color.BLACK);
+
+		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
+		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
+		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
 		// get most recent ad off stack
 		// initialize adjusted ad to the original
 		Bitmap ad = mAdCreationManager.getCurrentBitmap();

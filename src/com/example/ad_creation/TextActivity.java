@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,16 +17,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
 import com.commonsware.cwac.colormixer.ColorMixer;
 import com.commonsware.cwac.colormixer.ColorMixerDialog;
+import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 public class TextActivity extends Activity implements
 		FontPickerDialog.FontPickerDialogListener {
@@ -41,6 +46,7 @@ public class TextActivity extends Activity implements
 	private EditText mTextEntryField;
 	private TextView mPhotoText;
 	private int mTextColor;
+	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,15 @@ public class TextActivity extends Activity implements
 		mApp = (MapleApplication) this.getApplication();
 		mAdCreationManager = mApp.getAdCreationManager();
 
+		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
+		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
+		help.setImageDrawable(svg.createPictureDrawable());
+		help.setBackgroundColor(Color.BLACK);
+
+		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
+		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
+		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
+		
 		// set photo
 		mAdView = (ImageView) this.findViewById(R.id.photo);
 		mAdView.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());

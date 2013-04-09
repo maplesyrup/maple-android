@@ -2,10 +2,13 @@ package com.example.ad_creation;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.custom_views.CropView;
 import com.example.custom_views.ProgressView;
@@ -15,6 +18,8 @@ import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
 import com.facebook.Session;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 /**
  * This activity crops an image
@@ -50,6 +55,11 @@ public class CropActivity extends Activity implements OnTouchListener {
 		mAdCreationManager = mApp.getAdCreationManager();
 		
 		setContentView(R.layout.activity_crop);
+		
+		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
+		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
+		help.setImageDrawable(svg.createPictureDrawable());
+		help.setBackgroundColor(Color.BLACK);
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
