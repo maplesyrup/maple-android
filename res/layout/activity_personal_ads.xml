@@ -9,8 +9,21 @@
     tools:context=".PersonalAdsActivity" >
 
     <TextView
+        android:id="@+id/adsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your own creations will go here!" />
+        android:text="Your own creations:" />
+    
+     <GridView 
+         android:id="@+id/gridview"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:columnWidth="90dp"
+         android:gravity="center"
+         android:horizontalSpacing="10dp"
+         android:stretchMode="columnWidth"
+         android:numColumns="auto_fit"
+         android:verticalSpacing="10dp" 
+         android:layout_below="@+id/adsTitle" />
 
 </RelativeLayout>
