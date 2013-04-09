@@ -30,23 +30,18 @@
        android:layout_below="@+id/cropView"
        android:onClick="cropAd"
        android:text="Crop" />
-   
+    
    <RelativeLayout 
 	      android:id="@+id/InnerRelativeLayout"
 	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content"
 	      android:layout_alignParentBottom="true" >
 	
-	      <Button
-	          android:id="@+id/Button"
-	          android:layout_width="wrap_content"
-	          android:layout_height="wrap_content"
-	          android:layout_alignParentRight="true"
-	          android:onClick="getHelp"
-	          android:text="@string/question"
-	          android:textSize="30sp" >
-
-	      </Button>
+	       <com.example.custom_views.ProgressView
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:id="@+id/progressBar"
+			    android:layout_centerHorizontal="true" /> 
 	 </RelativeLayout>
 </RelativeLayout>
 

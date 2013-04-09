@@ -100,7 +100,7 @@ public class LogoActivity extends Activity {
 
 	public void getHelp(View v) {
 		String message = "Select which company logo you want to place on the ad, and move it around!";
-		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 	

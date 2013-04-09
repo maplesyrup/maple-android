@@ -85,7 +85,7 @@ public class CompanyTagActivity extends Activity {
 	public void getHelp(View v) {
 		String message = "Tag your ad from a company in the database. " +
 					"As you type, the field will autocomplete with possible companies.";
-		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 	

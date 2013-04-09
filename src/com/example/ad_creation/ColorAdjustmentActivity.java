@@ -258,7 +258,7 @@ public class ColorAdjustmentActivity extends Activity {
 
 	public void getHelp(View v) {
 		String message = "Select the color scheme that puts your ad in the best light!";
-		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 

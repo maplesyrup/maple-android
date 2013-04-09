@@ -324,7 +324,7 @@ public class TextActivity extends Activity implements
 
 	public void getHelp(View v) {
 		String message = "Add humorous, sincere, or sophic text to your ad, and decide where to put it.";
-		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 }

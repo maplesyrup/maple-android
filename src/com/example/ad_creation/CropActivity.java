@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.example.custom_views.CropView;
+import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.LoginActivity;
 import com.example.maple_android.MapleApplication;
@@ -26,6 +27,7 @@ public class CropActivity extends Activity implements OnTouchListener {
 	private AdCreationManager mAdCreationManager;
 	private Session mSession;
 	private CropView mCropView;
+	private ProgressView mProgressBar;
 	
 	private float mPrevTouchX;
 	private float mPrevTouchY;
@@ -48,6 +50,10 @@ public class CropActivity extends Activity implements OnTouchListener {
 		mAdCreationManager = mApp.getAdCreationManager();
 		
 		setContentView(R.layout.activity_crop);
+
+		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
+		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
+		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
 		
 		mCropView = (CropView) findViewById(R.id.cropView);
 		mCropView.setBitmap(mApp.getAdCreationManager().getCurrentBitmap());
@@ -90,7 +96,7 @@ public class CropActivity extends Activity implements OnTouchListener {
 	
 	public void getHelp(View v) {
 		String message = "Select which part of your picture you want to be your ad!";
-		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 }
