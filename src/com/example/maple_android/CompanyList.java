@@ -45,7 +45,7 @@ public class CompanyList {
 
 	// server url where list is stored
 	// this is relative to the base URL in MapleHttpClient
-	private final static String LIST_URL = "companies/all";
+	private final static String LIST_URL = "companies";
 
 	/**
 	 * Syncs the local company list with the current list on the server. If
@@ -59,7 +59,7 @@ public class CompanyList {
 		final Context c = context;
 
 		// start an Async get request
-		MapleHttpClient.get(LIST_URL, null, new AsyncHttpResponseHandler() {
+		MapleHttpClient.get(LIST_URL, null, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response) {
 				// open an output stream and write the file to disk

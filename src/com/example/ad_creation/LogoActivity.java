@@ -97,7 +97,11 @@ public class LogoActivity extends Activity {
 	 * @param view
 	 */
 	public void nextStage(View view) {				
-		mAdCreationManager.nextStage(this, mLogoView.addLogo());
+		// update bitmap to include logo
+		Bitmap ad =  mLogoView.addLogo();
+		// null is returned if a logo hasn't been set
+		if(ad == null) ad = mAdCreationManager.getCurrentBitmap();
+		mAdCreationManager.nextStage(this, ad);
 	}
 
 	/**

@@ -65,7 +65,7 @@ public class TextActivity extends Activity implements
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
 		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
-		
+
 		// set photo
 		mAdView = (ImageView) this.findViewById(R.id.photo);
 		mAdView.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
@@ -313,18 +313,21 @@ public class TextActivity extends Activity implements
 	 * @param view
 	 */
 	public void nextStage(View view) {
-		// get text bitmap
-		Bitmap textBitmap = loadBitmapFromView(mPhotoText);
-		Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
+		// if text has been added, merge it with the ad
+		Bitmap bmOverlay = mAdCreationManager.getCurrentBitmap();
+		if (!mPhotoText.getText().equals("")) {
+			// get text bitmap
+			Bitmap textBitmap = loadBitmapFromView(mPhotoText);
+			Bitmap currBitmap = mAdCreationManager.getCurrentBitmap();
 
-		// combine two bitmaps
-		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
-				currBitmap.getHeight(), currBitmap.getConfig());
-		Canvas canvas = new Canvas(bmOverlay);
-		canvas.drawBitmap(currBitmap, new Matrix(), null);
-		canvas.drawBitmap(textBitmap, mTextXPos,
-				mTextYPos - mPhotoText.getHeight(), null);		
-		
+			// combine two bitmaps
+			bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
+					currBitmap.getHeight(), currBitmap.getConfig());
+			Canvas canvas = new Canvas(bmOverlay);
+			canvas.drawBitmap(currBitmap, new Matrix(), null);
+			canvas.drawBitmap(textBitmap, mTextXPos,
+					mTextYPos - mPhotoText.getHeight(), null);
+		}
 		mAdCreationManager.nextStage(this, bmOverlay);
 	}
 
@@ -339,7 +342,8 @@ public class TextActivity extends Activity implements
 
 	public void getHelp(View v) {
 		String message = "Add humorous, sincere, or sophic text to your ad, and decide where to put it.";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage()
+				+ " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 }
