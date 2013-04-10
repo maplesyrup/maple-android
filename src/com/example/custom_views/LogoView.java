@@ -167,7 +167,15 @@ public class LogoView extends View implements OnTouchListener {
 		return false;
 	}
 	
+	/** Combines the set logo with the current ad
+	 * and returns the result. If a logo hasn't yet been
+	 * set this function returns null
+	 * @return The ad with the logo embedded. Null if no logo set
+	 */
 	public Bitmap addLogo() {
+		// if a logo hasn't yet been set, return null
+		if(mCurrLogo == null) return null;
+		
 		Bitmap scaledLogo = Bitmap.createScaledBitmap(mCurrLogo, 
 				mDstRectScaled.right - mDstRectScaled.left, 
 				mDstRectScaled.bottom - mDstRectScaled.top, false);
