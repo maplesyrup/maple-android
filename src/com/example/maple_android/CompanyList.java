@@ -17,6 +17,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -105,6 +109,8 @@ public class CompanyList {
 			e.printStackTrace();
 			return companyList;
 		}
+		
+		
 
 		// transfer file stream to String
 		StringBuffer strBuff = new StringBuffer();
@@ -121,6 +127,15 @@ public class CompanyList {
 		}
 
 		String file = strBuff.toString();
+		
+		// parse JSON string
+		JSONArray jsonData = null;
+		try {
+			jsonData = new JSONArray(file);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		System.out.println(jsonData.toString());
 
 		// parse file for companies and load into arraylist
 		int index = 0;
