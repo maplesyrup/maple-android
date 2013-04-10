@@ -249,10 +249,13 @@ public class AdCreationManager {
 	 * 
 	 * @return the current step in the ad creation funnel
 	 */
-	public int getCurrentStage() {
+	public int getReadableCurrentStage() {
 		return mCurrentStage + 1;
 	}
 
+	public int getCurrentStage() {
+		return mCurrentStage;
+	}
 	/**
 	 * Gets the number of steps in the ad creation funnel
 	 * 
