@@ -183,29 +183,50 @@ public class CompanyList {
 	 * @return All available logos for the given company. Initially this list will be empty,
 	 * and will be populated over time as each url finished loading. (~1 sec)
 	 */
-	public static ArrayList<Bitmap> getCompanyLogosFromServer(String companyTag) {
+	public static ArrayList<Bitmap> getCompanyLogosFromServer(Context context, String companyTag) {
 		// using Universal Image Loader library for easy loading of images from
 		// url
 		// https://github.com/nostra13/Android-Universal-Image-Loader
-
-		// right now the companyTag is ignored and the following urls are loaded as tests
-		String[] testPics = {
-				"http://www.thailandsnakes.com/wp-content/uploads/2011/10/golden-tree-snake1.jpg",
-				"http://farm6.staticflickr.com/5112/7411003852_91ef21d9f8_q.jpg",
-				"http://farm7.staticflickr.com/6049/6250538830_78d4ccaa01_q.jpg",
-				"http://farm9.staticflickr.com/8303/7797439002_8b659ec91e_q.jpg",
-				"http://farm4.staticflickr.com/3161/5836507805_fd4df96bef_q.jpg",
-				"http://farm8.staticflickr.com/7014/6444873537_6be113c907_q.jpg",
-				"http://farm9.staticflickr.com/8364/8345145499_9a6a4ea6e0_q.jpg"
-				};
-
+		
 		// init ArrayList
 		final ArrayList<Bitmap> logos = new ArrayList<Bitmap>();
+
+		// get urls from JSON data
+		JSONArray arr = getLocalCompaniesData(context);
+		// find company in jsonarray
+		JSONObject company = null;
+		for(int i = 0; i < arr.length(); i++){
+			try {
+				company = arr.getJSONObject(i);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return logos;
+			}
+			try {
+				if(company.getString("name").equals(companyTag)) break;
+				else company = null;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return logos;
+			}
+		}
+		
+		// if company could not be found return empty list
+		if(company == null) return logos;
+		
+		
+		ArrayList<String> urls = new ArrayList<String>();
+		try {
+			urls.add(company.getString("company_url"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return logos;
+		}		
 
 		ImageLoader imageLoader = ImageLoader.getInstance();
 
 		// get each url started loading
-		for (String url : testPics) {
+		for (String url : urls) {
 			imageLoader.loadImage(url, new SimpleImageLoadingListener() {
 				@Override
 				public void onLoadingComplete(String imageUri, View view,
