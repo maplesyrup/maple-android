@@ -72,6 +72,9 @@ public class ProgressView extends View {
 		
 	}
 
+	/**
+	 * Draws the progress bar with circles. The selected stage is colored blue.
+	 */
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
@@ -90,10 +93,18 @@ public class ProgressView extends View {
 		invalidate();
 	}
 
+	/**
+	 * Set the current stage in the funnel
+	 * @param currentStage
+	 */
 	public void setCurrentStage(int currentStage) {
 		mCurrStage = currentStage;
 	}
 
+	/**
+	 * Set how many stages are in the funnel
+	 * @param numStages
+	 */
 	public void setNumStages(int numStages) {
 		mNumStages = numStages;
 	}

@@ -46,9 +46,6 @@ public class LogoActivity extends Activity {
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
 		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
-		// set photo
-		//mPhoto = (ImageView) this.findViewById(R.id.photo);
-		//mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 
 		mLogoView = (LogoView) findViewById(R.id.logoView);
 		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
