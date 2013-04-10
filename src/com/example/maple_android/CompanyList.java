@@ -98,19 +98,46 @@ public class CompanyList {
 	 * @return An ArrayList where each String is a company name
 	 */
 	public static ArrayList<String> getCompanyList(Context context) {
-		// retrieve file for local storage
-		FileInputStream in = null;
+		JSONArray jsonArray = getLocalCompaniesData(context);
+		
 		// init ArrayList
 		ArrayList<String> companyList = new ArrayList<String>();
+		
+		// pull company names out of JSONArray
+		for(int i = 0; i < jsonArray.length(); i++){
+			JSONObject entry;
+			try {
+				entry = jsonArray.getJSONObject(i);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return companyList;
+			}
+			try {
+				companyList.add(entry.getString("name"));
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return companyList;
+			}
+		}
 
+		return companyList;
+	}
+
+	/**
+	 * Retrieves the companies JSON text string stored locally,
+	 * parses it into a JSONArray, and returns the result
+	 * @param context The application activity who has the locally stored list
+	 * @return JSONArray of companies. Null if there is an error
+	 */
+	private static JSONArray getLocalCompaniesData(Context context) {
+		// retrieve file from local storage
+		FileInputStream in = null;
 		try {
 			in = context.openFileInput(FILE_NAME);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			return companyList;
-		}
-		
-		
+			return null;
+		}		
 
 		// transfer file stream to String
 		StringBuffer strBuff = new StringBuffer();
@@ -123,9 +150,9 @@ public class CompanyList {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			return companyList;
+			return null;
 		}
-
+		
 		String file = strBuff.toString();
 		
 		// parse JSON string
@@ -134,29 +161,10 @@ public class CompanyList {
 			jsonData = new JSONArray(file);
 		} catch (JSONException e) {
 			e.printStackTrace();
+			return null;
 		}
-		System.out.println(jsonData.toString());
-
-		// parse file for companies and load into arraylist
-		int index = 0;
-		String key = "\"name\":\"";
-		while (true) {
-			// find the next "name" field
-			index = file.indexOf(key, index);
-			if (index == -1)
-				break;
-
-			// jump to start of company name
-			index += key.length();
-
-			// get end of company name
-			int end = file.indexOf("\"", index);
-
-			// add company to list
-			companyList.add(file.substring(index, end));
-		}
-
-		return companyList;
+		
+		return jsonData;
 	}
 
 	/**
