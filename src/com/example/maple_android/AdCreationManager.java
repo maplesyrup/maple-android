@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.example.ad_creation.*;
+import com.example.custom_views.ProgressView;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 /**
  * This class exists to manage the creation of an ad between activities. It
@@ -34,6 +41,9 @@ public class AdCreationManager {
 			return text;
 		}
 	}
+	
+	/* The application context */
+	private Context mContext;
 
 	/* The order of the ad creation funnel */
 	Class<?>[] mFunnel = { 
@@ -48,11 +58,13 @@ public class AdCreationManager {
 	// are in as an index into mFunnel. 
 	// -1 for funnel not started yet.
 	private int mCurrentStage; 
+	
+	private static final float AD_DISPLAY_SCALE = 0.4f;
 
 	private String mCompanyName;
-
-	// Array of urls to logo images
-	private ArrayList<String> mLogoList;
+	
+	// Array of logos for tagged company
+	private ArrayList<Bitmap> mCompanyLogos;
 	
 	// the logo the user has chosen to use
 	private Bitmap mLogo;
@@ -69,7 +81,7 @@ public class AdCreationManager {
 	// Current filter applied to image
 	private Filters mFilter;
 
-	public AdCreationManager(Bitmap currBitmap, Uri fileUri) {
+	public AdCreationManager(Context context, Bitmap currBitmap, Uri fileUri) {
 		mBitmapStack = new Stack<Bitmap>();
 		mBitmapStack.push(currBitmap);
 
@@ -77,11 +89,13 @@ public class AdCreationManager {
 
 		mFileUri = fileUri;
 
-		mLogoList = new ArrayList<String>();
+		mCompanyLogos = new ArrayList<Bitmap>();
 
 		mCompanyName = null;
 
 		mFilter = Filters.NONE;
+		
+		mContext = context;
 
 		
 		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
@@ -93,6 +107,8 @@ public class AdCreationManager {
 	 */
 	public void setCompanyName(String name){
 		mCompanyName = name;
+		// start loading logos for this company
+		if(name != null) mCompanyLogos = CompanyList.getCompanyLogosFromServer(mContext, name);
 	}
 	
 	/**
@@ -103,6 +119,13 @@ public class AdCreationManager {
 	 */
 	public String getCompanyName(){
 		return mCompanyName;
+	}
+	
+	/**
+	 * Gets the arraylist of logos for the tagged company
+	 */
+	public ArrayList<Bitmap> getCompanyLogoList(){
+		return mCompanyLogos;
 	}
 	
 	/**
@@ -249,10 +272,13 @@ public class AdCreationManager {
 	 * 
 	 * @return the current step in the ad creation funnel
 	 */
-	public int getCurrentStage() {
+	public int getReadableCurrentStage() {
 		return mCurrentStage + 1;
 	}
 
+	public int getCurrentStage() {
+		return mCurrentStage;
+	}
 	/**
 	 * Gets the number of steps in the ad creation funnel
 	 * 
@@ -260,6 +286,30 @@ public class AdCreationManager {
 	 */
 	public int getNumStages() {
 		return mFunnel.length;
+	}
+	
+	/**
+	 * Sets up some initial settings for most of the funnel views. Namely the progressBar and the Ad.
+	 */
+	public void setup(ImageView ad, Integer screenHeight, ProgressView progressBar) {
+		progressBar.setCurrentStage(this.getCurrentStage());
+		progressBar.setNumStages(this.getNumStages());
+		
+		/* Will scaled the image view by a constant */
+		if (ad != null && screenHeight != null) {
+			int newHeight = (int) (AD_DISPLAY_SCALE * screenHeight);
+			int width = ad.getDrawable().getIntrinsicWidth();
+			int height = ad.getDrawable().getIntrinsicHeight();
+	
+			int newWidth = (int) Math.floor((width * newHeight) / height);
+	
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+			    newWidth, newHeight);
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			params.addRule(RelativeLayout.BELOW, R.id.headerText);
+			ad.setLayoutParams(params);
+			ad.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		}
 	}
 	
 }

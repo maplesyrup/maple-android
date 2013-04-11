@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,16 +17,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
 import com.commonsware.cwac.colormixer.ColorMixer;
 import com.commonsware.cwac.colormixer.ColorMixerDialog;
+import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 public class TextActivity extends Activity implements
 		FontPickerDialog.FontPickerDialogListener {
@@ -41,6 +46,7 @@ public class TextActivity extends Activity implements
 	private EditText mTextEntryField;
 	private TextView mPhotoText;
 	private int mTextColor;
+	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,15 @@ public class TextActivity extends Activity implements
 		// Init app
 		mApp = (MapleApplication) this.getApplication();
 		mAdCreationManager = mApp.getAdCreationManager();
+
+		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
+		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
+		help.setImageDrawable(svg.createPictureDrawable());
+		help.setBackgroundColor(Color.BLACK);
+
+		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
+		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
+		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
 
 		// set photo
 		mAdView = (ImageView) this.findViewById(R.id.photo);
@@ -67,6 +82,11 @@ public class TextActivity extends Activity implements
 				return true;
 			}
 		});
+		
+		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
+		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+		
+		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
 
 		// start off not showing edit options
 		mShowOptions = false;
@@ -298,18 +318,21 @@ public class TextActivity extends Activity implements
 	 * @param view
 	 */
 	public void nextStage(View view) {
-		// get text bitmap
-		Bitmap textBitmap = loadBitmapFromView(mPhotoText);
-		Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
+		// if text has been added, merge it with the ad
+		Bitmap bmOverlay = mAdCreationManager.getCurrentBitmap();
+		if (!mPhotoText.getText().equals("")) {
+			// get text bitmap
+			Bitmap textBitmap = loadBitmapFromView(mPhotoText);
+			Bitmap currBitmap = mAdCreationManager.getCurrentBitmap();
 
-		// combine two bitmaps
-		Bitmap bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
-				currBitmap.getHeight(), currBitmap.getConfig());
-		Canvas canvas = new Canvas(bmOverlay);
-		canvas.drawBitmap(currBitmap, new Matrix(), null);
-		canvas.drawBitmap(textBitmap, mTextXPos,
-				mTextYPos - mPhotoText.getHeight(), null);		
-		
+			// combine two bitmaps
+			bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
+					currBitmap.getHeight(), currBitmap.getConfig());
+			Canvas canvas = new Canvas(bmOverlay);
+			canvas.drawBitmap(currBitmap, new Matrix(), null);
+			canvas.drawBitmap(textBitmap, mTextXPos,
+					mTextYPos - mPhotoText.getHeight(), null);
+		}
 		mAdCreationManager.nextStage(this, bmOverlay);
 	}
 
@@ -324,7 +347,8 @@ public class TextActivity extends Activity implements
 
 	public void getHelp(View v) {
 		String message = "Add humorous, sincere, or sophic text to your ad, and decide where to put it.";
-		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage()
+				+ " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 }

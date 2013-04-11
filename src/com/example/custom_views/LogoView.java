@@ -15,10 +15,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.View.OnTouchListener;;
+import android.view.View.MeasureSpec;
+import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 
 
-public class LogoView extends View implements OnTouchListener {	
+public class LogoView extends ImageView implements OnTouchListener {	
 	
 	// Width and height of view
 	private int mWidth;
@@ -59,8 +61,44 @@ public class LogoView extends View implements OnTouchListener {
 	}
 	
 	@Override
-	protected void onMeasure(int width, int height) {
-		setMeasuredDimension(mWidth, mHeight);
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int desiredWidth = mWidth;
+	    int desiredHeight = mHeight;
+
+	    int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+	    int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+	    int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+	    int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+	    int width;
+	    int height;
+
+	    //Measure Width
+	    if (widthMode == MeasureSpec.EXACTLY) {
+	        //Must be this size
+	        width = widthSize;
+	    } else if (widthMode == MeasureSpec.AT_MOST) {
+	        //Can't be bigger than...
+	        width = Math.min(desiredWidth, widthSize);
+	    } else {
+	        //Be whatever you want
+	        width = desiredWidth;
+	    }
+
+	    //Measure Height
+	    if (heightMode == MeasureSpec.EXACTLY) {
+	        //Must be this size
+	        height = heightSize;
+	    } else if (heightMode == MeasureSpec.AT_MOST) {
+	        //Can't be bigger than...
+	        height = Math.min(desiredHeight, heightSize);
+	    } else {
+	        height = desiredHeight;
+	    }
+
+	    mWidth = width;
+	    mHeight = height;
+	    setMeasuredDimension(width, height);
 	}
 	
 	protected void onDraw(Canvas canvas) {
@@ -130,7 +168,15 @@ public class LogoView extends View implements OnTouchListener {
 		return false;
 	}
 	
+	/** Combines the set logo with the current ad
+	 * and returns the result. If a logo hasn't yet been
+	 * set this function returns null
+	 * @return The ad with the logo embedded. Null if no logo set
+	 */
 	public Bitmap addLogo() {
+		// if a logo hasn't yet been set, return null
+		if(mCurrLogo == null) return null;
+		
 		Bitmap scaledLogo = Bitmap.createScaledBitmap(mCurrLogo, 
 				mDstRectScaled.right - mDstRectScaled.left, 
 				mDstRectScaled.bottom - mDstRectScaled.top, false);

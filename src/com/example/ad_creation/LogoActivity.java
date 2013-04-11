@@ -3,18 +3,23 @@ package com.example.ad_creation;
 
 
 import com.example.custom_views.LogoView;
+import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class LogoActivity extends Activity {
@@ -22,6 +27,7 @@ public class LogoActivity extends Activity {
 	private AdCreationManager mAdCreationManager;
 
 	private LogoView mLogoView;
+	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +38,17 @@ public class LogoActivity extends Activity {
 		mApp = (MapleApplication) this.getApplication();
 		mAdCreationManager = mApp.getAdCreationManager();
 
-		// set photo
-		//mPhoto = (ImageView) this.findViewById(R.id.photo);
-		//mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
+		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
+		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
+		help.setImageDrawable(svg.createPictureDrawable());
+		help.setBackgroundColor(Color.BLACK);
+
+		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 
 		mLogoView = (LogoView) findViewById(R.id.logoView);
 		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
 
+		mAdCreationManager.setup(null, null, mProgressBar);
 		// Update page title to reflect the company
 		TextView title = (TextView) this.findViewById(R.id.companyTag);
 		title.setText("Add A " + mAdCreationManager.getCompanyName() + " Logo!");
@@ -86,7 +96,11 @@ public class LogoActivity extends Activity {
 	 * @param view
 	 */
 	public void nextStage(View view) {				
-		mAdCreationManager.nextStage(this, mLogoView.addLogo());
+		// update bitmap to include logo
+		Bitmap ad =  mLogoView.addLogo();
+		// null is returned if a logo hasn't been set
+		if(ad == null) ad = mAdCreationManager.getCurrentBitmap();
+		mAdCreationManager.nextStage(this, ad);
 	}
 
 	/**
@@ -100,7 +114,7 @@ public class LogoActivity extends Activity {
 
 	public void getHelp(View v) {
 		String message = "Select which company logo you want to place on the ad, and move it around!";
-		String title = "Step " + mAdCreationManager.getCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
 	
