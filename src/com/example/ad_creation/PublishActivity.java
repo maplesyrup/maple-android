@@ -51,14 +51,16 @@ public class PublishActivity extends Activity {
 		help.setBackgroundColor(Color.BLACK);
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
-		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
-
+		
 		// get most recent ad off stack
 		Bitmap ad = mAdCreationManager.getCurrentBitmap();
 		mAdView = (ImageView) findViewById(R.id.ad);
 		mAdView.setImageBitmap(ad);
 		
+		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
+		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+		
+		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
 		// customize header text to show company name
 		TextView title = (TextView) findViewById(R.id.headerText);
 		title.setText("Publish Your " + mAdCreationManager.getCompanyName() + " Ad");
