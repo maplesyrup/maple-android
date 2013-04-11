@@ -44,12 +44,11 @@ public class LogoActivity extends Activity {
 		help.setBackgroundColor(Color.BLACK);
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
-		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
 
 		mLogoView = (LogoView) findViewById(R.id.logoView);
 		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
 
+		mAdCreationManager.setup(null, null, mProgressBar);
 		// Update page title to reflect the company
 		TextView title = (TextView) this.findViewById(R.id.companyTag);
 		title.setText("Add A " + mAdCreationManager.getCompanyName() + " Logo!");

@@ -62,12 +62,12 @@ public class CropActivity extends Activity implements OnTouchListener {
 		help.setBackgroundColor(Color.BLACK);
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
-		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
 		
 		mCropView = (CropView) findViewById(R.id.cropView);
 		mCropView.setBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 		mCropView.setOnTouchListener(this);
+		
+		mAdCreationManager.setup(null, null, mProgressBar);
 		
 	}
 

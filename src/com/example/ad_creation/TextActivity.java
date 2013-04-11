@@ -82,6 +82,11 @@ public class TextActivity extends Activity implements
 				return true;
 			}
 		});
+		
+		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
+		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+		
+		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
 
 		// start off not showing edit options
 		mShowOptions = false;
