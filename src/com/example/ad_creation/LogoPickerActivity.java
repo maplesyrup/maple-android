@@ -54,7 +54,7 @@ public class LogoPickerActivity extends Activity {
 		
 		// get available company logos
 		// TODO: Change this to be done in the ad manager
-		mLogos = mApp.getCurrentCompanyLogos();
+		mLogos = mAdCreationManager.getCompanyLogoList();
 				
 		// set activity header text to reflect company
 		TextView header = (TextView) findViewById(R.id.logoPickerTitle);

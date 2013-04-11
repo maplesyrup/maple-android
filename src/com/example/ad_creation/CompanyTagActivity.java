@@ -83,11 +83,6 @@ public class CompanyTagActivity extends Activity {
 	public void nextStage(View view) {
 		mAdCreationManager.setCompanyName(mCompanySuggest.getText().toString());
 		
-		// Need to tag company in application as well in order for the logos to start loading
-		// this needs to be changed to be done in ad creation manager
-		// TODO: Change this to be done in ad creation manager
-		mApp.setCurrentCompany(mCompanySuggest.getText().toString());
-		
 		mAdCreationManager.nextStage(this, mAdCreationManager.getCurrentBitmap());
 	}
 
