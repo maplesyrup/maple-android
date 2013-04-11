@@ -275,12 +275,13 @@ public class AdCreationManager {
 	}
 	
 	/**
-	 * Sets up some initial settings for most of the funnel views
+	 * Sets up some initial settings for most of the funnel views. Namely the progressBar and the Ad.
 	 */
 	public void setup(ImageView ad, Integer screenHeight, ProgressView progressBar) {
 		progressBar.setCurrentStage(this.getCurrentStage());
 		progressBar.setNumStages(this.getNumStages());
 		
+		/* Will scaled the image view by a constant */
 		if (ad != null && screenHeight != null) {
 			int newHeight = (int) (AD_DISPLAY_SCALE * screenHeight);
 			int width = ad.getDrawable().getIntrinsicWidth();
