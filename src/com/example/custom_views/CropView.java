@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 /**
@@ -19,7 +20,7 @@ import android.widget.LinearLayout;
  * @author benrudolph
  *
  */
-public class CropView extends View {
+public class CropView extends ImageView {
 	Paint mPaint;
 	
 	/* Top left and bottom right corner of crop box */
@@ -69,7 +70,6 @@ public class CropView extends View {
 	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		//super.onMeasure(width, height);
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		int height = mCurrBitmap == null ? 480 : mCurrBitmap.getHeight();
 	    int width = MeasureSpec.getSize(widthMeasureSpec);

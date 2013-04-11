@@ -12,11 +12,16 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.ImageView.ScaleType;
 
 /**
  * This activity allows the user to adjust gamma and 
@@ -44,23 +49,30 @@ public class ColorAdjustmentActivity extends Activity {
 		// Init app
 		mApp = (MapleApplication) this.getApplication();
 		mAdCreationManager = mApp.getAdCreationManager();
-
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
-		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
+		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
+	
 		
 		// get most recent ad of stack
 		// initialize adjusted ad to the original
 		mOriginalAd = mAdCreationManager.getCurrentBitmap();
 		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);
-		
-		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
 		mAdView.setImageBitmap(mOriginalAd);
+		
+		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
+		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
+		help.setImageDrawable(svg.createPictureDrawable());
+		help.setBackgroundColor(Color.BLACK);
+		
+		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
+		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+		
+		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
+
+		
+		
+	
+		
 
 		// set up gamma slider callback
 		mGammaSeek = ((SeekBar) this.findViewById(R.id.gammaSeekBar));
