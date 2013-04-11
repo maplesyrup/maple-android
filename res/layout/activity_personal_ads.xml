@@ -15,7 +15,7 @@
         android:text="Your own creations:" />
     
      <GridView 
-         android:id="@+id/gridview"
+         android:id="@+id/gridviewAds"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:columnWidth="90dp"

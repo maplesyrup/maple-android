@@ -24,6 +24,7 @@ import android.net.Uri;
 public class MapleApplication extends Application{
 	
 	private AdCreationManager mAdCreationManager;
+	private String mCompanyTag;
 	
 	@Override
 	public void onCreate()
@@ -63,6 +64,15 @@ public class MapleApplication extends Application{
 
 	public void initAdCreationManager(Bitmap currBitmap, Uri fileUri) {
 		mAdCreationManager = new AdCreationManager(this, currBitmap, fileUri);
+	}
+
+	public String getCurrentCompany() {
+		return mCompanyTag;
+	}
+
+	public void setCurrentCompany(String mCompanyTag) {
+		this.mCompanyTag = mCompanyTag;
+		
 	}
 
 	
