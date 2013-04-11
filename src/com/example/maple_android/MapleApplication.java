@@ -22,10 +22,6 @@ import android.net.Uri;
  */
 
 public class MapleApplication extends Application{
-	/* The company that the current ad is tagged with */
-	private String companyTag = null;
-	/* Available logos for the current company */
-	private ArrayList<Bitmap> companyLogos;
 	
 	private AdCreationManager mAdCreationManager;
 	
@@ -37,36 +33,6 @@ public class MapleApplication extends Application{
 		// Initialize the singletons so their instances
 		// are bound to the application process.
 		initUniversalImageLoader();
-	}
-		
-	/** Set what company the current ad is tagged with
-	 * Deprecated: Use the ad manager for this
-	 * 
-	 * @param companyTag The company name the current ad is tagged with
-	 * 
-	 */
-	public void setCurrentCompany(String companyTag){
-		// also start loading company logos from server
-		if(companyTag != null) companyLogos = CompanyList.getCompanyLogosFromServer(companyTag);
-		
-		this.companyTag = companyTag;
-	}
-	
-	/** Get the currently tagged company
-	 * Deprecated: Use the ad manager for this
-	 * @return The name of the last tagged company
-	 * 
-	 */	
-	public String getCurrentCompany(){
-		return companyTag;
-	}
-	
-	/** Get available logos for the current company
-	 * Deprecated: Use the ad manager for this
-	 * @return All available logos for the currently tagged company
-	 */
-	public ArrayList<Bitmap> getCurrentCompanyLogos(){
-		return companyLogos;
 	}
 	
 	public AdCreationManager getAdCreationManager() {
@@ -96,7 +62,7 @@ public class MapleApplication extends Application{
 	}
 
 	public void initAdCreationManager(Bitmap currBitmap, Uri fileUri) {
-		mAdCreationManager = new AdCreationManager(currBitmap, fileUri);
+		mAdCreationManager = new AdCreationManager(this, currBitmap, fileUri);
 	}
 
 	

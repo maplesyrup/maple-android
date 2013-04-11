@@ -128,8 +128,6 @@ public class MainActivity extends Activity {
 		}
 		// Reset companyTag from any previous ad creations
 		app.getAdCreationManager().nextStage(this, app.getAdCreationManager().getCurrentBitmap());
-		
-		app.setCurrentCompany(null); // !!! we should stop tracking company in app and do it only in the AdCreationManager
 	}
 	
 	/**
