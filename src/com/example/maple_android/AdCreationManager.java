@@ -34,6 +34,9 @@ public class AdCreationManager {
 			return text;
 		}
 	}
+	
+	/* The application context */
+	private Context mContext;
 
 	/* The order of the ad creation funnel */
 	Class<?>[] mFunnel = { 
@@ -50,9 +53,9 @@ public class AdCreationManager {
 	private int mCurrentStage; 
 
 	private String mCompanyName;
-
-	// Array of urls to logo images
-	private ArrayList<String> mLogoList;
+	
+	// Array of logos for tagged company
+	private ArrayList<Bitmap> mCompanyLogos;
 	
 	// the logo the user has chosen to use
 	private Bitmap mLogo;
@@ -69,7 +72,7 @@ public class AdCreationManager {
 	// Current filter applied to image
 	private Filters mFilter;
 
-	public AdCreationManager(Bitmap currBitmap, Uri fileUri) {
+	public AdCreationManager(Context context, Bitmap currBitmap, Uri fileUri) {
 		mBitmapStack = new Stack<Bitmap>();
 		mBitmapStack.push(currBitmap);
 
@@ -77,11 +80,13 @@ public class AdCreationManager {
 
 		mFileUri = fileUri;
 
-		mLogoList = new ArrayList<String>();
+		mCompanyLogos = new ArrayList<Bitmap>();
 
 		mCompanyName = null;
 
 		mFilter = Filters.NONE;
+		
+		mContext = context;
 
 		
 		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
@@ -93,6 +98,8 @@ public class AdCreationManager {
 	 */
 	public void setCompanyName(String name){
 		mCompanyName = name;
+		// start loading logos for this company
+		if(name != null) mCompanyLogos = CompanyList.getCompanyLogosFromServer(mContext, name);
 	}
 	
 	/**
@@ -103,6 +110,13 @@ public class AdCreationManager {
 	 */
 	public String getCompanyName(){
 		return mCompanyName;
+	}
+	
+	/**
+	 * Gets the arraylist of logos for the tagged company
+	 */
+	public ArrayList<Bitmap> getCompanyLogoList(){
+		return mCompanyLogos;
 	}
 	
 	/**
