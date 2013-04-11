@@ -16,10 +16,11 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.View.MeasureSpec;
-import android.view.View.OnTouchListener;;
+import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 
 
-public class LogoView extends View implements OnTouchListener {	
+public class LogoView extends ImageView implements OnTouchListener {	
 	
 	// Width and height of view
 	private int mWidth;

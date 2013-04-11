@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.example.ad_creation.*;
+import com.example.custom_views.ProgressView;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 /**
  * This class exists to manage the creation of an ad between activities. It
@@ -48,6 +55,8 @@ public class AdCreationManager {
 	// are in as an index into mFunnel. 
 	// -1 for funnel not started yet.
 	private int mCurrentStage; 
+	
+	private static final float AD_DISPLAY_SCALE = 0.4f;
 
 	private String mCompanyName;
 
@@ -263,6 +272,29 @@ public class AdCreationManager {
 	 */
 	public int getNumStages() {
 		return mFunnel.length;
+	}
+	
+	/**
+	 * Sets up some initial settings for most of the funnel views
+	 */
+	public void setup(ImageView ad, Integer screenHeight, ProgressView progressBar) {
+		progressBar.setCurrentStage(this.getCurrentStage());
+		progressBar.setNumStages(this.getNumStages());
+		
+		if (ad != null && screenHeight != null) {
+			int newHeight = (int) (AD_DISPLAY_SCALE * screenHeight);
+			int width = ad.getDrawable().getIntrinsicWidth();
+			int height = ad.getDrawable().getIntrinsicHeight();
+	
+			int newWidth = (int) Math.floor((width * newHeight) / height);
+	
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+			    newWidth, newHeight);
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			params.addRule(RelativeLayout.BELOW, R.id.headerText);
+			ad.setLayoutParams(params);
+			ad.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		}
 	}
 	
 }
