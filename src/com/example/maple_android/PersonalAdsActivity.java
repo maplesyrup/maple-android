@@ -13,8 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -23,6 +21,8 @@ import android.widget.Toast;
 import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 public class PersonalAdsActivity extends Activity {
 
@@ -33,9 +33,8 @@ public class PersonalAdsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_personal_ads);
+		mGridview = (GridView) findViewById(R.id.gridviewAds);
 		requestUserAds();
-		Log.d(TAG, "trying to identify the user");
-		setContentView(R.layout.activity_personal_ads);
 	}
 
 	/**
@@ -51,15 +50,6 @@ public class PersonalAdsActivity extends Activity {
 		Session session = Session.getActiveSession();
 		final String user_id = getUserId(session.getAccessToken());
 		RequestParams params = new RequestParams();
-
-		mGridview = (GridView) findViewById(R.id.gridviewAds);
-		mGridview.setAdapter(new ImageAdapter(this));
-		
-		mGridview.setOnItemClickListener(new OnItemClickListener() {
-	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            Toast.makeText(PersonalAdsActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-	        }
-	    });
 		
 		// No params means just getting the most popular ads
 		//		params.put("user_id", user_id);
@@ -70,13 +60,13 @@ public class PersonalAdsActivity extends Activity {
 				Log.d(TAG, response);	
 				try {
 					JSONArray jObjectAds = new JSONArray(response);
+					mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds));
 					populateView(jObjectAds);
 					Log.d(TAG, "Number ads created for user_id " + user_id + ": " + jObjectAds.length());
 				} catch (JSONException e) {
 					Log.d(TAG, "Could not parse JSON; unexpected response from the server.");	
 					e.printStackTrace();
 				}
-				
 			}
 			
 			@Override
@@ -119,48 +109,56 @@ public class PersonalAdsActivity extends Activity {
 	/*
 	 * Extend BaseAdapter to allow grid to show pictures
 	 */
-	private class ImageAdapter extends BaseAdapter {
-		private Context mContext;
 
-		public ImageAdapter(Context c) {
-			mContext = c;
-		}
+	public class ImageAdapter extends BaseAdapter {
+	    private Context mContext;
+	    private JSONArray ads;
+	    private int MAX_TO_SHOW = 10;
+	    
+	    public ImageAdapter(Context c, JSONArray ads) {
+	        mContext = c;
+	        this.ads = ads;
+	    }
 
-		public int getCount() {
-			return 4;
-		}
+	    public int getCount() {
+	    	return Math.min(MAX_TO_SHOW, ads.length());
+	    }
 
-		public Object getItem(int position) {
-			return null;
-		}
+	    public Object getItem(int position) {
+	        return null;
+	    }
 
-		public long getItemId(int position) {
-			return 0;
-		}
+	    public long getItemId(int position) {
+	        return 0;
+	    }
 
-		// create a new ImageView for each item referenced by the Adapter
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ImageView imageView;
-			if (convertView == null) { // if it's not recycled, initialize some
-										// attributes
-				imageView = new ImageView(mContext);
-				imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				imageView.setPadding(8, 8, 8, 8);
-			} else {
-				imageView = (ImageView) convertView;
-			}
-
-//			imageView.setImageBitmap(getBitmap(position));
-			imageView.setImageResource(R.drawable.maple);
-
-			return imageView;
-		}
-
-		private Bitmap getBitmap(int position) {
-			Log.d(TAG, "getting bitmaps from url!");
-			return Utility.getBitmapFromUrl("http://s3.amazonaws.com/maplesyrup-assets/posts/images/000/000/030/original/IMG_20130314_002848.jpg?1363246119");
-		}
+	    // create a new ImageView for each item referenced by the Adapter
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	        final ImageView imageView;
+	        if (convertView == null) {  // if it's not recycled, initialize some attributes
+	            imageView = new ImageView(mContext);
+	            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+	            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+	            imageView.setPadding(8, 8, 8, 8);
+	        } else {
+	            imageView = (ImageView) convertView;
+	        }
+	        String url = "http://s3.amazonaws.com/maplesyrup-assets/posts/images/000/000/006/medium/IMG_20130311_233546.jpg?1363070132";
+	        try {
+	        	url = ads.getJSONObject(position).getString("image_url");
+	        } catch (JSONException e){
+	        	Log.d(TAG, "unable to parse JSON");
+	        }
+	        ImageLoader imageLoader = ImageLoader.getInstance();
+	        imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+	        	@Override
+	        	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+	        		imageView.setImageBitmap(loadedImage);
+	        	}
+	        });
+	        Log.d(TAG, "getting from url2");
+	        return imageView;
+	    }
 	}
 
 	
