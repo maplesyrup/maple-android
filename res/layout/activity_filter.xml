@@ -1,53 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:orientation="vertical" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".FilterActivity" >
 
      <TextView
-         android:id="@+id/companyTag"
+         android:id="@+id/headerText"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_centerHorizontal="true"
          android:paddingBottom="5sp"
          android:paddingTop="5sp"
+         android:text="Add A Filter"
          android:textSize="20sp"
          android:textStyle="bold" />
-
      
-     <com.example.custom_views.LogoView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:id="@+id/logoView"
-	     android:layout_below="@+id/companyTag"
-	    android:layout_centerHorizontal="true" /> 
-
-     <TextView
-         android:id="@+id/logoInstructions"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/logoView"
-         android:layout_centerHorizontal="true"
-         android:text="Click to place logo"
-         android:textColor="#ff0000"
-         android:textSize="15sp"
-         android:textStyle="italic" />
-      
-     <Button
-         android:id="@+id/pickLogoButton"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/logoInstructions"
-	  	 android:layout_centerHorizontal="true"
-         android:onClick="launchLogoPicker"
-         android:text="Pick A Logo" />
-
+     <ImageView
+            android:id="@+id/ad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerText"
+            android:layout_centerHorizontal="true"
+             />
+     
+      <Spinner
+        android:id="@+id/filters"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ad"
+        />
+     
      <Button
          android:id="@+id/nextStage"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_alignParentRight="true"
-         android:layout_below="@+id/logoInstructions"
+         android:layout_below="@+id/filters"
          android:onClick="nextStage"
          android:text="Next" />
 
@@ -59,8 +52,8 @@
          android:layout_alignTop="@+id/nextStage"
          android:onClick="prevStage"
          android:text="Back" />
-     
-      <RelativeLayout 
+    
+     <RelativeLayout 
 	      android:id="@+id/InnerRelativeLayout"
 	      android:layout_width="wrap_content"
 	      android:layout_height="70dp"
@@ -83,4 +76,5 @@
 			    android:layout_toLeftOf="@+id/helpButton" />
 
 	 </RelativeLayout>
+
 </RelativeLayout>

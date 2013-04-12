@@ -50,6 +50,7 @@ public class AdCreationManager {
 			CropActivity.class,
 			CompanyTagActivity.class,
 			ColorAdjustmentActivity.class,
+			FilterActivity.class,
 			LogoActivity.class,
 			TextActivity.class,
 			PublishActivity.class

@@ -84,10 +84,14 @@
         <activity
             android:name="com.example.maple_android.PersonalAds"
             android:label="@string/title_activity_personal_ads" >
-		</activity>
-		<activity
+        </activity>
+        <activity
             android:name="com.example.ad_creation.PublishActivity"
             android:label="@string/title_activity_publish" >
+        </activity>
+        <activity
+            android:name="com.example.ad_creation.FilterActivity"
+            android:label="@string/title_activity_filter" >
         </activity>
     </application>
 
