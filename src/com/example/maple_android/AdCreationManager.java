@@ -235,12 +235,15 @@ public class AdCreationManager {
 	}
 
 	/**
-	 * Adds a filter to the current bitmap
+	 * Adds a filter to the given ad. The supplied ad is
+	 * unchanged, and the result is returned.
 	 * 
 	 * @param strFilter
 	 *            Name of the filter we want to use
+	 * @result The bitmap after the filter is applied            
+	 *           
 	 */
-	public void addFilter(String strFilter) {
+	public Bitmap addFilter(Bitmap ad, String strFilter) {
 		MapleFilter mapleFilter = null;
 
 		if (strFilter.equals(Filters.GAUSSIAN.toString())) {
@@ -252,10 +255,10 @@ public class AdCreationManager {
 		} else if (strFilter.equals(Filters.NONE.toString())) {
 			this.pushBitmap(this.getOriginalBitmap());
 			mFilter = Filters.NONE;
-			return;
+			return ad;
 		}
 
-		this.pushBitmap(mapleFilter.filterBitmap(this.getCurrentBitmap()));
+		return mapleFilter.filterBitmap(ad);
 
 	}
 

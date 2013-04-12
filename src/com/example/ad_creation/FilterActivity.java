@@ -37,6 +37,8 @@ public class FilterActivity extends Activity implements OnItemSelectedListener  
 	private Session mSession;
 	private ImageView mAdView;
 	private Spinner mFilterSpinner;
+	private Bitmap mOriginalAd; // the starting ad without any filters
+	private Bitmap mFilteredAd; // the ad after the filter is applied
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +55,12 @@ public class FilterActivity extends Activity implements OnItemSelectedListener  
 		mApp = (MapleApplication) this.getApplication();
 		mAdCreationManager = mApp.getAdCreationManager();
 
-		// set photo
+		// initialize filtered image to original
+		mOriginalAd = mAdCreationManager.getCurrentBitmap();
+		mFilteredAd = mOriginalAd;
+		// set imageview of ad
 		mAdView = (ImageView) this.findViewById(R.id.ad);
-		mAdView.setImageBitmap(mAdCreationManager.getCurrentBitmap());
+		mAdView.setImageBitmap(mFilteredAd);
 
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
@@ -76,7 +81,10 @@ public class FilterActivity extends Activity implements OnItemSelectedListener  
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		mFilterSpinner.setAdapter(adapter);
-		mFilterSpinner.setSelection(adapter.getPosition(mApp.getAdCreationManager().getCurrentFilter().toString()));
+		
+		// update the spinner and view with a previously applied filtered
+		mFilterSpinner.setSelection(adapter.getPosition(mAdCreationManager.getCurrentFilter().toString()));
+		mFilterSpinner.getOnItemSelectedListener().onItemSelected(null, null, 0, 0);
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 
@@ -89,7 +97,7 @@ public class FilterActivity extends Activity implements OnItemSelectedListener  
 	 * @param view
 	 */
 	public void nextStage(View view) {
-		// mAdCreationManager.nextStage(this, ad);
+		mAdCreationManager.nextStage(this, mFilteredAd);
 	}
 
 	/**
@@ -114,8 +122,8 @@ public class FilterActivity extends Activity implements OnItemSelectedListener  
 
 		String strFilter = mFilterSpinner.getSelectedItem().toString();
 		
-		mAdCreationManager.addFilter(strFilter);
-		mAdView.setImageBitmap(mAdCreationManager.getCurrentBitmap());
+		mFilteredAd = mAdCreationManager.addFilter(mOriginalAd, strFilter);
+		mAdView.setImageBitmap(mFilteredAd);
 
 		
 	}

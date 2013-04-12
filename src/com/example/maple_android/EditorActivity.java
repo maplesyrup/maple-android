@@ -244,7 +244,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 		String strFilter = mFilterSpinner.getSelectedItem().toString();
 		
-		mApp.getAdCreationManager().addFilter(strFilter);
+		//mApp.getAdCreationManager().addFilter(strFilter);
 		mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 
 
