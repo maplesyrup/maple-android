@@ -1,4 +1,4 @@
-package com.example.maple_android;
+package com.example.filters;
 
 import com.jabistudio.androidjhlabs.filter.GaussianFilter;
 import com.jabistudio.androidjhlabs.filter.PosterizeFilter;
@@ -10,7 +10,7 @@ import android.graphics.Bitmap.Config;
 public class MaplePosterizeFilter extends MapleFilter {
 
 	@Override
-	Bitmap filterBitmap(Bitmap srcBitmap) {
+	public Bitmap filterBitmap(Bitmap srcBitmap) {
 		
 		int width = srcBitmap.getWidth();
 		int height = srcBitmap.getHeight();

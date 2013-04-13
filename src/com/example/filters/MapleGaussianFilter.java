@@ -1,4 +1,4 @@
-package com.example.maple_android;
+package com.example.filters;
 
 import com.jabistudio.androidjhlabs.filter.GaussianFilter;
 import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
@@ -11,7 +11,7 @@ public class MapleGaussianFilter extends MapleFilter {
 
 	private final float RADIUS = 8.5f;
 	@Override
-	Bitmap filterBitmap(Bitmap srcBitmap) {
+	public Bitmap filterBitmap(Bitmap srcBitmap) {
 		//Find the bitmap's width height
 		int width = srcBitmap.getWidth();
 		int height = srcBitmap.getHeight();

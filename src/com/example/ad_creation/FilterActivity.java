@@ -1,6 +1,7 @@
 package com.example.ad_creation;
 
-import com.example.custom_views.CropView;
+import java.util.ArrayList;
+
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.LoginActivity;
@@ -9,6 +10,10 @@ import com.example.maple_android.R;
 import com.facebook.Session;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScrollerAdapter;
+import com.twotoasters.android.horizontalimagescroller.image.*;
+import com.twotoasters.android.horizontalimagescroller.io.*;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,6 +23,7 @@ import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,10 +33,17 @@ import android.widget.AdapterView.OnItemSelectedListener;
 /**
  * This activity allows the user to add a filter to their ad
  * 
+ * We are using the jhlabs filter library from 
+ * http://www.jhlabs.com/ip/filters/index.html
+ * 
+ * To display the filters in a horizontal scrollview
+ * we are using TwoToasters library
+ * https://github.com/twotoasters/HorizontalImageScroller-Android
+ * 
  * @author Eli
  * 
  */
-public class FilterActivity extends Activity implements OnItemSelectedListener  {
+public class FilterActivity extends Activity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
 	private ProgressView mProgressBar;
@@ -39,6 +52,7 @@ public class FilterActivity extends Activity implements OnItemSelectedListener  
 	private Spinner mFilterSpinner;
 	private Bitmap mOriginalAd; // the starting ad without any filters
 	private Bitmap mFilteredAd; // the ad after the filter is applied
+	private View mLastFilterSelected; // the last filter selected in the horizontal scroller
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,25 +80,37 @@ public class FilterActivity extends Activity implements OnItemSelectedListener  
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
-		
-		
-		// set up filter spinner
-		mFilterSpinner = (Spinner) findViewById(R.id.filters);
-		mFilterSpinner.setOnItemSelectedListener(this);
 
-		// Create an ArrayAdapter using the string array and a default spinner
-		// layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.filters_array,
-				android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		mFilterSpinner.setAdapter(adapter);
-		
-		// update the spinner and view with a previously applied filtered
-		mFilterSpinner.setSelection(adapter.getPosition(mAdCreationManager.getCurrentFilter().toString()));
-		mFilterSpinner.getOnItemSelectedListener().onItemSelected(null, null, 0, 0);
+		// make a list of ImageToLoad objects for image scroller
+		ArrayList<ImageToLoad> images = new ArrayList<ImageToLoad>();
+		images.add(new ImageToLoadDrawableResource(R.drawable.filter_none));
+		images.add(new ImageToLoadDrawableResource(R.drawable.filter_gaussian));
+		images.add(new ImageToLoadDrawableResource(R.drawable.filter_posterize));
+
+		// set up the scroller with an adapter populated with the list of
+		// ImageToLoad objects
+		HorizontalImageScroller scroller = (HorizontalImageScroller) findViewById(R.id.filterScroller);
+		scroller.setAdapter(new HorizontalImageScrollerAdapter(this, images));
+
+		// add callback function when image in scroller is selected
+		scroller.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int pos,
+					long id) {
+				// change background colors to indicate selection
+				if(mLastFilterSelected != null)
+					mLastFilterSelected.setBackgroundColor(Color.TRANSPARENT);
+				view.setBackgroundColor(Color.BLACK);
+				mLastFilterSelected = view;
+				
+				// apply filter to image
+				mFilteredAd = mAdCreationManager.addFilter(mOriginalAd, pos);
+				mAdView.setImageBitmap(mFilteredAd);
+				
+			}
+		});
+
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 
@@ -114,24 +140,6 @@ public class FilterActivity extends Activity implements OnItemSelectedListener  
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.filter, menu);
 		return true;
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int pos,
-			long id) {
-
-		String strFilter = mFilterSpinner.getSelectedItem().toString();
-		
-		mFilteredAd = mAdCreationManager.addFilter(mOriginalAd, strFilter);
-		mAdView.setImageBitmap(mFilteredAd);
-
-		
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
