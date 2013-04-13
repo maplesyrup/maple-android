@@ -90,12 +90,12 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 						mCompanySuggestions));
 
 		// check if a company tag has already been set
-		String tag = mApp.getCurrentCompany();
-		if (tag != null) {
+		//String tag = mApp.getCurrentCompany();
+		//if (tag != null) {
 			// if it was previously set, update the display to show this
-			mCompanySuggest.setText(tag);
-			tagPicture(mCompanySuggest);
-		}
+		//	mCompanySuggest.setText(tag);
+		//	tagPicture(mCompanySuggest);
+		//}
 
 	}
 
@@ -117,7 +117,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 	public void tagPicture(View view) {		
 		// save company tag
 		mCompanyTag = mCompanySuggest.getText().toString();
-		mApp.setCurrentCompany(mCompanyTag);
+		//mApp.setCurrentCompany(mCompanyTag);
 
 		// update header
 		((TextView) this.findViewById(R.id.header))
@@ -244,7 +244,7 @@ public class EditorActivity extends Activity implements OnItemSelectedListener {
 
 		String strFilter = mFilterSpinner.getSelectedItem().toString();
 		
-		mApp.getAdCreationManager().addFilter(strFilter);
+		//mApp.getAdCreationManager().addFilter(strFilter);
 		mPhoto.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 
 

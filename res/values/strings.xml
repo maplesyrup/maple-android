@@ -29,5 +29,6 @@
     <string name="popular">Popular</string>
     <string name="title_activity_publish">PublishActivity</string>
     <string name="question"><b>\?</b></string>
+    <string name="title_activity_filter">FilterActivity</string>
 
 </resources>

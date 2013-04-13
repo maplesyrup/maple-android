@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.example.ad_creation.*;
+import com.example.filters.*;
 import com.example.custom_views.ProgressView;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
@@ -50,6 +51,7 @@ public class AdCreationManager {
 			CropActivity.class,
 			CompanyTagActivity.class,
 			ColorAdjustmentActivity.class,
+			FilterActivity.class,
 			LogoActivity.class,
 			TextActivity.class,
 			PublishActivity.class
@@ -234,27 +236,30 @@ public class AdCreationManager {
 	}
 
 	/**
-	 * Adds a filter to the current bitmap
+	 * Adds a filter to the given ad. The supplied ad is
+	 * unchanged, and the result is returned.
 	 * 
 	 * @param strFilter
 	 *            Name of the filter we want to use
+	 * @result The bitmap after the filter is applied            
+	 *           
 	 */
-	public void addFilter(String strFilter) {
+	public Bitmap addFilter(Bitmap ad, int filter) {
 		MapleFilter mapleFilter = null;
 
-		if (strFilter.equals(Filters.GAUSSIAN.toString())) {
+		if (filter == 1) {
 			mapleFilter = new MapleGaussianFilter();
 			mFilter = Filters.GAUSSIAN;
-		} else if (strFilter.equals(Filters.POSTERIZE.toString())) {
+		} else if (filter == 2) {
 			mapleFilter = new MaplePosterizeFilter();
 			mFilter = Filters.POSTERIZE;
-		} else if (strFilter.equals(Filters.NONE.toString())) {
+		} else if (filter == 0) {
 			this.pushBitmap(this.getOriginalBitmap());
 			mFilter = Filters.NONE;
-			return;
+			return ad;
 		}
 
-		this.pushBitmap(mapleFilter.filterBitmap(this.getCurrentBitmap()));
+		return mapleFilter.filterBitmap(ad);
 
 	}
 
