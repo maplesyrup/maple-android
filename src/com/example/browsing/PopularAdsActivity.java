@@ -1,25 +1,20 @@
 package com.example.browsing;
 
-import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.example.maple_android.R.drawable;
-import com.example.maple_android.R.id;
-import com.example.maple_android.R.layout;
-import com.example.maple_android.R.menu;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.maple_android.R;
+import com.example.maple_android.Utility;
 
 public class PopularAdsActivity extends Activity {
 
@@ -29,7 +24,8 @@ public class PopularAdsActivity extends Activity {
 		setContentView(R.layout.activity_popular_ads);
 
 	    GridView gridview = (GridView) findViewById(R.id.gridview);
-	    gridview.setAdapter(new ImageAdapter(this));
+	    JSONArray jObjectAds = new JSONArray();
+	    gridview.setAdapter(new ImageAdapter(this, jObjectAds));
 
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

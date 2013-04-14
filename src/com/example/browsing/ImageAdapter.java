@@ -27,12 +27,10 @@ public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
     private JSONArray ads;
     private int MAX_TO_SHOW = 10;
-    private LayoutInflater mInflator;
     
     public ImageAdapter(Context c, JSONArray ads) {
         mContext = c;
         this.ads = ads;
-        mInflator = LayoutInflater.from(c);
     }
 
     public int getCount() {
@@ -49,8 +47,10 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        View adView = mInflator.inflate(R.layout.ad_view, null);
-    	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
+    	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View adView = inflater.inflate(R.layout.ad_view, null);
+        final ImageView imageView = new ImageView(mContext);
+//    	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
     	
         imageView.setLayoutParams(new GridView.LayoutParams(185, 185));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -77,7 +77,7 @@ public class ImageAdapter extends BaseAdapter {
 
     	TextView textView = (TextView) adView.findViewById(R.id.adInfo);
     	textView.setText(title);
-        return adView;
+        return imageView;
     }
 }
 
