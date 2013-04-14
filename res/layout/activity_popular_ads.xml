@@ -6,11 +6,23 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".PopularAds" >
+    tools:context=".PopularAdsActivity" >
 
     <TextView
+        android:id="@+id/adsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Here will go the most popular ads" />
-
+	
+	<GridView 
+	    android:id="@+id/gridview"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="fill_parent"
+	    android:columnWidth="90dp"
+	    android:numColumns="auto_fit"
+	    android:verticalSpacing="10dp"
+	    android:horizontalSpacing="10dp"
+	    android:stretchMode="columnWidth"
+	    android:gravity="center"
+        android:layout_below="@+id/adsTitle" />
 </RelativeLayout>
