@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/ad"
-        android:layout_width="145dp"
+        android:layout_width="294dp"
         android:layout_height="294dp"
         android:src="@drawable/maple" />
 
