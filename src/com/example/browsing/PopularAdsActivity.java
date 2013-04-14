@@ -1,4 +1,11 @@
-package com.example.maple_android;
+package com.example.browsing;
+
+import com.example.maple_android.R;
+import com.example.maple_android.Utility;
+import com.example.maple_android.R.drawable;
+import com.example.maple_android.R.id;
+import com.example.maple_android.R.layout;
+import com.example.maple_android.R.menu;
 
 import android.app.Activity;
 import android.content.Context;

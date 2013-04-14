@@ -25,6 +25,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.browsing.PersonalAdsActivity;
+import com.example.browsing.PopularAdsActivity;
 import com.facebook.Session;
 
 public class Utility {
