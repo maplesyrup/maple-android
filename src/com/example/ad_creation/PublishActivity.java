@@ -113,14 +113,6 @@ public class PublishActivity extends FunnelActivity {
 		mAdCreationManager.previousStage(this);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.publish, menu);
-		return true;
-	}
-
-
 	public void getHelp(View v) {
 		String message = "You're done! Congrats";
 		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();

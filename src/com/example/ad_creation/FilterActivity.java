@@ -134,13 +134,6 @@ public class FilterActivity extends FunnelActivity {
 		mAdCreationManager.previousStage(this);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.filter, menu);
-		return true;
-	}
-
 	public void getHelp(View v) {
 		String message = "Select a filter for your photo!";
 		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();

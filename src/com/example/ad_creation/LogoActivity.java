@@ -65,17 +65,6 @@ public class LogoActivity extends FunnelActivity {
 		}
 	}
 
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.logo, menu);
-		return true;
-	}
-
-	
-
-
 	/**
 	 * Launch an activity that allows the user to choose a logo for the selected
 	 * company. When the activity returns to the LogoPicker it will include a

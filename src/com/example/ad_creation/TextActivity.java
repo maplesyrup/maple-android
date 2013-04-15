@@ -288,13 +288,6 @@ public class TextActivity extends FunnelActivity implements
 				}).show();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.text, menu);
-		return true;
-	}
-
 	/**
 	 * This function is used to generate a bitmap from the TextView that holds
 	 * the currently created text
