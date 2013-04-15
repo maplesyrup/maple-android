@@ -20,6 +20,7 @@ import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.LoginActivity;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
+import com.example.maple_android.Utility;
 import com.facebook.Session;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
@@ -140,4 +141,9 @@ public class FilterActivity extends Activity {
 		return true;
 	}
 
+	public void getHelp(View v) {
+		String message = "Select a filter for your photo!";
+		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
+		Utility.createHelpDialog(this, message, title);
+	}
 }

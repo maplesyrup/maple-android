@@ -64,6 +64,7 @@
             android:layout_alignBottom="@+id/progressBar"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/progressBar"
+            android:onClick="getHelp"
             android:scaleType="fitCenter" />
 
         <com.example.custom_views.ProgressView
