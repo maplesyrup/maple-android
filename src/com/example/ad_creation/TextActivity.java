@@ -32,7 +32,7 @@ import com.example.maple_android.Utility;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
-public class TextActivity extends Activity implements
+public class TextActivity extends FunnelActivity implements
 		FontPickerDialog.FontPickerDialogListener {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;

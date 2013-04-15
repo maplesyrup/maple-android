@@ -28,7 +28,7 @@ import com.larvalabs.svgandroid.SVGParser;
  * @author benrudolph
  *
  */
-public class CropActivity extends Activity implements OnTouchListener {
+public class CropActivity extends FunnelActivity implements OnTouchListener {
 
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
@@ -111,20 +111,7 @@ public class CropActivity extends Activity implements OnTouchListener {
 		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.ad_creation, menu);
-		return true;
-	}
-	
-	/**
-	 * Respond to each tab button
-	 */
-	public boolean onOptionsItemSelected(MenuItem item) {
-		return Utility.myOnOptionsItemSelected(this, item);
-	}
+
 }
 
 

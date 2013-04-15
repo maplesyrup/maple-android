@@ -28,7 +28,7 @@ import android.widget.ImageView.ScaleType;
  * brightness of the ad.
  *
  */
-public class ColorAdjustmentActivity extends Activity {
+public class ColorAdjustmentActivity extends FunnelActivity {
 	/* Global app */
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;

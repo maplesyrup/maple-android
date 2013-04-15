@@ -42,7 +42,7 @@ import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScr
  * @author Eli
  * 
  */
-public class FilterActivity extends Activity {
+public class FilterActivity extends FunnelActivity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
 	private ProgressView mProgressBar;
