@@ -1,5 +1,13 @@
 package com.example.ad_creation;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.MapleApplication;
@@ -8,27 +16,12 @@ import com.example.maple_android.Utility;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Point;
-import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.ImageView.ScaleType;
-
 /**
  * This activity allows the user to adjust gamma and 
  * brightness of the ad.
  *
  */
-public class ColorAdjustmentActivity extends Activity {
+public class ColorAdjustmentActivity extends FunnelActivity {
 	/* Global app */
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
@@ -272,13 +265,6 @@ public class ColorAdjustmentActivity extends Activity {
 		// reset seekers to middle
 		mGammaSeek.setProgress(10);
 		mBrightnessSeek.setProgress(255);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.color_adjustment, menu);
-		return true;
 	}
 	
 

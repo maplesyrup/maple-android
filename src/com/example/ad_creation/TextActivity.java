@@ -32,7 +32,7 @@ import com.example.maple_android.Utility;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
-public class TextActivity extends Activity implements
+public class TextActivity extends FunnelActivity implements
 		FontPickerDialog.FontPickerDialogListener {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
@@ -286,13 +286,6 @@ public class TextActivity extends Activity implements
 					}
 
 				}).show();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.text, menu);
-		return true;
 	}
 
 	/**
