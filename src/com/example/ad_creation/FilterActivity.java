@@ -1,5 +1,7 @@
 package com.example.ad_creation;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +9,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -19,6 +23,10 @@ import com.example.maple_android.R;
 import com.facebook.Session;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
+import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
+import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadDrawableResource;
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScrollerAdapter;
 
 /**
  * This activity allows the user to add a filter to their ad
@@ -71,35 +79,35 @@ public class FilterActivity extends Activity {
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
 
-//		// make a list of ImageToLoad objects for image scroller
-//		ArrayList<ImageToLoad> images = new ArrayList<ImageToLoad>();
-//		images.add(new ImageToLoadDrawableResource(R.drawable.filter_none));
-//		images.add(new ImageToLoadDrawableResource(R.drawable.filter_gaussian));
-//		images.add(new ImageToLoadDrawableResource(R.drawable.filter_posterize));
-//
-//		// set up the scroller with an adapter populated with the list of
-//		// ImageToLoad objects
-//		HorizontalImageScroller scroller = (HorizontalImageScroller) findViewById(R.id.filterScroller);
-//		scroller.setAdapter(new HorizontalImageScrollerAdapter(this, images));
-//
-//		// add callback function when image in scroller is selected
-//		scroller.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view, int pos,
-//					long id) {
-//				// change background colors to indicate selection
-//				if(mLastFilterSelected != null)
-//					mLastFilterSelected.setBackgroundColor(Color.TRANSPARENT);
-//				view.setBackgroundColor(Color.BLACK);
-//				mLastFilterSelected = view;
-//				
-//				// apply filter to image
-//				mFilteredAd = mAdCreationManager.addFilter(mOriginalAd, pos);
-//				mAdView.setImageBitmap(mFilteredAd);
-//				
-//			}
-//		});
+		// make a list of ImageToLoad objects for image scroller
+		ArrayList<ImageToLoad> images = new ArrayList<ImageToLoad>();
+		images.add(new ImageToLoadDrawableResource(R.drawable.filter_none));
+		images.add(new ImageToLoadDrawableResource(R.drawable.filter_gaussian));
+		images.add(new ImageToLoadDrawableResource(R.drawable.filter_posterize));
+
+		// set up the scroller with an adapter populated with the list of
+		// ImageToLoad objects
+		HorizontalImageScroller scroller = (HorizontalImageScroller) findViewById(R.id.filterScroller);
+		scroller.setAdapter(new HorizontalImageScrollerAdapter(this, images));
+
+		// add callback function when image in scroller is selected
+		scroller.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int pos,
+					long id) {
+				// change background colors to indicate selection
+				if(mLastFilterSelected != null)
+					mLastFilterSelected.setBackgroundColor(Color.TRANSPARENT);
+				view.setBackgroundColor(Color.BLACK);
+				mLastFilterSelected = view;
+				
+				// apply filter to image
+				mFilteredAd = mAdCreationManager.addFilter(mOriginalAd, pos);
+				mAdView.setImageBitmap(mFilteredAd);
+				
+			}
+		});
 
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
