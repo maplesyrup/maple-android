@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -108,6 +110,20 @@ public class CropActivity extends Activity implements OnTouchListener {
 		String message = "Select which part of your picture you want to be your ad!";
 		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.ad_creation, menu);
+		return true;
+	}
+	
+	/**
+	 * Respond to each tab button
+	 */
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return Utility.myOnOptionsItemSelected(this, item);
 	}
 }
 
