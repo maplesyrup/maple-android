@@ -30,7 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PublishActivity extends Activity {
+public class PublishActivity extends FunnelActivity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
 	private ImageView mAdView;
@@ -112,14 +112,6 @@ public class PublishActivity extends Activity {
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.publish, menu);
-		return true;
-	}
-
 
 	public void getHelp(View v) {
 		String message = "You're done! Congrats";

@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class LogoActivity extends Activity {
+public class LogoActivity extends FunnelActivity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
 
@@ -64,17 +64,6 @@ public class LogoActivity extends Activity {
 			mLogoView.setLogo(logo, 0, 0);
 		}
 	}
-
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.logo, menu);
-		return true;
-	}
-
-	
-
 
 	/**
 	 * Launch an activity that allows the user to choose a logo for the selected

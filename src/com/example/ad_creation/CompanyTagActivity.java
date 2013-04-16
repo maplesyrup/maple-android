@@ -2,6 +2,15 @@ package com.example.ad_creation;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.CompanyList;
@@ -11,18 +20,7 @@ import com.example.maple_android.Utility;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-
-public class CompanyTagActivity extends Activity {
+public class CompanyTagActivity extends FunnelActivity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
 	private ImageView mAdView;
@@ -65,13 +63,6 @@ public class CompanyTagActivity extends Activity {
 				.setAdapter(new ArrayAdapter<String>(this,
 						android.R.layout.simple_dropdown_item_1line,
 						mCompanySuggestions));
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.company_tag, menu);
-		return true;
 	}
 
 	/**

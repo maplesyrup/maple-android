@@ -1,13 +1,11 @@
 package com.example.ad_creation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.custom_views.CropView;
@@ -26,7 +24,7 @@ import com.larvalabs.svgandroid.SVGParser;
  * @author benrudolph
  *
  */
-public class CropActivity extends Activity implements OnTouchListener {
+public class CropActivity extends FunnelActivity implements OnTouchListener {
 
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
@@ -109,6 +107,7 @@ public class CropActivity extends Activity implements OnTouchListener {
 		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, message, title);
 	}
+
 }
 
 

@@ -42,7 +42,7 @@ import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScr
  * @author Eli
  * 
  */
-public class FilterActivity extends Activity {
+public class FilterActivity extends FunnelActivity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
 	private ProgressView mProgressBar;
@@ -132,13 +132,6 @@ public class FilterActivity extends Activity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.filter, menu);
-		return true;
 	}
 
 	public void getHelp(View v) {
