@@ -2,11 +2,13 @@ package com.example.ad_creation;
 
 import java.util.HashMap;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -50,7 +52,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		mConfig.put(Config.HELP_MESSAGE, "Select which part of your picture you want to be your ad!");
 		mConfig.put(Config.NAME, "Crop");
 		
-		setContentView(R.layout.activity_crop);
+		setCustomContent(R.layout.activity_crop);
 		
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 		

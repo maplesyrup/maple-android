@@ -2,14 +2,17 @@ package com.example.ad_creation;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
@@ -28,7 +31,8 @@ public class CompanyTagActivity extends FunnelActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_company_tag);
+		
+		setCustomContent(R.layout.activity_company_tag);
 		
 		mConfig.put(Config.HELP_MESSAGE, "Tag your ad from a company in the database. " +
 				"As you type, the field will autocomplete with possible companies.");

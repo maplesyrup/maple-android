@@ -3,11 +3,15 @@ package com.example.ad_creation;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.ad_creation.FunnelActivity.Config;
 import com.example.browsing.PopularAdsActivity;
@@ -33,6 +37,9 @@ public abstract class FunnelActivity extends Activity {
 	protected AdCreationManager mAdCreationManager;
 	protected Session mSession;
 	
+	private ImageView mLeftArrow;
+	private ImageView mRightArrow;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +53,8 @@ public abstract class FunnelActivity extends Activity {
 			Intent i = new Intent(this, LoginActivity.class);
 			startActivity(i);
 		}
+		
+		setContentView(R.layout.funnel_common);
 	}
 	
 	@Override
@@ -80,6 +89,24 @@ public abstract class FunnelActivity extends Activity {
 		Utility.createHelpDialog(this, mConfig.get(Config.HELP_MESSAGE), title);
 	}
 	
+	public void setCustomContent(int layout_id) {
+		RelativeLayout common = (RelativeLayout) findViewById(R.id.common_layout);
+
+		// Add inner custom view as child
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT, 
+				RelativeLayout.LayoutParams.MATCH_PARENT);
+	        
+		params.addRule(RelativeLayout.BELOW, R.id.topbar_container);
+		params.addRule(RelativeLayout.ABOVE, R.id.bottombar_container);
+
+		
+		LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);   
+		
+		RelativeLayout customContent = (RelativeLayout) layoutInflater.inflate(layout_id, common, false);
+		
+		common.addView(customContent, 1, params);
+	}
 	/**
 	 * Gets config variable
 	 * @return

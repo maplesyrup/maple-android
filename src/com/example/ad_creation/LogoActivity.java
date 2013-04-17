@@ -13,13 +13,16 @@ import com.larvalabs.svgandroid.SVGParser;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class LogoActivity extends FunnelActivity {
@@ -29,7 +32,8 @@ public class LogoActivity extends FunnelActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_logo);
+		
+		setCustomContent(R.layout.activity_logo);
 		
 		mConfig.put(Config.HELP_MESSAGE, "Select which company logo you want to place on the ad, and move it around!");
 		mConfig.put(Config.NAME, "Logo");
