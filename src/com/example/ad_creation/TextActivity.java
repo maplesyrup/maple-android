@@ -65,7 +65,7 @@ public class TextActivity extends FunnelActivity implements
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 
 		// set photo
-		mAdView = (ImageView) this.findViewById(R.id.photo);
+		mAdView = (ImageView) this.findViewById(R.id.ad);
 		// initialize photo for clicking
 		mAdView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
