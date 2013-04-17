@@ -4,22 +4,15 @@
       android:layout_height="fill_parent"
       android:orientation="vertical" >
 
-     <TextView
-         android:id="@+id/companyTag"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_centerHorizontal="true"
-         android:paddingBottom="5sp"
-         android:paddingTop="5sp"
-         android:textSize="20sp"
-         android:textStyle="bold" />
+     <include layout="@layout/topbar" android:id="@+id/topbar_container" />
 
      
      <com.example.custom_views.LogoView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:id="@+id/logoView"
-	     android:layout_below="@+id/companyTag"
+        android:paddingTop="@dimen/ad_padding"
+	    android:layout_below="@+id/topbar_container"
 	    android:layout_centerHorizontal="true" /> 
 
      <TextView

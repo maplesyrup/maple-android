@@ -6,22 +6,16 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/headerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="Add Text"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+        <include layout="@layout/topbar" android:id="@+id/topbar_container" />
+
 
         <ImageView
-            android:id="@+id/photo"
+            android:id="@+id/ad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/headerText"
+            android:layout_below="@+id/topbar_container"
             android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/ad_padding"
             android:clickable="true" />
 
         <TextView
@@ -35,7 +29,7 @@
             android:id="@+id/textInstructions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/photo"
+            android:layout_below="@+id/ad"
             android:layout_centerHorizontal="true"
             android:text="Click to place text"
             android:textColor="#ff0000"
@@ -46,7 +40,7 @@
             android:id="@+id/textEntry"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/photo"
+            android:layout_below="@+id/ad"
             android:layout_centerHorizontal="true"
             android:hint="Enter your text here"
             android:singleLine="false"

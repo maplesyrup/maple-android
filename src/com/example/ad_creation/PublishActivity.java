@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.EditorActivity;
 import com.example.maple_android.MainActivity;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
@@ -30,9 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PublishActivity extends Activity {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
+public class PublishActivity extends FunnelActivity {
 	private ImageView mAdView;
 	private ProgressView mProgressBar;
 
@@ -40,30 +37,19 @@ public class PublishActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_publish);
-
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
+		
+		mConfig.put(Config.HELP_MESSAGE, "You're done! Congrats");
+		mConfig.put(Config.NAME, "Publish");
 		
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
 
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		
-		// get most recent ad off stack
-		Bitmap ad = mAdCreationManager.getCurrentBitmap();
-		mAdView = (ImageView) findViewById(R.id.ad);
-		mAdView.setImageBitmap(ad);
-		
-		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
-		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-		
-		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
+		mAdCreationManager.setup(this);
 		// customize header text to show company name
-		TextView title = (TextView) findViewById(R.id.headerText);
-		title.setText("Publish Your " + mAdCreationManager.getCompanyName() + " Ad");
+		//TextView title = (TextView) findViewById(R.id.headerText);
+		//title.setText("Publish Your " + mAdCreationManager.getCompanyName() + " Ad");
 	}
 
 	/**
@@ -111,20 +97,6 @@ public class PublishActivity extends Activity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.publish, menu);
-		return true;
-	}
-
-
-	public void getHelp(View v) {
-		String message = "You're done! Congrats";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 	
 }

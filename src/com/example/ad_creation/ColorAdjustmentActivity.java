@@ -1,5 +1,13 @@
 package com.example.ad_creation;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.MapleApplication;
@@ -8,30 +16,12 @@ import com.example.maple_android.Utility;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Point;
-import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.ImageView.ScaleType;
-
 /**
  * This activity allows the user to adjust gamma and 
  * brightness of the ad.
  *
  */
-public class ColorAdjustmentActivity extends Activity {
-	/* Global app */
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
+public class ColorAdjustmentActivity extends FunnelActivity {
 
 	private Bitmap mOriginalAd; // the bitmap that we are starting with 
 	private Bitmap mAdjustedAd; // any changes to the original are stored here
@@ -39,35 +29,29 @@ public class ColorAdjustmentActivity extends Activity {
 	
 	private SeekBar mGammaSeek; 
 	private SeekBar mBrightnessSeek;
-	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_color_adjustment);
+		
+		mConfig.put(Config.HELP_MESSAGE, "Select the color scheme that puts your ad in the best light!");
+		mConfig.put(Config.NAME, "Color Adjustments");
 
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
+		mAdView = (ImageView) findViewById(R.id.ad);
 	
 		
 		// get most recent ad of stack
 		// initialize adjusted ad to the original
 		mOriginalAd = mAdCreationManager.getCurrentBitmap();
 		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);
-		mAdView.setImageBitmap(mOriginalAd);
 		
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
 		
-		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
-		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-		
-		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
+		mAdCreationManager.setup(this);
 
 		
 		
@@ -266,26 +250,11 @@ public class ColorAdjustmentActivity extends Activity {
 	public void reset(View view){
 		// restore original ad and update ImageView
 		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);		
-		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
+		mAdView = (ImageView) findViewById(R.id.ad);
 		mAdView.setImageBitmap(mOriginalAd); 
 		
 		// reset seekers to middle
 		mGammaSeek.setProgress(10);
 		mBrightnessSeek.setProgress(255);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.color_adjustment, menu);
-		return true;
-	}
-	
-
-	public void getHelp(View v) {
-		String message = "Select the color scheme that puts your ad in the best light!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
-	}
-
 }
