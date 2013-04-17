@@ -212,7 +212,7 @@ public class Utility {
 		Intent i = new Intent(activity, LoginActivity.class);
 		activity.startActivity(i);
 	}
-    
+	
     public static boolean myOnOptionsItemSelected(final Activity activity, MenuItem item) {
     	Intent intent = null;
     	// respond to menu item selection

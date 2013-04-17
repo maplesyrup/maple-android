@@ -1,10 +1,14 @@
 package com.example.ad_creation;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.example.browsing.PopularAdsActivity;
+import com.example.maple_android.MainActivity;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
 
@@ -24,7 +28,8 @@ public abstract class FunnelActivity extends Activity {
 		return Utility.myOnOptionsItemSelected(this, item);
 	}
 	
-	public void setTopBar() {
-		
+	public void home(View v) {
+		Intent intent = new Intent(this, PopularAdsActivity.class);
+		startActivity(intent);
 	}
 }

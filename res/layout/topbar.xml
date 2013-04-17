@@ -5,6 +5,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2c2c2c" >
+		<ImageButton
+            android:id="@+id/logo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="#80020000"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:onClick="home"
+            android:src="@drawable/maple" />
 		
         <ImageButton
             android:id="@+id/help"
@@ -15,16 +26,18 @@
             android:background="#80020000"
             android:padding="5dp"
             android:scaleType="fitCenter"
+            android:onClick="getHelp"
             android:src="@drawable/question" />
          <ImageButton
-		        android:id="@+id/home"
-		        android:layout_width="60dp"
-		        android:layout_height="60dp"
-		        android:layout_alignParentTop="true"
-				android:layout_toLeftOf="@id/help"
-		        android:background="#80020000"
-		        android:padding="5dp"
-		        android:scaleType="fitCenter"
-		        android:src="@drawable/home" />
+	        android:id="@+id/home"
+	        android:layout_width="60dp"
+	        android:layout_height="60dp"
+	        android:layout_alignParentTop="true"
+			android:layout_toLeftOf="@id/help"
+	        android:background="#80020000"
+	        android:padding="5dp"
+	        android:scaleType="fitCenter"
+	        android:onClick="home"
+	        android:src="@drawable/home" />
 
     </RelativeLayout>

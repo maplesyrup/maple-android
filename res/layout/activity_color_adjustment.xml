@@ -17,7 +17,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_alignLeft="@+id/brightnessSeekBar"
-         android:layout_below="@+id/colorAdjustPhoto"
+         android:layout_below="@+id/ad"
          android:max="20"
          android:minWidth="150sp"
          android:progress="10" />
