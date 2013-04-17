@@ -26,7 +26,9 @@ public abstract class FunnelActivity extends Activity {
 		NAME
 	}
 	
+	/* Holds information specific to the activity */
 	protected HashMap<Config, String> mConfig;
+	
 	protected MapleApplication mApp;
 	protected AdCreationManager mAdCreationManager;
 	protected Session mSession;
@@ -60,16 +62,28 @@ public abstract class FunnelActivity extends Activity {
 		return Utility.myOnOptionsItemSelected(this, item);
 	}
 	
+	/**
+	 * Go to home page
+	 * @param v
+	 */
 	public void home(View v) {
 		Intent intent = new Intent(this, PopularAdsActivity.class);
 		startActivity(intent);
 	}
 	
+	/**
+	 * Displays the help dialog
+	 * @param v
+	 */
 	public void getHelp(View v) {
 		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
 		Utility.createHelpDialog(this, mConfig.get(Config.HELP_MESSAGE), title);
 	}
 	
+	/**
+	 * Gets config variable
+	 * @return
+	 */
 	public HashMap<Config, String> getConfig() {
 		return mConfig;
 	}

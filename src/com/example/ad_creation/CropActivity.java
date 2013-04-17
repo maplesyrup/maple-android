@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 
 import com.example.custom_views.CropView;
 import com.example.custom_views.ProgressView;
-import com.example.custom_views.TopBarView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.LoginActivity;
 import com.example.maple_android.MapleApplication;
@@ -101,12 +100,6 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 			break;
 		}
 		return true;
-	}
-	
-	public void getHelp(View v) {
-		String message = "Select which part of your picture you want to be your ad!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 
 }
