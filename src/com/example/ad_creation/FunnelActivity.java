@@ -13,11 +13,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.example.ad_creation.FunnelActivity.Config;
 import com.example.browsing.PopularAdsActivity;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.LoginActivity;
-import com.example.maple_android.MainActivity;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
@@ -37,8 +35,8 @@ public abstract class FunnelActivity extends Activity {
 	protected AdCreationManager mAdCreationManager;
 	protected Session mSession;
 	
-	private ImageView mLeftArrow;
-	private ImageView mRightArrow;
+	private ImageView mPrevBtn;
+	private ImageView mNextBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +54,24 @@ public abstract class FunnelActivity extends Activity {
 		
 		setContentView(R.layout.funnel_common);
 		
-		mRightArrow = (ImageView) findViewById(R.id.right_arrow);
-		mLeftArrow = (ImageView) findViewById(R.id.left_arrow);
+		mNextBtn = (ImageView) findViewById(R.id.right_arrow);
+		mPrevBtn = (ImageView) findViewById(R.id.left_arrow);
 	}
 	
+	/**
+	 * Disables the next button
+	 */
 	public void disableNext() {
-		mRightArrow.setImageResource(R.drawable.right_arrow_disabled);
-		mRightArrow.setOnClickListener(null);
+		mNextBtn.setImageResource(R.drawable.right_arrow_disabled);
+		mNextBtn.setOnClickListener(null);
 	}
 	
+	/**
+	 * Enables the next button
+	 */
 	public void enableNext() {
-		mRightArrow.setImageResource(R.drawable.right_arrow);
-		mRightArrow.setOnClickListener(new View.OnClickListener() {
+		mNextBtn.setImageResource(R.drawable.right_arrow);
+		mNextBtn.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 		        nextStage(v);
@@ -75,15 +79,21 @@ public abstract class FunnelActivity extends Activity {
 		});
 	}
 	
+	/**
+	 * Disables the previous button
+	 */
 	public void disablePrev() {
-		mLeftArrow.setImageResource(R.drawable.left_arrow_disabled);
-		mLeftArrow.setOnClickListener(null);
+		mPrevBtn.setImageResource(R.drawable.left_arrow_disabled);
+		mPrevBtn.setOnClickListener(null);
 
 	}
 	
+	/**
+	 * Enables the previous button
+	 */
 	public void enablePrev() {
-		mLeftArrow.setImageResource(R.drawable.left_arrow);
-		mLeftArrow.setOnClickListener(new View.OnClickListener() {
+		mPrevBtn.setImageResource(R.drawable.left_arrow);
+		mPrevBtn.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 		        prevStage(v);
@@ -122,6 +132,10 @@ public abstract class FunnelActivity extends Activity {
 		Utility.createHelpDialog(this, mConfig.get(Config.HELP_MESSAGE), title);
 	}
 	
+	/**
+	 * Sets the custom layout for that particular activity.
+	 * @param layout_id
+	 */
 	public void setCustomContent(int layout_id) {
 		RelativeLayout common = (RelativeLayout) findViewById(R.id.common_layout);
 
@@ -130,6 +144,7 @@ public abstract class FunnelActivity extends Activity {
 				RelativeLayout.LayoutParams.MATCH_PARENT, 
 				RelativeLayout.LayoutParams.MATCH_PARENT);
 	        
+		// Ensure that layout is between top and bottom bar
 		params.addRule(RelativeLayout.BELOW, R.id.topbar_container);
 		params.addRule(RelativeLayout.ABOVE, R.id.bottombar_container);
 
@@ -138,6 +153,7 @@ public abstract class FunnelActivity extends Activity {
 		
 		RelativeLayout customContent = (RelativeLayout) layoutInflater.inflate(layout_id, common, false);
 		
+		// Index 1 sets the element to the second child (after the topbar)
 		common.addView(customContent, 1, params);
 	}
 	/**
