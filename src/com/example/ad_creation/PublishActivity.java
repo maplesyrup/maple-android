@@ -46,16 +46,13 @@ public class PublishActivity extends FunnelActivity {
 		mConfig.put(Config.NAME, "Publish");
 
 		mAdCreationManager.setup(this);
-		// customize header text to show company name
-		//TextView title = (TextView) findViewById(R.id.headerText);
-		//title.setText("Publish Your " + mAdCreationManager.getCompanyName() + " Ad");
 	}
 
 	/**
 	 * Publish the ad to the website
 	 * @param view
 	 */
-	public void publish(View view) {
+	public void nextStage(View view) {
 		// get user's session details
 		//TODO: Handle session error edge cases?
 		Session session = Session.getActiveSession();

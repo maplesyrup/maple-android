@@ -55,8 +55,41 @@ public abstract class FunnelActivity extends Activity {
 		}
 		
 		setContentView(R.layout.funnel_common);
+		
+		mRightArrow = (ImageView) findViewById(R.id.right_arrow);
+		mLeftArrow = (ImageView) findViewById(R.id.left_arrow);
 	}
 	
+	public void disableNext() {
+		mRightArrow.setImageResource(R.drawable.right_arrow_disabled);
+		mRightArrow.setOnClickListener(null);
+	}
+	
+	public void enableNext() {
+		mRightArrow.setImageResource(R.drawable.right_arrow);
+		mRightArrow.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        nextStage(v);
+		    }
+		});
+	}
+	
+	public void disablePrev() {
+		mLeftArrow.setImageResource(R.drawable.left_arrow_disabled);
+		mLeftArrow.setOnClickListener(null);
+
+	}
+	
+	public void enablePrev() {
+		mLeftArrow.setImageResource(R.drawable.left_arrow);
+		mLeftArrow.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		        prevStage(v);
+		    }
+		});
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -114,4 +147,8 @@ public abstract class FunnelActivity extends Activity {
 	public HashMap<Config, String> getConfig() {
 		return mConfig;
 	}
+	
+	abstract void nextStage(View v);
+	
+	abstract void prevStage(View v);
 }

@@ -52,6 +52,9 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		mConfig.put(Config.HELP_MESSAGE, "Select which part of your picture you want to be your ad!");
 		mConfig.put(Config.NAME, "Crop");
 		
+		/* first stage previous arrow doesn't make sense */
+		disablePrev();
+		
 		setCustomContent(R.layout.activity_crop);
 		
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
@@ -97,6 +100,11 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	void prevStage(View v) {
+		// Do nothing
 	}
 
 }
