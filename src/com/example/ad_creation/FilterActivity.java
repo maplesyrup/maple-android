@@ -65,11 +65,6 @@ public class FilterActivity extends FunnelActivity {
 		// set imageview of ad
 		mAdView = (ImageView) this.findViewById(R.id.ad);
 
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
 		// make a list of ImageToLoad objects for image scroller
 		ArrayList<ImageToLoad> images = new ArrayList<ImageToLoad>();
 		images.add(new ImageToLoadDrawableResource(R.drawable.filter_none));

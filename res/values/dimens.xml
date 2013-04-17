@@ -4,5 +4,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="ad_padding">10dp</dimen>
+    <color name="primary_color">#2c2c2c</color>
 
 </resources>

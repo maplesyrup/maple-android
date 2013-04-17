@@ -33,13 +33,7 @@ public class CompanyTagActivity extends FunnelActivity {
 		mConfig.put(Config.HELP_MESSAGE, "Tag your ad from a company in the database. " +
 				"As you type, the field will autocomplete with possible companies.");
 		mConfig.put(Config.NAME, "Tag");
-		
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
-
+	
 		mAdCreationManager.setup(this);
 		
 		/* Set up text entry for tagging a company */

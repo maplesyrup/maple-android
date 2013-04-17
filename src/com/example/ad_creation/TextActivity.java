@@ -53,11 +53,6 @@ public class TextActivity extends FunnelActivity implements
 		mConfig.put(Config.HELP_MESSAGE, "Add humorous, sincere, or sophic text to your ad, and decide where to put it.");
 		mConfig.put(Config.NAME, "Text");
 
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
 		// set photo
 		mAdView = (ImageView) this.findViewById(R.id.ad);
 		// initialize photo for clicking

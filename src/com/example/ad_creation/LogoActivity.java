@@ -34,13 +34,6 @@ public class LogoActivity extends FunnelActivity {
 		mConfig.put(Config.HELP_MESSAGE, "Select which company logo you want to place on the ad, and move it around!");
 		mConfig.put(Config.NAME, "Logo");
 
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
-		
-
 		mLogoView = (LogoView) findViewById(R.id.logoView);
 		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
 

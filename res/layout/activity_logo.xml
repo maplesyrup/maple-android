@@ -35,23 +35,7 @@
          android:onClick="launchLogoPicker"
          android:text="Pick A Logo" />
 
-     <Button
-         android:id="@+id/nextStage"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignParentRight="true"
-         android:layout_below="@+id/logoInstructions"
-         android:onClick="nextStage"
-         android:text="Next" />
-
-     <Button
-         android:id="@+id/prevStage"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignParentLeft="true"
-         android:layout_alignTop="@+id/nextStage"
-         android:onClick="prevStage"
-         android:text="Back" />
+   
      
      	<include layout="@layout/bottombar" android:id="@+id/bottombar_container" />
 

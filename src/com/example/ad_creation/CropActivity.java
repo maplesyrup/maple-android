@@ -52,11 +52,6 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		
 		setContentView(R.layout.activity_crop);
 		
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 		
 		mTopBar = (RelativeLayout) findViewById(R.id.topbar);
@@ -73,7 +68,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	 * Will crop the ad and send it to next stage in funnel. This function is activated on a button click.
 	 * @param v
 	 */
-	public void cropAd(View v) {
+	public void nextStage(View v) {
 		
 		mAdCreationManager.nextStage(this, mCropView.crop());
 	}

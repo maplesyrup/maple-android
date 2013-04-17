@@ -16,14 +16,6 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/crop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cropView"
-        android:onClick="cropAd"
-        android:text="Crop" />
-
    
 	<include layout="@layout/bottombar" android:id="@+id/bottombar_container" />
     
