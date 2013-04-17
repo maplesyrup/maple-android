@@ -8,22 +8,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".FilterActivity" >
 
-    <TextView
-        android:id="@+id/headerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="5sp"
-        android:paddingTop="5sp"
-        android:text="Add A Filter"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+    <include layout="@layout/topbar" android:id="@+id/topbar_container" />
+
 
     <ImageView
         android:id="@+id/ad"
+        android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headerText"
+        android:layout_below="@+id/topbar_container"
         android:layout_centerHorizontal="true" />
 
     <com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller

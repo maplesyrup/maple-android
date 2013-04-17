@@ -329,7 +329,7 @@ public class AdCreationManager {
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 			    newWidth, newHeight);
 			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			params.addRule(RelativeLayout.BELOW, R.id.headerText);
+			params.addRule(RelativeLayout.BELOW, R.id.topbar_container);
 			ad.setLayoutParams(params);
 			ad.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		}

@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.EditorActivity;
 import com.example.maple_android.MainActivity;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
@@ -52,8 +51,8 @@ public class PublishActivity extends FunnelActivity {
 
 		mAdCreationManager.setup(this);
 		// customize header text to show company name
-		TextView title = (TextView) findViewById(R.id.headerText);
-		title.setText("Publish Your " + mAdCreationManager.getCompanyName() + " Ad");
+		//TextView title = (TextView) findViewById(R.id.headerText);
+		//title.setText("Publish Your " + mAdCreationManager.getCompanyName() + " Ad");
 	}
 
 	/**

@@ -3,22 +3,15 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-        <TextView
-            android:id="@+id/headerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="5sp"
-            android:paddingTop="5sp"
-            android:text="Publish Your Ad"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+     <include layout="@layout/topbar" android:id="@+id/topbar_container" />
+
 
         <ImageView
             android:id="@+id/ad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/headerText"
+            android:layout_below="@+id/topbar_container"
+            android:paddingTop="10dp"
             android:layout_centerHorizontal="true" />
 
         <Button
