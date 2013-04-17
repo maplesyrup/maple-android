@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		/*setContentView(R.layout.activity_main);
 		
 		//init app data
 		app = (MapleApplication) getApplication();
@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
 						}
 					});
 		}
-
+*/
 	}
 
 	/**

@@ -3,9 +3,9 @@ package com.example.ad_creation;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import com.example.browsing.PopularAdsActivity;
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.MainActivity;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
@@ -77,7 +77,7 @@ public class PublishActivity extends FunnelActivity {
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, String response) {
-				Intent i = new Intent(PublishActivity.this, MainActivity.class);
+				Intent i = new Intent(PublishActivity.this, PopularAdsActivity.class);
 				i.putExtra("successMessage",
 						"Posted picture successfully! Go to the website to check it out.");
 				startActivity(i);

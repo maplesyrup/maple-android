@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.example.browsing.PopularAdsActivity;
 import com.facebook.Session;
 import com.facebook.SessionState;
 
@@ -27,7 +28,7 @@ public class LoginActivity extends Activity {
 		
 		/*** Skip Login For Testing ***/
 		 if(skipLogin){
-			 Intent i = new Intent(this, MainActivity.class);
+			 Intent i = new Intent(this, PopularAdsActivity.class);
 			 startActivity(i);
 		 }
 		/*******************************/
@@ -89,7 +90,7 @@ public class LoginActivity extends Activity {
 		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
 			Log.d("Maple Syrup", "Access token: " + session.getAccessToken());
-			Intent i = new Intent(LoginActivity.this, MainActivity.class);
+			Intent i = new Intent(LoginActivity.this, PopularAdsActivity.class);
 			startActivity(i);
 		}
 	}
