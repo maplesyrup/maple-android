@@ -36,12 +36,20 @@
             android:scaleType="fitCenter"
             android:onClick="getHelp"
             android:src="@drawable/question" />
+        
+        <View 
+            android:layout_height="40dp"
+			android:layout_width="2dp"
+			android:layout_toLeftOf="@id/help"
+			android:layout_centerVertical="true"
+			android:id="@+id/barOne"
+			android:background="#90909090"/>
          <ImageButton
 	        android:id="@+id/home"
 	        android:layout_width="60dp"
 	        android:layout_height="60dp"
 	        android:layout_alignParentTop="true"
-			android:layout_toLeftOf="@id/help"
+			android:layout_toLeftOf="@id/barOne"
 	        android:background="@android:color/transparent"
 	        android:padding="5dp"
 	        android:scaleType="fitCenter"
