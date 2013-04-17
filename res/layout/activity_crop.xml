@@ -24,30 +24,9 @@
         android:onClick="cropAd"
         android:text="Crop" />
 
-    <RelativeLayout
-        android:id="@+id/InnerRelativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true" >
-
-        <ImageButton
-            android:id="@+id/helpButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignBottom="@+id/progressBar"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/progressBar"
-            android:onClick="getHelp"
-            android:scaleType="fitCenter" />
-
-        <com.example.custom_views.ProgressView
-            android:id="@+id/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/helpButton" />
-    </RelativeLayout>
-
+   
+	<include layout="@layout/bottombar" android:id="@+id/bottombar_container" />
+    
    
 
 </RelativeLayout>
