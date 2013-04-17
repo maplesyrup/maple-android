@@ -32,10 +32,8 @@ import com.example.maple_android.Utility;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
-public class TextActivity extends Activity implements
+public class TextActivity extends FunnelActivity implements
 		FontPickerDialog.FontPickerDialogListener {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
 
 	private ImageView mAdView;
 
@@ -46,30 +44,22 @@ public class TextActivity extends Activity implements
 	private EditText mTextEntryField;
 	private TextView mPhotoText;
 	private int mTextColor;
-	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_text);
 
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
+		mConfig.put(Config.HELP_MESSAGE, "Add humorous, sincere, or sophic text to your ad, and decide where to put it.");
+		mConfig.put(Config.NAME, "Text");
 
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
 
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
-		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
-
 		// set photo
-		mAdView = (ImageView) this.findViewById(R.id.photo);
-		mAdView.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
-
+		mAdView = (ImageView) this.findViewById(R.id.ad);
 		// initialize photo for clicking
 		mAdView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -83,10 +73,7 @@ public class TextActivity extends Activity implements
 			}
 		});
 		
-		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
-		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-		
-		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
+		mAdCreationManager.setup(this);
 
 		// start off not showing edit options
 		mShowOptions = false;
@@ -288,13 +275,6 @@ public class TextActivity extends Activity implements
 				}).show();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.text, menu);
-		return true;
-	}
-
 	/**
 	 * This function is used to generate a bitmap from the TextView that holds
 	 * the currently created text
@@ -345,10 +325,4 @@ public class TextActivity extends Activity implements
 		mAdCreationManager.previousStage(this);
 	}
 
-	public void getHelp(View v) {
-		String message = "Add humorous, sincere, or sophic text to your ad, and decide where to put it.";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage()
-				+ " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
-	}
 }

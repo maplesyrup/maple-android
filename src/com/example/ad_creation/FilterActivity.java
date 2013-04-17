@@ -42,11 +42,9 @@ import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScr
  * @author Eli
  * 
  */
-public class FilterActivity extends Activity {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
+public class FilterActivity extends FunnelActivity {
+	
 	private ProgressView mProgressBar;
-	private Session mSession;
 	private ImageView mAdView;
 	private Spinner mFilterSpinner;
 	private Bitmap mOriginalAd; // the starting ad without any filters
@@ -57,23 +55,15 @@ public class FilterActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_filter);
-
-		mSession = Session.getActiveSession();
-		// If user isn't logged in we need to redirect back to LoginActivity
-		if (mSession == null) {
-			Intent i = new Intent(this, LoginActivity.class);
-			startActivity(i);
-		}
-
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
+		
+		mConfig.put(Config.HELP_MESSAGE, "Select a filter for your photo!");
+		mConfig.put(Config.NAME, "Filter");
 
 		// initialize filtered image to original
 		mOriginalAd = mAdCreationManager.getCurrentBitmap();
 		mFilteredAd = mOriginalAd;
 		// set imageview of ad
 		mAdView = (ImageView) this.findViewById(R.id.ad);
-		mAdView.setImageBitmap(mFilteredAd);
 
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
@@ -110,10 +100,7 @@ public class FilterActivity extends Activity {
 			}
 		});
 
-
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-
-		mAdCreationManager.setup(null, null, mProgressBar);
+		mAdCreationManager.setup(this);
 	}
 
 	/**
@@ -132,18 +119,5 @@ public class FilterActivity extends Activity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.filter, menu);
-		return true;
-	}
-
-	public void getHelp(View v) {
-		String message = "Select a filter for your photo!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 }
