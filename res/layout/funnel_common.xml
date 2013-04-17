@@ -5,6 +5,8 @@
      android:id="@+id/common_layout" >
      
 	<include layout="@layout/topbar" android:id="@+id/topbar_container" />
+	
+	<!-- Custom activity layout gets loaded here -->
      
 	<include layout="@layout/bottombar" android:id="@+id/bottombar_container" />
      
