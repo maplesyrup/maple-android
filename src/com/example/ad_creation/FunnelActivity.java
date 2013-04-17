@@ -13,7 +13,6 @@ import com.example.ad_creation.FunnelActivity.Config;
 import com.example.browsing.PopularAdsActivity;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.LoginActivity;
-import com.example.maple_android.MainActivity;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
