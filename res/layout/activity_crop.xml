@@ -5,51 +5,15 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/topbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#2c2c2c" >
-		 <ImageButton
-		        android:id="@+id/home"
-		        android:layout_width="60dp"
-		        android:layout_height="60dp"
-		        android:layout_alignParentTop="true"
-				android:layout_toLeftOf="@id/help"
-		        android:background="#80020000"
-		        android:padding="5dp"
-		        android:scaleType="fitCenter"
-		        android:src="@drawable/home" />
-        <ImageButton
-            android:id="@+id/help"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="#80020000"
-            android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/question" />
+    <include layout="@layout/topbar" android:id="@+id/topbar_container" />
 
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="5sp"
-        android:paddingTop="5sp"
-        android:text="Crop"
-        android:textSize="20sp"
-        android:textStyle="bold" />
 
     <com.example.custom_views.CropView
         android:id="@+id/cropView"
         android:layout_width="wrap_content"
+        android:paddingTop="10dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <Button
