@@ -1,6 +1,7 @@
 package com.example.ad_creation;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,5 +22,9 @@ public abstract class FunnelActivity extends Activity {
 	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return Utility.myOnOptionsItemSelected(this, item);
+	}
+	
+	public void setTopBar() {
+		
 	}
 }

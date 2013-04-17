@@ -23,10 +23,8 @@ import com.larvalabs.svgandroid.SVGParser;
 public class CompanyTagActivity extends FunnelActivity {
 	private MapleApplication mApp;
 	private AdCreationManager mAdCreationManager;
-	private ImageView mAdView;
 	private AutoCompleteTextView mCompanySuggest;
 	private ArrayList<String> mCompanySuggestions;
-	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +40,8 @@ public class CompanyTagActivity extends FunnelActivity {
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
 
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		
-		// get most recent ad off stack
-		// initialize adjusted ad to the original
-		Bitmap ad = mAdCreationManager.getCurrentBitmap();
-		mAdView = (ImageView) findViewById(R.id.ad);
-		mAdView.setImageBitmap(ad);
-		
-		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
-		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-		
-		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
+
+		mAdCreationManager.setup(this);
 		
 		/* Set up text entry for tagging a company */
 		mCompanySuggestions = CompanyList.getCompanyList(this);

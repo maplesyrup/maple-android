@@ -63,13 +63,9 @@ public class TextActivity extends FunnelActivity implements
 		help.setBackgroundColor(Color.BLACK);
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
-		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
 
 		// set photo
 		mAdView = (ImageView) this.findViewById(R.id.photo);
-		mAdView.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
-
 		// initialize photo for clicking
 		mAdView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -83,10 +79,7 @@ public class TextActivity extends FunnelActivity implements
 			}
 		});
 		
-		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
-		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-		
-		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
+		mAdCreationManager.setup(this);
 
 		// start off not showing edit options
 		mShowOptions = false;

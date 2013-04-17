@@ -73,7 +73,6 @@ public class FilterActivity extends FunnelActivity {
 		mFilteredAd = mOriginalAd;
 		// set imageview of ad
 		mAdView = (ImageView) this.findViewById(R.id.ad);
-		mAdView.setImageBitmap(mFilteredAd);
 
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
@@ -110,10 +109,7 @@ public class FilterActivity extends FunnelActivity {
 			}
 		});
 
-
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-
-		mAdCreationManager.setup(null, null, mProgressBar);
+		mAdCreationManager.setup(this);
 	}
 
 	/**

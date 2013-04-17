@@ -43,12 +43,12 @@ public class LogoActivity extends FunnelActivity {
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
 
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
+		
 
 		mLogoView = (LogoView) findViewById(R.id.logoView);
 		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
 
-		mAdCreationManager.setup(null, null, mProgressBar);
+		mAdCreationManager.setup(this);
 		// Update page title to reflect the company
 		TextView title = (TextView) this.findViewById(R.id.companyTag);
 		title.setText("Add A " + mAdCreationManager.getCompanyName() + " Logo!");

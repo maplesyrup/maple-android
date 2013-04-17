@@ -3,13 +3,19 @@ package com.example.ad_creation;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 
 import com.example.custom_views.CropView;
 import com.example.custom_views.ProgressView;
+import com.example.custom_views.TopBarView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.LoginActivity;
 import com.example.maple_android.MapleApplication;
@@ -31,6 +37,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	private Session mSession;
 	private CropView mCropView;
 	private ProgressView mProgressBar;
+	private RelativeLayout mTopBar;
 	
 	private float mPrevTouchX;
 	private float mPrevTouchY;
@@ -61,11 +68,13 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 		
+		mTopBar = (RelativeLayout) findViewById(R.id.topbar);
+		
 		mCropView = (CropView) findViewById(R.id.cropView);
 		mCropView.setBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 		mCropView.setOnTouchListener(this);
 		
-		mAdCreationManager.setup(null, null, mProgressBar);
+		mAdCreationManager.setup(this);
 		
 	}
 

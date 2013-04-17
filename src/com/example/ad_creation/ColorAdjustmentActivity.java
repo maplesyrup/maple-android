@@ -32,7 +32,6 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 	
 	private SeekBar mGammaSeek; 
 	private SeekBar mBrightnessSeek;
-	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,25 +41,20 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 		// Init app
 		mApp = (MapleApplication) this.getApplication();
 		mAdCreationManager = mApp.getAdCreationManager();
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
+		mAdView = (ImageView) findViewById(R.id.ad);
 	
 		
 		// get most recent ad of stack
 		// initialize adjusted ad to the original
 		mOriginalAd = mAdCreationManager.getCurrentBitmap();
 		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);
-		mAdView.setImageBitmap(mOriginalAd);
 		
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
 		
-		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
-		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-		
-		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
+		mAdCreationManager.setup(this);
 
 		
 		
@@ -259,7 +253,7 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 	public void reset(View view){
 		// restore original ad and update ImageView
 		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);		
-		mAdView = (ImageView) findViewById(R.id.colorAdjustPhoto);
+		mAdView = (ImageView) findViewById(R.id.ad);
 		mAdView.setImageBitmap(mOriginalAd); 
 		
 		// reset seekers to middle
