@@ -23,20 +23,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class LogoActivity extends FunnelActivity {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
 
 	private LogoView mLogoView;
-	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logo);
-
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
+		
+		mConfig.put(Config.HELP_MESSAGE, "Select which company logo you want to place on the ad, and move it around!");
+		mConfig.put(Config.NAME, "Logo");
 
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
@@ -48,10 +44,7 @@ public class LogoActivity extends FunnelActivity {
 		mLogoView = (LogoView) findViewById(R.id.logoView);
 		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
 
-		mAdCreationManager.setup(this);
-		// Update page title to reflect the company
-		TextView title = (TextView) this.findViewById(R.id.companyTag);
-		title.setText("Add A " + mAdCreationManager.getCompanyName() + " Logo!");
+		mAdCreationManager.setup(this);	
 
 		// Load Logo.
 		// logoArray will only be non null if the user picked
@@ -99,12 +92,6 @@ public class LogoActivity extends FunnelActivity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	public void getHelp(View v) {
-		String message = "Select which company logo you want to place on the ad, and move it around!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 	
 }

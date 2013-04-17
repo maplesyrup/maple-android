@@ -30,8 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PublishActivity extends FunnelActivity {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
 	private ImageView mAdView;
 	private ProgressView mProgressBar;
 
@@ -39,10 +37,9 @@ public class PublishActivity extends FunnelActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_publish);
-
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
+		
+		mConfig.put(Config.HELP_MESSAGE, "You're done! Congrats");
+		mConfig.put(Config.NAME, "Publish");
 		
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
@@ -100,12 +97,6 @@ public class PublishActivity extends FunnelActivity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	public void getHelp(View v) {
-		String message = "You're done! Congrats";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 	
 }

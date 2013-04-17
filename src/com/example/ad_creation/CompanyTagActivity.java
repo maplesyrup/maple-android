@@ -21,8 +21,7 @@ import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
 public class CompanyTagActivity extends FunnelActivity {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
+
 	private AutoCompleteTextView mCompanySuggest;
 	private ArrayList<String> mCompanySuggestions;
 
@@ -30,11 +29,11 @@ public class CompanyTagActivity extends FunnelActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_company_tag);
-
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
-
+		
+		mConfig.put(Config.HELP_MESSAGE, "Tag your ad from a company in the database. " +
+				"As you type, the field will autocomplete with possible companies.");
+		mConfig.put(Config.NAME, "Tag");
+		
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
 		help.setImageDrawable(svg.createPictureDrawable());
@@ -72,13 +71,6 @@ public class CompanyTagActivity extends FunnelActivity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	public void getHelp(View v) {
-		String message = "Tag your ad from a company in the database. " +
-					"As you type, the field will autocomplete with possible companies.";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 	
 }

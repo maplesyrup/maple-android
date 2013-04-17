@@ -22,9 +22,6 @@ import com.larvalabs.svgandroid.SVGParser;
  *
  */
 public class ColorAdjustmentActivity extends FunnelActivity {
-	/* Global app */
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
 
 	private Bitmap mOriginalAd; // the bitmap that we are starting with 
 	private Bitmap mAdjustedAd; // any changes to the original are stored here
@@ -37,10 +34,10 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_color_adjustment);
+		
+		mConfig.put(Config.HELP_MESSAGE, "Select the color scheme that puts your ad in the best light!");
+		mConfig.put(Config.NAME, "Color Adjustments");
 
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
 		mAdView = (ImageView) findViewById(R.id.ad);
 	
 		
@@ -260,12 +257,4 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 		mGammaSeek.setProgress(10);
 		mBrightnessSeek.setProgress(255);
 	}
-	
-
-	public void getHelp(View v) {
-		String message = "Select the color scheme that puts your ad in the best light!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
-	}
-
 }

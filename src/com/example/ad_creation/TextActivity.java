@@ -34,8 +34,6 @@ import com.larvalabs.svgandroid.SVGParser;
 
 public class TextActivity extends FunnelActivity implements
 		FontPickerDialog.FontPickerDialogListener {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
 
 	private ImageView mAdView;
 
@@ -46,23 +44,19 @@ public class TextActivity extends FunnelActivity implements
 	private EditText mTextEntryField;
 	private TextView mPhotoText;
 	private int mTextColor;
-	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_text);
 
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
+		mConfig.put(Config.HELP_MESSAGE, "Add humorous, sincere, or sophic text to your ad, and decide where to put it.");
+		mConfig.put(Config.NAME, "Text");
 
 		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
 		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
 		help.setImageDrawable(svg.createPictureDrawable());
 		help.setBackgroundColor(Color.BLACK);
-
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 
 		// set photo
 		mAdView = (ImageView) this.findViewById(R.id.ad);
@@ -331,10 +325,4 @@ public class TextActivity extends FunnelActivity implements
 		mAdCreationManager.previousStage(this);
 	}
 
-	public void getHelp(View v) {
-		String message = "Add humorous, sincere, or sophic text to your ad, and decide where to put it.";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage()
-				+ " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
-	}
 }

@@ -43,10 +43,8 @@ import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScr
  * 
  */
 public class FilterActivity extends FunnelActivity {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
+	
 	private ProgressView mProgressBar;
-	private Session mSession;
 	private ImageView mAdView;
 	private Spinner mFilterSpinner;
 	private Bitmap mOriginalAd; // the starting ad without any filters
@@ -57,16 +55,9 @@ public class FilterActivity extends FunnelActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_filter);
-
-		mSession = Session.getActiveSession();
-		// If user isn't logged in we need to redirect back to LoginActivity
-		if (mSession == null) {
-			Intent i = new Intent(this, LoginActivity.class);
-			startActivity(i);
-		}
-
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
+		
+		mConfig.put(Config.HELP_MESSAGE, "Select a filter for your photo!");
+		mConfig.put(Config.NAME, "Filter");
 
 		// initialize filtered image to original
 		mOriginalAd = mAdCreationManager.getCurrentBitmap();
@@ -128,11 +119,5 @@ public class FilterActivity extends FunnelActivity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	public void getHelp(View v) {
-		String message = "Select a filter for your photo!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 }

@@ -5,16 +5,6 @@
       android:orientation="vertical" >
 
      <include layout="@layout/topbar" android:id="@+id/topbar_container" />
-    
-     <TextView
-         android:id="@+id/companyTag"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_centerHorizontal="true"
-         android:paddingBottom="5sp"
-         android:paddingTop="5sp"
-         android:textSize="20sp"
-         android:textStyle="bold" />
 
      
      <com.example.custom_views.LogoView

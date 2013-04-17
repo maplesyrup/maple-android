@@ -1,5 +1,7 @@
 package com.example.ad_creation;
 
+import java.util.HashMap;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,9 +34,6 @@ import com.larvalabs.svgandroid.SVGParser;
  */
 public class CropActivity extends FunnelActivity implements OnTouchListener {
 
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
-	private Session mSession;
 	private CropView mCropView;
 	private ProgressView mProgressBar;
 	private RelativeLayout mTopBar;
@@ -49,15 +48,8 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSession = Session.getActiveSession();
-		// If user isn't logged in we need to redirect back to LoginActivity
-		if (mSession == null) {
-			Intent i = new Intent(this, LoginActivity.class);
-			startActivity(i);
-		}
-		
-		mApp = (MapleApplication) getApplication();	
-		mAdCreationManager = mApp.getAdCreationManager();
+		mConfig.put(Config.HELP_MESSAGE, "Select which part of your picture you want to be your ad!");
+		mConfig.put(Config.NAME, "Crop");
 		
 		setContentView(R.layout.activity_crop);
 		

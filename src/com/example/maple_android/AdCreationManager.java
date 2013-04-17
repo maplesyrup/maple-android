@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.example.ad_creation.*;
+import com.example.ad_creation.FunnelActivity.Config;
 import com.example.filters.*;
 import com.example.custom_views.ProgressView;
 import com.larvalabs.svgandroid.SVG;
@@ -19,6 +20,7 @@ import android.net.Uri;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * This class exists to manage the creation of an ad between activities. It
@@ -299,10 +301,15 @@ public class AdCreationManager {
 	 * Sets up some initial settings for most of the funnel views. Namely the progressBar and the Ad.
 	 * Must be called after setContentView
 	 */
-	public void setup(Activity activity) {
+	public void setup(FunnelActivity activity) {
 		/* Hides action bar */
 		ActionBar actionBar = activity.getActionBar();
 		actionBar.hide();
+		
+		/* Sets up topbar */
+		TextView title = (TextView) activity.findViewById(R.id.title);
+		title.setText(activity.getConfig().get(Config.NAME));
+		/* End topbar setup */
 		
 		/* Sets up progress bar */
 		ProgressView progressBar = (ProgressView) activity.findViewById(R.id.progressBar);
