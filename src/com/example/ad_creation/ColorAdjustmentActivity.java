@@ -1,11 +1,14 @@
 package com.example.ad_creation;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
 import com.example.custom_views.ProgressView;
@@ -33,7 +36,8 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_color_adjustment);
+		
+		setCustomContent(R.layout.activity_color_adjustment);
 		
 		mConfig.put(Config.HELP_MESSAGE, "Select the color scheme that puts your ad in the best light!");
 		mConfig.put(Config.NAME, "Color Adjustments");
@@ -45,11 +49,6 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 		// initialize adjusted ad to the original
 		mOriginalAd = mAdCreationManager.getCurrentBitmap();
 		mAdjustedAd = Bitmap.createBitmap(mOriginalAd);
-		
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
 		
 		mAdCreationManager.setup(this);
 
