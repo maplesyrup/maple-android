@@ -78,7 +78,7 @@ public class ProgressView extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
-		mPaint.setColor(Color.BLACK);
+		mPaint.setColor(Color.TRANSPARENT);
 		mPaint.setStyle(Style.FILL_AND_STROKE);
 		canvas.drawRect(0, 0, mWidth, mHeight, mPaint);
 		

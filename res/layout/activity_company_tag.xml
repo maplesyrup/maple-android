@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contentView"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <include layout="@layout/topbar" android:id="@+id/topbar_container" />
-
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical" 
+     android:id="@+id/compant_tag_layout" >
+     
     <ImageView
         android:id="@+id/ad"
         android:layout_width="wrap_content"
@@ -24,47 +21,6 @@
         android:completionThreshold="1"
         android:hint="Company Name" />
     
-    <Button
-        android:id="@+id/nextStage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/companySuggest"
-        android:onClick="nextStage"
-        android:text="Next" />
-
-    <Button
-        android:id="@+id/prevStage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/nextStage"
-        android:onClick="prevStage"
-        android:text="Back" />
-
-      <RelativeLayout 
-	      android:id="@+id/InnerRelativeLayout"
-	      android:layout_width="wrap_content"
-	      android:layout_height="70dp"
-	      android:layout_alignParentBottom="true" >
-
-			<ImageButton
-			    android:id="@+id/helpButton"
-			    android:layout_width="70dp"
-			    android:layout_height="70dp"
-			    android:layout_alignBottom="@+id/progressBar"
-			    android:layout_alignParentRight="true"
-			    android:scaleType="fitCenter"
-			    android:onClick="getHelp"
-			    android:layout_alignTop="@+id/progressBar" />
-
-			<com.example.custom_views.ProgressView
-			    android:id="@+id/progressBar"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentBottom="true"
-			    android:layout_toLeftOf="@+id/helpButton" />
-
-	 </RelativeLayout>
+ 
     
 </RelativeLayout>

@@ -19,13 +19,16 @@ import com.loopj.android.http.RequestParams;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,27 +39,20 @@ public class PublishActivity extends FunnelActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_publish);
 		
+		setCustomContent(R.layout.activity_publish);
+	
 		mConfig.put(Config.HELP_MESSAGE, "You're done! Congrats");
 		mConfig.put(Config.NAME, "Publish");
-		
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
 
 		mAdCreationManager.setup(this);
-		// customize header text to show company name
-		//TextView title = (TextView) findViewById(R.id.headerText);
-		//title.setText("Publish Your " + mAdCreationManager.getCompanyName() + " Ad");
 	}
 
 	/**
 	 * Publish the ad to the website
 	 * @param view
 	 */
-	public void publish(View view) {
+	public void nextStage(View view) {
 		// get user's session details
 		//TODO: Handle session error edge cases?
 		Session session = Session.getActiveSession();

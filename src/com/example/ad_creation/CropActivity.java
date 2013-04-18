@@ -2,11 +2,13 @@ package com.example.ad_creation;
 
 import java.util.HashMap;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -50,13 +52,11 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		mConfig.put(Config.HELP_MESSAGE, "Select which part of your picture you want to be your ad!");
 		mConfig.put(Config.NAME, "Crop");
 		
-		setContentView(R.layout.activity_crop);
+		/* first stage previous arrow doesn't make sense */
+		disablePrev();
 		
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
+		setCustomContent(R.layout.activity_crop);
+		
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
 		
 		mTopBar = (RelativeLayout) findViewById(R.id.topbar);
@@ -73,7 +73,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	 * Will crop the ad and send it to next stage in funnel. This function is activated on a button click.
 	 * @param v
 	 */
-	public void cropAd(View v) {
+	public void nextStage(View v) {
 		
 		mAdCreationManager.nextStage(this, mCropView.crop());
 	}
@@ -100,6 +100,11 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	void prevStage(View v) {
+		// Do nothing
 	}
 
 }

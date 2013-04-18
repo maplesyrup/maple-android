@@ -2,6 +2,7 @@ package com.example.ad_creation;
 
 import java.io.ByteArrayOutputStream;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
@@ -48,15 +51,11 @@ public class TextActivity extends FunnelActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_text);
-
+		
+		setCustomContent(R.layout.activity_text);
+	
 		mConfig.put(Config.HELP_MESSAGE, "Add humorous, sincere, or sophic text to your ad, and decide where to put it.");
 		mConfig.put(Config.NAME, "Text");
-
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
 
 		// set photo
 		mAdView = (ImageView) this.findViewById(R.id.ad);
