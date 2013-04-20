@@ -2,31 +2,17 @@ package com.example.ad_creation;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.LoginActivity;
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.facebook.Session;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadDrawableResource;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
@@ -46,7 +32,6 @@ import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScr
  * 
  */
 public class FilterActivity extends FunnelActivity {
-	
 	private ProgressView mProgressBar;
 	private ImageView mAdView;
 	private Spinner mFilterSpinner;

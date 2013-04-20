@@ -1,23 +1,13 @@
 package com.example.ad_creation;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
-import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 
 /**
  * This activity allows the user to adjust gamma and 
@@ -25,7 +15,6 @@ import com.larvalabs.svgandroid.SVGParser;
  *
  */
 public class ColorAdjustmentActivity extends FunnelActivity {
-
 	private Bitmap mOriginalAd; // the bitmap that we are starting with 
 	private Bitmap mAdjustedAd; // any changes to the original are stored here
 	private ImageView mAdView; // mAdjustedAd is displayed to the user through this view

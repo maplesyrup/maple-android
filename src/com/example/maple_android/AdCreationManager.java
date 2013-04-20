@@ -3,24 +3,28 @@ package com.example.maple_android;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import com.example.ad_creation.*;
-import com.example.ad_creation.FunnelActivity.Config;
-import com.example.filters.*;
-import com.example.custom_views.ProgressView;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
-
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.ad_creation.ColorAdjustmentActivity;
+import com.example.ad_creation.CompanyTagActivity;
+import com.example.ad_creation.CropActivity;
+import com.example.ad_creation.FilterActivity;
+import com.example.ad_creation.FunnelActivity;
+import com.example.ad_creation.FunnelActivity.Config;
+import com.example.ad_creation.LogoActivity;
+import com.example.ad_creation.PublishActivity;
+import com.example.ad_creation.TextActivity;
+import com.example.custom_views.ProgressView;
+import com.example.filters.MapleFilter;
+import com.example.filters.MapleGaussianFilter;
+import com.example.filters.MaplePosterizeFilter;
 
 /**
  * This class exists to manage the creation of an ad between activities. It
