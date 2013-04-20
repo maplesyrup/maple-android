@@ -13,45 +13,34 @@ import com.larvalabs.svgandroid.SVGParser;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class LogoActivity extends FunnelActivity {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
-
 	private LogoView mLogoView;
-	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_logo);
-
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
-
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
+		
+		setCustomContent(R.layout.activity_logo);
+		
+		mConfig.put(Config.HELP_MESSAGE, "Select which company logo you want to place on the ad, and move it around!");
+		mConfig.put(Config.NAME, "Logo");
 
 		mLogoView = (LogoView) findViewById(R.id.logoView);
 		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
 
-		mAdCreationManager.setup(null, null, mProgressBar);
-		// Update page title to reflect the company
-		TextView title = (TextView) this.findViewById(R.id.companyTag);
-		title.setText("Add A " + mAdCreationManager.getCompanyName() + " Logo!");
+		mAdCreationManager.setup(this);	
 
 		// Load Logo.
 		// logoArray will only be non null if the user picked
@@ -99,12 +88,6 @@ public class LogoActivity extends FunnelActivity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	public void getHelp(View v) {
-		String message = "Select which company logo you want to place on the ad, and move it around!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 	
 }

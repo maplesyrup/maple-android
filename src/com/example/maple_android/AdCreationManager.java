@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.example.ad_creation.*;
+import com.example.ad_creation.FunnelActivity.Config;
 import com.example.filters.*;
 import com.example.custom_views.ProgressView;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGParser;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,6 +20,7 @@ import android.net.Uri;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * This class exists to manage the creation of an ad between activities. It
@@ -295,13 +299,34 @@ public class AdCreationManager {
 	
 	/**
 	 * Sets up some initial settings for most of the funnel views. Namely the progressBar and the Ad.
+	 * Must be called after setContentView
 	 */
-	public void setup(ImageView ad, Integer screenHeight, ProgressView progressBar) {
+	public void setup(FunnelActivity activity) {
+		/* Hides action bar */
+		ActionBar actionBar = activity.getActionBar();
+		actionBar.hide();
+		
+		/* Sets up topbar */
+		TextView title = (TextView) activity.findViewById(R.id.title);
+		title.setText(activity.getConfig().get(Config.NAME));
+		/* End topbar setup */
+		
+		/* Sets up progress bar */
+		ProgressView progressBar = (ProgressView) activity.findViewById(R.id.progressBar);
+		
 		progressBar.setCurrentStage(this.getCurrentStage());
 		progressBar.setNumStages(this.getNumStages());
+		/* End progress bar setup */
+		
+		/* Ad setup */
+		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
+		int screenHeight = activity.getWindowManager().getDefaultDisplay().getHeight();
+		
+		ImageView ad = (ImageView) activity.findViewById(R.id.ad);	
 		
 		/* Will scaled the image view by a constant */
-		if (ad != null && screenHeight != null) {
+		if (ad != null) {
+			ad.setImageBitmap(this.getCurrentBitmap());
 			int newHeight = (int) (AD_DISPLAY_SCALE * screenHeight);
 			int width = ad.getDrawable().getIntrinsicWidth();
 			int height = ad.getDrawable().getIntrinsicHeight();
@@ -311,10 +336,12 @@ public class AdCreationManager {
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 			    newWidth, newHeight);
 			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			params.addRule(RelativeLayout.BELOW, R.id.headerText);
+			params.addRule(RelativeLayout.BELOW, R.id.topbar_container);
 			ad.setLayoutParams(params);
 			ad.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		}
+		
+		/* End Ad setup */
 	}
 	
 }

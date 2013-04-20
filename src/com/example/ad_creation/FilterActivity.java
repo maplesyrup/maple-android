@@ -2,28 +2,17 @@ package com.example.ad_creation;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.LoginActivity;
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.facebook.Session;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadDrawableResource;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
@@ -43,10 +32,7 @@ import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScr
  * 
  */
 public class FilterActivity extends FunnelActivity {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
 	private ProgressView mProgressBar;
-	private Session mSession;
 	private ImageView mAdView;
 	private Spinner mFilterSpinner;
 	private Bitmap mOriginalAd; // the starting ad without any filters
@@ -56,29 +42,17 @@ public class FilterActivity extends FunnelActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_filter);
+		
+		setCustomContent(R.layout.activity_filter);
 
-		mSession = Session.getActiveSession();
-		// If user isn't logged in we need to redirect back to LoginActivity
-		if (mSession == null) {
-			Intent i = new Intent(this, LoginActivity.class);
-			startActivity(i);
-		}
-
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
+		mConfig.put(Config.HELP_MESSAGE, "Select a filter for your photo!");
+		mConfig.put(Config.NAME, "Filter");
 
 		// initialize filtered image to original
 		mOriginalAd = mAdCreationManager.getCurrentBitmap();
 		mFilteredAd = mOriginalAd;
 		// set imageview of ad
 		mAdView = (ImageView) this.findViewById(R.id.ad);
-		mAdView.setImageBitmap(mFilteredAd);
-
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
 
 		// make a list of ImageToLoad objects for image scroller
 		ArrayList<ImageToLoad> images = new ArrayList<ImageToLoad>();
@@ -110,10 +84,7 @@ public class FilterActivity extends FunnelActivity {
 			}
 		});
 
-
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-
-		mAdCreationManager.setup(null, null, mProgressBar);
+		mAdCreationManager.setup(this);
 	}
 
 	/**
@@ -132,11 +103,5 @@ public class FilterActivity extends FunnelActivity {
 	 */
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
-	}
-
-	public void getHelp(View v) {
-		String message = "Select a filter for your photo!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
 	}
 }

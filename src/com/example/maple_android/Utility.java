@@ -22,9 +22,12 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.example.browsing.BrowseActivity;
 import com.example.browsing.PersonalAdsActivity;
 import com.example.browsing.PopularAdsActivity;
 import com.facebook.Session;
@@ -212,7 +215,7 @@ public class Utility {
 		Intent i = new Intent(activity, LoginActivity.class);
 		activity.startActivity(i);
 	}
-    
+	
     public static boolean myOnOptionsItemSelected(final Activity activity, MenuItem item) {
     	Intent intent = null;
     	// respond to menu item selection
@@ -220,10 +223,12 @@ public class Utility {
 		case R.id.logout:
 			onClickLogout(activity);
 			return true;
-		case R.id.main:
-			Log.d("Maple Syrup", "clicked on main");
-			intent = new Intent(activity, MainActivity.class);
-			activity.startActivity(intent);
+		case R.id.new_ad:
+			// TODO: This is pretty bad to assume BrowseActivity but we need for passing the fileUri
+			// of the photo. There are ways to do it via android, but it's very buggy and only works on some
+			// phones. We should just figure out a better way to handle it.
+			AdCreationDialog dialog = new AdCreationDialog((BrowseActivity) activity);
+			dialog.show();
 			return true;
 		case R.id.personal:
 			intent = new Intent(activity, PersonalAdsActivity.class);

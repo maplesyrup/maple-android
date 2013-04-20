@@ -1,67 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical" 
+     android:id="@+id/publish_layout" >
 
-        <TextView
-            android:id="@+id/headerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="5sp"
-            android:paddingTop="5sp"
-            android:text="Publish Your Ad"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/ad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/headerText"
+            android:layout_below="@+id/topbar_container"
+            android:paddingTop="@dimen/ad_padding"
             android:layout_centerHorizontal="true" />
 
-        <Button
-            android:id="@+id/publishButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/ad"
-            android:onClick="publish"
-            android:text="Publish" />
 
-        <Button
-            android:id="@+id/prevStage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/publishButton"
-            android:onClick="prevStage"
-            android:text="Back" />
-        
-      <RelativeLayout 
-	      android:id="@+id/InnerRelativeLayout"
-	      android:layout_width="wrap_content"
-	      android:layout_height="70dp"
-	      android:layout_alignParentBottom="true" >
-
-			<ImageButton
-			    android:id="@+id/helpButton"
-			    android:layout_width="70dp"
-			    android:layout_height="70dp"
-			    android:layout_alignBottom="@+id/progressBar"
-			    android:layout_alignParentRight="true"
-			    android:scaleType="fitCenter"
-			    android:onClick="getHelp"
-			    android:layout_alignTop="@+id/progressBar" />
-
-			<com.example.custom_views.ProgressView
-			    android:id="@+id/progressBar"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentBottom="true"
-			    android:layout_toLeftOf="@+id/helpButton" />
-
-	 </RelativeLayout>
- 
 </RelativeLayout>

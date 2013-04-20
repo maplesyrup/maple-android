@@ -1,23 +1,14 @@
 package com.example.ad_creation;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.example.custom_views.CropView;
 import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.LoginActivity;
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.facebook.Session;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 
 /**
  * This activity crops an image
@@ -26,11 +17,9 @@ import com.larvalabs.svgandroid.SVGParser;
  */
 public class CropActivity extends FunnelActivity implements OnTouchListener {
 
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
-	private Session mSession;
 	private CropView mCropView;
 	private ProgressView mProgressBar;
+	private RelativeLayout mTopBar;
 	
 	private float mPrevTouchX;
 	private float mPrevTouchY;
@@ -42,30 +31,23 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSession = Session.getActiveSession();
-		// If user isn't logged in we need to redirect back to LoginActivity
-		if (mSession == null) {
-			Intent i = new Intent(this, LoginActivity.class);
-			startActivity(i);
-		}
+		mConfig.put(Config.HELP_MESSAGE, "Select which part of your picture you want to be your ad!");
+		mConfig.put(Config.NAME, "Crop");
 		
-		mApp = (MapleApplication) getApplication();	
-		mAdCreationManager = mApp.getAdCreationManager();
+		/* first stage previous arrow doesn't make sense */
+		disablePrev();
 		
-		setContentView(R.layout.activity_crop);
+		setCustomContent(R.layout.activity_crop);
 		
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
 		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
+		
+		mTopBar = (RelativeLayout) findViewById(R.id.topbar);
 		
 		mCropView = (CropView) findViewById(R.id.cropView);
 		mCropView.setBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 		mCropView.setOnTouchListener(this);
 		
-		mAdCreationManager.setup(null, null, mProgressBar);
+		mAdCreationManager.setup(this);
 		
 	}
 
@@ -73,7 +55,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	 * Will crop the ad and send it to next stage in funnel. This function is activated on a button click.
 	 * @param v
 	 */
-	public void cropAd(View v) {
+	public void nextStage(View v) {
 		
 		mAdCreationManager.nextStage(this, mCropView.crop());
 	}
@@ -101,11 +83,10 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		}
 		return true;
 	}
-	
-	public void getHelp(View v) {
-		String message = "Select which part of your picture you want to be your ad!";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage() + " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
+
+	@Override
+	void prevStage(View v) {
+		// Do nothing
 	}
 
 }

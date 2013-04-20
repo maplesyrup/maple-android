@@ -1,41 +1,26 @@
 package com.example.ad_creation;
 
-import java.io.ByteArrayOutputStream;
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
 import com.commonsware.cwac.colormixer.ColorMixer;
 import com.commonsware.cwac.colormixer.ColorMixerDialog;
-import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 
 public class TextActivity extends FunnelActivity implements
 		FontPickerDialog.FontPickerDialogListener {
-	private MapleApplication mApp;
-	private AdCreationManager mAdCreationManager;
 
 	private ImageView mAdView;
 
@@ -46,30 +31,18 @@ public class TextActivity extends FunnelActivity implements
 	private EditText mTextEntryField;
 	private TextView mPhotoText;
 	private int mTextColor;
-	private ProgressView mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_text);
-
-		// Init app
-		mApp = (MapleApplication) this.getApplication();
-		mAdCreationManager = mApp.getAdCreationManager();
-
-		ImageButton help = (ImageButton) findViewById(R.id.helpButton);
-		SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.question);
-		help.setImageDrawable(svg.createPictureDrawable());
-		help.setBackgroundColor(Color.BLACK);
-
-		mProgressBar = (ProgressView) findViewById(R.id.progressBar);
-		mProgressBar.setCurrentStage(mAdCreationManager.getCurrentStage());
-		mProgressBar.setNumStages(mAdCreationManager.getNumStages());
+		
+		setCustomContent(R.layout.activity_text);
+	
+		mConfig.put(Config.HELP_MESSAGE, "Add humorous, sincere, or sophic text to your ad, and decide where to put it.");
+		mConfig.put(Config.NAME, "Text");
 
 		// set photo
-		mAdView = (ImageView) this.findViewById(R.id.photo);
-		mAdView.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
-
+		mAdView = (ImageView) this.findViewById(R.id.ad);
 		// initialize photo for clicking
 		mAdView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -83,10 +56,7 @@ public class TextActivity extends FunnelActivity implements
 			}
 		});
 		
-		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
-		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-		
-		mAdCreationManager.setup(mAdView, screenHeight, mProgressBar);
+		mAdCreationManager.setup(this);
 
 		// start off not showing edit options
 		mShowOptions = false;
@@ -338,10 +308,4 @@ public class TextActivity extends FunnelActivity implements
 		mAdCreationManager.previousStage(this);
 	}
 
-	public void getHelp(View v) {
-		String message = "Add humorous, sincere, or sophic text to your ad, and decide where to put it.";
-		String title = "Step " + mAdCreationManager.getReadableCurrentStage()
-				+ " of " + mAdCreationManager.getNumStages();
-		Utility.createHelpDialog(this, message, title);
-	}
 }

@@ -1,29 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".FilterActivity" >
-
-    <TextView
-        android:id="@+id/headerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="5sp"
-        android:paddingTop="5sp"
-        android:text="Add A Filter"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical" 
+     android:id="@+id/filter_layout" >
 
     <ImageView
         android:id="@+id/ad"
+        android:paddingTop="@dimen/ad_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headerText"
+        android:layout_below="@+id/topbar_container"
         android:layout_centerHorizontal="true" />
 
     <com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller
@@ -33,46 +19,8 @@
         android:layout_below="@+id/ad"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/nextStage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/filterScroller"
-        android:onClick="nextStage"
-        android:text="Next" />
+ 
 
-    <Button
-        android:id="@+id/prevStage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/nextStage"
-        android:onClick="prevStage"
-        android:text="Back" />
 
-    <RelativeLayout
-        android:id="@+id/InnerRelativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true" >
-
-        <ImageButton
-            android:id="@+id/helpButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignBottom="@+id/progressBar"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/progressBar"
-            android:onClick="getHelp"
-            android:scaleType="fitCenter" />
-
-        <com.example.custom_views.ProgressView
-            android:id="@+id/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/helpButton" />
-    </RelativeLayout>
 
 </RelativeLayout>
