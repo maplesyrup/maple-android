@@ -1,31 +1,31 @@
 package com.example.filters;
 
-import com.jabistudio.androidjhlabs.filter.GaussianFilter;
-import com.jabistudio.androidjhlabs.filter.PosterizeFilter;
+import com.jabistudio.androidjhlabs.filter.InvertFilter;
 import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
-/** This filter posterizes an image by quantizing each 
- * channel to a specified number of levels. This is generally an 
- * ugly way to reduce colours, but is often used as a special effect.
+/** 
+ * This filter will invert all the pixels in an image, 
+ * converting it into its photographic negative. It's 
+ * pretty much the simplest possible filter: To invert a 
+ * pixel we, simply subtract each colour component from 255. 
  * 
- *Parameters: int levels - The number of levels to posterize to
-
+ * There are no parameters to this filter.
+ *
  */
-public class MaplePosterizeFilter extends MapleFilter {
-	private final int NUM_LEVELS = 8;
+
+public class MapleInvertFilter extends MapleFilter {
+
 	
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
-		
+		//Find the bitmap's width height
 		int width = srcBitmap.getWidth();
 		int height = srcBitmap.getHeight();
 		
-		PosterizeFilter filter = new PosterizeFilter();
-		
-		filter.setNumLevels(NUM_LEVELS);
+		InvertFilter filter = new InvertFilter();
 		
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);
@@ -33,6 +33,7 @@ public class MaplePosterizeFilter extends MapleFilter {
 		filter.filter(src, width, height);
 		//Change the Bitmap int Array (Supports only ARGB_8888)
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
+		
 		return dstBitmap;
 	}
 
