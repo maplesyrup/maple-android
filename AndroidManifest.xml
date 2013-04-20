@@ -23,7 +23,7 @@
         android:name="com.example.maple_android.MapleApplication"
         android:allowBackup="true"
         android:debuggable="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/maple"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity

@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class LogoActivity extends FunnelActivity {
-
 	private LogoView mLogoView;
 
 	@Override

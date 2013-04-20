@@ -3,34 +3,22 @@ package com.example.ad_creation;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.example.browsing.PopularAdsActivity;
 import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
 import com.facebook.Session;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class PublishActivity extends FunnelActivity {
 	private ImageView mAdView;

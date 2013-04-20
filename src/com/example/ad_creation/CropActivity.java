@@ -1,32 +1,14 @@
 package com.example.ad_creation;
 
-import java.util.HashMap;
-
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
 import com.example.custom_views.CropView;
 import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.LoginActivity;
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.facebook.Session;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 
 /**
  * This activity crops an image
