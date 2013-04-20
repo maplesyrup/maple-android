@@ -1,13 +1,11 @@
 package com.example.maple_android;
 
-import java.util.ArrayList;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * This class exists to store application global variables
@@ -24,8 +22,7 @@ import android.net.Uri;
 public class MapleApplication extends Application{
 	
 	private AdCreationManager mAdCreationManager;
-	private String mCompanyTag;
-	
+
 	@Override
 	public void onCreate()
 	{
@@ -40,7 +37,6 @@ public class MapleApplication extends Application{
 		return mAdCreationManager;
 	}
 	
-
 	/** Universal Image Loader is a library
 	 * that helps with loading images from the web.
 	 * It is asynchronous and multithreaded, and offers
@@ -65,17 +61,4 @@ public class MapleApplication extends Application{
 	public void initAdCreationManager(Bitmap currBitmap, Uri fileUri) {
 		mAdCreationManager = new AdCreationManager(this, currBitmap, fileUri);
 	}
-
-	public String getCurrentCompany() {
-		return mCompanyTag;
-	}
-
-	public void setCurrentCompany(String mCompanyTag) {
-		this.mCompanyTag = mCompanyTag;
-		
-	}
-
-	
-
-	
 }
