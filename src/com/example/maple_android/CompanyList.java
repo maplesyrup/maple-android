@@ -103,6 +103,9 @@ public class CompanyList {
 		// init ArrayList
 		ArrayList<String> companyList = new ArrayList<String>();
 		
+		// if no file found, return empty list
+		if (jsonArray == null) return companyList;
+		
 		// pull company names out of JSONArray
 		for(int i = 0; i < jsonArray.length(); i++){
 			JSONObject entry;
@@ -193,6 +196,9 @@ public class CompanyList {
 
 		// get urls from JSON data
 		JSONArray arr = getLocalCompaniesData(context);
+		// If file not found, return empty list of bitmaps 
+		if (arr == null) return logos;
+		
 		// find company in jsonarray
 		JSONObject company = null;
 		for(int i = 0; i < arr.length(); i++){
