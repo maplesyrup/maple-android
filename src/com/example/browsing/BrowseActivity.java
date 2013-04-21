@@ -51,14 +51,11 @@ public class BrowseActivity extends Activity {
         mGridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            	Toast toast = Toast.makeText(getApplicationContext(), "Hello from " + position, Toast.LENGTH_SHORT);
-            	toast.show();
-            	
                 // Sending image id to FullScreenActivity
-//                Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
-//                // passing array index
-//                i.putExtra("id", position);
-//                startActivity(i);
+                Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
+                String url = (String) parent.getAdapter().getItem(position);
+                i.putExtra("url", url);
+                startActivity(i);
             }
         });
 	}

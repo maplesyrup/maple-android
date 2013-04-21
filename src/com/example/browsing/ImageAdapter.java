@@ -1,14 +1,16 @@
 package com.example.browsing;
 
+import java.io.ByteArrayOutputStream;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,11 +41,22 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return null;
+        try {
+        	// TODO: make this cleaner
+        	/**
+        	 * We get the proper JSON object from the response and return the url. 
+        	 * We are making a request to this url twice, but it seems expensive to 
+        	 * hand back the bitmap and maintain it between activities
+        	 */
+			return ads.getJSONObject(position).getString("image_url");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return "";
+		}
     }
 
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     // create a new ImageView for each item referenced by the Adapter

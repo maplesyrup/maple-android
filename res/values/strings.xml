@@ -31,5 +31,8 @@
     <string name="question"><b>\?</b></string>
     <string name="title_activity_filter">FilterActivity</string>
     <string name="exit">Exit</string>
+    <string name="title_activity_full_image">FullImageActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>
