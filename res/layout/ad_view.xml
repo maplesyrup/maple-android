@@ -6,14 +6,16 @@
 
     <ImageView
         android:id="@+id/ad"
-        android:layout_width="394dp"
-        android:layout_height="394dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
         android:src="@drawable/maple" />
 
     <TextView
         android:id="@+id/adInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="Company"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

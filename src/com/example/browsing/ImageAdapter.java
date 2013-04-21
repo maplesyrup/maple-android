@@ -8,12 +8,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.maple_android.R;
@@ -79,6 +79,7 @@ public class ImageAdapter extends BaseAdapter {
             });
         	TextView textView = (TextView) adView.findViewById(R.id.adInfo);
         	textView.setText(title);
+        	textView.setGravity(Gravity.CENTER);
         	textView.setTextColor(Color.BLACK);
         }
         return adView;

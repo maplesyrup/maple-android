@@ -60,7 +60,7 @@ public class BrowseActivity extends Activity {
         mGridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            	Toast toast = Toast.makeText(getApplicationContext(), "Hello toast!", Toast.LENGTH_SHORT);
+            	Toast toast = Toast.makeText(getApplicationContext(), "Hello from " + position, Toast.LENGTH_SHORT);
             	toast.show();
             	
                 // Sending image id to FullScreenActivity
