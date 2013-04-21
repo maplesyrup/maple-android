@@ -2,7 +2,6 @@ package com.example.browsing;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,14 +56,13 @@ public class FullImageActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_full_image);
+		setTitle("Detail View");
 
 		final View controlsView = findViewById(R.id.fullscreen_content_controls);
 		final ImageView contentView = (ImageView) findViewById(R.id.full_image_view);
 		// get intent data
-        Intent i = getIntent();
- 
-        // Selected image id
-        String url = i.getExtras().getString("url");
+        Bundle extras = getIntent().getExtras();
+        String url = extras.getString("url");
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.loadImage(url, new SimpleImageLoadingListener() {
         	@Override
@@ -73,7 +71,7 @@ public class FullImageActivity extends Activity {
         	}
         });
         TextView titleView = (TextView) findViewById(R.id.titleText);
-        titleView.setText(i.getExtras().getString("title"));
+        titleView.setText(extras.getString("title"));
         
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.
