@@ -54,12 +54,10 @@
          android:id="@+id/reset"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignTop="@+id/nextStage"
+         android:layout_below="@+id/brightnessSeekBar"
          android:layout_centerHorizontal="true"
          android:onClick="reset"
          android:text="Clear Changes" />
-
-    
      
  </RelativeLayout>
 
