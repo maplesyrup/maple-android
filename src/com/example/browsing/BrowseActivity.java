@@ -2,6 +2,7 @@ package com.example.browsing;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -51,11 +52,18 @@ public class BrowseActivity extends Activity {
         mGridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                // Sending image id to FullScreenActivity
                 Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
-                String url = (String) parent.getAdapter().getItem(position);
-                i.putExtra("url", url);
-                startActivity(i);
+                JSONObject adJSON = (JSONObject) parent.getAdapter().getItem(position);
+				try {
+					String url = adJSON.getString("image_url");
+					i.putExtra("url", url);
+	                String title = adJSON.getString("title");
+	                i.putExtra("title", title);
+	                startActivity(i);
+                } catch (JSONException e) {
+					e.printStackTrace();
+				}
+                
             }
         });
 	}

@@ -44,14 +44,13 @@ public class ImageAdapter extends BaseAdapter {
         try {
         	// TODO: make this cleaner
         	/**
-        	 * We get the proper JSON object from the response and return the url. 
-        	 * We are making a request to this url twice, but it seems expensive to 
-        	 * hand back the bitmap and maintain it between activities
+        	 * We get the proper JSON object from the response, and extract 
+        	 * relevant data in the setOnItemClickListener on the gridview in BrowseActivity 
         	 */
-			return ads.getJSONObject(position).getString("image_url");
+			return ads.getJSONObject(position);
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return "";
+			return new JSONObject();
 		}
     }
 

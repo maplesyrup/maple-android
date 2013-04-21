@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.maple_android.R;
 import com.example.maple_android.util.SystemUiHider;
@@ -71,6 +72,8 @@ public class FullImageActivity extends Activity {
         		contentView.setImageBitmap(loadedImage);
         	}
         });
+        TextView titleView = (TextView) findViewById(R.id.titleText);
+        titleView.setText(i.getExtras().getString("title"));
         
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.
