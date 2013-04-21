@@ -235,7 +235,6 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 	}
 	
 	protected void _setupTextViewLayout(View view, int position){
-		System.out.println("adding text" + _text.get(position));
 		TextView textView = (TextView)view.findViewById(_textIdInLayout);
 		textView.setText(_text.get(position));
 	}
