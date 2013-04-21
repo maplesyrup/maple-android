@@ -15,6 +15,7 @@ Copyright 2012 Two Toasters, LLC
 */
 package com.twotoasters.android.horizontalimagescroller.widget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.twotoasters.android.horizontalimagescroller.R;
 import com.twotoasters.android.horizontalimagescroller.image.BitmapHelper;
@@ -52,7 +54,12 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 	protected int _defaultImageFailedToLoadResourceId;
 	protected List<ImageToLoad> _images;
 	protected int _imageIdInLayout;
+	protected int _textIdInLayout;
 	protected int _innerWrapperIdInLayout;
+	
+	// Text shown beneath an image. Indices match up with those of _images
+	protected ArrayList<String> _text;
+	protected boolean _showText = false;
 
 	public HorizontalImageScrollerAdapter(final Context context, final List<ImageToLoad> images, final int imageSize, final int frameColorResourceId, final int frameOffColorResourceId,
 			final int transparentColorResourceId, final int imageLayoutResourceId, final int loadingImageResourceId) {
@@ -85,7 +92,28 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 		_imageLayoutResourceId = R.layout.horizontal_image_scroller_item;
 		_imageCacheManager = ImageCacheManager.getInstance(_context);
 		_imageIdInLayout = R.id.image;
+		_textIdInLayout = R.id.text;
 		_innerWrapperIdInLayout = R.id.image_frame;
+	}
+	
+	/** Set whether or not text should be shown beneath
+	 * the image in the scrollview. If this is true, a supporting
+	 * image layout must have also been set, and text values must
+	 * be supplied through setTextList
+	 * 
+	 * @param show Whether or not to show text beneath image
+	 */
+	public void setShowText(boolean show){
+		_showText = show;
+	}
+	
+	/** The list of strings to display underneath the images.
+	 * The indices should match with the list of images
+	 * 
+	 * @param text List of strings to show in the scroller
+	 */
+	public void setTextList(ArrayList<String> text){
+		_text = text;
 	}
 
 	public int getImageSize() {
@@ -178,7 +206,14 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 			ImageView imageView = (ImageView)view.findViewById(_imageIdInLayout);
 			_imageCacheManager.unbindImage(imageView);
 			imageToLoad.setImageView(imageView);
+			
 			if (_imageOnClickListener != null) imageView.setOnClickListener(_imageOnClickListener);
+			
+			// add text to the view
+			if(_showText){
+				_setupTextViewLayout(view, position);
+			}
+			
 			_setupImageViewLayout(view, imageToLoad, position);
 			_setupInnerWrapper(view, imageToLoad, position);
 			if (imageToLoad instanceof ImageToLoadUrl) {
@@ -197,6 +232,12 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 			}
 		}
 		return view;
+	}
+	
+	protected void _setupTextViewLayout(View view, int position){
+		System.out.println("adding text" + _text.get(position));
+		TextView textView = (TextView)view.findViewById(_textIdInLayout);
+		textView.setText(_text.get(position));
 	}
 	
 	protected void _setupImageViewLayout(View view, ImageToLoad imageToLoad, int position) {

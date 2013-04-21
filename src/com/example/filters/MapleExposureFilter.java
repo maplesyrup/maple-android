@@ -39,12 +39,12 @@ public class MapleExposureFilter extends MapleFilter {
 
 	@Override
 	public int getPreview() {
-		return R.drawable.filter_gain;
+		return R.drawable.filter_exposure;
 	}
 
 	@Override
 	public String getName() {
-		return "Gain";
+		return "Exposure";
 	}
 
 }
