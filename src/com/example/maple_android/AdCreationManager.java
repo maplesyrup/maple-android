@@ -36,26 +36,12 @@ import com.example.filters.MaplePosterizeFilter;
  * 
  */
 public class AdCreationManager {
-	public enum Filters {
-		GAUSSIAN("Gaussian"), POSTERIZE("Posterize"), NONE("None");
-
-		private final String text;
-
-		private Filters(final String text) {
-			this.text = text;
-		}
-
-		@Override
-		public String toString() {
-			return text;
-		}
-	}
 	
 	/* The application context */
 	private Context mContext;
 
 	/* The order of the ad creation funnel */
-	Class<?>[] mFunnel = { 
+	private Class<?>[] mFunnel = { 
 			CropActivity.class,
 			CompanyTagActivity.class,
 			ColorAdjustmentActivity.class,
@@ -88,9 +74,6 @@ public class AdCreationManager {
 	// File path of saved bitmap image
 	private Uri mFileUri;
 
-	// Current filter applied to image
-	private Filters mFilter;
-
 	public AdCreationManager(Context context, Bitmap currBitmap, Uri fileUri) {
 		mBitmapStack = new Stack<Bitmap>();
 		mBitmapStack.push(currBitmap);
@@ -102,8 +85,6 @@ public class AdCreationManager {
 		mCompanyLogos = new ArrayList<Bitmap>();
 
 		mCompanyName = null;
-
-		mFilter = Filters.NONE;
 		
 		mContext = context;
 
@@ -241,43 +222,6 @@ public class AdCreationManager {
 	 */
 	public Uri getFileUri() {
 		return mFileUri;
-	}
-
-	/**
-	 * Adds a filter to the given ad. The supplied ad is
-	 * unchanged, and the result is returned.
-	 * 
-	 * @param strFilter
-	 *            Name of the filter we want to use
-	 * @result The bitmap after the filter is applied            
-	 *           
-	 */
-	public Bitmap addFilter(Bitmap ad, int filter) {
-		MapleFilter mapleFilter = null;
-
-		if (filter == 1) {
-			mapleFilter = new MapleGaussianFilter();
-			mFilter = Filters.GAUSSIAN;
-		} else if (filter == 2) {
-			mapleFilter = new MaplePosterizeFilter();
-			mFilter = Filters.POSTERIZE;
-		} else if (filter == 0) {
-			this.pushBitmap(this.getOriginalBitmap());
-			mFilter = Filters.NONE;
-			return ad;
-		}
-
-		return mapleFilter.filterBitmap(ad);
-
-	}
-
-	/**
-	 * Gets the current filter so we can set that filter in the spinner.
-	 * 
-	 * @return The Filter enum that is being applied
-	 */
-	public Filters getCurrentFilter() {
-		return mFilter;
 	}
 
 	/**
