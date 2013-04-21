@@ -118,6 +118,8 @@ public class FilterActivity extends FunnelActivity {
 		// ImageToLoad objects
 		HorizontalImageScroller scroller = (HorizontalImageScroller) findViewById(R.id.filterScroller);
 		scroller.setAdapter(new HorizontalImageScrollerAdapter(this, images));
+		
+		scroller.setHighlightActiveImage(true);
 
 		// add callback function when image in scroller is selected
 		scroller.setOnItemClickListener(new OnItemClickListener() {
