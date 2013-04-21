@@ -43,8 +43,7 @@ public class MapleBumpFilter extends MapleFilter {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Bump";
 	}
 
 }

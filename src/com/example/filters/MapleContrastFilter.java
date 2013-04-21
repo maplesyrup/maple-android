@@ -16,7 +16,8 @@ import com.example.maple_android.R;
  */
 
 public class MapleContrastFilter extends MapleFilter {
-
+	private int brightness = 1;
+	private int contrast = 1;
 	
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
@@ -26,9 +27,8 @@ public class MapleContrastFilter extends MapleFilter {
 		
 		ContrastFilter filter = new ContrastFilter();
 		
-		//filter.setBrightness(brightness);
-		//filter.setContrast(contrast);
-		//filter.setDimensions(w, h);
+		filter.setBrightness(brightness);
+		filter.setContrast(contrast);
 		
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);

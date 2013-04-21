@@ -19,7 +19,7 @@ import com.example.maple_android.R;
  */
 
 public class MapleGammaFilter extends MapleFilter {
-
+	private float gamma = 1.0f;
 	
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
@@ -33,7 +33,7 @@ public class MapleGammaFilter extends MapleFilter {
 		 * specify a unique gamma for each channel
 		 */
 		//filter.setGamma(rGamma, gGamma, bGamma);
-		//filter.setGamma(gamma);
+		filter.setGamma(gamma);
 		
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);
