@@ -55,7 +55,6 @@ public class ImageAdapter extends BaseAdapter {
         	adView = inflater.inflate(R.layout.ad_view, null);
 
         	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(294, 294));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
 
@@ -80,7 +79,7 @@ public class ImageAdapter extends BaseAdapter {
             });
         	TextView textView = (TextView) adView.findViewById(R.id.adInfo);
         	textView.setText(title);
-            textView.setBackgroundColor(Color.RED);
+        	textView.setTextColor(Color.BLACK);
         }
         return adView;
     }

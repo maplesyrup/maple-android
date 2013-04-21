@@ -4,16 +4,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -22,7 +28,6 @@ import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
-import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -38,10 +43,33 @@ public class BrowseActivity extends Activity {
 	// Contains file uri of photo being taken
 	protected Uri mFileUri;
 
+	@SuppressWarnings("deprecation")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_personal_ads);
 		mGridview = (GridView) findViewById(R.id.gridviewAds);
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+//		if (android.os.Build.VERSION.SDK_INT >= 13) {
+//			display.getSize(size);
+//			mGridview.setColumnWidth(display.getWidth() - 40);	
+//		}
+		/**
+         * On Click event for Single Gridview Item
+         * */
+        mGridview.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+            	Toast toast = Toast.makeText(getApplicationContext(), "Hello toast!", Toast.LENGTH_SHORT);
+            	toast.show();
+            	
+                // Sending image id to FullScreenActivity
+//                Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
+//                // passing array index
+//                i.putExtra("id", position);
+//                startActivity(i);
+            }
+        });
 	}
 	
 	public void requestUserAds(RequestParams params) {
