@@ -1,7 +1,9 @@
 package com.example.filters;
 
+import com.example.maple_android.R;
 import com.jabistudio.androidjhlabs.filter.BumpFilter;
 import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
+
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -32,6 +34,17 @@ public class MapleBumpFilter extends MapleFilter {
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_bump;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -55,7 +55,7 @@ public class AdCreationManager {
 	private Context mContext;
 
 	/* The order of the ad creation funnel */
-	Class<?>[] mFunnel = { 
+	private Class<?>[] mFunnel = { 
 			CropActivity.class,
 			CompanyTagActivity.class,
 			ColorAdjustmentActivity.class,

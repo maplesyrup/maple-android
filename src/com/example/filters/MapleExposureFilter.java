@@ -5,6 +5,7 @@ import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import com.example.maple_android.R;
 
 /** 
  * This filter simulates changing the exposure of an image.
@@ -34,6 +35,16 @@ public class MapleExposureFilter extends MapleFilter {
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_gain;
+	}
+
+	@Override
+	public String getName() {
+		return "Gain";
 	}
 
 }

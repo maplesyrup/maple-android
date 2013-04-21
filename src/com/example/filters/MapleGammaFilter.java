@@ -5,6 +5,7 @@ import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import com.example.maple_android.R;
 
 /** 
  * GammaFilter changes the gamma of an image. 
@@ -42,6 +43,16 @@ public class MapleGammaFilter extends MapleFilter {
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_gamma;
+	}
+
+	@Override
+	public String getName() {
+		return "Gamma";
 	}
 
 }

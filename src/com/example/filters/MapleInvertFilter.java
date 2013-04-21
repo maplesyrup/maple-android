@@ -5,6 +5,7 @@ import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import com.example.maple_android.R;
 
 /** 
  * This filter will invert all the pixels in an image, 
@@ -35,6 +36,16 @@ public class MapleInvertFilter extends MapleFilter {
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_invert;
+	}
+
+	@Override
+	public String getName() {
+		return "Invert";
 	}
 
 }

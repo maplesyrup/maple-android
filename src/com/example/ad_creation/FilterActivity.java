@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.custom_views.ProgressView;
+import com.example.filters.*;
 import com.example.maple_android.R;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadDrawableResource;
@@ -38,7 +39,46 @@ public class FilterActivity extends FunnelActivity {
 	private Bitmap mOriginalAd; // the starting ad without any filters
 	private Bitmap mFilteredAd; // the ad after the filter is applied
 	private View mLastFilterSelected; // the last filter selected in the horizontal scroller
+	
+	/* List of filters to show to the user */
+	private Class<?>[] filterList = {
+			MapleNoFilter.class,
+			MapleBlurFilter.class,
+			MapleDiffuseFilter.class,
+			MapleExposureFilter.class,
+			MapleGainFilter.class,
+			MapleGaussianFilter.class,
+			MapleGlowFilter.class,
+			MapleGrayscaleFilter.class,
+			MapleInvertFilter.class,
+			MapleMaximumFilter.class,
+			MapleMedianFilter.class,
+			MapleMedianFilter.class,
+			MapleNoiseFilter.class,
+			MapleOilFilter.class,
+			MaplePosterizeFilter.class,
+			MapleReduceNoiseFilter.class,
+			MapleSharpenFilter.class,
+			MapleSmartBlurFilter.class,
+			MapleSolarizeFilter.class,
+			MapleUnsharpFilter.class			
+	};
 
+	/* Stored instances of filters. We need to create an instance of the filter
+	 * to get the name and the preview. A instance will also need to be created every
+	 * time that filter is used. To prevent redundant instantiations we just stored them
+	 * in this list.	 
+	 * The indices match up to those of filterList
+	 */
+	private MapleFilter[] filterInstances = new MapleFilter[filterList.length];
+	
+	/* If we generate a filtered image, save it for later instead of needing to generate
+	 * it again if the user comes back to it.
+	 * The indices match up to those of filterList
+	 */
+	private Bitmap[] filterResults = new Bitmap[filterList.length];
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,9 +96,23 @@ public class FilterActivity extends FunnelActivity {
 
 		// make a list of ImageToLoad objects for image scroller
 		ArrayList<ImageToLoad> images = new ArrayList<ImageToLoad>();
-		images.add(new ImageToLoadDrawableResource(R.drawable.filter_none));
-		images.add(new ImageToLoadDrawableResource(R.drawable.filter_gaussian));
-		images.add(new ImageToLoadDrawableResource(R.drawable.filter_posterize));
+		for(int i = 0; i < filterList.length; i++){
+			
+			// instantiate each filter
+			MapleFilter filter = null;
+			try {
+				filter = (MapleFilter) filterList[i].newInstance();
+			} catch (InstantiationException e) {e.printStackTrace();} 
+			catch (IllegalAccessException e) {e.printStackTrace();}
+			
+			// store instance for later use
+			filterInstances[i] = filter;
+			
+			// get filter preview and add it to the scroller
+			int filterPictureId = filter.getPreview();
+			images.add(new ImageToLoadDrawableResource(filterPictureId));
+		}
+		
 
 		// set up the scroller with an adapter populated with the list of
 		// ImageToLoad objects

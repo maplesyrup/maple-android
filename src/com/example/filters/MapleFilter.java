@@ -10,5 +10,9 @@ import android.graphics.Bitmap;
  */
 
 public abstract class MapleFilter {
+	public abstract int getPreview();
+	
+	public abstract String getName();
+	
 	public abstract Bitmap filterBitmap(Bitmap srcBitmap);
 }

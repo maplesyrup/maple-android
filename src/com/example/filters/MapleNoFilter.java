@@ -1,8 +1,9 @@
 package com.example.filters;
-import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
+
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import com.example.maple_android.R;
 
 /** 
  * Returns a copy of the bitmap passed in.
@@ -20,6 +21,16 @@ public class MapleNoFilter extends MapleFilter {
 		
 		return srcBitmap.copy(Config.ARGB_8888, true);
 
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_none;
+	}
+
+	@Override
+	public String getName() {
+		return "No Filter";
 	}
 
 }

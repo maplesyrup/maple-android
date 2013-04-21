@@ -5,6 +5,7 @@ import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import com.example.maple_android.R;
 
 /** 
  * This filter replaces each pixel by the minimum 
@@ -32,6 +33,16 @@ public class MapleMinimumFilter extends MapleFilter {
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_minimum;
+	}
+
+	@Override
+	public String getName() {
+		return "Minimum";
 	}
 
 }

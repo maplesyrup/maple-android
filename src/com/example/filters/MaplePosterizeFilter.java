@@ -6,6 +6,7 @@ import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import com.example.maple_android.R;
 
 /** This filter posterizes an image by quantizing each 
  * channel to a specified number of levels. This is generally an 
@@ -34,6 +35,16 @@ public class MaplePosterizeFilter extends MapleFilter {
 		//Change the Bitmap int Array (Supports only ARGB_8888)
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
 		return dstBitmap;
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_posterize;
+	}
+
+	@Override
+	public String getName() {
+		return "Posterize";
 	}
 
 }

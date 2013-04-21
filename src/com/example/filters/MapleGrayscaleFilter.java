@@ -2,7 +2,8 @@ package com.example.filters;
 
 import com.jabistudio.androidjhlabs.filter.GrayscaleFilter;
 import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
-
+import com.example.maple_android.R;
+import android.R;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
@@ -42,6 +43,16 @@ public class MapleGrayscaleFilter extends MapleFilter {
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_grayscale;
+	}
+
+	@Override
+	public String getName() {
+		return "Gray Scale";
 	}
 
 }

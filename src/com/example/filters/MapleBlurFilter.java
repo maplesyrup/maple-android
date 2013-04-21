@@ -1,5 +1,6 @@
 package com.example.filters;
 
+import com.example.maple_android.R;
 import com.jabistudio.androidjhlabs.filter.BlurFilter;
 import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 
@@ -33,6 +34,16 @@ public class MapleBlurFilter extends MapleFilter {
 		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
+	}
+
+	@Override
+	public int getPreview() {
+		return R.drawable.filter_blur;
+	}
+
+	@Override
+	public String getName() {
+		return "Blur";
 	}
 
 }
