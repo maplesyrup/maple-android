@@ -4,17 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,17 +40,11 @@ public class BrowseActivity extends Activity {
 	// Contains file uri of photo being taken
 	protected Uri mFileUri;
 
-	@SuppressWarnings("deprecation")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_personal_ads);
 		mGridview = (GridView) findViewById(R.id.gridviewAds);
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-//		if (android.os.Build.VERSION.SDK_INT >= 13) {
-//			display.getSize(size);
-//			mGridview.setColumnWidth(display.getWidth() - 40);	
-//		}
+
 		/**
          * On Click event for Single Gridview Item
          * */

@@ -12,11 +12,30 @@
         android:src="@drawable/maple" />
 
     <TextView
-        android:id="@+id/adInfo"
+        android:id="@+id/adTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Company"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/creatorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/adTitle"
+        android:text="Name" />
+
+    <TextView
+        android:id="@+id/numVotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Votes: " />
+
+    <TextView
+        android:id="@+id/dateCreated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Created" />
 
 </LinearLayout>

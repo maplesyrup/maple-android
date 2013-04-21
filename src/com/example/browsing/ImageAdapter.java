@@ -63,10 +63,16 @@ public class ImageAdapter extends BaseAdapter {
             //http://s3.amazonaws.com/maplesyrup-assets/posts/images/000/000/006/medium/IMG_20130311_233546.jpg?1363070132
             String url = "drawable://" + R.drawable.maple;
             String title = "";
+            String creator = "";
+            String numVotes = "";
+            String created = "";
             try {
             	JSONObject jObject = ads.getJSONObject(position); 
             	url = jObject.getString("image_url");
     	        title = jObject.getString("title");
+    	        creator = jObject.getJSONObject("user").getString("name");
+    	        numVotes = jObject.getString("total_votes");
+    	        created = jObject.getString("created_at");
             } catch (JSONException e){
             	Log.d(TAG, "unable to parse JSON");
             }
@@ -77,10 +83,18 @@ public class ImageAdapter extends BaseAdapter {
             		imageView.setImageBitmap(loadedImage);
             	}
             });
-        	TextView textView = (TextView) adView.findViewById(R.id.adInfo);
-        	textView.setText(title);
-        	textView.setGravity(Gravity.CENTER);
-        	textView.setTextColor(Color.BLACK);
+        	TextView titleView = (TextView) adView.findViewById(R.id.adTitle);
+        	titleView.setText(title);
+        	titleView.setTextColor(Color.BLACK);
+        	
+        	TextView creatorText = (TextView) adView.findViewById(R.id.creatorName);
+        	creatorText.setText(creator);
+        	
+        	TextView numVotesText = (TextView) adView.findViewById(R.id.numVotes);
+        	numVotesText.setText("Votes: " + numVotes);
+        	
+        	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
+        	createdText.setText("Created" + created);
         }
         return adView;
     }

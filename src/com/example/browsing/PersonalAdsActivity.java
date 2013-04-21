@@ -9,8 +9,8 @@ public class PersonalAdsActivity extends BrowseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setTitle("My Ads");
 		super.onCreate(savedInstanceState);
-
 		Session session = Session.getActiveSession();
 		final String user_id = getUserId(session.getAccessToken());
 		RequestParams params = new RequestParams();
