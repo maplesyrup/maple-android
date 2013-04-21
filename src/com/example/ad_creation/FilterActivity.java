@@ -53,7 +53,7 @@ public class FilterActivity extends FunnelActivity {
 			MapleInvertFilter.class,
 			MapleMaximumFilter.class,
 			MapleMedianFilter.class,
-			MapleMedianFilter.class,
+			MapleMinimumFilter.class,
 			MapleNoiseFilter.class,
 			MapleOilFilter.class,
 			MaplePosterizeFilter.class,
@@ -136,6 +136,8 @@ public class FilterActivity extends FunnelActivity {
 				mFilteredAd = filterResults[pos];				
 				if(mFilteredAd == null){
 					mFilteredAd = filterInstances[pos].filterBitmap(mOriginalAd);
+					// cache for use later
+					filterResults[pos] = mFilteredAd;
 				}
 				
 				mAdView.setImageBitmap(mFilteredAd);

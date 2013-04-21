@@ -27,7 +27,6 @@ public class MapleInvertFilter extends MapleFilter {
 		int height = srcBitmap.getHeight();
 		
 		InvertFilter filter = new InvertFilter();
-		
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);
 		//Applies a filter.

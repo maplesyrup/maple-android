@@ -25,9 +25,9 @@ import com.example.maple_android.R;
 
 public class MapleNoiseFilter extends MapleFilter {
 	// just making these up for now...
-	private int amount = 5;
-	private float density = 3;
-	private int distribution = 3;
+	private int amount = 40;
+	private float density = 65;
+	private int distribution = 1;
 	private boolean monochrome = true;
 	
 	@Override

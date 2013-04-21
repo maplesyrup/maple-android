@@ -20,8 +20,7 @@ import com.example.maple_android.R;
  */
 
 public class MapleOilFilter extends MapleFilter {
-	// i have no idea what these do...
-	private int levels = 10;
+	private int levels = 25;
 	private int range = 2;
 	
 	@Override

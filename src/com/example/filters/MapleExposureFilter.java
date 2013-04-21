@@ -15,7 +15,7 @@ import com.example.maple_android.R;
  */
 
 public class MapleExposureFilter extends MapleFilter {
-
+	private float exposure = 2.0f;
 	
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
@@ -25,7 +25,7 @@ public class MapleExposureFilter extends MapleFilter {
 		
 		ExposureFilter filter = new ExposureFilter();
 		
-		//filter.setExposure(exposure);
+		filter.setExposure(exposure);
 		
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);

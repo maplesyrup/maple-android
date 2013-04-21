@@ -16,7 +16,9 @@ import com.example.maple_android.R;
  */
 
 public class MapleSmartBlurFilter extends MapleFilter {
-
+	private int hRadius = 5;
+	private int vRadius = 5;
+	private int threshold = 10;
 	
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
@@ -25,6 +27,10 @@ public class MapleSmartBlurFilter extends MapleFilter {
 		int height = srcBitmap.getHeight();
 		
 		SmartBlurFilter filter = new SmartBlurFilter();
+		
+		filter.setHRadius(hRadius);
+		filter.setVRadius(vRadius);
+		filter.setThreshold(threshold);
 		
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);

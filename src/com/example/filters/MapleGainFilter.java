@@ -22,7 +22,8 @@ import com.example.maple_android.R;
  */
 
 public class MapleGainFilter extends MapleFilter {
-
+	private float bias = 60.0f;
+	private float gain = 20.0f;
 	
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
@@ -32,8 +33,8 @@ public class MapleGainFilter extends MapleFilter {
 		
 		GainFilter filter = new GainFilter();
 		
-		//filter.setBias(bias);
-		//filter.setGain(gain);
+		filter.setBias(bias);
+		filter.setGain(gain);
 		
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);

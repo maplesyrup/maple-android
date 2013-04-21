@@ -16,7 +16,7 @@ import com.example.maple_android.R;
 
  */
 public class MaplePosterizeFilter extends MapleFilter {
-	private final int NUM_LEVELS = 8;
+	private final int NUM_LEVELS = 7;
 	
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
