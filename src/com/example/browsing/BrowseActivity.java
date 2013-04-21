@@ -2,6 +2,7 @@ package com.example.browsing;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +15,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -22,7 +26,6 @@ import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
-import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -42,6 +45,27 @@ public class BrowseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_personal_ads);
 		mGridview = (GridView) findViewById(R.id.gridviewAds);
+
+		/**
+         * On Click event for Single Gridview Item
+         * */
+        mGridview.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
+                JSONObject adJSON = (JSONObject) parent.getAdapter().getItem(position);
+				try {
+					String url = adJSON.getString("image_url");
+					i.putExtra("url", url);
+	                String title = adJSON.getString("title");
+	                i.putExtra("title", title);
+	                startActivity(i);
+                } catch (JSONException e) {
+					e.printStackTrace();
+				}
+                
+            }
+        });
 	}
 	
 	public void requestUserAds(RequestParams params) {

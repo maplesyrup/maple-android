@@ -93,6 +93,12 @@
             android:name="com.example.ad_creation.FilterActivity"
             android:label="@string/title_activity_filter" >
         </activity>
+        <activity
+            android:name="com.example.browsing.FullImageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_full_image"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
     </application>
 
 </manifest>
