@@ -1,41 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
     android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/ad"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
+        android:contentDescription="User-created ad"
         android:src="@drawable/maple" />
 
-    <TextView
-        android:id="@+id/adTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Company"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@+id/ad"
+	    android:layout_marginLeft="30dp"
+	    android:layout_marginRight="30dp"
+	    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/creatorName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/adTitle"
-        android:text="Name" />
-
-    <TextView
-        android:id="@+id/numVotes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Votes: " />
-
-    <TextView
-        android:id="@+id/dateCreated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Created" />
-
-</LinearLayout>
+	    <TextView
+	        android:id="@+id/adTitle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_below="@+id/ad"
+	        android:text="Company"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	    <TextView
+	        android:id="@+id/creatorName"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/adTitle"
+	        android:text="Name" />
+	
+	    <TextView
+	        android:id="@+id/numVotes"
+	        android:layout_alignParentRight="true"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/ad"
+	        android:text="Votes:" />
+	
+	    <TextView
+	        android:id="@+id/dateCreated"
+	        android:layout_alignParentRight="true"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/numVotes"
+	        android:text="Created by:" />
+	
+	</RelativeLayout>
+</RelativeLayout>

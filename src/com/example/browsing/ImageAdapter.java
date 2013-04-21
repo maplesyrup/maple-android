@@ -94,7 +94,7 @@ public class ImageAdapter extends BaseAdapter {
         	numVotesText.setText("Votes: " + numVotes);
         	
         	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
-        	createdText.setText("Created" + created);
+        	createdText.setText("Created: " + created);
         }
         return adView;
     }
