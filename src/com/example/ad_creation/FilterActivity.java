@@ -131,8 +131,13 @@ public class FilterActivity extends FunnelActivity {
 				view.setBackgroundColor(Color.BLACK);
 				mLastFilterSelected = view;
 				
-				// apply filter to image
-				mFilteredAd = mAdCreationManager.addFilter(mOriginalAd, pos);
+				// check if we have previously used this filter. If we have, used the saved image
+				// instead of generating it again
+				mFilteredAd = filterResults[pos];				
+				if(mFilteredAd == null){
+					mFilteredAd = filterInstances[pos].filterBitmap(mOriginalAd);
+				}
+				
 				mAdView.setImageBitmap(mFilteredAd);
 				
 			}

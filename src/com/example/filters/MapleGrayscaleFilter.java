@@ -3,7 +3,6 @@ package com.example.filters;
 import com.jabistudio.androidjhlabs.filter.GrayscaleFilter;
 import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 import com.example.maple_android.R;
-import android.R;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
