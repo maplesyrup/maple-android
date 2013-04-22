@@ -1,11 +1,14 @@
 package com.example.browsing;
 
+import java.io.ByteArrayOutputStream;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.maple_android.R;
@@ -39,11 +41,21 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return null;
+        try {
+        	// TODO: make this cleaner
+        	/**
+        	 * We get the proper JSON object from the response, and extract 
+        	 * relevant data in the setOnItemClickListener on the gridview in BrowseActivity 
+        	 */
+			return ads.getJSONObject(position);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return new JSONObject();
+		}
     }
 
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     // create a new ImageView for each item referenced by the Adapter
@@ -55,7 +67,6 @@ public class ImageAdapter extends BaseAdapter {
         	adView = inflater.inflate(R.layout.ad_view, null);
 
         	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(294, 294));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
 
@@ -64,10 +75,16 @@ public class ImageAdapter extends BaseAdapter {
             //http://s3.amazonaws.com/maplesyrup-assets/posts/images/000/000/006/medium/IMG_20130311_233546.jpg?1363070132
             String url = "drawable://" + R.drawable.maple;
             String title = "";
+            String creator = "";
+            String numVotes = "";
+            String created = "";
             try {
             	JSONObject jObject = ads.getJSONObject(position); 
             	url = jObject.getString("image_url");
     	        title = jObject.getString("title");
+    	        creator = jObject.getJSONObject("user").getString("name");
+    	        numVotes = jObject.getString("total_votes");
+    	        created = jObject.getString("created_at");
             } catch (JSONException e){
             	Log.d(TAG, "unable to parse JSON");
             }
@@ -78,9 +95,18 @@ public class ImageAdapter extends BaseAdapter {
             		imageView.setImageBitmap(loadedImage);
             	}
             });
-        	TextView textView = (TextView) adView.findViewById(R.id.adInfo);
-        	textView.setText(title);
-            textView.setBackgroundColor(Color.RED);
+        	TextView titleView = (TextView) adView.findViewById(R.id.adTitle);
+        	titleView.setText(title);
+        	titleView.setTextColor(Color.BLACK);
+        	
+        	TextView creatorText = (TextView) adView.findViewById(R.id.creatorName);
+        	creatorText.setText(creator);
+        	
+        	TextView numVotesText = (TextView) adView.findViewById(R.id.numVotes);
+        	numVotesText.setText("Votes: " + numVotes);
+        	
+        	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
+        	createdText.setText("Created: " + created);
         }
         return adView;
     }
