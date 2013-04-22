@@ -16,8 +16,18 @@ import com.example.maple_android.R;
  */
 
 public class MapleContrastFilter extends MapleFilter {
-	private int brightness = 1;
-	private int contrast = 1;
+	private float mBrightness = 1.0f;
+	private float mContrast = 1.0f;
+	
+	/** Set the parameters used when the filter is applied
+	 * 
+	 * @param brightness
+	 * @param contrast
+	 */
+	public void setParameters(float brightness, float contrast){
+		mBrightness = brightness;
+		mContrast = contrast;
+	}
 	
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
@@ -27,15 +37,15 @@ public class MapleContrastFilter extends MapleFilter {
 		
 		ContrastFilter filter = new ContrastFilter();
 		
-		filter.setBrightness(brightness);
-		filter.setContrast(contrast);
-		
+		filter.setBrightness(mBrightness);
+		filter.setContrast(mContrast);
+
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);
 		//Applies a filter.
-		filter.filter(src, width, height);
+		int[] result = filter.filter(src, width, height);		
 		//Change the Bitmap int Array (Supports only ARGB_8888)
-		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
+		Bitmap dstBitmap = Bitmap.createBitmap(result, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
 	}

@@ -38,9 +38,9 @@ public class MapleUnsharpFilter extends MapleFilter {
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);
 		//Applies a filter.
-		filter.filter(src, width, height);
+		int[] result = filter.filter(src, width, height);		
 		//Change the Bitmap int Array (Supports only ARGB_8888)
-		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
+		Bitmap dstBitmap = Bitmap.createBitmap(result, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
 	}

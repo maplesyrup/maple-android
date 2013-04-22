@@ -15,8 +15,8 @@ import com.example.maple_android.R;
  */
 
 public class MapleGlowFilter extends MapleFilter {
-	private float amount = 12; 
-	private float softness = 8;
+	private float amount = 4; 
+	private float softness = 5;
 	@Override
 	public Bitmap filterBitmap(Bitmap srcBitmap) {
 		//Find the bitmap's width height
@@ -31,9 +31,9 @@ public class MapleGlowFilter extends MapleFilter {
 		//Change int Array into a bitmap
 		int[] src = AndroidUtils.bitmapToIntArray(srcBitmap);
 		//Applies a filter.
-		filter.filter(src, width, height);
+		int[] result = filter.filter(src, width, height);		
 		//Change the Bitmap int Array (Supports only ARGB_8888)
-		Bitmap dstBitmap = Bitmap.createBitmap(src, width, height, Config.ARGB_8888);
+		Bitmap dstBitmap = Bitmap.createBitmap(result, width, height, Config.ARGB_8888);
 		
 		return dstBitmap;
 	}
