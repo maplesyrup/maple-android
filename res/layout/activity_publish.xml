@@ -12,6 +12,15 @@
             android:layout_below="@+id/topbar_container"
             android:paddingTop="@dimen/ad_padding"
             android:layout_centerHorizontal="true" />
+        
+        <Button
+		    android:layout_width="match_parent"
+		    android:layout_height="80dp"
+		    android:layout_below="@+id/ad"
+		    android:text="Publish"
+		    android:layout_centerHorizontal="true"
+		    android:drawableLeft="@drawable/check"
+		    />
 
 
 </RelativeLayout>

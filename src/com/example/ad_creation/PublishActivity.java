@@ -44,6 +44,8 @@ public class PublishActivity extends FunnelActivity {
 	
 		mConfig.put(Config.HELP_MESSAGE, "You're done! Congrats");
 		mConfig.put(Config.NAME, "Publish");
+		
+		disableNext();
 
 		mAdCreationManager.setup(this);
 	}
