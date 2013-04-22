@@ -12,14 +12,15 @@
         android:id="@+id/adsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Your own creations:" />
     
      <GridView 
          android:id="@+id/gridviewAds"
          android:layout_width="fill_parent"
          android:layout_height="fill_parent"
-         android:columnWidth="200dp"
-         android:numColumns="auto_fit"
+         android:columnWidth="400dp"
+         android:numColumns="1"
 	     android:verticalSpacing="10dp"
 	     android:horizontalSpacing="10dp"
 	     android:stretchMode="columnWidth"

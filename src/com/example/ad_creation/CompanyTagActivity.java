@@ -2,29 +2,15 @@ package com.example.ad_creation;
 
 import java.util.ArrayList;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.CompanyList;
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 
 public class CompanyTagActivity extends FunnelActivity {
-
 	private AutoCompleteTextView mCompanySuggest;
 	private ArrayList<String> mCompanySuggestions;
 
