@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.browsing.PopularAdsActivity;
@@ -25,7 +27,7 @@ import com.loopj.android.http.RequestParams;
 public class PublishActivity extends FunnelActivity {
 	private ImageView mAdView;
 	private ProgressView mProgressBar;
-	private ProgressBar mLoading;
+	private RelativeLayout mLoading;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,7 @@ public class PublishActivity extends FunnelActivity {
 		disableNext();
 
 		mAdCreationManager.setup(this);
-		
-		mLoading = (ProgressBar) findViewById(R.id.ad_loading);
+		mLoading = (RelativeLayout) findViewById(R.id.ad_loading);
 	}
 
 	public void publish(View view) {
