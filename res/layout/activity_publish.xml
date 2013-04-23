@@ -19,12 +19,24 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/ad"
             android:orientation="vertical" >
-             
+             <EditText
+	            android:id="@+id/ad_title"
+	            android:layout_width="match_parent"
+	            android:layout_weight="15"
+	            android:background="@drawable/custom_background"
+	            android:gravity="top|left"
+	            android:hint="Type your title here"
+	            android:padding="10dp"
+	            android:minLines="1"
+	            android:maxLines="1"
+				android:layout_height="0dip"
+	            android:layout_margin="10dp"
+	           
+	           />
 	        <EditText
-	            android:id="@+id/description"
+	            android:id="@+id/ad_content"
 	            android:layout_width="match_parent"
 	            android:layout_weight="30"
-	            android:layout_below="@+id/ad"
 	            android:background="@drawable/custom_background"
 	            android:gravity="top|left"
 	            android:hint="Type your description here"
@@ -32,7 +44,7 @@
 	            android:minLines="3"
 	            android:padding="10dp"
 				android:layout_height="0dip"
-	            android:layout_margin="@dimen/padding"
+	            android:layout_margin="10dp"
 	           
 	           />
 
@@ -40,10 +52,9 @@
 	            android:layout_width="match_parent"
 	            android:layout_weight="30"
 				android:layout_height="0dip"
-	            android:layout_below="@+id/description"
 	            android:background="@drawable/custom_background"
 	            android:drawableLeft="@drawable/check"
-	            android:layout_margin="@dimen/padding"
+	            android:layout_margin="10dp"
 	            android:onClick="publish"
 	            android:text="Publish" />
 	        

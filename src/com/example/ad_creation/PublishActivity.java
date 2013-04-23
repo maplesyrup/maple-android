@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,14 +39,14 @@ public class PublishActivity extends FunnelActivity {
 		mAdCreationManager.setup(this);
 	}
 
-	/**
-	 * Publish the ad to the website
-	 * @param view
-	 */
-	public void nextStage(View view) {
+	public void publish(View view) {
 		// get user's session details
 		//TODO: Handle session error edge cases?
 		Session session = Session.getActiveSession();
+		
+		EditText contentView = (EditText) findViewById(R.id.ad_content);
+		EditText titleView = (EditText) findViewById(R.id.ad_title);
+
 		
 		Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
 		Uri fileUri = mApp.getAdCreationManager().getFileUri();
@@ -57,7 +58,10 @@ public class PublishActivity extends FunnelActivity {
 		
 		RequestParams params = new RequestParams();
 		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
-		params.put("post[title]", "Company: " + mAdCreationManager.getCompanyName());
+		params.put("post[title]", titleView.getText().toString());
+		params.put("post[content]", contentView.getText().toString());
+		//TODO Eventually switch this to actual company_id when we have access to it
+		params.put("post[company_id]", "1");
 		params.put("token", session.getAccessToken());
 
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
@@ -74,6 +78,13 @@ public class PublishActivity extends FunnelActivity {
 				Toast.makeText(getApplicationContext(), "Sugar! We ran into a problem!", Toast.LENGTH_LONG).show();
 		    }
 		});
+	}
+	/**
+	 * Publish the ad to the website
+	 * @param view
+	 */
+	public void nextStage(View view) {
+		publish(view);
 	}
 
 	/**
