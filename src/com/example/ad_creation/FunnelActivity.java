@@ -38,6 +38,9 @@ public abstract class FunnelActivity extends Activity {
 	private ImageView mPrevBtn;
 	private ImageView mNextBtn;
 	
+	private int nextBtnDrawable;
+	private int prevBtnDrawable;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +59,9 @@ public abstract class FunnelActivity extends Activity {
 		
 		mNextBtn = (ImageView) findViewById(R.id.right_arrow);
 		mPrevBtn = (ImageView) findViewById(R.id.left_arrow);
+		
+		nextBtnDrawable = R.drawable.right_arrow;
+		prevBtnDrawable = R.drawable.left_arrow;
 	}
 	
 	/**
@@ -70,7 +76,7 @@ public abstract class FunnelActivity extends Activity {
 	 * Enables the next button
 	 */
 	public void enableNext() {
-		mNextBtn.setImageResource(R.drawable.right_arrow);
+		mNextBtn.setImageResource(nextBtnDrawable);
 		mNextBtn.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
@@ -92,7 +98,7 @@ public abstract class FunnelActivity extends Activity {
 	 * Enables the previous button
 	 */
 	public void enablePrev() {
-		mPrevBtn.setImageResource(R.drawable.left_arrow);
+		mPrevBtn.setImageResource(prevBtnDrawable);
 		mPrevBtn.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
