@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.browsing.PopularAdsActivity;
@@ -24,6 +25,7 @@ import com.loopj.android.http.RequestParams;
 public class PublishActivity extends FunnelActivity {
 	private ImageView mAdView;
 	private ProgressView mProgressBar;
+	private ProgressBar mLoading;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class PublishActivity extends FunnelActivity {
 		disableNext();
 
 		mAdCreationManager.setup(this);
+		
+		mLoading = (ProgressBar) findViewById(R.id.ad_loading);
 	}
 
 	public void publish(View view) {
@@ -63,7 +67,7 @@ public class PublishActivity extends FunnelActivity {
 		//TODO Eventually switch this to actual company_id when we have access to it
 		params.put("post[company_id]", "1");
 		params.put("token", session.getAccessToken());
-
+		mLoading.setVisibility(View.VISIBLE);
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, String response) {
@@ -71,12 +75,16 @@ public class PublishActivity extends FunnelActivity {
 				i.putExtra("successMessage",
 						"Posted picture successfully! Go to the website to check it out.");
 				startActivity(i);
+				mLoading.setVisibility(View.GONE);
+
+				
 			}
 			
 			@Override
 		    public void onFailure(Throwable error, String response) {
 				Toast.makeText(getApplicationContext(), "Sugar! We ran into a problem!", Toast.LENGTH_LONG).show();
-		    }
+				mLoading.setVisibility(View.GONE);
+			}
 		});
 	}
 	/**
