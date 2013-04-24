@@ -3,8 +3,6 @@
      android:layout_height="match_parent"
      android:orientation="vertical" 
      android:id="@+id/publish_layout" >
-
-
         <ImageView
             android:id="@+id/ad"
             android:layout_width="wrap_content"
@@ -12,6 +10,76 @@
             android:layout_below="@+id/topbar_container"
             android:paddingTop="@dimen/ad_padding"
             android:layout_centerHorizontal="true" />
+       
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ad"
+            android:orientation="vertical" >
+             <EditText
+	            android:id="@+id/ad_title"
+	            android:layout_width="match_parent"
+	            android:layout_weight="15"
+	            android:background="@drawable/custom_background"
+	            android:gravity="top|left"
+	            android:hint="Type your title here"
+	            android:padding="10dp"
+	            android:minLines="1"
+	            android:maxLines="1"
+				android:layout_height="0dip"
+	            android:layout_margin="10dp"
+	           
+	           />
+	        <EditText
+	            android:id="@+id/ad_content"
+	            android:layout_width="match_parent"
+	            android:layout_weight="30"
+	            android:background="@drawable/custom_background"
+	            android:gravity="top|left"
+	            android:hint="Type your description here"
+	            android:inputType="textMultiLine"
+	            android:minLines="3"
+	            android:padding="10dp"
+				android:layout_height="0dip"
+	            android:layout_margin="10dp"
+	           
+	           />
+
+	        
+
+	        <Button
+	            android:layout_width="match_parent"
+	            android:layout_height="0dip"
+	            android:layout_margin="10dp"
+	            android:layout_weight="30"
+	            android:background="@drawable/custom_background"
+	            android:drawableLeft="@drawable/check"
+	            android:onClick="publish"
+	            android:text="Publish"
+	            android:textAlignment="center"
+	            android:textSize="30sp" />
+	        
+	        <!-- Used for whitespace at bottom -->
+	        <View
+			  android:layout_width="match_parent"
+			  android:layout_height="0dip"
+			  android:layout_weight="20">
+			</View>
+            
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+         	android:id="@+id/ad_loading"
+            android:background="#70000000" >
+	        <ProgressBar
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerHorizontal="true"
+		            android:layout_centerVertical="true" />
+        </RelativeLayout>
 
 </RelativeLayout>
