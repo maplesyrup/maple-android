@@ -28,20 +28,21 @@ import android.widget.LinearLayout;
  *
  */
 public class CropView extends ImageView {
-	Paint mPaint;
+	private Paint mPaint;
 	
 	/* Top left and bottom right corner of crop box */
 	
 	private RectF mBoundingBox;
 	private RectF mCropBox;
 	
-	
+	/* The types of crop drags */
 	private enum DragState {
 		RESIZE,
 		MOVE, 
 		NONE
 	}
 	
+	/* Quadrant the drag started in */
 	private enum DragQuadrant {
 		TOP_LEFT,
 		TOP_RIGHT,
@@ -65,6 +66,7 @@ public class CropView extends ImageView {
 	private float mLength;
 	private int mViewWidth;
 	
+	/* Min length of crop box */
 	private float mMinLength;
 	
 	
@@ -76,6 +78,7 @@ public class CropView extends ImageView {
 		Y
 	}
 	
+	/* The list of 4 rects that provide the background shadow */
 	private ArrayList<Rect> mShadowRects;
 	
 	public CropView(Context context, AttributeSet attrs) {
@@ -117,6 +120,8 @@ public class CropView extends ImageView {
 	 */
 	public void setBitmap(Bitmap bitmap) {
 		mCurrBitmap = bitmap;
+		
+		// Determine aspect ratio so we can accurately get height without skew
 		mRatio = (mViewWidth - 2*MARGIN) / (float) mCurrBitmap.getWidth();
 		mFirstRender = true;
 		
@@ -169,8 +174,6 @@ public class CropView extends ImageView {
 			
 			if (mFirstRender) {				
 				int bBoxWidth = canvas.getWidth() - 2*MARGIN;
-				
-				// Determine aspect ratio so we can accurately get height without skew
 				
 				int bBoxHeight = (int) (mRatio * (mCurrBitmap.getHeight() - 2 * MARGIN));
 				
@@ -274,6 +277,11 @@ public class CropView extends ImageView {
 		return Bitmap.createBitmap(mCurrBitmap, x, y, length, length);
 	}
 	
+	/**
+	 * Determines if the resize of the crop box is valid. Does it go outside the picture? Is it too small?
+	 * @param delta The amount we are going to resize the box
+	 * @return
+	 */
 	private boolean isValidResize(float delta) {
 		if ((int) Math.floor(mCropBox.left + delta) > (int) Math.floor(mCropBox.right - mMinLength) && delta > 0) {
 			return false;
@@ -292,9 +300,14 @@ public class CropView extends ImageView {
 		
 	} 
 	
-	private void resizeCropBox(float deltaX, float deltaY) {
-		// Choose largest delta
-		
+	/**
+	 * This will resize the crop box uniformly. Takes the largest delta and then moves the box inward
+	 * or outward depending on a variety of factors. The logic is a bit verbose but works logically to
+	 * the user.
+	 * @param deltaX
+	 * @param deltaY
+	 */
+	private void resizeCropBox(float deltaX, float deltaY) {		
 		
 		Direction dominantDirection = Math.abs(deltaX) > Math.abs(deltaY) ? Direction.X : Direction.Y;
 		float delta = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY;
@@ -322,6 +335,13 @@ public class CropView extends ImageView {
 		}
 	}
 
+	/**
+	 * Determines if a point x,y is near the edge of the cropBox by drawing 2 rectangles.
+	 * If it's inside the outer and outside the inner than we are near the edge.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private boolean isNearEdge(float x, float y) {
 		RectF outer = new RectF(mCropBox);
 		RectF inner = new RectF(mCropBox);
@@ -332,6 +352,11 @@ public class CropView extends ImageView {
 		return outer.contains(x, y) && !inner.contains(x, y);
 	}
 	
+	/**
+	 * Determines what quadrant the drag started in.
+	 * @param x
+	 * @param y
+	 */
 	private void setDragQuadrant(float x, float y) {
 		float centerX = mCropBox.centerX();
 		float centerY = mCropBox.centerY();
@@ -346,6 +371,12 @@ public class CropView extends ImageView {
 		}
 	}
 	
+	/**
+	 * Based on the action event and x,y values we determine the drag state.
+	 * @param x
+	 * @param y
+	 * @param action
+	 */
 	public void setDragState(float x, float y, int action) {
 		
 		if (action == MotionEvent.ACTION_DOWN && isNearEdge(x,y)) {
@@ -358,6 +389,11 @@ public class CropView extends ImageView {
 		}
 	}
 
+	/**
+	 * Either move the cropbox or resize it.
+	 * @param deltaX
+	 * @param deltaY
+	 */
 	public void update(float deltaX, float deltaY) {
 		switch (mDragState) {
 		case RESIZE:
