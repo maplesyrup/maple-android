@@ -1,5 +1,7 @@
 package com.example.browsing;
 
+import com.example.maple_android.R;
+
 import android.os.Bundle;
 
 public class PopularAdsActivity extends BrowseActivity {
@@ -8,6 +10,8 @@ public class PopularAdsActivity extends BrowseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setTitle("Popular");
 		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_popular_ads);
 		super.requestUserAds(null);
 	}
 }
