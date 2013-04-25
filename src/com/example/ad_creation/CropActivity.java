@@ -66,19 +66,20 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		case MotionEvent.ACTION_DOWN:
 			mPrevTouchX = e.getX();
 			mPrevTouchY = e.getY();
+			mCropView.setDragState(e.getX(), e.getY(), e.getAction());
 			break;
 		case MotionEvent.ACTION_MOVE:
 			float x = e.getX();
 			float y = e.getY();
 			float deltaX = x - mPrevTouchX;
 			float deltaY = y - mPrevTouchY;
-			mCropView.moveRect(deltaX, deltaY);
+			mCropView.update(deltaX, deltaY);
 			mPrevTouchX = x;
 			mPrevTouchY = y;
 			break;
 		case MotionEvent.ACTION_CANCEL:
-			break;
 		case MotionEvent.ACTION_UP:
+			mCropView.setDragState(e.getX(), e.getY(), e.getAction());
 			break;
 		}
 		return true;
