@@ -12,6 +12,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,14 +31,38 @@ public class CropView extends ImageView {
 	
 	private RectF mBoundingBox;
 	private RectF mCropBox;
+	
+	
+	private enum DragState {
+		RESIZE,
+		MOVE, 
+		NONE
+	}
+	
+	private enum DragQuadrant {
+		TOP_LEFT,
+		TOP_RIGHT,
+		BOTTOM_LEFT,
+		BOTTOM_RIGHT,
+	}
+	private DragState mDragState;
+	private DragQuadrant mDragQuadrant;
+
 
 	private static final int MARGIN = 20;
 	private static final int ALPHA = 160;
+	private static final int RADIUS = 20;
+	private static final int EDGE_THRESHOLD = 30;
+	private static final float MIN_LENGTH_PERCENT = .2f;
+	
 	
 	private float mRatio;
 	
 	/* Length of crop square */
 	private float mLength;
+	
+	private float mMinLength;
+	
 	
 	private Bitmap mCurrBitmap;
 	
@@ -67,6 +92,11 @@ public class CropView extends ImageView {
 		
 		mFirstRender = true;
 	
+		mDragState = DragState.NONE;
+		mDragQuadrant = DragQuadrant.TOP_LEFT;
+		
+		mMinLength = 0;
+		
 	}
 	
 	/**
@@ -104,7 +134,8 @@ public class CropView extends ImageView {
 				mBoundingBox.set(MARGIN, 0, MARGIN + bBoxWidth, bBoxHeight);
 
 				mLength = mBoundingBox.width() > mBoundingBox.height() ? mBoundingBox.height() : mBoundingBox.width();
-
+				mMinLength = mLength * MIN_LENGTH_PERCENT;
+				
 				mCropBox.set(mBoundingBox.centerX() - mLength / 2,
 							 mBoundingBox.centerY() - mLength / 2, 
 							 mBoundingBox.centerX() + mLength / 2,
@@ -126,10 +157,22 @@ public class CropView extends ImageView {
 			
 			mPaint.setStyle(Style.FILL);
 			mPaint.setAlpha(ALPHA);
+			
+			/* Draw shadows */
 			canvas.drawRect(mBoundingBox.left, mBoundingBox.top, mCropBox.left, mBoundingBox.bottom, mPaint);
 			canvas.drawRect(mCropBox.left, mBoundingBox.top, mCropBox.right, mCropBox.top, mPaint);
 			canvas.drawRect(mCropBox.right, mBoundingBox.top, mBoundingBox.right, mBoundingBox.bottom, mPaint);
 			canvas.drawRect(mCropBox.left, mCropBox.bottom, mCropBox.right, mBoundingBox.bottom, mPaint);
+			/* End drawing shadows */
+			
+			mPaint.setARGB(255, 190, 190, 190);
+			/* Draw circle handles */
+			canvas.drawCircle(mCropBox.left, mCropBox.top,  RADIUS, mPaint);
+			canvas.drawCircle(mCropBox.right, mCropBox.top,RADIUS, mPaint);
+			canvas.drawCircle(mCropBox.left, mCropBox.bottom, RADIUS, mPaint);
+			canvas.drawCircle(mCropBox.right, mCropBox.bottom, RADIUS, mPaint);
+			/* End handles */
+
 
 		}
 		invalidate();
@@ -161,15 +204,13 @@ public class CropView extends ImageView {
 	 * @param deltaX distance to move in X direction
 	 * @param deltaY distance to move in Y direction
 	 */
-	public void moveRect(float deltaX, float deltaY) {
+	private void moveCropBox(float deltaX, float deltaY) {
 		
 		if (isValidMove(Direction.X, deltaX)) {
-			mCropBox.left += deltaX;
-			mCropBox.right += deltaX;
+			mCropBox.offset(deltaX, 0);
 		}
 		if (isValidMove(Direction.Y, deltaY)) {
-			mCropBox.top += deltaY;
-			mCropBox.bottom += deltaY;
+			mCropBox.offset(0, deltaY);
 		}
 			
 	
@@ -181,7 +222,7 @@ public class CropView extends ImageView {
 	public Bitmap crop() {
 		int x = (int) (mCropBox.left / mRatio);
 		int y = (int) (mCropBox.top / mRatio);
-		int length = (int) (mLength / mRatio);
+		int length = (int) (mCropBox.width() / mRatio);
 		
 		/* Take care of rounding errors */
 		length = x + length > mCurrBitmap.getWidth() ? mCurrBitmap.getWidth() - x : length;
@@ -189,5 +230,123 @@ public class CropView extends ImageView {
 
 		return Bitmap.createBitmap(mCurrBitmap, x, y, length, length);
 	}
+	
+	private boolean isValidResize(float delta) {
+		if (mCropBox.left + delta > mCropBox.right - mMinLength) {
+			return false;
+		}
+		if (mCropBox.left + delta < mBoundingBox.left) {
+			return false;
+		}
+		
+		if (mCropBox.right - delta < mCropBox.left + mMinLength) {
+			return false;
+		}
+		if (mCropBox.right - delta > mBoundingBox.right) {
+			return false;
+		}
+		
+		if (mCropBox.top + delta > mCropBox.bottom - mMinLength) {
+			return false;
+		}
+		if (mCropBox.top + delta < mBoundingBox.top) {
+			return false;
+		}
+		
+		if (mCropBox.bottom - delta < mCropBox.top + mMinLength) {
+			return false;
+		}
+		if (mCropBox.bottom - delta > mBoundingBox.bottom) {
+			return false;
+		}
+		
+		return true;
+		
+		
+	}
+	
+	private void resizeCropBox(float deltaX, float deltaY) {
+		// Choose largest delta
+		
+		
+		Direction dominantDirection = Math.abs(deltaX) > Math.abs(deltaY) ? Direction.X : Direction.Y;
+		float delta = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY;
+		
+		if (isValidResize(delta)) {
+			switch (mDragQuadrant) {
+			case TOP_LEFT:
+				mCropBox.inset(delta, delta);
+				break;
+			case TOP_RIGHT:
+				if (dominantDirection == Direction.X) {
+					mCropBox.inset(-delta, -delta);
+				} else {
+					mCropBox.inset(delta, delta);
+				}
+				break;
+			case BOTTOM_LEFT:
+				if (dominantDirection == Direction.X) {
+					mCropBox.inset(delta, delta);
+				} else {
+					mCropBox.inset(-delta, -delta);
+				}
+				break;
+			case BOTTOM_RIGHT:
+				mCropBox.inset(-delta, -delta);
+				break;
+			}
+			
+		}
+	}
+
+	private boolean isNearEdge(float x, float y) {
+		RectF outer = new RectF(mCropBox);
+		RectF inner = new RectF(mCropBox);
+		
+		outer.inset(-EDGE_THRESHOLD, -EDGE_THRESHOLD);
+		inner.inset(EDGE_THRESHOLD, EDGE_THRESHOLD);
+		
+		return outer.contains(x, y) && !inner.contains(x, y);
+	}
+	
+	private void setDragQuadrant(float x, float y) {
+		float centerX = mCropBox.centerX();
+		float centerY = mCropBox.centerY();
+		if (x < centerX && y < centerY) {
+			mDragQuadrant = DragQuadrant.TOP_LEFT;
+		} else if (x > centerX && y < centerY) {
+			mDragQuadrant = DragQuadrant.TOP_RIGHT;
+		} else if (x < centerX && y > centerY){
+			mDragQuadrant = DragQuadrant.BOTTOM_LEFT;
+		} else if (x > centerX && y > centerY) {
+			mDragQuadrant = DragQuadrant.BOTTOM_RIGHT;
+		}
+	}
+	
+	public void setDragState(float x, float y, int action) {
+		
+		if (action == MotionEvent.ACTION_DOWN && isNearEdge(x,y)) {
+			mDragState = DragState.RESIZE;
+			setDragQuadrant(x, y);
+		} else if (action == MotionEvent.ACTION_DOWN) {
+			mDragState = DragState.MOVE;
+		} else if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
+			mDragState = DragState.NONE;
+		}
+	}
+
+	public void update(float deltaX, float deltaY) {
+		switch (mDragState) {
+		case RESIZE:
+			resizeCropBox(deltaX, deltaY);
+			break;
+		case MOVE:
+			moveCropBox(deltaX, deltaY);
+			break;
+		}
+		
+	}
+	
+	
 	
 }
