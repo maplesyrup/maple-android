@@ -1,5 +1,7 @@
 package com.example.custom_views;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +27,12 @@ public class CropView extends ImageView {
 	Paint mPaint;
 	
 	/* Top left and bottom right corner of crop box */
-	private PointF mTopLeft;
-	private PointF mBtmRight;
 	
-	private Rect mBoundingBox;
+	private RectF mBoundingBox;
+	private RectF mCropBox;
+
 	private static final int MARGIN = 20;
+	private static final int ALPHA = 160;
 	
 	private float mRatio;
 	
@@ -43,15 +47,23 @@ public class CropView extends ImageView {
 		Y
 	}
 	
+	private ArrayList<Rect> mShadowRects;
+	
 	public CropView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mPaint = new Paint();
 		mCurrBitmap = null;
 		
-		mTopLeft = new PointF();
-		mBtmRight = new PointF();
+
+		mBoundingBox = new RectF();
+		mCropBox = new RectF();
+
+		mShadowRects = new ArrayList<Rect>();
 		
-		mBoundingBox = new Rect();
+		for (int i = 0; i < 4; i++) {
+			mShadowRects.add(new Rect());
+		}
+		
 		
 		mFirstRender = true;
 	
@@ -93,8 +105,10 @@ public class CropView extends ImageView {
 
 				mLength = mBoundingBox.width() > mBoundingBox.height() ? mBoundingBox.height() : mBoundingBox.width();
 
-				mTopLeft.set(mBoundingBox.exactCenterX() - mLength / 2, mBoundingBox.exactCenterY() - mLength / 2);
-				mBtmRight.set(mBoundingBox.exactCenterX() + mLength / 2, mBoundingBox.exactCenterY() + mLength / 2);
+				mCropBox.set(mBoundingBox.centerX() - mLength / 2,
+							 mBoundingBox.centerY() - mLength / 2, 
+							 mBoundingBox.centerX() + mLength / 2,
+							 mBoundingBox.centerY() + mLength / 2);
 				
 				
 	
@@ -108,7 +122,15 @@ public class CropView extends ImageView {
 			
 			canvas.drawBitmap(mCurrBitmap, null, mBoundingBox, null);
 			
-			canvas.drawRect(mTopLeft.x, mTopLeft.y, mBtmRight.x, mBtmRight.y, mPaint);
+			canvas.drawRect(mCropBox, mPaint);
+			
+			mPaint.setStyle(Style.FILL);
+			mPaint.setAlpha(ALPHA);
+			canvas.drawRect(mBoundingBox.left, mBoundingBox.top, mCropBox.left, mBoundingBox.bottom, mPaint);
+			canvas.drawRect(mCropBox.left, mBoundingBox.top, mCropBox.right, mCropBox.top, mPaint);
+			canvas.drawRect(mCropBox.right, mBoundingBox.top, mBoundingBox.right, mBoundingBox.bottom, mPaint);
+			canvas.drawRect(mCropBox.left, mCropBox.bottom, mCropBox.right, mBoundingBox.bottom, mPaint);
+
 		}
 		invalidate();
 		
@@ -123,11 +145,11 @@ public class CropView extends ImageView {
 	private boolean isValidMove(Direction dir, float delta) {
 		switch (dir) {
 		case X:
-			return mTopLeft.x + delta > mBoundingBox.left && mTopLeft.x + delta < mBoundingBox.right &&
-					mBtmRight.x + delta > mBoundingBox.left && mBtmRight.x + delta < mBoundingBox.right;						
+			return mCropBox.left + delta > mBoundingBox.left && mCropBox.left + delta < mBoundingBox.right &&
+					mCropBox.right + delta > mBoundingBox.left && mCropBox.right + delta < mBoundingBox.right;						
 		case Y:
-			return mTopLeft.y + delta > mBoundingBox.top && mTopLeft.y + delta < mBoundingBox.bottom &&
-					mBtmRight.y + delta >mBoundingBox.top && mBtmRight.y + delta < mBoundingBox.bottom;				
+			return mCropBox.top + delta > mBoundingBox.top && mCropBox.top + delta < mBoundingBox.bottom &&
+					mCropBox.bottom + delta >mBoundingBox.top && mCropBox.bottom + delta < mBoundingBox.bottom;				
 		default:
 			return false;
 		}
@@ -142,12 +164,12 @@ public class CropView extends ImageView {
 	public void moveRect(float deltaX, float deltaY) {
 		
 		if (isValidMove(Direction.X, deltaX)) {
-			mTopLeft.x += deltaX;
-			mBtmRight.x += deltaX;
+			mCropBox.left += deltaX;
+			mCropBox.right += deltaX;
 		}
 		if (isValidMove(Direction.Y, deltaY)) {
-			mTopLeft.y += deltaY;
-			mBtmRight.y += deltaY;
+			mCropBox.top += deltaY;
+			mCropBox.bottom += deltaY;
 		}
 			
 	
@@ -157,8 +179,8 @@ public class CropView extends ImageView {
 	 * @return
 	 */
 	public Bitmap crop() {
-		int x = (int) (mTopLeft.x / mRatio);
-		int y = (int) (mTopLeft.y / mRatio);
+		int x = (int) (mCropBox.left / mRatio);
+		int y = (int) (mCropBox.top / mRatio);
 		int length = (int) (mLength / mRatio);
 		
 		/* Take care of rounding errors */
