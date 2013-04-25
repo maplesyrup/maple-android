@@ -28,23 +28,23 @@ import android.os.StrictMode;
 import android.view.View;
 
 /**
- * This class assists with retrieving the list of
- * companies from the sever and then storing that list locally on the android
- * device.
+ * This class assists with retrieving the company data from the sever and
+ * then storing that file locally on the android device. We retrieve it as
+ * a JSON array, and store the array in a local file. It is parsed when the
+ * data is needed.
  * <p>
- * The list is retrieved as a background task using AsyncTask
+ * The data is retrieved as a background task using AsyncTask
  * <p>
  * It is stored on the device's internal storage under MODE_PRIVATE so that the
- * file is private to the application.
+ * file is private to the application. This means that any functions that access
+ * the data must pass in their context to provide access to the data
  * <p>
- * Functionality is also provided to retrieve the local list, which parses the
- * local list and returns the list of companies as an ArrayList of Strings
- * <p>
- * This class also assists with retrieving available logos for a given company.
+ * Functionality is also provided to access the local data, which parses the JSON array
+ * and creates Company objects based on the data * 
  */
 
-public class CompanyList {
-	// file name where the list is stored locally on device
+public class CompanyData {
+	// file name where the data is stored locally on device
 	private final static String FILE_NAME = "company_list";
 
 	// server url where list is stored
@@ -52,13 +52,14 @@ public class CompanyList {
 	private final static String LIST_URL = "companies";
 
 	/**
-	 * Syncs the local company list with the current list on the server. If
-	 * there is an error contacting the server, no changes to the local copy are
+	 * Syncs the local company data with the current data on the server. If
+	 * there is an error contacting the server, no changes to the local data are
 	 * made.
 	 * 
-	 * @param context The context of the application that will be accessing the list
+	 * @param context
+	 *            The context of the application that will be accessing the list
 	 */
-	public static void syncListWithServer(Context context) {
+	public static void syncWithServer(Context context) {
 		// context must be declared final to be used in callback
 		final Context c = context;
 
@@ -91,23 +92,147 @@ public class CompanyList {
 	}
 
 	/**
+	 * Returns a list of Company objects representing all of the 
+	 * companies available on the server. The list is based on 
+	 * the local JSON data, which must be synced with the server
+	 * separately using syncWithServer to get the most up 
+	 * to date information.
+	 * <p>
+	 * If the local file cannot be found, or has no data, then
+	 * an empty list is returned. If there is an error parsing
+	 * the list then null is returned. 
+	 * 
+	 * @param context The application context
+	 * @return Available companies
+	 */
+	public ArrayList<Company> getCompanies(Context context) {
+		JSONArray jsonArray = getLocalCompaniesData(context);
+
+		// init ArrayList
+		ArrayList<Company> companies = new ArrayList<Company>();
+
+		// if no file found, return empty list
+		if (jsonArray == null)
+			return companies;
+
+		// pull company data out of JSONArray
+		for (int i = 0; i < jsonArray.length(); i++) {
+			// pull out the json object representing the company
+			JSONObject entry;
+			try {
+				entry = jsonArray.getJSONObject(i);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			// get value for each field
+			
+			int id;
+			try {
+				id = Integer.parseInt(entry.getString("id"));
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			String name;
+			try {
+				name = entry.getString("name");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			String splash_image;
+			try {
+				splash_image = entry.getString("splash_image");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			String blurb_title;
+			try {
+				blurb_title = entry.getString("blurb_title");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			String blurb_body;
+			try {
+				blurb_body = entry.getString("blurb_body");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			String more_info_title;
+			try {
+				more_info_title = entry.getString("more_info_title");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			String more_info_body;
+			try {
+				more_info_body = entry.getString("more_info_body");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			String company_url;
+			try {
+				company_url = entry.getString("company_url");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			// the list of urls is it's own object
+			JSONObject logo_urls = null;
+			ArrayList<LogoURL> urls = new ArrayList<LogoURL>();
+			
+			boolean editable;
+			try {
+				editable = entry.getBoolean("editable");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+			Company c = new Company(id, name, splash_image, blurb_title, blurb_body, 
+					more_info_title, more_info_body, company_url, urls, editable);
+			
+			companies.add(c);
+		}
+		
+		return companies;
+	}
+
+	/**
 	 * Retrieves the local company list from file, parses it, and returns the
 	 * contents as an ArrayList of strings. Each string is a company name.
 	 * 
-	 * @param context The context of the application
+	 * @param context
+	 *            The context of the application
 	 * @return An ArrayList where each String is a company name
 	 */
 	public static ArrayList<String> getCompanyList(Context context) {
 		JSONArray jsonArray = getLocalCompaniesData(context);
-		
+
 		// init ArrayList
 		ArrayList<String> companyList = new ArrayList<String>();
-		
+
 		// if no file found, return empty list
-		if (jsonArray == null) return companyList;
-		
+		if (jsonArray == null)
+			return companyList;
+
 		// pull company names out of JSONArray
-		for(int i = 0; i < jsonArray.length(); i++){
+		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject entry;
 			try {
 				entry = jsonArray.getJSONObject(i);
@@ -127,9 +252,11 @@ public class CompanyList {
 	}
 
 	/**
-	 * Retrieves the companies JSON text string stored locally,
-	 * parses it into a JSONArray, and returns the result
-	 * @param context The application activity who has the locally stored list
+	 * Retrieves the companies JSON text string stored locally, parses it into a
+	 * JSONArray, and returns the result
+	 * 
+	 * @param context
+	 *            The application activity who has the locally stored list
 	 * @return JSONArray of companies. Null if there is an error
 	 */
 	private static JSONArray getLocalCompaniesData(Context context) {
@@ -140,7 +267,7 @@ public class CompanyList {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
-		}		
+		}
 
 		// transfer file stream to String
 		StringBuffer strBuff = new StringBuffer();
@@ -155,9 +282,9 @@ public class CompanyList {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		String file = strBuff.toString();
-		
+
 		// parse JSON string
 		JSONArray jsonData = null;
 		try {
@@ -166,7 +293,7 @@ public class CompanyList {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		return jsonData;
 	}
 
@@ -179,29 +306,33 @@ public class CompanyList {
 	 * back methods so the list won't be immediately populated when it is
 	 * returned!
 	 * <p>
-	 * If you are loading large images or many images it may be a while before the
-	 * list is fully populated.
+	 * If you are loading large images or many images it may be a while before
+	 * the list is fully populated.
 	 * 
-	 * @param companyTag The company name
-	 * @return All available logos for the given company. Initially this list will be empty,
-	 * and will be populated over time as each url finished loading. (~1 sec)
+	 * @param companyTag
+	 *            The company name
+	 * @return All available logos for the given company. Initially this list
+	 *         will be empty, and will be populated over time as each url
+	 *         finished loading. (~1 sec)
 	 */
-	public static ArrayList<Bitmap> getCompanyLogosFromServer(Context context, String companyTag) {
+	public static ArrayList<Bitmap> getCompanyLogosFromServer(Context context,
+			String companyTag) {
 		// using Universal Image Loader library for easy loading of images from
 		// url
 		// https://github.com/nostra13/Android-Universal-Image-Loader
-		
+
 		// init ArrayList
 		final ArrayList<Bitmap> logos = new ArrayList<Bitmap>();
 
 		// get urls from JSON data
 		JSONArray arr = getLocalCompaniesData(context);
-		// If file not found, return empty list of bitmaps 
-		if (arr == null) return logos;
-		
+		// If file not found, return empty list of bitmaps
+		if (arr == null)
+			return logos;
+
 		// find company in jsonarray
 		JSONObject company = null;
-		for(int i = 0; i < arr.length(); i++){
+		for (int i = 0; i < arr.length(); i++) {
 			try {
 				company = arr.getJSONObject(i);
 			} catch (JSONException e) {
@@ -209,25 +340,27 @@ public class CompanyList {
 				return logos;
 			}
 			try {
-				if(company.getString("name").equals(companyTag)) break;
-				else company = null;
+				if (company.getString("name").equals(companyTag))
+					break;
+				else
+					company = null;
 			} catch (JSONException e) {
 				e.printStackTrace();
 				return logos;
 			}
 		}
-		
+
 		// if company could not be found return empty list
-		if(company == null) return logos;
-		
-		
+		if (company == null)
+			return logos;
+
 		ArrayList<String> urls = new ArrayList<String>();
 		try {
 			urls.add(company.getString("company_url"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return logos;
-		}		
+		}
 
 		ImageLoader imageLoader = ImageLoader.getInstance();
 

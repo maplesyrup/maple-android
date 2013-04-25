@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import com.example.maple_android.CompanyList;
+import com.example.maple_android.CompanyData;
 import com.example.maple_android.R;
 
 public class CompanyTagActivity extends FunnelActivity {
@@ -27,7 +27,7 @@ public class CompanyTagActivity extends FunnelActivity {
 		mAdCreationManager.setup(this);
 		
 		/* Set up text entry for tagging a company */
-		mCompanySuggestions = CompanyList.getCompanyList(this);
+		mCompanySuggestions = CompanyData.getCompanyList(this);
 		// link list of companies to text field for auto recommendations
 		mCompanySuggest = (AutoCompleteTextView) findViewById(R.id.companySuggest);
 		mCompanySuggest

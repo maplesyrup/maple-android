@@ -99,7 +99,7 @@ public class AdCreationManager {
 	public void setCompanyName(String name){
 		mCompanyName = name;
 		// start loading logos for this company
-		if(name != null) mCompanyLogos = CompanyList.getCompanyLogosFromServer(mContext, name);
+		if(name != null) mCompanyLogos = CompanyData.getCompanyLogosFromServer(mContext, name);
 	}
 	
 	/**
@@ -149,7 +149,7 @@ public class AdCreationManager {
 	public void nextStage(Context context, Bitmap bitmap) {
 		// if we are in the last stage already
 		// don't do anything
-		if(mCurrentStage + 1 > mFunnel.length) return;
+		if(mCurrentStage + 1 >= mFunnel.length) return;
 		
 		// push bitmap onto stack
 		pushBitmap(bitmap);
