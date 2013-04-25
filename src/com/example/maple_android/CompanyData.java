@@ -105,7 +105,7 @@ public class CompanyData {
 	 * @param context The application context
 	 * @return Available companies
 	 */
-	public ArrayList<Company> getCompanies(Context context) {
+	public static ArrayList<Company> getCompanies(Context context) {
 		JSONArray jsonArray = getLocalCompaniesData(context);
 
 		// init ArrayList

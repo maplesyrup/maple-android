@@ -2,50 +2,112 @@ package com.example.ad_creation;
 
 import java.util.ArrayList;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.AdapterView.OnItemClickListener;
 
+import com.example.filters.MapleFilter;
+import com.example.maple_android.Company;
 import com.example.maple_android.CompanyData;
 import com.example.maple_android.R;
+import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
+import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadDrawableResource;
+import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadUrl;
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScrollerAdapter;
 
 public class CompanyTagActivity extends FunnelActivity {
-	private AutoCompleteTextView mCompanySuggest;
-	private ArrayList<String> mCompanySuggestions;
+	private String mCompany;
+	private HorizontalImageScroller mScroller;
+	private ArrayList<Company> mCompanies;
+	
+	private static final int FRAME_COLOR = Color.TRANSPARENT; // the background color of the filter images
+	private static final int FRAME_SELECTED_COLOR = Color.BLACK; // the color behind the selected filter
+	private static final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setCustomContent(R.layout.activity_company_tag);
-		
-		mConfig.put(Config.HELP_MESSAGE, "Tag your ad from a company in the database. " +
-				"As you type, the field will autocomplete with possible companies.");
+
+		mConfig.put(
+				Config.HELP_MESSAGE,
+				"Tag your ad from a company in the database. "
+						+ "As you type, the field will autocomplete with possible companies.");
 		mConfig.put(Config.NAME, "Tag");
-	
+
 		mAdCreationManager.setup(this);
+
+		// get list of availabe companies
+		mCompanies = CompanyData.getCompanies(this);
+
+		// make a list of ImageToLoad objects for image scroller
+		ArrayList<ImageToLoad> companyLogos = new ArrayList<ImageToLoad>();
+		ArrayList<String> companyNames = new ArrayList<String>();
+		for (Company c : mCompanies) {
+			String url = c.getLogoUrls().get(0).getThumb();
+			companyLogos.add(new ImageToLoadUrl(url));
+			companyNames.add(c.getName());
+		}
+
+		// set up the scroller with an adapter populated with the list of
+		// ImageToLoad objects
+		mScroller = (HorizontalImageScroller) findViewById(R.id.companyScroller);
+		HorizontalImageScrollerAdapter adapter = new HorizontalImageScrollerAdapter(
+				this, companyLogos);
+
+		// set adapter options
+		// shows the frame around the view
+		adapter.setShowImageFrame(true);
+		// only shows frame when item is selected
+		adapter.setHighlightActiveImage(true); 
+		// the background color when selected
+		adapter.setFrameColor(FRAME_SELECTED_COLOR);
+		// the default background color
+		adapter.setFrameOffColor(FRAME_COLOR); 
+
+		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
+		// we want the company name to be shown beneath the logo
+		adapter.setShowText(true); 
+		// list of company names to use
+		adapter.setTextList(companyNames); 
 		
-		/* Set up text entry for tagging a company */
-		mCompanySuggestions = CompanyData.getCompanyList(this);
-		// link list of companies to text field for auto recommendations
-		mCompanySuggest = (AutoCompleteTextView) findViewById(R.id.companySuggest);
-		mCompanySuggest
-				.setAdapter(new ArrayAdapter<String>(this,
-						android.R.layout.simple_dropdown_item_1line,
-						mCompanySuggestions));
+		mScroller.setAdapter(adapter);
+
+		// start with the first company selected
+		mScroller.setCurrentImageIndex(0);
+
+		// add callback function when image in scroller is selected
+		mScroller.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int pos,
+					long id) {
+				// Updates the background color to indicate selection
+				mScroller.setCurrentImageIndex(pos);
+
+				// keep track of which company has been picked
+				mCompany = mCompanies.get(pos).getName();
+			}
+		});
+
 	}
 
 	/**
-	 * Set company tag and 
-	 * continue to the next stage in the funnel
+	 * Set company tag and continue to the next stage in the funnel
 	 * 
 	 * @param view
 	 */
 	public void nextStage(View view) {
-		mAdCreationManager.setCompanyName(mCompanySuggest.getText().toString());
-		
-		mAdCreationManager.nextStage(this, mAdCreationManager.getCurrentBitmap());
+		mAdCreationManager.setCompanyName(mCompany);
+
+		mAdCreationManager.nextStage(this,
+				mAdCreationManager.getCurrentBitmap());
 	}
 
 	/**
@@ -56,5 +118,5 @@ public class CompanyTagActivity extends FunnelActivity {
 	public void prevStage(View view) {
 		mAdCreationManager.previousStage(this);
 	}
-	
+
 }
