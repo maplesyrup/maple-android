@@ -12,9 +12,12 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.MeasureSpec;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -56,11 +59,13 @@ public class CropView extends ImageView {
 	private static final float MIN_LENGTH_PERCENT = .2f;
 	
 	
-	private float mRatio;
+	private Float mRatio;
 	
 	/* Length of crop square */
 	private float mLength;
+	private int mViewWidth;
 	
+	private Context mContext;
 	private float mMinLength;
 	
 	
@@ -76,6 +81,8 @@ public class CropView extends ImageView {
 	
 	public CropView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		mContext = context;
+		
 		mPaint = new Paint();
 		mCurrBitmap = null;
 		
@@ -97,6 +104,12 @@ public class CropView extends ImageView {
 		
 		mMinLength = 0;
 		
+		mRatio = null;
+		 
+		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+		
+		mViewWidth = display.getWidth();
 	}
 	
 	/**
@@ -106,18 +119,50 @@ public class CropView extends ImageView {
 	 */
 	public void setBitmap(Bitmap bitmap) {
 		mCurrBitmap = bitmap;
+		mRatio = (mViewWidth - 2*MARGIN) / (float) mCurrBitmap.getWidth();
 		mFirstRender = true;
+		
+		requestLayout();
 		invalidate();
 	}
 	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		int height = mCurrBitmap == null ? 480 : mCurrBitmap.getHeight();
-	    int width = MeasureSpec.getSize(widthMeasureSpec);
-	    
-		setMeasuredDimension(width, height);
+		int desiredWidth = mViewWidth;
+	    int desiredHeight = mCurrBitmap != null && mRatio != null ? (int) (mRatio * mCurrBitmap.getHeight()) : 0;
 
+	    int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+	    int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+	    int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+	    int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+	    int width;
+	    int height;
+
+	    //Measure Width
+	    if (widthMode == MeasureSpec.EXACTLY) {
+	        //Must be this size
+	        width = widthSize;
+	    } else if (widthMode == MeasureSpec.AT_MOST) {
+	        //Can't be bigger than...
+	        width = Math.min(desiredWidth, widthSize);
+	    } else {
+	        //Be whatever you want
+	        width = desiredWidth;
+	    }
+
+	    //Measure Height
+	    if (heightMode == MeasureSpec.EXACTLY) {
+	        //Must be this size
+	        height = heightSize;
+	    } else if (heightMode == MeasureSpec.AT_MOST) {
+	        //Can't be bigger than...
+	        height = Math.min(desiredHeight, heightSize);
+	    } else {
+	        height = desiredHeight;
+	    }
+	    
+	    setMeasuredDimension(width, height);
 	}
 
 	protected void onDraw(Canvas canvas) {
@@ -128,7 +173,7 @@ public class CropView extends ImageView {
 				int bBoxWidth = canvas.getWidth() - 2*MARGIN;
 				
 				// Determine aspect ratio so we can accurately get height without skew
-				mRatio = bBoxWidth / (float) mCurrBitmap.getWidth();
+				
 				int bBoxHeight = (int) (mRatio * mCurrBitmap.getHeight());
 				
 				mBoundingBox.set(MARGIN, 0, MARGIN + bBoxWidth, bBoxHeight);
@@ -234,29 +279,19 @@ public class CropView extends ImageView {
 	private boolean isValidResize(float delta) {
 		if (mCropBox.left + delta > mCropBox.right - mMinLength) {
 			return false;
-		}
-		if (mCropBox.left + delta < mBoundingBox.left) {
+		} else if (mCropBox.left + delta < mBoundingBox.left) {
 			return false;
-		}
-		
-		if (mCropBox.right - delta < mCropBox.left + mMinLength) {
+		} else if (mCropBox.right - delta < mCropBox.left + mMinLength) {
 			return false;
-		}
-		if (mCropBox.right - delta > mBoundingBox.right) {
+		} else if (mCropBox.right - delta > mBoundingBox.right) {
 			return false;
-		}
-		
-		if (mCropBox.top + delta > mCropBox.bottom - mMinLength) {
+		} else if (mCropBox.top + delta > mCropBox.bottom - mMinLength) {
 			return false;
-		}
-		if (mCropBox.top + delta < mBoundingBox.top) {
+		} else if (mCropBox.top + delta < mBoundingBox.top) {
 			return false;
-		}
-		
-		if (mCropBox.bottom - delta < mCropBox.top + mMinLength) {
+		} else if (mCropBox.bottom - delta < mCropBox.top + mMinLength) {
 			return false;
-		}
-		if (mCropBox.bottom - delta > mBoundingBox.bottom) {
+		} else if (mCropBox.bottom - delta > mBoundingBox.bottom) {
 			return false;
 		}
 		
