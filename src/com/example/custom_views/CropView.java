@@ -65,7 +65,6 @@ public class CropView extends ImageView {
 	private float mLength;
 	private int mViewWidth;
 	
-	private Context mContext;
 	private float mMinLength;
 	
 	
@@ -81,7 +80,6 @@ public class CropView extends ImageView {
 	
 	public CropView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		mContext = context;
 		
 		mPaint = new Paint();
 		mCurrBitmap = null;
@@ -174,9 +172,9 @@ public class CropView extends ImageView {
 				
 				// Determine aspect ratio so we can accurately get height without skew
 				
-				int bBoxHeight = (int) (mRatio * mCurrBitmap.getHeight());
+				int bBoxHeight = (int) (mRatio * (mCurrBitmap.getHeight() - 2 * MARGIN));
 				
-				mBoundingBox.set(MARGIN, 0, MARGIN + bBoxWidth, bBoxHeight);
+				mBoundingBox.set(MARGIN, MARGIN, MARGIN + bBoxWidth, MARGIN + bBoxHeight);
 
 				mLength = mBoundingBox.width() > mBoundingBox.height() ? mBoundingBox.height() : mBoundingBox.width();
 				mMinLength = mLength * MIN_LENGTH_PERCENT;
@@ -277,19 +275,13 @@ public class CropView extends ImageView {
 	}
 	
 	private boolean isValidResize(float delta) {
-		if (mCropBox.left + delta > mCropBox.right - mMinLength) {
+		if ((int) Math.floor(mCropBox.left + delta) > (int) Math.floor(mCropBox.right - mMinLength) && delta > 0) {
 			return false;
 		} else if (mCropBox.left + delta < mBoundingBox.left) {
 			return false;
-		} else if (mCropBox.right - delta < mCropBox.left + mMinLength) {
-			return false;
 		} else if (mCropBox.right - delta > mBoundingBox.right) {
 			return false;
-		} else if (mCropBox.top + delta > mCropBox.bottom - mMinLength) {
-			return false;
 		} else if (mCropBox.top + delta < mBoundingBox.top) {
-			return false;
-		} else if (mCropBox.bottom - delta < mCropBox.top + mMinLength) {
 			return false;
 		} else if (mCropBox.bottom - delta > mBoundingBox.bottom) {
 			return false;
@@ -298,7 +290,7 @@ public class CropView extends ImageView {
 		return true;
 		
 		
-	}
+	} 
 	
 	private void resizeCropBox(float deltaX, float deltaY) {
 		// Choose largest delta
@@ -307,30 +299,26 @@ public class CropView extends ImageView {
 		Direction dominantDirection = Math.abs(deltaX) > Math.abs(deltaY) ? Direction.X : Direction.Y;
 		float delta = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY;
 		
-		if (isValidResize(delta)) {
-			switch (mDragQuadrant) {
-			case TOP_LEFT:
-				mCropBox.inset(delta, delta);
-				break;
-			case TOP_RIGHT:
-				if (dominantDirection == Direction.X) {
-					mCropBox.inset(-delta, -delta);
-				} else {
-					mCropBox.inset(delta, delta);
-				}
-				break;
-			case BOTTOM_LEFT:
-				if (dominantDirection == Direction.X) {
-					mCropBox.inset(delta, delta);
-				} else {
-					mCropBox.inset(-delta, -delta);
-				}
-				break;
-			case BOTTOM_RIGHT:
-				mCropBox.inset(-delta, -delta);
-				break;
+		switch (mDragQuadrant) {
+		case TOP_LEFT:
+			break;
+		case TOP_RIGHT:
+			if (dominantDirection == Direction.X) {
+				delta = -delta;
 			}
-			
+			break;
+		case BOTTOM_LEFT:
+			if (dominantDirection == Direction.Y) {
+				delta = -delta;
+			}
+			break;
+		case BOTTOM_RIGHT:
+			delta = -delta;
+			break;
+		}
+		
+		if (isValidResize(delta)) {
+			mCropBox.inset(delta, delta);
 		}
 	}
 
