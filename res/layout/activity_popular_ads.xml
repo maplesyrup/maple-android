@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical" 
     tools:context=".PopularAdsActivity" >
 
     <TextView
@@ -15,7 +16,7 @@
         android:text="The most popular ads" />
 	
 	<GridView 
-	    android:id="@+id/gridview"
+	    android:id="@+id/gridviewAds"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="fill_parent"
 	    android:columnWidth="400dp"
