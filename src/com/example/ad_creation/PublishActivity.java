@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.browsing.PopularAdsActivity;
 import com.example.custom_views.ProgressView;
+import com.example.maple_android.AdCreationManager;
+import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;
@@ -38,7 +40,7 @@ public class PublishActivity extends FunnelActivity {
 		mConfig.put(Config.HELP_MESSAGE, "You're done! Congrats");
 		mConfig.put(Config.NAME, "Publish");
 		
-		disableNext();
+		setNextBtn(R.drawable.check, MapleApplication.GREEN);
 
 		mAdCreationManager.setup(this);
 		mLoading = (RelativeLayout) findViewById(R.id.ad_loading);

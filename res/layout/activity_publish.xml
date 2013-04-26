@@ -47,24 +47,11 @@
 	           />
 
 	        
-
-	        <Button
-	            android:layout_width="match_parent"
-	            android:layout_height="0dip"
-	            android:layout_margin="10dp"
-	            android:layout_weight="30"
-	            android:background="@drawable/custom_background"
-	            android:drawableLeft="@drawable/check"
-	            android:onClick="publish"
-	            android:text="Publish"
-	            android:textAlignment="center"
-	            android:textSize="30sp" />
-	        
 	        <!-- Used for whitespace at bottom -->
 	        <View
 			  android:layout_width="match_parent"
 			  android:layout_height="0dip"
-			  android:layout_weight="20">
+			  android:layout_weight="40">
 			</View>
             
         </LinearLayout>

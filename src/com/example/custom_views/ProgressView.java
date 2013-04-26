@@ -1,5 +1,7 @@
 package com.example.custom_views;
 
+import com.example.maple_android.MapleApplication;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -84,7 +86,7 @@ public class ProgressView extends View {
 		
 		for (int i = 0; i < mNumStages; i ++) {
 			if (i == mCurrStage) {
-				mPaint.setColor(Color.BLUE);
+				mPaint.setColor(MapleApplication.GREEN);
 			} else {
 				mPaint.setColor(Color.WHITE);
 			}
