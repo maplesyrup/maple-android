@@ -56,7 +56,6 @@ public class AdCreationManager {
 	private int mCurrentStage; 
 	
 	private static final float AD_DISPLAY_SCALE = 0.4f;
-	
 
 	private String mCompanyName;
 	
