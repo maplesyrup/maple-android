@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
-import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -66,7 +65,7 @@ public class ImageAdapter extends BaseAdapter {
     	View adView = convertView;
 
         String votedOn = "";
-        String imageId = "";
+        String imageId = "61";
         if (convertView == null) {
         	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         	adView = inflater.inflate(R.layout.ad_view, null);
