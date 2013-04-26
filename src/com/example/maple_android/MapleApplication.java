@@ -22,6 +22,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class MapleApplication extends Application{
 	
 	private AdCreationManager mAdCreationManager;
+	
+	public static final int GREEN = 0xff21ab27;
 
 	@Override
 	public void onCreate()
