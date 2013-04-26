@@ -42,7 +42,6 @@ public class ImageAdapter extends BaseAdapter {
 
     public Object getItem(int position) {
         try {
-        	// TODO: make this cleaner
         	/**
         	 * We get the proper JSON object from the response, and extract 
         	 * relevant data in the setOnItemClickListener on the gridview in BrowseActivity 
@@ -77,14 +76,14 @@ public class ImageAdapter extends BaseAdapter {
             String title = "";
             String creator = "";
             String numVotes = "";
-            String created = "";
+            String relativeTime = "";
             try {
             	JSONObject jObject = ads.getJSONObject(position); 
             	url = jObject.getString("image_url");
     	        title = jObject.getString("title");
     	        creator = jObject.getJSONObject("user").getString("name");
     	        numVotes = jObject.getString("total_votes");
-    	        created = jObject.getString("created_at");
+    	        relativeTime = jObject.getString("relative_time");
             } catch (JSONException e){
             	Log.d(TAG, "unable to parse JSON");
             }
@@ -106,7 +105,7 @@ public class ImageAdapter extends BaseAdapter {
         	numVotesText.setText("Votes: " + numVotes);
         	
         	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
-        	createdText.setText("Created: " + created);
+        	createdText.setText(relativeTime + " ago");
         }
         return adView;
     }

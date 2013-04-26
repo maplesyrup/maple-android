@@ -44,11 +44,19 @@ public class BrowseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_personal_ads);
+	}
+	
+	/**
+	 * Specify which layout to use (either popular ads or personal ads).
+	 * This is put in the parent class since the gridview shares common
+	 * functionality
+	 * @param layout
+	 */
+	public void setLayout(int layout) {
+		setContentView(layout);
 		mGridview = (GridView) findViewById(R.id.gridviewAds);
 
-		/**
-         * On Click event for Single Gridview Item
-         * */
+		// On Click event for Single Gridview Item
         mGridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
