@@ -25,8 +25,4 @@ public class PopularAdsActivity extends BrowseActivity {
 		
 	}
 	
-    public void voteAction(View view) {
-    	Toast toast = Toast.makeText(getApplicationContext(), "clicked on vote!", Toast.LENGTH_LONG);
-    	toast.show();
-    }
 }

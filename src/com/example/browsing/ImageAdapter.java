@@ -10,13 +10,19 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
+import com.facebook.Session;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
@@ -58,11 +64,12 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
     	View adView = convertView;
-        
+
+        String votedOn = "";
+        String imageId = "";
         if (convertView == null) {
         	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         	adView = inflater.inflate(R.layout.ad_view, null);
-
         	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
@@ -82,6 +89,8 @@ public class ImageAdapter extends BaseAdapter {
     	        creator = jObject.getJSONObject("user").getString("name");
     	        numVotes = jObject.getString("total_votes");
     	        relativeTime = jObject.getString("relative_time");
+    	        votedOn = jObject.getString("voted_on");
+    	        imageId = jObject.getString("id");
             } catch (JSONException e){
             	Log.d(TAG, "unable to parse JSON");
             }
@@ -105,7 +114,38 @@ public class ImageAdapter extends BaseAdapter {
         	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
         	createdText.setText(relativeTime + " ago");
         }
+        Button voteButton = (Button) adView.findViewById(R.id.voteBtn);
+        if (votedOn.equals("yes")) {
+        	voteButton.setText("Voted");
+        	voteButton.setEnabled(false);
+        } else {
+        	final String imageIdFinal = imageId;
+	        voteButton.setOnClickListener(new OnClickListener() {
+	        	@Override
+	        	public void onClick(View v) {
+	        		RequestParams params = new RequestParams();
+	        		// TODO: the below is unused, but it should be included
+//	        		Session session = Session.getActiveSession();
+//	        		params.put("token", session.getAccessToken());
+	        		params.put("post_id", imageIdFinal);
+	            	doVote(params);
+	        	}
+	        });
+        }
         return adView;
     }
-
+    
+    public void doVote(RequestParams params) {
+    	MapleHttpClient.post("posts/vote_up", params, new AsyncHttpResponseHandler(){
+    		@Override
+			public void onSuccess(int statusCode, String response) {
+				Log.d(TAG, response);
+				Toast.makeText(mContext, "clicked on vote!", Toast.LENGTH_LONG).show();
+			}
+			@Override
+		    public void onFailure(Throwable error, String response) {
+				Toast.makeText(mContext, "Voting response failure", Toast.LENGTH_LONG).show();
+		    }
+    	});
+    }
 }
