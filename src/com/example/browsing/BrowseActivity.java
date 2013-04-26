@@ -164,4 +164,5 @@ public class BrowseActivity extends Activity {
 	public Uri getFileUri() {
 		return mFileUri;
 	}
+	
 }

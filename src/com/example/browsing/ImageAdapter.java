@@ -1,14 +1,11 @@
 package com.example.browsing;
 
-import java.io.ByteArrayOutputStream;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.maple_android.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -96,7 +94,7 @@ public class ImageAdapter extends BaseAdapter {
             });
         	TextView titleView = (TextView) adView.findViewById(R.id.adTitle);
         	titleView.setText(title);
-        	titleView.setTextColor(Color.BLACK);
+        	titleView.setTextColor(Color.BLACK); 
         	
         	TextView creatorText = (TextView) adView.findViewById(R.id.creatorName);
         	creatorText.setText(creator);
@@ -109,4 +107,5 @@ public class ImageAdapter extends BaseAdapter {
         }
         return adView;
     }
+
 }

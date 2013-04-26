@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical" >
 
@@ -17,42 +19,54 @@
 	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+	    android:layout_alignParentLeft="true"
 	    android:layout_below="@+id/ad"
-	    android:layout_marginLeft="50dp"
-	    android:layout_marginRight="50dp"
 	    android:orientation="vertical" >
 
 	    <TextView
 	        android:id="@+id/adTitle"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:layout_below="@+id/ad"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
 	        android:text="Company"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
-	
+
 	    <TextView
 	        android:id="@+id/creatorName"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@+id/adTitle"
-	        android:text="Name" />
-	
+	        android:text="Name"
+	        android:textColor="@color/support_text" />
+
 	    <TextView
 	        android:id="@+id/numVotes"
-	        android:layout_alignParentRight="true"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/ad"
-	        android:text="Votes:" />
-	
+	        android:text="Votes:"
+	        android:textColor="@color/support_text" />
+
 	    <TextView
 	        android:id="@+id/dateCreated"
-	        android:layout_alignParentRight="true"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/numVotes"
-	        android:text="Created by:" />
-	
+	        android:text="Time"
+	        android:textColor="@color/support_text" />
+
+	    <Button
+	        android:id="@+id/button1"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/dateCreated"
+	        android:onClick="voteAction"
+	        android:text="Vote" />
 	</RelativeLayout>
+
 </RelativeLayout>

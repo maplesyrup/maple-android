@@ -2,6 +2,7 @@ package com.example.browsing;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.maple_android.R;
@@ -23,4 +24,9 @@ public class PopularAdsActivity extends BrowseActivity {
 		}
 		
 	}
+	
+    public void voteAction(View view) {
+    	Toast toast = Toast.makeText(getApplicationContext(), "clicked on vote!", Toast.LENGTH_LONG);
+    	toast.show();
+    }
 }
