@@ -13,25 +13,13 @@
 	    android:layout_below="@+id/topbar_container"
 	    android:layout_centerHorizontal="true" /> 
 
-     <TextView
-         android:id="@+id/logoInstructions"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/logoView"
-         android:layout_centerHorizontal="true"
-         android:text="Click to place logo"
-         android:textColor="#ff0000"
-         android:textSize="15sp"
-         android:textStyle="italic" />
-      
-     <Button
-         android:id="@+id/pickLogoButton"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/logoInstructions"
-	  	 android:layout_centerHorizontal="true"
-         android:onClick="launchLogoPicker"
-         android:text="Pick A Logo" />
+     <com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller
+        android:id="@+id/logoScroller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/logoView"
+        android:layout_centerHorizontal="true" />
 
    
      

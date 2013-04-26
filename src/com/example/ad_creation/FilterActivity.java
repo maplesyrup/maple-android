@@ -175,6 +175,7 @@ public class FilterActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void nextStage(View view) {
+		selectNext();
 		mAdCreationManager.nextStage(this, mFilteredAd);
 	}
 
@@ -184,6 +185,7 @@ public class FilterActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void prevStage(View view) {
+		selectPrev();
 		mAdCreationManager.previousStage(this);
 	}
 }

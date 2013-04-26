@@ -12,14 +12,13 @@
         android:layout_below="@+id/topbar_container"
         android:layout_centerHorizontal="true" />
 
-    <AutoCompleteTextView
-        android:id="@+id/companySuggest"
-        android:layout_width="fill_parent"
+    <com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller
+        android:id="@+id/companyScroller"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/ad"
-        android:completionThreshold="1"
-        android:hint="Company Name" />
+        android:layout_centerHorizontal="true" />
     
  
     
