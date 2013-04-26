@@ -100,7 +100,8 @@ public class CompanyData {
 	 * <p>
 	 * If the local file cannot be found, or has no data, then
 	 * an empty list is returned. If there is an error parsing
-	 * the list then null is returned. 
+	 * the list then the list is returned with whatever is in it
+	 * at the time of error. 
 	 * 
 	 * @param context The application context
 	 * @return Available companies
@@ -123,7 +124,7 @@ public class CompanyData {
 				entry = jsonArray.getJSONObject(i);
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			// get value for each field
@@ -133,7 +134,7 @@ public class CompanyData {
 				id = Integer.parseInt(entry.getString("id"));
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			String name;
@@ -141,7 +142,7 @@ public class CompanyData {
 				name = entry.getString("name");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			String splash_image;
@@ -149,7 +150,7 @@ public class CompanyData {
 				splash_image = entry.getString("splash_image");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			String blurb_title;
@@ -157,7 +158,7 @@ public class CompanyData {
 				blurb_title = entry.getString("blurb_title");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			String blurb_body;
@@ -165,7 +166,7 @@ public class CompanyData {
 				blurb_body = entry.getString("blurb_body");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			String more_info_title;
@@ -173,7 +174,7 @@ public class CompanyData {
 				more_info_title = entry.getString("more_info_title");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			String more_info_body;
@@ -181,7 +182,7 @@ public class CompanyData {
 				more_info_body = entry.getString("more_info_body");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			String company_url;
@@ -189,7 +190,7 @@ public class CompanyData {
 				company_url = entry.getString("company_url");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			// the list of urls is it's own object
@@ -201,7 +202,7 @@ public class CompanyData {
 				editable = entry.getBoolean("editable");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				return null;
+				return companies;
 			}
 			
 			Company c = new Company(id, name, splash_image, blurb_title, blurb_body, 

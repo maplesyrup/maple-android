@@ -57,7 +57,7 @@ public class AdCreationManager {
 	
 	private static final float AD_DISPLAY_SCALE = 0.4f;
 
-	private String mCompanyName;
+	private Company mCompany;
 	
 	// Array of logos for tagged company
 	private ArrayList<Bitmap> mCompanyLogos;
@@ -84,7 +84,7 @@ public class AdCreationManager {
 
 		mCompanyLogos = new ArrayList<Bitmap>();
 
-		mCompanyName = null;
+		mCompany = null;
 		
 		mContext = context;
 
@@ -96,10 +96,8 @@ public class AdCreationManager {
 	 * Set which company this ad is tagged with
 	 * @param name The company name
 	 */
-	public void setCompanyName(String name){
-		mCompanyName = name;
-		// start loading logos for this company
-		if(name != null) mCompanyLogos = CompanyData.getCompanyLogosFromServer(mContext, name);
+	public void setCompany(Company company){
+		mCompany = company;
 	}
 	
 	/**
@@ -109,7 +107,16 @@ public class AdCreationManager {
 	 * @return The company name
 	 */
 	public String getCompanyName(){
-		return mCompanyName;
+		return mCompany.getName();
+	}
+	
+	/**
+	 * Returns the company object of the company
+	 * this ad is tagged with
+	 * @return The tagged company
+	 */
+	public Company getCompany(){
+		return mCompany;
 	}
 	
 	/**
