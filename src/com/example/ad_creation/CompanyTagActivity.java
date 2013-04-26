@@ -43,58 +43,58 @@ public class CompanyTagActivity extends FunnelActivity {
 
 		mAdCreationManager.setup(this);
 
-		// get list of availabe companies
-		mCompanies = CompanyData.getCompanies(this);
-
-		// make a list of ImageToLoad objects for image scroller
-		ArrayList<ImageToLoad> companyLogos = new ArrayList<ImageToLoad>();
-		ArrayList<String> companyNames = new ArrayList<String>();
-		for (Company c : mCompanies) {
-			String url = c.getLogoUrls().get(0).getThumb();
-			companyLogos.add(new ImageToLoadUrl(url));
-			companyNames.add(c.getName());
-		}
-
-		// set up the scroller with an adapter populated with the list of
-		// ImageToLoad objects
-		mScroller = (HorizontalImageScroller) findViewById(R.id.companyScroller);
-		HorizontalImageScrollerAdapter adapter = new HorizontalImageScrollerAdapter(
-				this, companyLogos);
-
-		// set adapter options
-		// shows the frame around the view
-		adapter.setShowImageFrame(true);
-		// only shows frame when item is selected
-		adapter.setHighlightActiveImage(true); 
-		// the background color when selected
-		adapter.setFrameColor(FRAME_SELECTED_COLOR);
-		// the default background color
-		adapter.setFrameOffColor(FRAME_COLOR); 
-
-		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
-		// we want the company name to be shown beneath the logo
-		adapter.setShowText(true); 
-		// list of company names to use
-		adapter.setTextList(companyNames); 
-		
-		mScroller.setAdapter(adapter);
-
-		// start with the first company selected
-		mScroller.setCurrentImageIndex(0);
-
-		// add callback function when image in scroller is selected
-		mScroller.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int pos,
-					long id) {
-				// Updates the background color to indicate selection
-				mScroller.setCurrentImageIndex(pos);
-
-				// keep track of which company has been picked
-				mCompany = mCompanies.get(pos).getName();
-			}
-		});
+//		// get list of availabe companies
+//		mCompanies = CompanyData.getCompanies(this);
+//
+//		// make a list of ImageToLoad objects for image scroller
+//		ArrayList<ImageToLoad> companyLogos = new ArrayList<ImageToLoad>();
+//		ArrayList<String> companyNames = new ArrayList<String>();
+//		for (Company c : mCompanies) {
+//			String url = c.getLogoUrls().get(0).getThumb();
+//			companyLogos.add(new ImageToLoadUrl(url));
+//			companyNames.add(c.getName());
+//		}
+//
+//		// set up the scroller with an adapter populated with the list of
+//		// ImageToLoad objects
+//		mScroller = (HorizontalImageScroller) findViewById(R.id.companyScroller);
+//		HorizontalImageScrollerAdapter adapter = new HorizontalImageScrollerAdapter(
+//				this, companyLogos);
+//
+//		// set adapter options
+//		// shows the frame around the view
+//		adapter.setShowImageFrame(true);
+//		// only shows frame when item is selected
+//		adapter.setHighlightActiveImage(true); 
+//		// the background color when selected
+//		adapter.setFrameColor(FRAME_SELECTED_COLOR);
+//		// the default background color
+//		adapter.setFrameOffColor(FRAME_COLOR); 
+//
+//		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
+//		// we want the company name to be shown beneath the logo
+//		adapter.setShowText(true); 
+//		// list of company names to use
+//		adapter.setTextList(companyNames); 
+//		
+//		mScroller.setAdapter(adapter);
+//
+//		// start with the first company selected
+//		mScroller.setCurrentImageIndex(0);
+//
+//		// add callback function when image in scroller is selected
+//		mScroller.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int pos,
+//					long id) {
+//				// Updates the background color to indicate selection
+//				mScroller.setCurrentImageIndex(pos);
+//
+//				// keep track of which company has been picked
+//				mCompany = mCompanies.get(pos).getName();
+//			}
+//		});
 
 	}
 
@@ -104,6 +104,8 @@ public class CompanyTagActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void nextStage(View view) {
+		selectNext();
+		
 		mAdCreationManager.setCompanyName(mCompany);
 
 		mAdCreationManager.nextStage(this,
@@ -116,6 +118,7 @@ public class CompanyTagActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void prevStage(View view) {
+		selectPrev();
 		mAdCreationManager.previousStage(this);
 	}
 

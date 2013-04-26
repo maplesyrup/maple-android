@@ -56,7 +56,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	 * @param v
 	 */
 	public void nextStage(View v) {
-		
+		selectNext();
 		mAdCreationManager.nextStage(this, mCropView.crop());
 	}
 	

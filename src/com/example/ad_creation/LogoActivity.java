@@ -74,6 +74,8 @@ public class LogoActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void nextStage(View view) {				
+		selectNext();
+		
 		// update bitmap to include logo
 		Bitmap ad =  mLogoView.addLogo();
 		// null is returned if a logo hasn't been set
@@ -87,6 +89,7 @@ public class LogoActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void prevStage(View view) {
+		selectPrev();
 		mAdCreationManager.previousStage(this);
 	}
 	

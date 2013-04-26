@@ -281,6 +281,8 @@ public class TextActivity extends FunnelActivity implements
 	 * @param view
 	 */
 	public void nextStage(View view) {
+		selectNext();
+		
 		// if text has been added, merge it with the ad
 		Bitmap bmOverlay = mAdCreationManager.getCurrentBitmap();
 		if (!mPhotoText.getText().equals("")) {
@@ -305,6 +307,7 @@ public class TextActivity extends FunnelActivity implements
 	 * @param view
 	 */
 	public void prevStage(View view) {
+		selectPrev();
 		mAdCreationManager.previousStage(this);
 	}
 

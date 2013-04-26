@@ -104,6 +104,7 @@ public class PublishActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void prevStage(View view) {
+		selectPrev();
 		mAdCreationManager.previousStage(this);
 	}
 	
