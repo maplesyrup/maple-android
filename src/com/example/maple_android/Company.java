@@ -102,42 +102,4 @@ public class Company {
 	}
 
 
-	/**
-	 * Each logo has three sizes: full, medium, thumb	
-	 * This class stores the urls for the three sizes and allows 
-	 * access to each
-	 * 
-	 * @author Eli
-	 *
-	 */
-	public class LogoURL {
-		private String mFull;
-		private String mMedium;
-		private String mThumb;
-		
-		/** Create a new LogoURL object by specifying the urls
-		 * for the full, medium, and thumb sizes
-		 * @param full
-		 * @param medium
-		 * @param thumb
-		 */
-		public LogoURL(String full, String medium, String thumb){
-			mFull = full;
-			mMedium = medium;
-			mThumb = thumb;
-		}
-		
-		public String getFull(){
-			return mFull;
-		}
-		
-		public String getMedium(){
-			return mMedium;
-		}
-		
-		public String getThumb(){
-			return mThumb;
-		}		
-	}
-
 }

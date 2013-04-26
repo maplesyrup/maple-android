@@ -119,6 +119,7 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void nextStage(View view){
+		selectNext();
 		mAdCreationManager.nextStage(this, mAdjustedAd);
 	}
 	
@@ -128,6 +129,7 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void prevStage(View view){
+		selectPrev();
 		mAdCreationManager.previousStage(this);
 	}
 	

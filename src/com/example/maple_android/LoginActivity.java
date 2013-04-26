@@ -23,8 +23,8 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		// sync local company list with server
-		CompanyList.syncListWithServer(this);
+		// sync local company data with server
+		CompanyData.syncWithServer(this);
 		
 		/*** Skip Login For Testing ***/
 		 if(skipLogin){
