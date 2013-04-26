@@ -38,6 +38,13 @@ public abstract class FunnelActivity extends Activity {
 	private ImageView mPrevBtn;
 	private ImageView mNextBtn;
 	
+	private int mNextBtnEnableDrawable;
+	private int mNextBtnDisableDrawable;
+	private int mNextBtnPressedDrawable;
+	private int mPrevBtnEnableDrawable;
+	private int mPrevBtnDisableDrawable;
+	private int mPrevBtnPressedDrawable;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,23 +61,28 @@ public abstract class FunnelActivity extends Activity {
 		
 		setContentView(R.layout.funnel_common);
 		
+		mNextBtnEnableDrawable = R.drawable.right_arrow;
+		mNextBtnDisableDrawable = R.drawable.right_arrow_disabled;
+		mNextBtnPressedDrawable = R.drawable.right_arrow_pressed;
+		mPrevBtnEnableDrawable = R.drawable.left_arrow;
+		mPrevBtnDisableDrawable = R.drawable.left_arrow_disabled;
+		mPrevBtnPressedDrawable = R.drawable.left_arrow_pressed;
+		
 		mNextBtn = (ImageView) findViewById(R.id.right_arrow);
 		mPrevBtn = (ImageView) findViewById(R.id.left_arrow);
 	}
 	
-	/**
-	 * Disables the next button
-	 */
-	public void disableNext() {
-		mNextBtn.setImageResource(R.drawable.right_arrow_disabled);
-		mNextBtn.setOnClickListener(null);
+	public void setNextBtn(int drawable, int color) {
+		mNextBtnEnableDrawable = drawable;
+		mNextBtn.setImageResource(drawable);
+		mNextBtn.setBackgroundColor(color);
 	}
 	
 	/**
 	 * Enables the next button
 	 */
 	public void enableNext() {
-		mNextBtn.setImageResource(R.drawable.right_arrow);
+		mNextBtn.setImageResource(mNextBtnEnableDrawable);
 		mNextBtn.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
@@ -80,10 +92,36 @@ public abstract class FunnelActivity extends Activity {
 	}
 	
 	/**
+	 * Disables the next button
+	 */
+	public void disableNext() {
+		mNextBtn.setImageResource(mNextBtnDisableDrawable);
+		mNextBtn.setOnClickListener(null);
+	}
+	
+	/**
+	 * Update button to show it has been pressed
+	 * and disallow it to be pressed again
+	 */
+	public void selectNext() {
+		mNextBtn.setImageResource(mNextBtnPressedDrawable);
+		mNextBtn.setOnClickListener(null);
+	}
+	
+	/**
+	 * Update button to show it has been pressed
+	 * and disallow it to be pressed again
+	 */
+	public void selectPrev() {
+		mPrevBtn.setImageResource(mPrevBtnPressedDrawable);
+		mPrevBtn.setOnClickListener(null);
+	}
+	
+	/**
 	 * Disables the previous button
 	 */
 	public void disablePrev() {
-		mPrevBtn.setImageResource(R.drawable.left_arrow_disabled);
+		mPrevBtn.setImageResource(mPrevBtnDisableDrawable);
 		mPrevBtn.setOnClickListener(null);
 
 	}
@@ -92,7 +130,7 @@ public abstract class FunnelActivity extends Activity {
 	 * Enables the previous button
 	 */
 	public void enablePrev() {
-		mPrevBtn.setImageResource(R.drawable.left_arrow);
+		mPrevBtn.setImageResource(mPrevBtnEnableDrawable);
 		mPrevBtn.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
