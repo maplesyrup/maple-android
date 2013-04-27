@@ -20,6 +20,7 @@ public class PersonalAdsActivity extends BrowseActivity {
 		setTitle("My Ads");
 		super.onCreate(savedInstanceState);
 
+		super.setLayout(R.layout.activity_personal_ads);
 		Session session = Session.getActiveSession();
 		mProfilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);
 		mProfilePictureView.setCropped(true);
