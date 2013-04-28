@@ -1,125 +1,86 @@
 package com.example.custom_views;
 
-import com.example.custom_views.CropView.Direction;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.PointF;
-import android.graphics.Paint.Style;
-import android.graphics.Rect;
+import android.graphics.RectF;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.View.MeasureSpec;
+
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 
 
 public class LogoView extends ImageView implements OnTouchListener {	
 	
-	// Width and height of view
-	private int mWidth;
-	private int mHeight;
-	
 	private PointF mPrevTouch;
 	
 	private Bitmap mCurrLogo;
 	private Bitmap mCurrAd;
+	private float mRatio;
+
 
 	private ScaleGestureDetector mScaleDetector;
 	private float mScaleFactor = 1.f;
 	
-	// Actual size of logo bitmap
-	private Rect mDstRect;
-	
-	// Scaled version of logo bitmap
-	private Rect mDstRectScaled;
+
+	// Scaled size of logo bitmap
+	private RectF mLogoRect;
 	
 	public LogoView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
-		mDstRect = new Rect(0, 0, 100, 100);
-		mDstRectScaled = new Rect(0, 0, 100, 100);
-		mWidth = 400;
-		mHeight = 400;
-		
+		mLogoRect = new RectF();
 	}
 	
-	public void setAd(Bitmap ad) {
+	/**
+	 * Sets the ad. Also takes a ratio so that we can scale the logo to the same size later.
+	 * @param ad
+	 * @param ratio
+	 */
+	public void setAd(Bitmap ad, float ratio) {
+		setImageBitmap(ad);
 		mCurrAd = ad;
-		mWidth = ad.getHeight();
-		mHeight = ad.getWidth();
+				
+		mRatio = ratio;
 	}
 
+	/**
+	 * Sets the logo to a specific x and y value. Will keep the same scale for the logo
+	 * @param logo
+	 * @param x
+	 * @param y
+	 */
 	public void setLogo(Bitmap logo, float x, float y) {
+		// Only create new rect if we are adding an ad for the first time. Else just set the new x and y
+		if (mCurrLogo == null) {
+			mLogoRect.set(x, y, x + mRatio * logo.getWidth(), y + mRatio * logo.getHeight());
+		} else {
+			mLogoRect.set(x, y, x + mRatio * mCurrLogo.getWidth(), y + mRatio * mCurrLogo.getHeight());
+
+		}
 		mCurrLogo = logo;
 	}
 	
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int desiredWidth = mWidth;
-	    int desiredHeight = mHeight;
-
-	    int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-	    int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-	    int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-	    int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-	    int width;
-	    int height;
-
-	    //Measure Width
-	    if (widthMode == MeasureSpec.EXACTLY) {
-	        //Must be this size
-	        width = widthSize;
-	    } else if (widthMode == MeasureSpec.AT_MOST) {
-	        //Can't be bigger than...
-	        width = Math.min(desiredWidth, widthSize);
-	    } else {
-	        //Be whatever you want
-	        width = desiredWidth;
-	    }
-
-	    //Measure Height
-	    if (heightMode == MeasureSpec.EXACTLY) {
-	        //Must be this size
-	        height = heightSize;
-	    } else if (heightMode == MeasureSpec.AT_MOST) {
-	        //Can't be bigger than...
-	        height = Math.min(desiredHeight, heightSize);
-	    } else {
-	        height = desiredHeight;
-	    }
-
-	    mWidth = width;
-	    mHeight = height;
-	    setMeasuredDimension(width, height);
+	/**
+	 * Just change the logo
+	 * @param logo
+	 */
+	public void setLogo(Bitmap logo) {
+		mCurrLogo = logo;
 	}
 	
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
-		canvas.save();
-		if (mCurrAd != null) {
-			canvas.drawBitmap(mCurrAd, 0, 0, null);
-		}
+		
 		if (mCurrLogo != null) {
-			int width = (int)(mScaleFactor * (mDstRect.right - mDstRect.left));
-			int height =  (int)(mScaleFactor * (mDstRect.bottom - mDstRect.top));
-			mDstRectScaled.set(mDstRect.left, mDstRect.top, mDstRect.left + width, mDstRect.top + height);
-			canvas.drawBitmap(mCurrLogo, null, mDstRectScaled, null);
-			
+			canvas.drawBitmap(mCurrLogo, null, mLogoRect, null);
 		}
-		
-		invalidate();
-		
-		
-		canvas.restore();
 	}
 	/**
 	 * When it detects a scaling gesture, it will scale. Moves the logo if there is only
@@ -130,7 +91,7 @@ public class LogoView extends ImageView implements OnTouchListener {
 	    // Let the ScaleGestureDetector inspect all events.
 	    mScaleDetector.onTouchEvent(ev);
 	    
-	    if (ev.getPointerCount() == 1 && mDstRectScaled.contains((int)ev.getX(), (int)ev.getY())) {
+	    if (ev.getPointerCount() == 1 && mLogoRect.contains((int)ev.getX(), (int)ev.getY())) {
 		    switch (ev.getAction()) {
 			    case MotionEvent.ACTION_DOWN:
 			    	if (mPrevTouch == null) {
@@ -156,11 +117,7 @@ public class LogoView extends ImageView implements OnTouchListener {
 	
 	
 	public void moveLogo(float deltaX, float deltaY) {
-		mDstRect.left += deltaX;
-		mDstRect.right += deltaX;
-		mDstRect.top += deltaY;
-		mDstRect.bottom += deltaY;
-	
+		mLogoRect.offset(deltaX, deltaY);	
 	}
 
 	@Override
@@ -175,16 +132,18 @@ public class LogoView extends ImageView implements OnTouchListener {
 	 */
 	public Bitmap addLogo() {
 		// if a logo hasn't yet been set, return null
-		if(mCurrLogo == null) return null;
+		if (mCurrLogo == null) return null;
 		
 		Bitmap scaledLogo = Bitmap.createScaledBitmap(mCurrLogo, 
-				mDstRectScaled.right - mDstRectScaled.left, 
-				mDstRectScaled.bottom - mDstRectScaled.top, false);
+				(int) (mLogoRect.right - mLogoRect.left), 
+				(int) (mLogoRect.bottom - mLogoRect.top), false);
+
 		
         Bitmap newAd = Bitmap.createBitmap(mCurrAd.getWidth(), mCurrAd.getHeight(), mCurrAd.getConfig());
         Canvas canvas = new Canvas(newAd);
         canvas.drawBitmap(mCurrAd, new Matrix(), null);
-        canvas.drawBitmap(scaledLogo, mDstRect.left, mDstRect.top, null);
+        canvas.drawBitmap(scaledLogo, mLogoRect.left, mLogoRect.top, null);
+
 
 		return newAd;
 	}

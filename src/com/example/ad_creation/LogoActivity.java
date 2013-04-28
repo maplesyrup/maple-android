@@ -51,8 +51,8 @@ public class LogoActivity extends FunnelActivity {
 				"Select which company logo you want to place on the ad, and move it around!");
 		mConfig.put(Config.NAME, "Logo");
 
-		mLogoView = (LogoView) findViewById(R.id.logoView);
-		mLogoView.setAd(mApp.getAdCreationManager().getCurrentBitmap());
+		mLogoView = (LogoView) findViewById(R.id.ad);
+		mLogoView.setAd(mAdCreationManager.getCurrentBitmap(), mAdCreationManager.getRatio());
 
 		mAdCreationManager.setup(this);
 
