@@ -8,7 +8,7 @@
      <com.example.custom_views.LogoView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:id="@+id/logoView"
+	    android:id="@+id/ad"
         android:paddingTop="@dimen/ad_padding"
 	    android:layout_below="@+id/topbar_container"
 	    android:layout_centerHorizontal="true" /> 
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/logoView"
+        android:layout_below="@+id/ad"
         android:layout_centerHorizontal="true" />
 
    

@@ -73,6 +73,10 @@ public class AdCreationManager {
 
 	// File path of saved bitmap image
 	private Uri mFileUri;
+	
+	// Ratio of the actual bitmap to the one displayed
+	private float mRatio;
+
 
 	public AdCreationManager(Context context, Bitmap currBitmap, Uri fileUri) {
 		mBitmapStack = new Stack<Bitmap>();
@@ -87,7 +91,8 @@ public class AdCreationManager {
 		mCompany = null;
 		
 		mContext = context;
-
+		
+		mRatio = 1;
 		
 		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
 	}
@@ -252,6 +257,10 @@ public class AdCreationManager {
 		return mFunnel.length;
 	}
 	
+	public float getRatio() {
+		return mRatio;
+	}
+	
 	/**
 	 * Sets up some initial settings for most of the funnel views. Namely the progressBar and the Ad.
 	 * Must be called after setContentView
@@ -285,6 +294,8 @@ public class AdCreationManager {
 			int newHeight = (int) (AD_DISPLAY_SCALE * screenHeight);
 			int width = ad.getDrawable().getIntrinsicWidth();
 			int height = ad.getDrawable().getIntrinsicHeight();
+			
+			mRatio = (float) newHeight / height;
 	
 			int newWidth = (int) Math.floor((width * newHeight) / height);
 	
