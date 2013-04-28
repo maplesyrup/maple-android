@@ -72,10 +72,15 @@ public abstract class FunnelActivity extends Activity {
 		mPrevBtn = (ImageView) findViewById(R.id.left_arrow);
 	}
 	
-	public void setNextBtn(int drawable, int color) {
+	/** Change the image used for the next button.
+	 * 
+	 * @param drawable The default displayed icon
+	 * @param drawablePresed The icon displayed when the button is pressed
+	 */
+	public void setNextBtn(int drawable, int drawablePresed) {
 		mNextBtnEnableDrawable = drawable;
+		mNextBtnPressedDrawable = drawablePresed;
 		mNextBtn.setImageResource(drawable);
-		mNextBtn.setBackgroundColor(color);
 	}
 	
 	/**

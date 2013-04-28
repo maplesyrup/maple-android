@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -40,7 +41,7 @@ public class PublishActivity extends FunnelActivity {
 		mConfig.put(Config.HELP_MESSAGE, "You're done! Congrats");
 		mConfig.put(Config.NAME, "Publish");
 		
-		setNextBtn(R.drawable.check, MapleApplication.GREEN);
+		setNextBtn(R.drawable.check, R.drawable.check_pressed);
 
 		mAdCreationManager.setup(this);
 		mLoading = (RelativeLayout) findViewById(R.id.ad_loading);
@@ -95,6 +96,7 @@ public class PublishActivity extends FunnelActivity {
 	 * @param view
 	 */
 	public void nextStage(View view) {
+		selectNext();
 		publish(view);
 	}
 
