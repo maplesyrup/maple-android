@@ -77,6 +77,7 @@ public class AdCreationManager {
 	// Ratio of the actual bitmap to the one displayed
 	private float mRatio;
 
+
 	public AdCreationManager(Context context, Bitmap currBitmap, Uri fileUri) {
 		mBitmapStack = new Stack<Bitmap>();
 		mBitmapStack.push(currBitmap);

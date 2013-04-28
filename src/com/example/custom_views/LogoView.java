@@ -6,10 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 
@@ -22,9 +24,11 @@ public class LogoView extends ImageView implements OnTouchListener {
 	private Bitmap mCurrAd;
 	private float mRatio;
 
+
 	private ScaleGestureDetector mScaleDetector;
 	private float mScaleFactor = 1.f;
 	
+
 	// Scaled size of logo bitmap
 	private RectF mLogoRect;
 	
@@ -73,12 +77,10 @@ public class LogoView extends ImageView implements OnTouchListener {
 	
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
 		
 		if (mCurrLogo != null) {
 			canvas.drawBitmap(mCurrLogo, null, mLogoRect, null);
 		}
-		
 	}
 	/**
 	 * When it detects a scaling gesture, it will scale. Moves the logo if there is only
@@ -135,11 +137,13 @@ public class LogoView extends ImageView implements OnTouchListener {
 		Bitmap scaledLogo = Bitmap.createScaledBitmap(mCurrLogo, 
 				(int) (mLogoRect.right - mLogoRect.left), 
 				(int) (mLogoRect.bottom - mLogoRect.top), false);
+
 		
         Bitmap newAd = Bitmap.createBitmap(mCurrAd.getWidth(), mCurrAd.getHeight(), mCurrAd.getConfig());
         Canvas canvas = new Canvas(newAd);
         canvas.drawBitmap(mCurrAd, new Matrix(), null);
         canvas.drawBitmap(scaledLogo, mLogoRect.left, mLogoRect.top, null);
+
 
 		return newAd;
 	}
