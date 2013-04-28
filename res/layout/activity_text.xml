@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical" 
+     android:id="@+id/text_layout" >
+
+
+        <ImageView
+            android:id="@+id/ad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/topbar_container"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/ad_padding"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/photoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ad"
+            android:layout_centerHorizontal="true"
+            android:text="Click to place text"
+            android:textColor="#ff0000"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/textEntry"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ad"
+            android:layout_centerHorizontal="true"
+            android:hint="Enter your text here"
+            android:singleLine="false"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/fontSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/fontSizeLabel"
+            android:digits="1234567890"
+            android:singleLine="true"
+            android:text="15"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/fontSizeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/fontSize"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="5sp"
+            android:text="Font Size:"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/changeColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/fontSize"
+            android:onClick="changeColor"
+            android:text="Color"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/changeFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textEntry"
+            android:layout_toRightOf="@+id/changeColor"
+            android:onClick="changeFont"
+            android:text="Font"
+            android:visibility="invisible" />
+
+       
+</RelativeLayout>

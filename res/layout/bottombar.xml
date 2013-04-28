@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+      	xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/InnerRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true" >
+
+   <ImageButton
+            android:id="@+id/left_arrow"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+			android:background="@color/primary_color"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:onClick="prevStage"
+            android:src="@drawable/left_arrow" />
+     
+     <ImageButton
+         android:id="@+id/right_arrow"
+         android:layout_width="60dp"
+         android:layout_height="60dp"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentBottom="true"
+         android:padding="5dp"
+         android:scaleType="fitCenter"
+         android:onClick="nextStage"
+         android:background="@color/primary_color"
+         android:src="@drawable/right_arrow" />
+     
+     <com.example.custom_views.ProgressView
+         android:id="@+id/progressBar"
+         android:layout_width="60dp"
+         android:layout_height="60dp"
+         android:padding="5dp"
+         android:background="@color/primary_color"
+         android:layout_alignParentBottom="true"
+         android:layout_toLeftOf="@+id/right_arrow"
+         android:layout_toRightOf="@+id/left_arrow" />
+
+ </RelativeLayout>

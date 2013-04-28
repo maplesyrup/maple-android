@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical" 
+     android:id="@+id/color_adjustment_layout" >
+     
+     <ImageView
+         android:id="@+id/ad"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:paddingTop="@dimen/ad_padding"
+         android:layout_below="@+id/topbar_container"
+         android:layout_centerHorizontal="true" />
+     
+     <TextView
+         android:id="@+id/brightnessLabel"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/ad"
+         android:layout_marginTop="20dp"
+         android:layout_centerHorizontal="true"
+         android:textSize="20sp"
+         android:text="Brightness" />
+
+     <SeekBar
+         android:id="@+id/brightnessSeekBar"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:layout_below="@+id/brightnessLabel"
+         android:max="200"
+         android:minWidth="300dp"
+         android:progress="100" />
+     
+     <TextView
+         android:id="@+id/contrastLabel"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/brightnessSeekBar"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="10dp"
+         android:textSize="20sp"
+         android:text="Contrast" />
+
+     <SeekBar
+         android:id="@+id/contrastSeekBar"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/contrastLabel"
+         android:layout_centerHorizontal="true"
+         android:max="200"
+         android:minWidth="300dp"
+         android:progress="100" />
+     
+     
+     <Button
+         android:id="@+id/reset"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/contrastSeekBar"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="20dp"
+         android:onClick="reset"
+         android:text="Reset" />
+     
+ </RelativeLayout>
+

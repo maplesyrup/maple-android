@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="ad_padding">10dp</dimen>
+    <color name="primary_color">#2c2c2c</color>
+    <color name="background_color">#ececec</color>
+    <dimen name="padding">20dp</dimen>
+    
+    <color name="green">#31d742</color>
+
+</resources>
