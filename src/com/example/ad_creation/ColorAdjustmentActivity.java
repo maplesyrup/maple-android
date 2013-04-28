@@ -35,7 +35,7 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 		setCustomContent(R.layout.activity_color_adjustment);
 		
 		mConfig.put(Config.HELP_MESSAGE, "Select the color scheme that puts your ad in the best light!");
-		mConfig.put(Config.NAME, "Color Adjustment");
+		mConfig.put(Config.NAME, "Color");
 
 		mAdView = (ImageView) findViewById(R.id.ad);
 		
