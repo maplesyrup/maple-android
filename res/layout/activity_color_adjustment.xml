@@ -17,9 +17,9 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_below="@+id/ad"
-         android:layout_marginTop="20dp"
+         android:layout_marginTop="7dp"
          android:layout_centerHorizontal="true"
-         android:textSize="20sp"
+         android:textSize="15sp"
          android:text="Brightness" />
 
      <SeekBar
@@ -38,8 +38,8 @@
          android:layout_height="wrap_content"
          android:layout_below="@+id/brightnessSeekBar"
          android:layout_centerHorizontal="true"
-         android:layout_marginTop="10dp"
-         android:textSize="20sp"
+         android:layout_marginTop="5dp"
+         android:textSize="15sp"
          android:text="Contrast" />
 
      <SeekBar
@@ -59,9 +59,10 @@
          android:layout_height="wrap_content"
          android:layout_below="@+id/contrastSeekBar"
          android:layout_centerHorizontal="true"
-         android:layout_marginTop="20dp"
+         android:layout_marginTop="10dp"
          android:onClick="reset"
-         android:text="Reset" />
+         android:background="@layout/button_reset" 
+          />
      
  </RelativeLayout>
 

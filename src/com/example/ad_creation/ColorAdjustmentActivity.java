@@ -25,8 +25,8 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 	private SeekBar mBrightnessSeek;
 	
 	// values on a scale from 0 to 200. start in the center
-	private float mBrightness = 100;
-	private float mContrast = 100;
+	private float mBrightness = 1.0f;
+	private float mContrast = 1.0f;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 		setCustomContent(R.layout.activity_color_adjustment);
 		
 		mConfig.put(Config.HELP_MESSAGE, "Select the color scheme that puts your ad in the best light!");
-		mConfig.put(Config.NAME, "Color Adjustment");
+		mConfig.put(Config.NAME, "Color");
 
 		mAdView = (ImageView) findViewById(R.id.ad);
 		

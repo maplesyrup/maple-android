@@ -31,7 +31,7 @@
             android:layout_height="60dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-			android:background="@layout/question_button"
+			android:background="@layout/button_question"
             android:padding="5dp"
             android:scaleType="fitCenter"
             android:onClick="getHelp"/>
@@ -43,13 +43,14 @@
 			android:layout_centerVertical="true"
 			android:id="@+id/barOne"
 			android:background="#90909090"/>
+         
          <ImageButton
 	        android:id="@+id/home"
 	        android:layout_width="60dp"
 	        android:layout_height="60dp"
 	        android:layout_alignParentTop="true"
 			android:layout_toLeftOf="@id/barOne"
-	        android:background="@layout/home_button"
+	        android:background="@layout/button_home"
 	        android:padding="5dp"
 	        android:scaleType="fitCenter"
 	        android:onClick="home" />
