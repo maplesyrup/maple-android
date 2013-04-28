@@ -25,8 +25,8 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 	private SeekBar mBrightnessSeek;
 	
 	// values on a scale from 0 to 200. start in the center
-	private float mBrightness = 100;
-	private float mContrast = 100;
+	private float mBrightness = 1.0f;
+	private float mContrast = 1.0f;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
