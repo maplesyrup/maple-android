@@ -83,7 +83,7 @@ public class Company {
 		return mCompanyUrl;
 	}
 
-	public ArrayList<CompanyLogo> getLogoUrls() {
+	public ArrayList<CompanyLogo> getLogos() {
 		return mLogos;
 	}
 

@@ -6,17 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.example.filters.MapleFilter;
 import com.example.maple_android.Company;
 import com.example.maple_android.CompanyData;
-import com.example.maple_android.LogoURL;
+import com.example.maple_android.CompanyLogo;
 import com.example.maple_android.R;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
-import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadDrawableResource;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadUrl;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScrollerAdapter;
@@ -26,9 +22,11 @@ public class CompanyTagActivity extends FunnelActivity {
 	private HorizontalImageScroller mScroller;
 	private ArrayList<Company> mCompanies;
 	
-	private static final int FRAME_COLOR = Color.TRANSPARENT; // the background color of the filter images
-	private static final int FRAME_SELECTED_COLOR = Color.BLACK; // the color behind the selected filter
-	private static final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
+	private final int FRAME_COLOR = Color.TRANSPARENT; // the background color of the filter images
+	private final int FRAME_SELECTED_COLOR = Color.BLACK; // the color behind the selected filter
+	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
+	// this image is displayed as the company picture when we are unable to load any logos 
+	private final String DEFAULT_LOGO = "http://www.clker.com/cliparts/X/d/3/i/V/9/black-and-white-sad-face-md.png";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +49,24 @@ public class CompanyTagActivity extends FunnelActivity {
 		ArrayList<ImageToLoad> companyLogos = new ArrayList<ImageToLoad>();
 		ArrayList<String> companyNames = new ArrayList<String>();
 		for (Company c : mCompanies) {
-			ArrayList<LogoURL> logos = c.getLogoUrls();
+			ArrayList<CompanyLogo> logos = c.getLogos();
 			
 			// if the company doesn't have any logos availabe we can't
 			// display them
 			if(!logos.isEmpty()){
 				// default to showing the first logo in the list
-				LogoURL logo = logos.get(0);
-				// add logo and company name to scroller list
-				companyLogos.add(new ImageToLoadUrl(logo.getThumb()));
-				companyNames.add(c.getName());
+				CompanyLogo logo = logos.get(0);
+				// add logo and to scroller list
+				companyLogos.add(new ImageToLoadUrl(logo.getThumb()));				
 			}
+			
+			// use a default logo if we don't have any logos for the company
+			else {
+				companyLogos.add(new ImageToLoadUrl(DEFAULT_LOGO));		
+			}
+			
+			// add the company name to be displayed beneath the logo
+			companyNames.add(c.getName());
 		}
 
 		// set up the scroller with an adapter populated with the list of

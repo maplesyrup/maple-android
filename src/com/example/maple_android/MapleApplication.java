@@ -33,6 +33,9 @@ public class MapleApplication extends Application{
 		// Initialize the singletons so their instances
 		// are bound to the application process.
 		initUniversalImageLoader();
+		
+		// get most recent company data from server
+		CompanyData.syncWithServer(this);
 	}
 	
 	public AdCreationManager getAdCreationManager() {

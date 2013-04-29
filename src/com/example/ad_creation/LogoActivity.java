@@ -6,7 +6,6 @@ import com.example.custom_views.LogoView;
 import com.example.custom_views.ProgressView;
 import com.example.maple_android.AdCreationManager;
 import com.example.maple_android.Company;
-import com.example.maple_android.LogoURL;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
 import com.example.maple_android.Utility;

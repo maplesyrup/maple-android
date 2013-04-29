@@ -1,20 +1,9 @@
 package com.example.maple_android;
 
-import java.io.BufferedInputStream;
-import com.loopj.android.http.*;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -23,9 +12,12 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.view.View;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 /**
  * This class assists with retrieving the company data from the sever and
@@ -64,7 +56,8 @@ public class CompanyData {
 		final Context c = context;
 
 		// start an Async get request
-		MapleHttpClient.get(LIST_URL, null, new JsonHttpResponseHandler() {
+		MapleHttpClient.get(LIST_URL, null, new AsyncHttpResponseHandler() {
+			
 			@Override
 			public void onSuccess(String response) {
 				// open an output stream and write the file to disk
@@ -85,10 +78,17 @@ public class CompanyData {
 					e.printStackTrace();
 				}
 			}
+			
+			// If there is a failure we don't have to do anything, just leave
+			// the local file alone.
+			@Override
+			public void onFailure(Throwable error, String content) {
+				
+			}		
+		
 		});
 
-		// If there is a failure we don't have to do anything, just leave
-		// the local file alone.
+		
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class CompanyData {
 	 * @return Available companies
 	 */
 	public static ArrayList<Company> getCompanies(Context context) {
-		JSONArray jsonArray = getLocalCompaniesData(context);
+		JSONArray jsonArray = getLocalCompanyData(context);
 
 		// init ArrayList
 		ArrayList<Company> companies = new ArrayList<Company>();
@@ -270,7 +270,7 @@ public class CompanyData {
 	 * @return An ArrayList where each String is a company name
 	 */
 	public static ArrayList<String> getCompanyList(Context context) {
-		JSONArray jsonArray = getLocalCompaniesData(context);
+		JSONArray jsonArray = getLocalCompanyData(context);
 
 		// init ArrayList
 		ArrayList<String> companyList = new ArrayList<String>();
@@ -307,7 +307,7 @@ public class CompanyData {
 	 *            The application activity who has the locally stored list
 	 * @return JSONArray of companies. Null if there is an error
 	 */
-	private static JSONArray getLocalCompaniesData(Context context) {
+	private static JSONArray getLocalCompanyData(Context context) {
 		// retrieve file from local storage
 		FileInputStream in = null;
 		try {
@@ -373,7 +373,7 @@ public class CompanyData {
 		final ArrayList<Bitmap> logos = new ArrayList<Bitmap>();
 
 		// get urls from JSON data
-		JSONArray arr = getLocalCompaniesData(context);
+		JSONArray arr = getLocalCompanyData(context);
 		// If file not found, return empty list of bitmaps
 		if (arr == null)
 			return logos;
