@@ -45,7 +45,7 @@ import android.view.View;
 
 public class CompanyData {
 	// file name where the data is stored locally on device
-	private final static String FILE_NAME = "company_list";
+	private final static String FILE_NAME = "company_data";
 
 	// server url where list is stored
 	// this is relative to the base URL in MapleHttpClient
@@ -193,9 +193,56 @@ public class CompanyData {
 				return companies;
 			}
 			
-			// the list of urls is it's own object
-			JSONObject logo_urls = null;
-			ArrayList<LogoURL> urls = new ArrayList<LogoURL>();
+			// the list of logos is it's own JSON Array
+			JSONArray jsonLogos = null;
+			try {
+				jsonLogos = entry.getJSONArray("logos");
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+				return companies;
+			}
+			
+			// load all logos from the array			
+			ArrayList<CompanyLogo> logos = new ArrayList<CompanyLogo>();
+			for(int j = 0; j < jsonLogos.length(); j++){
+				
+				// get logo from JSON array
+				JSONObject jsonLogo;
+				try {
+					jsonLogo = jsonLogos.getJSONObject(j);
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+					return companies;
+				}
+				
+				// get urls for each logo size
+				String full;
+				try {
+					full = jsonLogo.getString("full");
+				} catch (JSONException e) {
+					e.printStackTrace();
+					return companies;
+				}
+				
+				String medium;
+				try {
+					medium = jsonLogo.getString("medium");
+				} catch (JSONException e) {
+					e.printStackTrace();
+					return companies;
+				}
+				
+				String thumb;
+				try {
+					thumb = jsonLogo.getString("thumb");
+				} catch (JSONException e) {
+					e.printStackTrace();
+					return companies;
+				}
+				
+				CompanyLogo logo = new CompanyLogo(full, medium, thumb);
+				logos.add(logo);
+			}
 			
 			boolean editable;
 			try {
@@ -206,7 +253,7 @@ public class CompanyData {
 			}
 			
 			Company c = new Company(id, name, splash_image, blurb_title, blurb_body, 
-					more_info_title, more_info_body, company_url, urls, editable);
+					more_info_title, more_info_body, company_url, logos, editable);
 			
 			companies.add(c);
 		}

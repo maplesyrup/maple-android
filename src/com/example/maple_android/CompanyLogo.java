@@ -8,7 +8,7 @@ package com.example.maple_android;
  * @author Eli
  *
  */
-public class LogoURL {
+public class CompanyLogo {
 	private String mFull;
 	private String mMedium;
 	private String mThumb;
@@ -19,7 +19,7 @@ public class LogoURL {
 	 * @param medium
 	 * @param thumb
 	 */
-	public LogoURL(String Full, String Medium, String Thumb) {
+	public CompanyLogo(String Full, String Medium, String Thumb) {
 		mFull = Full;
 		mMedium = Medium;
 		mThumb = Thumb;
