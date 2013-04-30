@@ -21,6 +21,7 @@ import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScr
 public class LogoActivity extends FunnelActivity {
 	private LogoView mLogoView;
 	private HorizontalImageScroller mScroller;
+	private Bitmap mLogo;
 
 	private final int FRAME_COLOR = Color.TRANSPARENT;
 	private final int FRAME_SELECTED_COLOR = Color.BLACK;
@@ -106,7 +107,8 @@ public class LogoActivity extends FunnelActivity {
 
 				// change logoview to display this image
 				ImageView scrollerImage = (ImageView) view.findViewById(R.id.image);
-				Bitmap logo = scrollerImage.getDrawingCache();
+				mLogo = scrollerImage.getDrawingCache();
+				mLogoView.setLogo(mLogo, 0, 0);
 			}
 		});
 	}
@@ -118,6 +120,9 @@ public class LogoActivity extends FunnelActivity {
 	 */
 	public void nextStage(View view) {
 		selectNext();
+		
+		// update selected logo in adManager
+		mAdCreationManager.setCompanyLogo(mLogo);
 
 		// update bitmap to include logo
 		Bitmap ad = mLogoView.addLogo();
