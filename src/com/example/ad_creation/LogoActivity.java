@@ -2,43 +2,34 @@ package com.example.ad_creation;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+
 import com.example.custom_views.LogoView;
-import com.example.custom_views.ProgressView;
-import com.example.maple_android.AdCreationManager;
-import com.example.maple_android.Company;
-import com.example.maple_android.MapleApplication;
+import com.example.maple_android.CompanyLogo;
 import com.example.maple_android.R;
-import com.example.maple_android.Utility;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadUrl;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScrollerAdapter;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-
 public class LogoActivity extends FunnelActivity {
 	private LogoView mLogoView;
 	private HorizontalImageScroller mScroller;
 
-	private static final int FRAME_COLOR = Color.TRANSPARENT; 
-	private static final int FRAME_SELECTED_COLOR = Color.BLACK; 
-	private static final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
+	private final int FRAME_COLOR = Color.TRANSPARENT;
+	private final int FRAME_SELECTED_COLOR = Color.BLACK;
+	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
+	// this image is displayed as the company picture when we are unable to load
+	// any logos
+	private final String DEFAULT_LOGO = "http://www.clker.com/cliparts/X/d/3/i/V/9/black-and-white-sad-face-md.png";
+	// the image shown before the logo is loaded from the server
+	private final int LOADING_IMAGE = R.drawable.maple;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +42,8 @@ public class LogoActivity extends FunnelActivity {
 		mConfig.put(Config.NAME, "Logo");
 
 		mLogoView = (LogoView) findViewById(R.id.ad);
-		mLogoView.setAd(mAdCreationManager.getCurrentBitmap(), mAdCreationManager.getRatio());
+		mLogoView.setAd(mAdCreationManager.getCurrentBitmap(),
+				mAdCreationManager.getRatio());
 
 		mAdCreationManager.setup(this);
 
@@ -66,50 +58,57 @@ public class LogoActivity extends FunnelActivity {
 			mLogoView.setLogo(logo, 0, 0);
 		}
 
-//		// make a list of ImageToLoad objects for image scroller
-//		ArrayList<ImageToLoad> logos = new ArrayList<ImageToLoad>();
-//		ArrayList<LogoURL> urls = mAdCreationManager.getCompany().getLogoUrls();
-//		for (LogoURL url : urls) {
-//			logos.add(new ImageToLoadUrl(url.getThumb()));
-//		}
-//
-//		// set up the scroller with an adapter populated with the list of
-//		// ImageToLoad objects
-//		mScroller = (HorizontalImageScroller) findViewById(R.id.companyScroller);
-//		HorizontalImageScrollerAdapter adapter = new HorizontalImageScrollerAdapter(
-//				this, logos);
-//
-//		// set adapter options
-//		// shows the frame around the view
-//		adapter.setShowImageFrame(true);
-//		// only shows frame when item is selected
-//		adapter.setHighlightActiveImage(true);
-//		// the background color when selected
-//		adapter.setFrameColor(FRAME_SELECTED_COLOR);
-//		// the default background color
-//		adapter.setFrameOffColor(FRAME_COLOR);
-//		// set image to be used while loading
-//		adapter.setLoadingImageResourceId(R.drawable.maple);
-//		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
-//
-//		mScroller.setAdapter(adapter);
-//
-//		// start with the first company selected
-//		mScroller.setCurrentImageIndex(0);
-//
-//		// add callback function when image in scroller is selected
-//		mScroller.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view, int pos,
-//					long id) {
-//				// Updates the background color to indicate selection
-//				mScroller.setCurrentImageIndex(pos);
-//
-//				// change logoview to display this image
-//				// TODO: Once heroku and logoview are working 
-//			}
-//		});
+		// make a list of ImageToLoad objects for image scroller
+		ArrayList<ImageToLoad> imagesToLoad = new ArrayList<ImageToLoad>();
+		ArrayList<CompanyLogo> logos = mAdCreationManager.getCompany()
+				.getLogos();
+		for (CompanyLogo l : logos) {
+			imagesToLoad.add(new ImageToLoadUrl(l.getThumb()));
+		}
+
+		// if there are no logos available show a default image
+		if (logos.isEmpty()) {
+			imagesToLoad.add(new ImageToLoadUrl(DEFAULT_LOGO));
+		}
+
+		// set up the scroller with an adapter populated with the list of
+		// ImageToLoad objects
+		mScroller = (HorizontalImageScroller) findViewById(R.id.logoScroller);
+		HorizontalImageScrollerAdapter adapter = new HorizontalImageScrollerAdapter(
+				this, imagesToLoad);
+
+		// set adapter options
+		// shows the frame around the view
+		adapter.setShowImageFrame(true);
+		// only shows frame when item is selected
+		adapter.setHighlightActiveImage(true);
+		// the background color when selected
+		adapter.setFrameColor(FRAME_SELECTED_COLOR);
+		// the default background color
+		adapter.setFrameOffColor(FRAME_COLOR);
+		// set image to be used while loading
+		adapter.setLoadingImageResourceId(LOADING_IMAGE);
+		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
+
+		mScroller.setAdapter(adapter);
+
+		// start with the first company selected
+		mScroller.setCurrentImageIndex(0);
+
+		// add callback function when image in scroller is selected
+		mScroller.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int pos,
+					long id) {
+				// Updates the background color to indicate selection
+				mScroller.setCurrentImageIndex(pos);
+
+				// change logoview to display this image
+				ImageView scrollerImage = (ImageView) view.findViewById(R.id.image);
+				Bitmap logo = scrollerImage.getDrawingCache();
+			}
+		});
 	}
 
 	/**

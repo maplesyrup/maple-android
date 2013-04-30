@@ -27,6 +27,8 @@ public class CompanyTagActivity extends FunnelActivity {
 	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
 	// this image is displayed as the company picture when we are unable to load any logos 
 	private final String DEFAULT_LOGO = "http://www.clker.com/cliparts/X/d/3/i/V/9/black-and-white-sad-face-md.png";
+	// the image shown before the logo is loaded from the server
+	private final int LOADING_IMAGE = R.drawable.maple;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,7 @@ public class CompanyTagActivity extends FunnelActivity {
 		// the default background color
 		adapter.setFrameOffColor(FRAME_COLOR); 
 		// set image to be used while loading
-		adapter.setLoadingImageResourceId(R.drawable.maple);
+		adapter.setLoadingImageResourceId(LOADING_IMAGE);
 		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
 		// we want the company name to be shown beneath the logo
 		adapter.setShowText(true); 
