@@ -12,7 +12,7 @@ public class MapleHttpClient {
 	// Get and Post requests pass urls that build upon this base url. The method
 	// getAbsoluteUrl combines the passed in url with the base url to get the 
 	// complete url
-	 private static final String BASE_URL = "http://maplesyrup.herokuapp.com/";
+	 private static final String BASE_URL = "http://www.additt.co/";
  
 	  private static AsyncHttpClient client = new AsyncHttpClient();
 

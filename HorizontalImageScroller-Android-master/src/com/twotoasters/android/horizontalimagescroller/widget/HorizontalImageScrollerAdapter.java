@@ -245,6 +245,7 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 		params.width = LayoutParams.MATCH_PARENT;
 		params.height = _imageSize;
 		imageView.setLayoutParams(params);
+		imageView.setDrawingCacheEnabled(true);
 	}
 	
 	protected void _setupInnerWrapper(View view, ImageToLoad imageToLoad, int position) {

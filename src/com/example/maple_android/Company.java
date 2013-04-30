@@ -19,7 +19,7 @@ public class Company {
 	private String mMoreInfoTitle;
 	private String mMoreInfoBody;
 	private String mCompanyUrl;
-	private ArrayList<LogoURL> mLogoUrls;
+	private ArrayList<CompanyLogo> mLogos;
 	private boolean mEditable;
 	
 	/** Take all the fields of the JSON string and create a
@@ -37,7 +37,7 @@ public class Company {
 	 * @param editable
 	 */
 	public Company(int id, String name, String splashImage, String blurbTitle, String blurbBody, String moreInfoTitle, 
-			String moreInfoBody, String companyUrl, ArrayList<LogoURL> logoUrls, boolean editable){
+			String moreInfoBody, String companyUrl, ArrayList<CompanyLogo> logos, boolean editable){
 		
 		mId = id;
 		mName = name;
@@ -47,7 +47,7 @@ public class Company {
 		mMoreInfoTitle = moreInfoTitle;
 		mMoreInfoBody = moreInfoBody;
 		mCompanyUrl = companyUrl;
-		mLogoUrls = logoUrls;
+		mLogos = logos;
 		mEditable = editable;		
 	}
 	
@@ -83,8 +83,8 @@ public class Company {
 		return mCompanyUrl;
 	}
 
-	public ArrayList<LogoURL> getLogoUrls() {
-		return mLogoUrls;
+	public ArrayList<CompanyLogo> getLogos() {
+		return mLogos;
 	}
 
 	public boolean isEditable() {
@@ -97,7 +97,7 @@ public class Company {
 				+ mSplashImage + ", mBlurbTitle=" + mBlurbTitle
 				+ ", mBlurbBody=" + mBlurbBody + ", mMoreInfoTitle="
 				+ mMoreInfoTitle + ", mMoreInfoBody=" + mMoreInfoBody
-				+ ", mCompanyUrl=" + mCompanyUrl + ", mLogoUrls=" + mLogoUrls
+				+ ", mCompanyUrl=" + mCompanyUrl + ", mLogoUrls=" + mLogos
 				+ ", mEditable=" + mEditable + "]";
 	}
 
