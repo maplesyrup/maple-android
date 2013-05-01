@@ -54,24 +54,24 @@ public class LogoView extends ImageView implements OnTouchListener {
 	 * @param x
 	 * @param y
 	 */
-	public void setLogo(Bitmap logo, float x, float y) {
+	public void setLogo(Bitmap logo) {
 		// Only create new rect if we are adding an ad for the first time. Else just set the new x and y
+		
+		
+		float x = 0f;
+		float y = 0f;
+		
 		if (mCurrLogo == null) {
-			mLogoRect.set(x, y, x + mRatio * logo.getWidth(), y + mRatio * logo.getHeight());
+			// getPaddingTop/Left return twice the actual padding (god knows why).
+			x += (this.getPaddingLeft() / 2);
+			y += (this.getPaddingTop() / 2);
 		} else {
-			mLogoRect.set(x, y, x + mRatio * mCurrLogo.getWidth(), y + mRatio * mCurrLogo.getHeight());
-
+			x = mLogoRect.left;
+			y = mLogoRect.top;
 		}
+		mLogoRect.set(x, y, x + mRatio * logo.getWidth(), y + mRatio * logo.getHeight());
 		mCurrLogo = logo;
 		invalidate();
-	}
-	
-	/**
-	 * Just change the logo
-	 * @param logo
-	 */
-	public void setLogo(Bitmap logo) {
-		mCurrLogo = logo;
 	}
 	
 	protected void onDraw(Canvas canvas) {
