@@ -98,6 +98,7 @@ public class CompanyTagActivity extends FunnelActivity {
 
 		// start with the first company selected
 		mScroller.setCurrentImageIndex(0);
+		mCompany = mCompanies.get(0);
 
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {
