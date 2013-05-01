@@ -68,8 +68,7 @@ public class PublishActivity extends FunnelActivity {
 		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
 		params.put("post[title]", titleView.getText().toString());
 		params.put("post[content]", contentView.getText().toString());
-		//TODO Eventually switch this to actual company_id when we have access to it
-		params.put("post[company_id]", "1");
+		params.put("post[company_id]", Integer.toString(mAdCreationManager.getCompany().getId()));
 		params.put("token", session.getAccessToken());
 		mLoading.setVisibility(View.VISIBLE);
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
