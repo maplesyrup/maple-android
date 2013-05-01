@@ -54,23 +54,24 @@ public class LogoView extends ImageView implements OnTouchListener {
 	 * @param x
 	 * @param y
 	 */
-	public void setLogo(Bitmap logo, float x, float y) {
-		// Only create new rect if we are adding an ad for the first time. Else just set the new x and y
-		if (mCurrLogo == null) {
-			mLogoRect.set(x, y, x + mRatio * logo.getWidth(), y + mRatio * logo.getHeight());
-		} else {
-			mLogoRect.set(x, y, x + mRatio * mCurrLogo.getWidth(), y + mRatio * mCurrLogo.getHeight());
-
-		}
-		mCurrLogo = logo;
-	}
-	
-	/**
-	 * Just change the logo
-	 * @param logo
-	 */
 	public void setLogo(Bitmap logo) {
+		// Only create new rect if we are adding an ad for the first time. Else just set the new x and y
+		
+		
+		float x = 0f;
+		float y = 0f;
+		
+		if (mCurrLogo == null) {
+			// getPaddingTop/Left return twice the actual padding (god knows why).
+			x += (this.getPaddingLeft() / 2);
+			y += (this.getPaddingTop() / 2);
+		} else {
+			x = mLogoRect.left;
+			y = mLogoRect.top;
+		}
+		mLogoRect.set(x, y, x + mRatio * logo.getWidth(), y + mRatio * logo.getHeight());
 		mCurrLogo = logo;
+		invalidate();
 	}
 	
 	protected void onDraw(Canvas canvas) {
@@ -116,6 +117,7 @@ public class LogoView extends ImageView implements OnTouchListener {
 	
 	public void moveLogo(float deltaX, float deltaY) {
 		mLogoRect.offset(deltaX, deltaY);	
+		invalidate();
 	}
 
 	@Override
@@ -132,15 +134,23 @@ public class LogoView extends ImageView implements OnTouchListener {
 		// if a logo hasn't yet been set, return null
 		if (mCurrLogo == null) return null;
 		
-		Bitmap scaledLogo = Bitmap.createScaledBitmap(mCurrLogo, 
-				(int) (mLogoRect.right - mLogoRect.left), 
-				(int) (mLogoRect.bottom - mLogoRect.top), false);
 
 		
         Bitmap newAd = Bitmap.createBitmap(mCurrAd.getWidth(), mCurrAd.getHeight(), mCurrAd.getConfig());
         Canvas canvas = new Canvas(newAd);
         canvas.drawBitmap(mCurrAd, new Matrix(), null);
-        canvas.drawBitmap(scaledLogo, mLogoRect.left, mLogoRect.top, null);
+        
+        
+        // We must scale down the logo now that we aren't displaying it on a scaled Ad.
+
+        RectF scaledDown = new RectF();
+        
+        float scaledLeft = mLogoRect.left / mRatio;
+        float scaledTop = mLogoRect.top / mRatio;
+        float scaledRight = scaledLeft + (mLogoRect.width() / mRatio);
+        float scaledBottom = scaledTop + (mLogoRect.height() / mRatio);
+        scaledDown.set(scaledLeft, scaledTop, scaledRight, scaledBottom);
+        canvas.drawBitmap(mCurrLogo, null, scaledDown, null);
 
 
 		return newAd;
