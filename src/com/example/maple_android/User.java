@@ -30,15 +30,15 @@ public class User {
         mToken = token;
 	}
 	
-	public String getmName() {
+	public String getName() {
 		return mName;
 	}
 
-	public void setmName(String mName) {
+	public void setName(String mName) {
 		this.mName = mName;
 	}
 
-	public String getmPersonalInfo() {
+	public String getPersonalInfo() {
 		return mPersonalInfo;
 	}
 
@@ -47,15 +47,15 @@ public class User {
 		this.mPersonalInfo = mPersonalInfo;
 	}
 
-	public String getmEmail() {
+	public String getEmail() {
 		return mEmail;
 	}
 
-	public String getmId() {
+	public String getId() {
 		return mId;
 	}
 
-	public String getmToken() {
+	public String getToken() {
 		return mToken;
 	}
 }

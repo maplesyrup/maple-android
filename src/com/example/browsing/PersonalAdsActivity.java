@@ -3,7 +3,9 @@ package com.example.browsing;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.maple_android.MapleApplication;
 import com.example.maple_android.R;
+import com.example.maple_android.User;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -39,21 +41,12 @@ public class PersonalAdsActivity extends BrowseActivity {
 						}
 					});
 		}
+		MapleApplication mApp = (MapleApplication) this.getApplication();
+		User appUser = mApp.getUser();
 		
-		final String user_id = getUserId(session.getAccessToken());
 		RequestParams params = new RequestParams();
-		
 		// No params means just getting the most popular ads
-		params.put("user_id", user_id);
+		params.put("user_id", appUser.getId());
 		super.requestUserAds(params);
-	}
-
-	/**
-	 * Stub method for now to get user id
-	 * @param accessToken
-	 * @return
-	 */
-	private String getUserId(String accessToken) {
-		return "3";
 	}
 }
