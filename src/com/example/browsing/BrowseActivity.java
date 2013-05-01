@@ -13,12 +13,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maple_android.AdCreationDialog;
@@ -36,14 +39,13 @@ import com.loopj.android.http.RequestParams;
  */
 public class BrowseActivity extends Activity {
 	private static final String TAG = "BrowseAds";
-	private GridView mGridview; // the view we are using to display the ads
-	
+	// the view we are using to display the ads
+	private GridView mGridview; 
 	// Contains file uri of photo being taken
 	protected Uri mFileUri;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_personal_ads);
 	}
 	
 	/**
@@ -84,7 +86,16 @@ public class BrowseActivity extends Activity {
 				Log.d(TAG, response);	
 				try {
 					JSONArray jObjectAds = new JSONArray(response);
-					mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds));
+					if (jObjectAds.length() == 0) {
+						mGridview = (GridView) findViewById(R.id.gridviewAds);
+						((RelativeLayout) mGridview.getParent()).removeView(mGridview);
+						TextView adsTitle = (TextView) findViewById(R.id.adsTitle);
+						adsTitle.setText("There are no ads to show; you should create one!");
+						// Still not centering, sigh...
+						adsTitle.setGravity(Gravity.CENTER);
+					} else {
+						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds));
+					}
 				} catch (JSONException e) {
 					Log.d(TAG, "Could not parse JSON; unexpected response from the server.");	
 					e.printStackTrace();
