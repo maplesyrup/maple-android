@@ -22,6 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class MapleApplication extends Application{
 	
 	private AdCreationManager mAdCreationManager;
+	private User appUser;
 	
 	public static final int GREEN = 0xff21ab27;
 
@@ -65,5 +66,13 @@ public class MapleApplication extends Application{
 
 	public void initAdCreationManager(Bitmap currBitmap, Uri fileUri) {
 		mAdCreationManager = new AdCreationManager(this, currBitmap, fileUri);
+	}
+	
+	public void setUser(User appUser) {
+		this.appUser = appUser;
+	}
+	
+	public User getUser() {
+		return appUser;
 	}
 }
