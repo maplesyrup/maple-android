@@ -18,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
+import com.example.maple_android.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -31,12 +33,14 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 public class ImageAdapter extends BaseAdapter {
 	private String TAG = "ImageAdapter";
 	private Context mContext;
+	private String mToken;
     private JSONArray ads;
     private int MAX_TO_SHOW = 10;
     
-    public ImageAdapter(Context c, JSONArray ads) {
+    public ImageAdapter(Context c, JSONArray ads, String token) {
         mContext = c;
         this.ads = ads;
+        mToken = token;
     }
 
     public int getCount() {
@@ -123,10 +127,11 @@ public class ImageAdapter extends BaseAdapter {
 	        	@Override
 	        	public void onClick(View v) {
 	        		RequestParams params = new RequestParams();
-	        		// TODO: the below is unused, but it should be included
+	        		// Another way to do the below, but depends on Facebook
 //	        		Session session = Session.getActiveSession();
 //	        		params.put("token", session.getAccessToken());
 	        		params.put("post_id", imageIdFinal);
+	        		params.put("token", mToken);
 	            	doVote(params);
 	        	}
 	        });

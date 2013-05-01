@@ -28,6 +28,7 @@ import com.example.maple_android.AdCreationDialog;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
+import com.example.maple_android.User;
 import com.example.maple_android.Utility;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -94,7 +95,9 @@ public class BrowseActivity extends Activity {
 						// Still not centering, sigh...
 						adsTitle.setGravity(Gravity.CENTER);
 					} else {
-						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds));
+						MapleApplication mApp = (MapleApplication) getApplication();
+						User appUser = mApp.getUser();
+						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds, appUser.getToken()));
 					}
 				} catch (JSONException e) {
 					Log.d(TAG, "Could not parse JSON; unexpected response from the server.");	
