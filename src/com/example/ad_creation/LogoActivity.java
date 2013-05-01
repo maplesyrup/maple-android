@@ -47,17 +47,6 @@ public class LogoActivity extends FunnelActivity {
 
 		mAdCreationManager.setup(this);
 
-		// Load Logo.
-		// logoArray will only be non null if the user picked
-		// a logo in the LogoPickerActivity. Otherwise we have to
-		// direct them there to pick a logo before they can use one
-
-		Bitmap logo = mAdCreationManager.getCompanyLogo();
-
-		if (logo != null) {
-			mLogoView.setLogo(logo, 0, 0);
-		}
-
 		// make a list of ImageToLoad objects for image scroller
 		ArrayList<ImageToLoad> imagesToLoad = new ArrayList<ImageToLoad>();
 		ArrayList<CompanyLogo> logos = mAdCreationManager.getCompany().getLogos();
@@ -105,7 +94,7 @@ public class LogoActivity extends FunnelActivity {
 
 				// change logoview to display this image
 				mLogo = mScroller.getImageAtPos(pos);
-				mLogoView.setLogo(mLogo, 0, 0);
+				mLogoView.setLogo(mLogo);
 			}
 		});
 	}
