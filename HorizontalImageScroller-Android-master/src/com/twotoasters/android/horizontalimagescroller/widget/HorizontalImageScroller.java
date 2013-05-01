@@ -19,6 +19,7 @@ package com.twotoasters.android.horizontalimagescroller.widget;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 
 public class HorizontalImageScroller extends HorizontalListView {
@@ -26,6 +27,15 @@ public class HorizontalImageScroller extends HorizontalListView {
 	public HorizontalImageScroller(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setSolidColor(getResources().getColor(android.R.color.black));
+	}
+	
+	/** Returns the bitmap of the image
+	 * at the corresponding index of the scroller
+	 * @param index The image's location in the scroller
+	 * @return The bitmap loaded from url
+	 */
+	public Bitmap getImageAtPos(int index){		
+		return ((HorizontalImageScrollerAdapter)mAdapter).getImageAtPos(index);
 	}
 
 	public void setCurrentImageIndex(int index) {
