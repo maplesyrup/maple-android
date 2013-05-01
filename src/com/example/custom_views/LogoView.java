@@ -63,6 +63,7 @@ public class LogoView extends ImageView implements OnTouchListener {
 
 		}
 		mCurrLogo = logo;
+		invalidate();
 	}
 	
 	/**
@@ -116,6 +117,7 @@ public class LogoView extends ImageView implements OnTouchListener {
 	
 	public void moveLogo(float deltaX, float deltaY) {
 		mLogoRect.offset(deltaX, deltaY);	
+		invalidate();
 	}
 
 	@Override
@@ -132,15 +134,23 @@ public class LogoView extends ImageView implements OnTouchListener {
 		// if a logo hasn't yet been set, return null
 		if (mCurrLogo == null) return null;
 		
-		Bitmap scaledLogo = Bitmap.createScaledBitmap(mCurrLogo, 
-				(int) (mLogoRect.right - mLogoRect.left), 
-				(int) (mLogoRect.bottom - mLogoRect.top), false);
 
 		
         Bitmap newAd = Bitmap.createBitmap(mCurrAd.getWidth(), mCurrAd.getHeight(), mCurrAd.getConfig());
         Canvas canvas = new Canvas(newAd);
         canvas.drawBitmap(mCurrAd, new Matrix(), null);
-        canvas.drawBitmap(scaledLogo, mLogoRect.left, mLogoRect.top, null);
+        
+        
+        // We must scale down the logo now that we aren't displaying it on a scaled Ad.
+
+        RectF scaledDown = new RectF();
+        
+        float scaledLeft = mLogoRect.left / mRatio;
+        float scaledTop = mLogoRect.top / mRatio;
+        float scaledRight = scaledLeft + (mLogoRect.width() / mRatio);
+        float scaledBottom = scaledTop + (mLogoRect.height() / mRatio);
+        scaledDown.set(scaledLeft, scaledTop, scaledRight, scaledBottom);
+        canvas.drawBitmap(mCurrLogo, null, scaledDown, null);
 
 
 		return newAd;
