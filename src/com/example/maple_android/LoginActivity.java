@@ -1,7 +1,8 @@
 package com.example.maple_android;
 
+import org.json.JSONException;
+
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,10 +13,13 @@ import android.widget.Button;
 import com.example.browsing.PopularAdsActivity;
 import com.facebook.Session;
 import com.facebook.SessionState;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 public class LoginActivity extends Activity {
 	// set whether or not to skip login
 	private final boolean skipLogin = false;
+	private final String TAG = "Maple Syrup";
 	
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 	
@@ -54,9 +58,6 @@ public class LoginActivity extends Activity {
 						.setCallback(statusCallback));
 			}
 		}
-		
-		
-
 		updateView();
 	}
 
@@ -89,7 +90,9 @@ public class LoginActivity extends Activity {
 	private void updateView() {
 		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
-			Log.d("Maple Syrup", "Access token: " + session.getAccessToken());
+			Log.d(TAG, "Access token: " + session.getAccessToken());
+			saveUserData((MapleApplication) this.getApplication(), session.getAccessToken());
+			
 			Intent i = new Intent(LoginActivity.this, PopularAdsActivity.class);
 			startActivity(i);
 		}
@@ -112,5 +115,31 @@ public class LoginActivity extends Activity {
 			updateView();
 		}
 	}
-
+	
+	/**
+	 * Retrieves user data from server based on access token
+	 * @param token The Facebook access token
+	 */
+	private void saveUserData(final MapleApplication mApp, final String token) {
+		RequestParams params = new RequestParams();
+		params.put("token", token);
+		MapleHttpClient.get("users/check_mobile_login", params, new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(int statusCode, String response) {
+				Log.d(TAG, response);
+				try {
+					User appUser = new User(response, token);
+					mApp.setUser(appUser);
+				} catch (JSONException e) {
+					Log.d(TAG, "could not parse user JSON");
+					e.printStackTrace();
+				}	
+			}
+			@Override
+		    public void onFailure(Throwable error, String response) {
+				Log.d(TAG, "Panic time- could not retrieve user data");
+		    }
+		});
+	}
+	
 }
