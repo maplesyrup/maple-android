@@ -69,7 +69,7 @@ public class ImageAdapter extends BaseAdapter {
     	View adView = convertView;
 
         String votedOn = "";
-        String imageId = "61";
+        String imageId = "76";
         if (convertView == null) {
         	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         	adView = inflater.inflate(R.layout.ad_view, null);
@@ -117,7 +117,7 @@ public class ImageAdapter extends BaseAdapter {
         	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
         	createdText.setText(relativeTime + " ago");
         }
-        Button voteButton = (Button) adView.findViewById(R.id.voteBtn);
+        final Button voteButton = (Button) adView.findViewById(R.id.voteBtn);
         if (votedOn.equals("yes")) {
         	voteButton.setText("Voted");
         	voteButton.setEnabled(false);
@@ -132,19 +132,32 @@ public class ImageAdapter extends BaseAdapter {
 //	        		params.put("token", session.getAccessToken());
 	        		params.put("post_id", imageIdFinal);
 	        		params.put("token", mToken);
-	            	doVote(params);
+	        		MapleHttpClient.post("posts/vote_up", params, new AsyncHttpResponseHandler(){
+	            		@Override
+	        			public void onSuccess(int statusCode, String response) {
+	        				Log.d(TAG, response);
+	        				voteButton.setText("Voted");
+	        	        	voteButton.setEnabled(false);Toast.makeText(mContext, "you voted!", Toast.LENGTH_LONG).show();
+	        			}
+	        			@Override
+	        		    public void onFailure(Throwable error, String response) {
+	        				Toast.makeText(mContext, "Voting response failure", Toast.LENGTH_LONG).show();
+	        		    }
+	            	});
 	        	}
 	        });
         }
         return adView;
     }
     
-    public void doVote(RequestParams params) {
+    public void doVote(final View adView, RequestParams params) {
     	MapleHttpClient.post("posts/vote_up", params, new AsyncHttpResponseHandler(){
     		@Override
 			public void onSuccess(int statusCode, String response) {
 				Log.d(TAG, response);
-				Toast.makeText(mContext, "clicked on vote!", Toast.LENGTH_LONG).show();
+				Button voteButton = (Button) adView.findViewById(R.id.voteBtn);
+				voteButton.setText("Voted");
+	        	voteButton.setEnabled(false);Toast.makeText(mContext, "you voted!", Toast.LENGTH_LONG).show();
 			}
 			@Override
 		    public void onFailure(Throwable error, String response) {
