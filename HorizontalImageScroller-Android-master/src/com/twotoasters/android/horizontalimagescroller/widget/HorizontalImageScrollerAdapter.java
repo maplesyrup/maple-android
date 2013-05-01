@@ -20,6 +20,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -245,7 +246,6 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 		params.width = LayoutParams.MATCH_PARENT;
 		params.height = _imageSize;
 		imageView.setLayoutParams(params);
-		imageView.setDrawingCacheEnabled(true);
 	}
 	
 	protected void _setupInnerWrapper(View view, ImageToLoad imageToLoad, int position) {
@@ -295,6 +295,20 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 
 	public void setDefaultImageFailedToLoadResourceId(int defaultImageFailedToLoadResourceId) {
 		_defaultImageFailedToLoadResourceId = defaultImageFailedToLoadResourceId;
+	}
+	
+	/** Returns the bitmap of the image at the given
+	 * index of the scroller
+	 * @param index The location in the scroller
+	 * @return The image shown at this location, or null if it is not available 
+	 */
+	public Bitmap getImageAtPos(int index) {
+		// Image cache manager keeps track of the bitmaps.
+		// It uses a ImageUrlRequest to create a key into the
+		// cache
+		ImageToLoadUrl imageToLoadUrl = (ImageToLoadUrl) _images.get(index);
+		ImageUrlRequest imageUrlRequest = new ImageUrlRequest(imageToLoadUrl, _imageSize, _imageSize);
+		return _imageCacheManager.getBitmap(imageUrlRequest);
 	}
 	
 	
