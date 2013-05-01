@@ -120,7 +120,7 @@ public class LoginActivity extends Activity {
 	 * Retrieves user data from server based on access token
 	 * @param token The Facebook access token
 	 */
-	private void saveUserData(final MapleApplication mApp, String token) {
+	private void saveUserData(final MapleApplication mApp, final String token) {
 		RequestParams params = new RequestParams();
 		params.put("token", token);
 		MapleHttpClient.get("users/check_mobile_login", params, new AsyncHttpResponseHandler() {
@@ -128,7 +128,8 @@ public class LoginActivity extends Activity {
 			public void onSuccess(int statusCode, String response) {
 				Log.d(TAG, response);
 				try {
-					mApp.setUser(new User(response));
+					User appUser = new User(response, token);
+					mApp.setUser(appUser);
 				} catch (JSONException e) {
 					Log.d(TAG, "could not parse user JSON");
 					e.printStackTrace();

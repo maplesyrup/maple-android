@@ -15,17 +15,19 @@ import org.json.JSONObject;
 public class User {
 
 	// defaults
-	private String mName = "Name";
-	private String mEmail = "name@email.com";
-	private String mId = "3";
-	private String mPersonalInfo = "A litte about me";
+	private String mName;
+	private String mEmail;
+	private String mId;
+	private String mPersonalInfo;
+	private String mToken;
 
-	public User(String jsonResponse) throws JSONException {
+	public User(String jsonResponse, String token) throws JSONException {
 		JSONObject jObject = new JSONObject(jsonResponse);
 		mName = jObject.getString("name");
         mEmail = jObject.getString("email");
         mId = jObject.getString("id");
         mPersonalInfo = jObject.getString("personal_info"); 
+        mToken = token;
 	}
 	
 	public String getmName() {
@@ -51,5 +53,9 @@ public class User {
 
 	public String getmId() {
 		return mId;
+	}
+
+	public String getmToken() {
+		return mToken;
 	}
 }
