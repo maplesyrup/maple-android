@@ -173,6 +173,24 @@ public class ImageCacheManager {
 		throw new FileNotFoundException();
 	}
 	
+	/** Returns the bitmap of the given imageUrlRequest if
+	 * it has been loaded and cached. If it hasn't been loaded
+	 * yet null is returned
+	 * @param imageUrlRequest An ImageUrlRequest item created by the unique image url
+	 * @return The cached bitmap, or null if the image hasn't been loaded yet
+	 */
+	public Bitmap getBitmap(ImageUrlRequest imageUrlRequest){
+		ImageUrlRequestCacheKey key = imageUrlRequest.getCacheKey();
+		
+		if(isMapped(key)) {
+			return memoryCache.get(key);
+		} else if(isCached(imageUrlRequest)) {
+			return getBitmapFromCache(imageUrlRequest);
+		} else {
+			return null;
+		}
+	}
+	
 	private Bitmap getBitmapFromCache(ImageUrlRequest imageUrlRequest) {
 		Bitmap bitmap = memoryCache.get(imageUrlRequest.getCacheKey());
 		if(bitmap == null) {

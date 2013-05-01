@@ -61,8 +61,7 @@ public class LogoActivity extends FunnelActivity {
 
 		// make a list of ImageToLoad objects for image scroller
 		ArrayList<ImageToLoad> imagesToLoad = new ArrayList<ImageToLoad>();
-		ArrayList<CompanyLogo> logos = mAdCreationManager.getCompany()
-				.getLogos();
+		ArrayList<CompanyLogo> logos = mAdCreationManager.getCompany().getLogos();
 		for (CompanyLogo l : logos) {
 			imagesToLoad.add(new ImageToLoadUrl(l.getThumb()));
 		}
@@ -106,8 +105,7 @@ public class LogoActivity extends FunnelActivity {
 				mScroller.setCurrentImageIndex(pos);
 
 				// change logoview to display this image
-				ImageView scrollerImage = (ImageView) view.findViewById(R.id.image);
-				mLogo = scrollerImage.getDrawingCache();
+				mLogo = mScroller.getImageAtPos(pos);
 				mLogoView.setLogo(mLogo, 0, 0);
 			}
 		});
