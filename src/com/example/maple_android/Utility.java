@@ -239,7 +239,8 @@ public class Utility {
 			activity.startActivity(intent);
 			return true;
 		default:
-			return activity.onOptionsItemSelected(item);
+			// If "Settings" or something else unexpected is picked, simply return true
+			return true;
 		}
     }
     
