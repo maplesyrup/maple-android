@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -65,7 +64,7 @@ public class ImageAdapter extends BaseAdapter {
     	View adView = convertView;
         // Should check convertView == null here, but somehow that screws things up
 //        if (convertView == null) {
-    	DisplayAd dAd = mAds.get(position);
+    	final DisplayAd dAd = mAds.get(position);
     	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     	adView = inflater.inflate(R.layout.ad_view, null);
     	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
@@ -84,18 +83,18 @@ public class ImageAdapter extends BaseAdapter {
     	titleView.setTextColor(Color.BLACK); 
     	TextView creatorText = (TextView) adView.findViewById(R.id.creatorName);
     	creatorText.setText(dAd.getCreator());
-    	TextView numVotesText = (TextView) adView.findViewById(R.id.numVotes);
+    	final TextView numVotesText = (TextView) adView.findViewById(R.id.numVotes);
     	numVotesText.setText("Votes: " + dAd.getNumVotes());
     	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
     	createdText.setText(dAd.getRelativeTime() + " ago");
     	
         final Button voteButton = (Button) adView.findViewById(R.id.voteBtn);
-    	addButtonActions(dAd, voteButton);
+    	addButtonActions(dAd, voteButton, numVotesText);
 
         return adView;
     }
     
-    private void addButtonActions(DisplayAd ad, final Button voteButton) {
+    private void addButtonActions(final DisplayAd ad, final Button voteButton, final TextView numVotesText) {
     	String votedOn = ad.getVotedOn();
     	Log.d(TAG, "Have we voted on this? " + votedOn);
     	
@@ -118,6 +117,7 @@ public class ImageAdapter extends BaseAdapter {
 	        				Log.d(TAG, response);
 	        				disableButton(voteButton);
 	        				// Add one more to the numVotes textview
+	        				numVotesText.setText("Votes: " + ad.getNumVotes() + 1); 
 	        				Toast.makeText(mContext, "you voted!", Toast.LENGTH_SHORT).show();
 	        			}
 	        			@Override
