@@ -20,6 +20,7 @@
              <EditText
 	            android:id="@+id/ad_title"
 	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
 	            android:layout_weight="15"
 	            android:background="@drawable/custom_background"
 	            android:gravity="top|left"
@@ -27,7 +28,6 @@
 	            android:padding="10dp"
 	            android:minLines="1"
 	            android:maxLines="1"
-				android:layout_height="0dip"
 	            android:layout_margin="10dp"
 	           
 	           />
@@ -39,9 +39,9 @@
 	            android:gravity="top|left"
 	            android:hint="Type your description here"
 	            android:inputType="textMultiLine"
+	            android:layout_height="wrap_content"
 	            android:minLines="3"
 	            android:padding="10dp"
-				android:layout_height="0dip"
 	            android:layout_margin="10dp"
 	           
 	           />
