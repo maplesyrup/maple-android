@@ -2,7 +2,6 @@ package com.example.browsing;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.maple_android.R;

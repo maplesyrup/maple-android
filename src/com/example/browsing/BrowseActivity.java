@@ -2,7 +2,6 @@ package com.example.browsing;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -64,18 +63,12 @@ public class BrowseActivity extends Activity {
         mGridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
-                JSONObject adJSON = (JSONObject) parent.getAdapter().getItem(position);
-				try {
-					String url = adJSON.getString("image_url");
-					i.putExtra("url", url);
-	                String title = adJSON.getString("title");
-	                i.putExtra("title", title);
-	                startActivity(i);
-                } catch (JSONException e) {
-					e.printStackTrace();
-				}
-                
+                Log.d(TAG, "clicked on item");
+            	Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
+                DisplayAd displayAd = (DisplayAd) parent.getAdapter().getItem(position);
+				i.putExtra("url", displayAd.getUrl());
+                i.putExtra("title", displayAd.getTitle());
+                startActivity(i);
             }
         });
 	}
