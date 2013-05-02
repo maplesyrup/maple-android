@@ -1,5 +1,7 @@
 package com.example.browsing;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,10 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
-import com.example.maple_android.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,30 +34,26 @@ public class ImageAdapter extends BaseAdapter {
 	private String TAG = "ImageAdapter";
 	private Context mContext;
 	private String mToken;
-    private JSONArray ads;
+    private ArrayList<DisplayAd> mAds;
     private int MAX_TO_SHOW = 10;
     
-    public ImageAdapter(Context c, JSONArray ads, String token) {
-        mContext = c;
-        this.ads = ads;
+    public ImageAdapter(Context c, JSONArray ads, String token) throws JSONException {
+    	mAds = new ArrayList<DisplayAd>();
+    	// Build up ArrayList of DisplayAd from JSON array
+    	for (int i = 0; i < ads.length(); i++) {
+    		DisplayAd dAd = new DisplayAd(ads.getJSONObject(i));
+    		mAds.add(dAd);
+    	}
+    	mContext = c;
         mToken = token;
     }
 
     public int getCount() {
-    	return Math.min(MAX_TO_SHOW, ads.length());
+    	return Math.min(MAX_TO_SHOW, mAds.size());
     }
 
     public Object getItem(int position) {
-        try {
-        	/**
-        	 * We get the proper JSON object from the response, and extract 
-        	 * relevant data in the setOnItemClickListener on the gridview in BrowseActivity 
-        	 */
-			return ads.getJSONObject(position);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return new JSONObject();
-		}
+		return mAds.get(position);
     }
 
     public long getItemId(int position) {
@@ -71,51 +67,35 @@ public class ImageAdapter extends BaseAdapter {
         String votedOn = "";
         String imageId = "76";
         if (convertView == null) {
+        	Log.d(TAG, "making new view");
+        	DisplayAd dAd = mAds.get(position);
         	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         	adView = inflater.inflate(R.layout.ad_view, null);
         	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
 
-        	
-        	// Example image:
-            //http://s3.amazonaws.com/maplesyrup-assets/posts/images/000/000/006/medium/IMG_20130311_233546.jpg?1363070132
-            String url = "drawable://" + R.drawable.maple;
-            String title = "";
-            String creator = "";
-            String numVotes = "";
-            String relativeTime = "";
-            try {
-            	JSONObject jObject = ads.getJSONObject(position); 
-            	url = jObject.getString("image_url");
-    	        title = jObject.getString("title");
-    	        creator = jObject.getJSONObject("user").getString("name");
-    	        numVotes = jObject.getString("total_votes");
-    	        relativeTime = jObject.getString("relative_time");
-    	        votedOn = jObject.getString("voted_on");
-    	        imageId = jObject.getString("id");
-            } catch (JSONException e){
-            	Log.d(TAG, "unable to parse JSON");
-            }
             ImageLoader imageLoader = ImageLoader.getInstance();
-            imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+            imageLoader.loadImage(dAd.getUrl(), new SimpleImageLoadingListener() {
             	@Override
             	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             		imageView.setImageBitmap(loadedImage);
             	}
             });
         	TextView titleView = (TextView) adView.findViewById(R.id.adTitle);
-        	titleView.setText(title);
+        	titleView.setText(dAd.getTitle());
         	titleView.setTextColor(Color.BLACK); 
         	
         	TextView creatorText = (TextView) adView.findViewById(R.id.creatorName);
-        	creatorText.setText(creator);
+        	creatorText.setText(dAd.getCreator());
         	
         	TextView numVotesText = (TextView) adView.findViewById(R.id.numVotes);
-        	numVotesText.setText("Votes: " + numVotes);
+        	numVotesText.setText("Votes: " + dAd.getNumVotes());
         	
         	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
-        	createdText.setText(relativeTime + " ago");
+        	createdText.setText(dAd.getRelativeTime() + " ago");
+        	votedOn = dAd.getVotedOn();
+        	imageId = dAd.getImageId();
         }
         final Button voteButton = (Button) adView.findViewById(R.id.voteBtn);
         if (votedOn.equals("yes")) {
@@ -141,28 +121,12 @@ public class ImageAdapter extends BaseAdapter {
 	        			}
 	        			@Override
 	        		    public void onFailure(Throwable error, String response) {
-	        				Toast.makeText(mContext, "Voting response failure", Toast.LENGTH_LONG).show();
+	        				Toast.makeText(mContext, "Voting failed", Toast.LENGTH_LONG).show();
 	        		    }
 	            	});
 	        	}
 	        });
         }
         return adView;
-    }
-    
-    public void doVote(final View adView, RequestParams params) {
-    	MapleHttpClient.post("posts/vote_up", params, new AsyncHttpResponseHandler(){
-    		@Override
-			public void onSuccess(int statusCode, String response) {
-				Log.d(TAG, response);
-				Button voteButton = (Button) adView.findViewById(R.id.voteBtn);
-				voteButton.setText("Voted");
-	        	voteButton.setEnabled(false);Toast.makeText(mContext, "you voted!", Toast.LENGTH_LONG).show();
-			}
-			@Override
-		    public void onFailure(Throwable error, String response) {
-				Toast.makeText(mContext, "Voting response failure", Toast.LENGTH_LONG).show();
-		    }
-    	});
     }
 }
