@@ -18,7 +18,6 @@ import com.example.maple_android.R;
  */
 
 public class DisplayAd {
-
 	// Default for mUrl is what will be shown while image is loading
 	private String mUrl = "drawable://" + R.drawable.maple;
     private String mTitle;

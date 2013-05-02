@@ -38,7 +38,7 @@ public class ImageAdapter extends BaseAdapter {
     
     public ImageAdapter(Context c, JSONArray ads, String token) throws JSONException {
     	mAds = new ArrayList<DisplayAd>();
-    	// Build up ArrayList of DisplayAd from JSON array
+    	// Build up ArrayList of DisplayAds from JSON array
     	for (int i = 0; i < ads.length(); i++) {
     		DisplayAd dAd = new DisplayAd(ads.getJSONObject(i));
     		mAds.add(dAd);
@@ -95,17 +95,16 @@ public class ImageAdapter extends BaseAdapter {
     }
     
     private void addButtonActions(final DisplayAd ad, final Button voteButton, final TextView numVotesText) {
-    	String votedOn = ad.getVotedOn();
-    	Log.d(TAG, "Have we voted on this? " + votedOn);
-    	
 		final RequestParams params = new RequestParams();
-		// Another way to do the below, but depends on Facebook
+		// Another way to get the token
 		// Session session = Session.getActiveSession();
 		// params.put("token", session.getAccessToken());
 		params.put("post_id", ad.getImageId());
 		params.put("token", mToken);
 		
-        if (votedOn.equals("yes")) {
+		// Currently the mobile response to this gives back "unavailable" for all images,
+		// probably because there are issues with current user auth
+        if (ad.getVotedOn().equals("yes")) {
 			disableButton(voteButton);
         } else {
 	        voteButton.setOnClickListener(new OnClickListener() {

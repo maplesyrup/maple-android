@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,7 +94,9 @@ public class BrowseActivity extends Activity {
 						TextView adsTitle = (TextView) findViewById(R.id.adsTitle);
 						adsTitle.setText("There are no ads to show; you should create one!");
 						// Still not centering, sigh...
-						adsTitle.setGravity(Gravity.CENTER);
+						LayoutParams p = (LayoutParams) mGridview.getLayoutParams();
+						p.addRule(RelativeLayout.CENTER_HORIZONTAL);
+						adsTitle.setLayoutParams(p);
 					} else {
 						MapleApplication mApp = (MapleApplication) getApplication();
 						User appUser = mApp.getUser();
