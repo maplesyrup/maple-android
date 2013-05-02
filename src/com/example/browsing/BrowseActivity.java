@@ -9,11 +9,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -97,6 +97,8 @@ public class BrowseActivity extends Activity {
 						LayoutParams p = (LayoutParams) mGridview.getLayoutParams();
 						p.addRule(RelativeLayout.CENTER_HORIZONTAL);
 						adsTitle.setLayoutParams(p);
+						adsTitle.setTextSize(22);
+						adsTitle.setTypeface(null, Typeface.BOLD);
 					} else {
 						MapleApplication mApp = (MapleApplication) getApplication();
 						User appUser = mApp.getUser();

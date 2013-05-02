@@ -116,7 +116,7 @@ public class ImageAdapter extends BaseAdapter {
 	        				// Add one more to the numVotes textview
 	        				int numVotesAdded = ad.getNumVotes() + 1;
 	        				numVotesText.setText("Votes: " + numVotesAdded);
-	        				Toast.makeText(mContext, "you voted!", Toast.LENGTH_SHORT).show();
+	        				Toast.makeText(mContext, "You voted!", Toast.LENGTH_SHORT).show();
 	        			}
 	        			@Override
 	        		    public void onFailure(Throwable error, String response) {
