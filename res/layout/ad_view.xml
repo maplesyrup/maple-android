@@ -61,11 +61,12 @@
 	    <Button
 	        android:id="@+id/voteBtn"
 	        style="?android:attr/buttonStyleSmall"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:layout_marginTop="5dp"
 	        android:layout_alignParentRight="true"
 	        android:layout_below="@+id/dateCreated"
-	        android:text="Vote" />
+	        android:background="@layout/button_vote" />
 	</RelativeLayout>
 
 </RelativeLayout>
