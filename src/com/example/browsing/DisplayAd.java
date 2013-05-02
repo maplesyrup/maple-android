@@ -3,6 +3,8 @@ package com.example.browsing;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.example.maple_android.R;
 
 /**
@@ -22,8 +24,13 @@ public class DisplayAd {
     private String mTitle;
     private String mCreator;
     private String mNumVotes;
+	private String mRelativeTime;
+    private String mVotedOn;
+    private String mImageId;
+    private String TAG = "DisplayAd";
 	
 	public DisplayAd(JSONObject ad) throws JSONException { 
+		Log.d(TAG, ad.toString());
     	mUrl = ad.getString("image_url");
         mTitle = ad.getString("title");
         mCreator = ad.getJSONObject("user").getString("name");
@@ -62,10 +69,4 @@ public class DisplayAd {
 	public String getImageId() {
 		return mImageId;
 	}
-
-	private String mRelativeTime;
-    private String mVotedOn;
-    private String mImageId;
-
-	
 }

@@ -63,70 +63,75 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
     	View adView = convertView;
+        // Should check convertView == null here, but somehow that screws things up
+//        if (convertView == null) {
+    	DisplayAd dAd = mAds.get(position);
+    	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    	adView = inflater.inflate(R.layout.ad_view, null);
+    	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setPadding(8, 8, 8, 8);
 
-        String votedOn = "";
-        String imageId = "76";
-        if (convertView == null) {
-        	Log.d(TAG, "making new view");
-        	DisplayAd dAd = mAds.get(position);
-        	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        	adView = inflater.inflate(R.layout.ad_view, null);
-        	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
-
-            ImageLoader imageLoader = ImageLoader.getInstance();
-            imageLoader.loadImage(dAd.getUrl(), new SimpleImageLoadingListener() {
-            	@Override
-            	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            		imageView.setImageBitmap(loadedImage);
-            	}
-            });
-        	TextView titleView = (TextView) adView.findViewById(R.id.adTitle);
-        	titleView.setText(dAd.getTitle());
-        	titleView.setTextColor(Color.BLACK); 
-        	
-        	TextView creatorText = (TextView) adView.findViewById(R.id.creatorName);
-        	creatorText.setText(dAd.getCreator());
-        	
-        	TextView numVotesText = (TextView) adView.findViewById(R.id.numVotes);
-        	numVotesText.setText("Votes: " + dAd.getNumVotes());
-        	
-        	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
-        	createdText.setText(dAd.getRelativeTime() + " ago");
-        	votedOn = dAd.getVotedOn();
-        	imageId = dAd.getImageId();
-        }
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.loadImage(dAd.getUrl(), new SimpleImageLoadingListener() {
+        	@Override
+        	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+        		imageView.setImageBitmap(loadedImage);
+        	}
+        });
+    	TextView titleView = (TextView) adView.findViewById(R.id.adTitle);
+    	titleView.setText(dAd.getTitle());
+    	titleView.setTextColor(Color.BLACK); 
+    	TextView creatorText = (TextView) adView.findViewById(R.id.creatorName);
+    	creatorText.setText(dAd.getCreator());
+    	TextView numVotesText = (TextView) adView.findViewById(R.id.numVotes);
+    	numVotesText.setText("Votes: " + dAd.getNumVotes());
+    	TextView createdText = (TextView) adView.findViewById(R.id.dateCreated);
+    	createdText.setText(dAd.getRelativeTime() + " ago");
+    	
         final Button voteButton = (Button) adView.findViewById(R.id.voteBtn);
+    	addButtonActions(dAd, voteButton);
+
+        return adView;
+    }
+    
+    private void addButtonActions(DisplayAd ad, final Button voteButton) {
+    	String votedOn = ad.getVotedOn();
+    	Log.d(TAG, "Have we voted on this? " + votedOn);
+    	
+		final RequestParams params = new RequestParams();
+		// Another way to do the below, but depends on Facebook
+		// Session session = Session.getActiveSession();
+		// params.put("token", session.getAccessToken());
+		params.put("post_id", ad.getImageId());
+		params.put("token", mToken);
+		
         if (votedOn.equals("yes")) {
-        	voteButton.setText("Voted");
-        	voteButton.setEnabled(false);
+			disableButton(voteButton);
         } else {
-        	final String imageIdFinal = imageId;
 	        voteButton.setOnClickListener(new OnClickListener() {
 	        	@Override
 	        	public void onClick(View v) {
-	        		RequestParams params = new RequestParams();
-	        		// Another way to do the below, but depends on Facebook
-//	        		Session session = Session.getActiveSession();
-//	        		params.put("token", session.getAccessToken());
-	        		params.put("post_id", imageIdFinal);
-	        		params.put("token", mToken);
 	        		MapleHttpClient.post("posts/vote_up", params, new AsyncHttpResponseHandler(){
 	            		@Override
 	        			public void onSuccess(int statusCode, String response) {
 	        				Log.d(TAG, response);
-	        				voteButton.setText("Voted");
-	        	        	voteButton.setEnabled(false);Toast.makeText(mContext, "you voted!", Toast.LENGTH_LONG).show();
+	        				disableButton(voteButton);
+	        				// Add one more to the numVotes textview
+	        				Toast.makeText(mContext, "you voted!", Toast.LENGTH_SHORT).show();
 	        			}
 	        			@Override
 	        		    public void onFailure(Throwable error, String response) {
-	        				Toast.makeText(mContext, "Voting failed", Toast.LENGTH_LONG).show();
+	        				Toast.makeText(mContext, "Voting failed", Toast.LENGTH_SHORT).show();
 	        		    }
 	            	});
 	        	}
 	        });
         }
-        return adView;
+    }
+    
+    private void disableButton(final Button voteButton) {
+		voteButton.setText("Voted");
+    	voteButton.setEnabled(false);
     }
 }
