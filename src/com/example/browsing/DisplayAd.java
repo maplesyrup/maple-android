@@ -22,9 +22,9 @@ public class DisplayAd {
 	private String mUrl = "drawable://" + R.drawable.maple;
     private String mTitle;
     private String mCreator;
-    private String mNumVotes;
+    private int mNumVotes;
 	private String mRelativeTime;
-    private String mVotedOn;
+    private boolean mVotedOn;
     private String mImageId;
     private String TAG = "DisplayAd";
 	
@@ -33,9 +33,17 @@ public class DisplayAd {
     	mUrl = ad.getString("image_url");
         mTitle = ad.getString("title");
         mCreator = ad.getJSONObject("user").getString("name");
-        mNumVotes = ad.getString("total_votes");
+        mNumVotes = Integer.parseInt(ad.getString("total_votes"));
         mRelativeTime = ad.getString("relative_time");
-        mVotedOn = ad.getString("voted_on");
+        
+		// Currently the mobile response to this gives back "unavailable" for all images,
+		// probably because there are issues with current user auth
+        String strVotedOn = ad.getString("voted_on");
+        if (strVotedOn.equals("yes")) {
+        	mVotedOn = true;
+        } else {
+        	mVotedOn = false;
+        }
         mImageId = ad.getString("id");
 	}
     
@@ -53,7 +61,7 @@ public class DisplayAd {
 		return mCreator;
 	}
 
-	public String getNumVotes() {
+	public int getNumVotes() {
 		return mNumVotes;
 	}
 
@@ -61,7 +69,7 @@ public class DisplayAd {
 		return mRelativeTime;
 	}
 
-	public String getVotedOn() {
+	public boolean getVotedOn() {
 		return mVotedOn;
 	}
 

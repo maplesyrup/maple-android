@@ -102,9 +102,7 @@ public class ImageAdapter extends BaseAdapter {
 		params.put("post_id", ad.getImageId());
 		params.put("token", mToken);
 		
-		// Currently the mobile response to this gives back "unavailable" for all images,
-		// probably because there are issues with current user auth
-        if (ad.getVotedOn().equals("yes")) {
+        if (ad.getVotedOn()) {
 			disableButton(voteButton);
         } else {
 	        voteButton.setOnClickListener(new OnClickListener() {
@@ -116,7 +114,8 @@ public class ImageAdapter extends BaseAdapter {
 	        				Log.d(TAG, response);
 	        				disableButton(voteButton);
 	        				// Add one more to the numVotes textview
-	        				numVotesText.setText("Votes: " + ad.getNumVotes() + 1); 
+	        				int numVotesAdded = ad.getNumVotes() + 1;
+	        				numVotesText.setText("Votes: " + numVotesAdded);
 	        				Toast.makeText(mContext, "you voted!", Toast.LENGTH_SHORT).show();
 	        			}
 	        			@Override
