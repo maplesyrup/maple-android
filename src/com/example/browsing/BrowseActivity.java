@@ -2,18 +2,17 @@ package com.example.browsing;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +28,7 @@ import com.example.maple_android.AdCreationDialog;
 import com.example.maple_android.MapleApplication;
 import com.example.maple_android.MapleHttpClient;
 import com.example.maple_android.R;
+import com.example.maple_android.User;
 import com.example.maple_android.Utility;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -62,18 +63,12 @@ public class BrowseActivity extends Activity {
         mGridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
-                JSONObject adJSON = (JSONObject) parent.getAdapter().getItem(position);
-				try {
-					String url = adJSON.getString("image_url");
-					i.putExtra("url", url);
-	                String title = adJSON.getString("title");
-	                i.putExtra("title", title);
-	                startActivity(i);
-                } catch (JSONException e) {
-					e.printStackTrace();
-				}
-                
+                Log.d(TAG, "clicked on item");
+            	Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
+                DisplayAd displayAd = (DisplayAd) parent.getAdapter().getItem(position);
+				i.putExtra("url", displayAd.getUrl());
+                i.putExtra("title", displayAd.getTitle());
+                startActivity(i);
             }
         });
 	}
@@ -92,9 +87,15 @@ public class BrowseActivity extends Activity {
 						TextView adsTitle = (TextView) findViewById(R.id.adsTitle);
 						adsTitle.setText("There are no ads to show; you should create one!");
 						// Still not centering, sigh...
-						adsTitle.setGravity(Gravity.CENTER);
+						LayoutParams p = (LayoutParams) mGridview.getLayoutParams();
+						p.addRule(RelativeLayout.CENTER_HORIZONTAL);
+						adsTitle.setLayoutParams(p);
+						adsTitle.setTextSize(22);
+						adsTitle.setTypeface(null, Typeface.BOLD);
 					} else {
-						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds));
+						MapleApplication mApp = (MapleApplication) getApplication();
+						User appUser = mApp.getUser();
+						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds, appUser.getToken()));
 					}
 				} catch (JSONException e) {
 					Log.d(TAG, "Could not parse JSON; unexpected response from the server.");	

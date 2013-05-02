@@ -22,7 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class MapleApplication extends Application{
 	
 	private AdCreationManager mAdCreationManager;
-	private User appUser;
+	private User mAppUser;
 	
 	public static final int GREEN = 0xff21ab27;
 
@@ -69,10 +69,10 @@ public class MapleApplication extends Application{
 	}
 	
 	public void setUser(User appUser) {
-		this.appUser = appUser;
+		mAppUser = appUser;
 	}
 	
 	public User getUser() {
-		return appUser;
+		return mAppUser;
 	}
 }
