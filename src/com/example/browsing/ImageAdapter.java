@@ -129,7 +129,8 @@ public class ImageAdapter extends BaseAdapter {
     }
     
     private void disableButton(final Button voteButton) {
-		voteButton.setText("Voted");
+		voteButton.setBackgroundResource(R.drawable.vote_pressed);
+		voteButton.setClickable(false);
     	voteButton.setEnabled(false);
     }
 }
