@@ -295,8 +295,8 @@ public class TextActivity extends FunnelActivity implements
 					currBitmap.getHeight(), currBitmap.getConfig());
 			Canvas canvas = new Canvas(bmOverlay);
 			canvas.drawBitmap(currBitmap, new Matrix(), null);
-			canvas.drawBitmap(textBitmap, mTextXPos,
-					mTextYPos - mPhotoText.getHeight(), null);
+			canvas.drawBitmap(textBitmap, mTextXPos / mAdCreationManager.getRatio(),
+					(mTextYPos - mPhotoText.getHeight()) / mAdCreationManager.getRatio(), null);
 		}
 		mAdCreationManager.nextStage(this, bmOverlay);
 	}
