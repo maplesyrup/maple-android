@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.maple_android.R;
@@ -37,7 +38,7 @@ public class TextActivity extends FunnelActivity {
 	private TextView mPhotoText;	
 
 	// the background color of the scroller styles
-	private final int FRAME_COLOR = Color.TRANSPARENT; 
+	private final int FRAME_COLOR = Color.BLACK; 
 	// the color behind the selected style
 	private final int FRAME_SELECTED_COLOR = Color.rgb(247, 187, 57); 
 	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_text_style;
@@ -49,6 +50,8 @@ public class TextActivity extends FunnelActivity {
 	private final int TEXT_HEIGHT = 50;
 	// width of text
 	private final int TEXT_WIDTH = 100;
+	// keep track of the last selected frame 
+	private FrameLayout mLastFrame;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +127,6 @@ public class TextActivity extends FunnelActivity {
 
 		mScroller.setAdapter(adapter);
 
-		// start with the first company selected
-		mScroller.setCurrentImageIndex(0);
 
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {
@@ -133,8 +134,14 @@ public class TextActivity extends FunnelActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
-				// Updates the background color to indicate selection
-				mScroller.setCurrentImageIndex(pos);
+				// visually select the chosen style
+				FrameLayout border = (FrameLayout) view.findViewById(R.id.image_frame);
+				border.setBackgroundColor(FRAME_SELECTED_COLOR);
+				// unselect last frame
+				if(mLastFrame != null){
+					mLastFrame.setBackgroundColor(FRAME_COLOR);
+				}
+				mLastFrame = border;
 
 				// do something with the selected style
 				// TODO: apply mStyles.get(pos)
