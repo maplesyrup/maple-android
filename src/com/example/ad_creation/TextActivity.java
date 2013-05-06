@@ -1,261 +1,154 @@
 package com.example.ad_creation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Typeface;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.TextView.BufferType;
 
-import com.commonsware.cwac.colormixer.ColorMixer;
-import com.commonsware.cwac.colormixer.ColorMixerDialog;
 import com.example.maple_android.R;
+import com.example.maple_android.StyleList;
 
-public class TextActivity extends FunnelActivity implements
-		FontPickerDialog.FontPickerDialogListener {
+import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
+import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadUrl;
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScrollerAdapter;
+import com.twotoasters.android.horizontalimagescroller.widget.TextStyle;
 
-	private ImageView mAdView;
+public class TextActivity extends FunnelActivity {
 
-	// text option
-	private boolean mShowOptions;
+	// to show text styles
+	private HorizontalImageScroller mScroller;
+	private ArrayList<TextStyle> mStyles;
+
 	private float mTextXPos;
 	private float mTextYPos;
-	private EditText mTextEntryField;
-	private TextView mPhotoText;
-	private int mTextColor;
+	private TextView mPhotoText;	
 
+	// the background color of the scroller styles
+	private final int FRAME_COLOR = Color.BLACK; 
+	// the color behind the selected style
+	private final int FRAME_SELECTED_COLOR = Color.rgb(247, 187, 57); 
+	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_text_style;
+	// the text of the style preview shown in the scroller
+	private final String SCROLLER_TEXT = "Style";
+	// size of text in scroller
+	private final float TEXT_SIZE = 40.0f;
+	// height of text image display in scroller
+	private final int TEXT_HEIGHT = 50;
+	// width of text
+	private final int TEXT_WIDTH = 100;
+	// keep track of the last selected frame 
+	private FrameLayout mLastFrame;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		setCustomContent(R.layout.activity_text);
-	
-		mConfig.put(Config.HELP_MESSAGE, "Add humorous, sincere, or sophic text to your ad, and decide where to put it.");
-		mConfig.put(Config.NAME, "Text");
 
-		// set photo
-		mAdView = (ImageView) this.findViewById(R.id.ad);
-		// initialize photo for clicking
-		mAdView.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				placeText(v, event);
-				/*
-				 * This callback function requires us to return a boolean.
-				 * Return true just to appease it.
-				 */
-				return true;
-			}
-		});
+		setCustomContent(R.layout.activity_text);
+
+		mConfig.put(Config.HELP_MESSAGE,
+				"Add humorous, sincere, or sophic text to your ad, and decide where to put it.");
+		mConfig.put(Config.NAME, "Text");
 		
 		mAdCreationManager.setup(this);
 
-		// start off not showing edit options
-		mShowOptions = false;
+		/****** Dialog for user to enter text ****************/
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		// get TextView to overlap on photo
-		mPhotoText = (TextView) findViewById(R.id.photoText);
-		updateTextSize(); // initialize size to default
+		alert.setTitle("Add Text");
+		alert.setMessage("Enter the text you would like to include in your ad");
 
-		// set up text color
-		mTextColor = mPhotoText.getTextColors().getDefaultColor();
-		((TextView) findViewById(R.id.changeColor)).setTextColor(mTextColor);
+		final EditText input = new EditText(this);
+		alert.setView(input);
 
-		// set up font size listener
-		((EditText) findViewById(R.id.fontSize))
-				.addTextChangedListener(new TextWatcher() {
-					@Override
-					public void onTextChanged(CharSequence s, int start,
-							int before, int count) {
-						updateTextSize();
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String value = input.getText().toString();
+				// Do something with value!
+			}
+		});
 
-					}
-
-					@Override
-					public void beforeTextChanged(CharSequence s, int start,
-							int count, int after) {
-					}
-
-					@Override
-					public void afterTextChanged(Editable s) {
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Canceled.
 					}
 				});
 
-		// set up text listener
-		mTextEntryField = (EditText) this.findViewById(R.id.textEntry);
-		mTextEntryField.addTextChangedListener(new TextWatcher() {
+		// alert.show();
+		/******************************************************/
+
+		/******* Set up scroller for style options ************/
+		// set up the scroller with an adapter populated with the list of
+		// ImageToLoad objects
+		mScroller = (HorizontalImageScroller) findViewById(R.id.styleScroller);
+		
+		// get list of text styles
+		mStyles = StyleList.getStyles();
+
+		// We need to make sure not having
+		// images doesn't break things, so we create as many images
+		// as we have paints
+		List<ImageToLoad> images = new ArrayList<ImageToLoad>();
+		for (int i = 0; i < mStyles.size(); i++) {
+			images.add(new ImageToLoadUrl("www.thiswillneverbeused.com"));
+		}
+
+		// set adapter options
+		HorizontalImageScrollerAdapter adapter = new HorizontalImageScrollerAdapter(
+				this, images);
+		
+		// shows the frame around the view
+		adapter.setShowImageFrame(true);
+		// only shows frame when item is selected
+		adapter.setHighlightActiveImage(true);
+		// the background color when selected
+		adapter.setFrameColor(FRAME_SELECTED_COLOR);
+		// the default background color
+		adapter.setFrameOffColor(FRAME_COLOR);
+		// which view to use for layout
+		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
+		// set up scroller to show off text styles
+		adapter.setTextOnlyMode(true, SCROLLER_TEXT, TEXT_SIZE, mStyles,
+				TEXT_WIDTH, TEXT_HEIGHT);
+
+		mScroller.setAdapter(adapter);
+
+
+		// add callback function when image in scroller is selected
+		mScroller.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void afterTextChanged(Editable e) {
-				mPhotoText.setText(e.toString(), BufferType.SPANNABLE);
-			}
+			public void onItemClick(AdapterView<?> parent, View view, int pos,
+					long id) {
+				// visually select the chosen style
+				FrameLayout border = (FrameLayout) view.findViewById(R.id.image_frame);
+				border.setBackgroundColor(FRAME_SELECTED_COLOR);
+				// unselect last frame
+				if(mLastFrame != null){
+					mLastFrame.setBackgroundColor(FRAME_COLOR);
+				}
+				mLastFrame = border;
 
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
+				// do something with the selected style
+				// TODO: apply mStyles.get(pos)
 			}
-
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-			}
-
 		});
+		/******************************************************/
 
-	}
-
-	/**
-	 * Grabs the user entered value from the font size entry text box and
-	 * updates the text size with it. Changes are instant, and error checking is
-	 * done for null values. The XML declaration specifies that only digits can
-	 * be entered.
-	 */
-	private void updateTextSize() {
-		// grab entry as string
-		String textSize = ((EditText) findViewById(R.id.fontSize)).getText()
-				.toString();
-
-		// try to convert to int
-		Integer size = null;
-		try {
-			size = Integer.valueOf(textSize);
-		} catch (NumberFormatException e) {
-		}
-
-		// update size if possible
-		if (size != null)
-			mPhotoText.setTextSize((float) size);
-	}
-
-	/**
-	 * Called when a click is registered on the picture. This function saves
-	 * that click location for future reference, and moves the currently written
-	 * text to the new location.
-	 * 
-	 * @param v
-	 *            The view that was clicked on
-	 * @param event
-	 *            The mouse click
-	 */
-	private void placeText(View v, MotionEvent event) {
-		// update options after click
-		if (!mShowOptions)
-			toggleOptions();
-
-		// save click location
-		mTextXPos = event.getX();
-		mTextYPos = event.getY();
-
-		// place textView
-		mPhotoText.setX(mTextXPos + v.getX());
-		mPhotoText.setY(mTextYPos + v.getY() - mPhotoText.getBaseline());
-
-		// set focus to text edit
-		mTextEntryField.setFocusable(true);
-		mTextEntryField.requestFocus();
-	}
-
-	/**
-	 * This function toggles the visibility of the text editing options. They
-	 * are initializing set to be hidden until the user clicks on the picture.
-	 * Then they are shown, and the initial instruction are hidden. Calling this
-	 * again will reverse the process. The visibility status is stored in
-	 * mShowOptions.
-	 */
-	private void toggleOptions() {
-		// switch setting
-		mShowOptions = !mShowOptions;
-
-		// get int value for visibility setting
-		int visibility;
-		if (mShowOptions) {
-			visibility = View.VISIBLE;
-			findViewById(R.id.textInstructions).setVisibility(View.GONE);
-		} else {
-			visibility = View.INVISIBLE;
-			findViewById(R.id.textInstructions).setVisibility(View.VISIBLE);
-		}
-
-		// update View visibilities
-		findViewById(R.id.changeColor).setVisibility(visibility);
-		findViewById(R.id.changeFont).setVisibility(visibility);
-		findViewById(R.id.fontSize).setVisibility(visibility);
-		findViewById(R.id.fontSizeLabel).setVisibility(visibility);
-		mTextEntryField.setVisibility(visibility);
-		mPhotoText.setVisibility(visibility);
-	}
-
-	/**
-	 * start a dialog that shows all availabe fonts and / allows the user to
-	 * pick which one they want to use
-	 * 
-	 * @param view
-	 *            The view that was clicked on
-	 */
-	public void changeFont(View view) {
-		FontPickerDialog dlg = new FontPickerDialog();
-		dlg.show(getFragmentManager(), "font_picker");
-	}
-
-	/**
-	 * Call back method for the font picker dialog This is called when a font is
-	 * selected.
-	 * 
-	 * @param dialog
-	 *            The dialog instance. Contains the selected font.
-	 */
-	@Override
-	public void onFontSelected(FontPickerDialog dialog) {
-		// get font file path and typeface style from the dialog
-		String fontPath = dialog.getSelectedFont();
-		Typeface tface = Typeface.createFromFile(fontPath);
-
-		// update text on ad
-		mPhotoText.setTypeface(tface);
-
-		// update font button to show what font we're using
-		Button fontButton = (Button) findViewById(R.id.changeFont);
-		fontButton.setTypeface(tface);
-
-	}
-
-	/**
-	 * Called when the change color button is clicked. This launches a color
-	 * picker dialog that allows the user to change which color is being used.
-	 * 
-	 * @param view
-	 *            The button that was clicked on
-	 */
-	public void changeColor(View view) {
-
-		// Create a new color dialog with a listener
-		// that updates the current color after the user
-		// has made a selection. This does nothing on cancel.
-		new ColorMixerDialog(this, mTextColor,
-				new ColorMixer.OnColorChangedListener() {
-
-					// called when the user selects a new color
-					@Override
-					public void onColorChange(int color) {
-						// update the stored color
-						mTextColor = color;
-						// change the text color
-						mPhotoText.setTextColor(color);
-						// update the color of the button's text
-						Button b = (Button) findViewById(R.id.changeColor);
-						b.setTextColor(color);
-
-					}
-
-				}).show();
 	}
 
 	/**
@@ -282,7 +175,7 @@ public class TextActivity extends FunnelActivity implements
 	 */
 	public void nextStage(View view) {
 		selectNext();
-		
+
 		// if text has been added, merge it with the ad
 		Bitmap bmOverlay = mAdCreationManager.getCurrentBitmap();
 		if (!mPhotoText.getText().equals("")) {
@@ -295,8 +188,11 @@ public class TextActivity extends FunnelActivity implements
 					currBitmap.getHeight(), currBitmap.getConfig());
 			Canvas canvas = new Canvas(bmOverlay);
 			canvas.drawBitmap(currBitmap, new Matrix(), null);
-			canvas.drawBitmap(textBitmap, mTextXPos / mAdCreationManager.getRatio(),
-					(mTextYPos - mPhotoText.getHeight()) / mAdCreationManager.getRatio(), null);
+			canvas.drawBitmap(
+					textBitmap,
+					mTextXPos / mAdCreationManager.getRatio(),
+					(mTextYPos - mPhotoText.getHeight())
+							/ mAdCreationManager.getRatio(), null);
 		}
 		mAdCreationManager.nextStage(this, bmOverlay);
 	}
