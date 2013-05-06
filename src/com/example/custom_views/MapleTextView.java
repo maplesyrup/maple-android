@@ -1,19 +1,26 @@
 package com.example.custom_views;
 
+import com.twotoasters.android.horizontalimagescroller.widget.TextStyle;
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 
-public class TextView extends ImageView implements OnTouchListener {
+public class MapleTextView extends ImageView implements OnTouchListener {
 
 	private Bitmap mCurrAd;
 	private String mText;
@@ -24,15 +31,40 @@ public class TextView extends ImageView implements OnTouchListener {
 	
 	private ScaleGestureDetector mScaleDetector;
 	private float mScaleFactor = 1.f;
+	private Builder mAddTextDialog;
+	private GestureDetector mGestureDetector;
 
-	public TextView(Context context, AttributeSet attrs) {
-		super(context);
+	public MapleTextView(Context context, AttributeSet attrs) {
+		super(context, attrs);
 		mCurrAd = null;
 		mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+		mGestureDetector = new GestureDetector(context, new GestureListener());
+
 		mText = "";
 		mPaint = new Paint();
 		mPaint.setTextSize(DEFAULT_TEXT_SIZE);
 		mTextPos = new PointF(0, 0);
+		
+		/****** Dialog for user to enter text ****************/
+		mAddTextDialog = new AlertDialog.Builder(context);
+		mAddTextDialog.setTitle("Add Text");
+		mAddTextDialog.setMessage("Enter the text you would like to include in your ad");
+
+		final EditText input = new EditText(context);
+		mAddTextDialog.setView(input);
+
+		mAddTextDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String value = input.getText().toString();
+				mText = value;
+			}
+		});
+
+		mAddTextDialog.setNegativeButton("Cancel",
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+				}
+			});
 	}
 	
 	protected void onDraw(Canvas canvas) {
@@ -53,8 +85,8 @@ public class TextView extends ImageView implements OnTouchListener {
 		invalidate();
 	}
 	
-	public void setStyle(Paint paint) {
-		mPaint = paint;
+	public void setStyle(TextStyle textStyle) {
+		//mPaint = textStyle;
 		invalidate();
 	}
 	/**
@@ -80,6 +112,7 @@ public class TextView extends ImageView implements OnTouchListener {
 	public boolean onTouchEvent(MotionEvent ev) {
 	    // Let the ScaleGestureDetector inspect all events.
 	    mScaleDetector.onTouchEvent(ev);
+	    mGestureDetector.onTouchEvent(ev);
 	    
 	    if (ev.getPointerCount() == 1) {
 		    switch (ev.getAction()) {
@@ -135,4 +168,14 @@ public class TextView extends ImageView implements OnTouchListener {
 	        return true;
 	    }
 	}
+	
+	private class GestureListener
+		extends GestureDetector.SimpleOnGestureListener {
+		
+		@Override
+		public void onLongPress(MotionEvent e) {
+			mAddTextDialog.show();
+		}
+	}
+
 }
