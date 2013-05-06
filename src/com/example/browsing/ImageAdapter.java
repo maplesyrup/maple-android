@@ -34,7 +34,7 @@ public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
 	private String mToken;
     private ArrayList<DisplayAd> mAds;
-    private int MAX_TO_SHOW = 10;
+    private int MAX_TO_SHOW = 20;
     
     public ImageAdapter(Context c, JSONArray ads, String token) throws JSONException {
     	mAds = new ArrayList<DisplayAd>();
