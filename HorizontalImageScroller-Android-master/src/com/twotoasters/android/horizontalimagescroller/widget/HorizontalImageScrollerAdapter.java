@@ -12,7 +12,7 @@ Copyright 2012 Two Toasters, LLC
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package com.twotoasters.android.horizontalimagescroller.widget;
 
 import java.util.ArrayList;
@@ -21,6 +21,8 @@ import java.util.List;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,13 +59,27 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 	protected int _imageIdInLayout;
 	protected int _textIdInLayout;
 	protected int _innerWrapperIdInLayout;
-	
+
+	/*
+	 * Text only mode was added to allow display of text styles. A list of
+	 * paints is passed in, as well as a text string to display
+	 */
+	protected boolean _textOnlyMode = false;
+	protected String _textToShow;
+	protected ArrayList<TextStyle> _styles;
+	protected float _textStyleSize;
+	protected int _textHeight;
+	protected int _textWidth;
+
 	// Text shown beneath an image. Indices match up with those of _images
 	protected ArrayList<String> _text;
 	protected boolean _showText = false;
 
-	public HorizontalImageScrollerAdapter(final Context context, final List<ImageToLoad> images, final int imageSize, final int frameColorResourceId, final int frameOffColorResourceId,
-			final int transparentColorResourceId, final int imageLayoutResourceId, final int loadingImageResourceId) {
+	public HorizontalImageScrollerAdapter(final Context context,
+			final List<ImageToLoad> images, final int imageSize,
+			final int frameColorResourceId, final int frameOffColorResourceId,
+			final int transparentColorResourceId,
+			final int imageLayoutResourceId, final int loadingImageResourceId) {
 		_context = context;
 		_inflater = LayoutInflater.from(context);
 		_images = images;
@@ -77,13 +93,14 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 		_imageCacheManager = ImageCacheManager.getInstance(context);
 	}
 
-	public HorizontalImageScrollerAdapter(final Context context, final List<ImageToLoad> images) {
+	public HorizontalImageScrollerAdapter(final Context context,
+			final List<ImageToLoad> images) {
 		_context = context;
 		_inflater = LayoutInflater.from(context);
 		_images = images;
 		_setDefaultValues();
 	}
-	
+
 	private void _setDefaultValues() {
 		Resources res = _context.getResources();
 		_imageSize = (int) res.getDimension(R.dimen.default_image_size);
@@ -96,24 +113,51 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 		_textIdInLayout = R.id.text;
 		_innerWrapperIdInLayout = R.id.image_frame;
 	}
-	
-	/** Set whether or not text should be shown beneath
-	 * the image in the scrollview. If this is true, a supporting
-	 * image layout must have also been set, and text values must
-	 * be supplied through setTextList
+
+	/**
+	 * Enables text only mode. This is a completely different mode that doesn't
+	 * show images, and is not related to setShowText. In this mode, a single
+	 * string of text is repeated with different styles. This is meant to be
+	 * used to display different paint styles. If this mode is enabled, any
+	 * options for images or setShowText will be ignored.
 	 * 
-	 * @param show Whether or not to show text beneath image
+	 * @param bool
+	 *            Whether or not this mode is enabled.
+	 * @param text
+	 *            String to display, or null if mode is false
+	 * @param paints
+	 *            Paints to use for each frame, or null if mode is false
 	 */
-	public void setShowText(boolean show){
+	public void setTextOnlyMode(boolean bool, String text, float size,
+			ArrayList<TextStyle> styles, int width, int height) {
+		_textOnlyMode = bool;
+		_textToShow = text;
+		_textStyleSize = size;
+		_styles = styles;	
+		_textWidth = width;
+		_textHeight= height;
+	}
+
+	/**
+	 * Set whether or not text should be shown beneath the image in the
+	 * scrollview. If this is true, a supporting image layout must have also
+	 * been set, and text values must be supplied through setTextList
+	 * 
+	 * @param show
+	 *            Whether or not to show text beneath image
+	 */
+	public void setShowText(boolean show) {
 		_showText = show;
 	}
-	
-	/** The list of strings to display underneath the images.
-	 * The indices should match with the list of images
+
+	/**
+	 * The list of strings to display underneath the images. The indices should
+	 * match with the list of images
 	 * 
-	 * @param text List of strings to show in the scroller
+	 * @param text
+	 *            List of strings to show in the scroller
 	 */
-	public void setTextList(ArrayList<String> text){
+	public void setTextList(ArrayList<String> text) {
 		_text = text;
 	}
 
@@ -179,11 +223,11 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 		_currentImageIndex = index;
 		notifyDataSetChanged();
 	}
-	
+
 	public int getCurrentIndex() {
 		return _currentImageIndex;
 	}
-	
+
 	public boolean hasCurrentIndex() {
 		return _currentImageIndex >= 0;
 	}
@@ -199,56 +243,97 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
-		if(getCount() > 0) {
-			if(view == null) {
+		if (getCount() > 0) {
+			if (view == null) {
 				view = _inflater.inflate(_imageLayoutResourceId, null);
 			}
-			ImageToLoad imageToLoad = getItem(position);
-			ImageView imageView = (ImageView)view.findViewById(_imageIdInLayout);
-			_imageCacheManager.unbindImage(imageView);
-			imageToLoad.setImageView(imageView);
-			
-			if (_imageOnClickListener != null) imageView.setOnClickListener(_imageOnClickListener);
-			
-			// add text to the view
-			if(_showText){
-				_setupTextViewLayout(view, position);
-			}
-			
-			_setupImageViewLayout(view, imageToLoad, position);
-			_setupInnerWrapper(view, imageToLoad, position);
-			if (imageToLoad instanceof ImageToLoadUrl) {
-				ImageToLoadUrl imageToLoadUrl = (ImageToLoadUrl) imageToLoad;
-				ImageUrlRequest imageUrlRequest = new ImageUrlRequest(imageToLoadUrl, _imageSize, _imageSize);
-				if (imageToLoadUrl.getOnImageLoadFailureResourceId() == 0 && _defaultImageFailedToLoadResourceId != 0) {
-					imageUrlRequest.setImageFailedToLoadResourceId(_defaultImageFailedToLoadResourceId);
-				} else if (imageToLoadUrl.getOnImageLoadFailureResourceId() != 0) {
-					imageUrlRequest.setImageFailedToLoadResourceId(imageToLoadUrl.getOnImageLoadFailureResourceId());
+
+			// if text only mode is enabled, set up text styles 
+			if (_textOnlyMode) {
+				ImageView imageView = (ImageView) view.findViewById(_imageIdInLayout);
+				// create bitmap showing the text with given style
+				Bitmap bm = myDrawText(_textToShow, _styles.get(position));
+				imageView.setImageBitmap(bm);
+			} 
+			// otherwise use the scroller for images like normal
+			else {
+				ImageToLoad imageToLoad = getItem(position);
+				ImageView imageView = (ImageView) view
+						.findViewById(_imageIdInLayout);
+				_imageCacheManager.unbindImage(imageView);
+				imageToLoad.setImageView(imageView);
+
+				if (_imageOnClickListener != null)
+					imageView.setOnClickListener(_imageOnClickListener);
+
+				_setupImageViewLayout(view, imageToLoad, position);
+				_setupInnerWrapper(view, imageToLoad, position);
+				if (imageToLoad instanceof ImageToLoadUrl) {
+					ImageToLoadUrl imageToLoadUrl = (ImageToLoadUrl) imageToLoad;
+					ImageUrlRequest imageUrlRequest = new ImageUrlRequest(
+							imageToLoadUrl, _imageSize, _imageSize);
+					if (imageToLoadUrl.getOnImageLoadFailureResourceId() == 0
+							&& _defaultImageFailedToLoadResourceId != 0) {
+						imageUrlRequest
+								.setImageFailedToLoadResourceId(_defaultImageFailedToLoadResourceId);
+					} else if (imageToLoadUrl.getOnImageLoadFailureResourceId() != 0) {
+						imageUrlRequest
+								.setImageFailedToLoadResourceId(imageToLoadUrl
+										.getOnImageLoadFailureResourceId());
+					}
+					BitmapHelper.applySampledResourceToImageView(
+							_context.getResources(), _loadingImageResourceId,
+							_imageSize, _imageSize, imageView);
+					_imageCacheManager.bindDrawable(imageUrlRequest);
+				} else if (imageToLoad instanceof ImageToLoadDrawableResource) {
+					ImageToLoadDrawableResource imageToLoadDrawableResource = (ImageToLoadDrawableResource) imageToLoad;
+					BitmapHelper
+							.applySampledResourceToImageView(_context
+									.getResources(),
+									imageToLoadDrawableResource
+											.getDrawableResourceId(),
+									_imageSize, _imageSize, imageView);
 				}
-				BitmapHelper.applySampledResourceToImageView(_context.getResources(), _loadingImageResourceId, _imageSize, _imageSize, imageView);
-				_imageCacheManager.bindDrawable(imageUrlRequest);
-			} else if (imageToLoad instanceof ImageToLoadDrawableResource) {
-				ImageToLoadDrawableResource imageToLoadDrawableResource = (ImageToLoadDrawableResource) imageToLoad;
-				BitmapHelper.applySampledResourceToImageView(_context.getResources(), imageToLoadDrawableResource.getDrawableResourceId(), _imageSize, _imageSize, imageView);
-			}
+				
+				// add text to the view if applicable
+				if (_showText) {
+					_setupTextViewLayout(view, position);
+				}
+			}			
 		}
 		return view;
 	}
 	
-	protected void _setupTextViewLayout(View view, int position){
-		TextView textView = (TextView)view.findViewById(_textIdInLayout);
+	/** Create a bitmap showing a text drawn in a certain style
+	 * 
+	 */
+	private Bitmap myDrawText(String text, TextStyle style) {		
+		Bitmap bm = Bitmap.createBitmap(_textWidth, _textHeight, Bitmap.Config.ARGB_8888);; 
+	    Canvas myCanvas = new Canvas(bm); 
+	    // draw each paint in the style to get the intended effect
+	    for(Paint p : style){
+	    	p.setTextSize(_textStyleSize);
+	    	myCanvas.drawText(text, (_textWidth / 2) - (style.getWidth(text) / 2), (_textHeight / 2) - (style.getHeight() / 2), p);
+	    }
+	    return bm;
+	}
+
+	protected void _setupTextViewLayout(View view, int position) {
+		TextView textView = (TextView) view.findViewById(_textIdInLayout);
 		textView.setText(_text.get(position));
 	}
-	
-	protected void _setupImageViewLayout(View view, ImageToLoad imageToLoad, int position) {
-		ImageView imageView = (ImageView)view.findViewById(_imageIdInLayout);
+
+	protected void _setupImageViewLayout(View view, ImageToLoad imageToLoad,
+			int position) {
+		ImageView imageView = (ImageView) view.findViewById(_imageIdInLayout);
 		LayoutParams params = imageView.getLayoutParams();
 		params.width = LayoutParams.MATCH_PARENT;
 		params.height = _imageSize;
 		imageView.setLayoutParams(params);
 	}
-	
-	protected void _setupInnerWrapper(View view, ImageToLoad imageToLoad, int position) {
+
+	protected void _setupInnerWrapper(View view, ImageToLoad imageToLoad,
+			int position) {
 		View frame = view.findViewById(_innerWrapperIdInLayout);
 		LayoutParams frameParams = frame.getLayoutParams();
 		frameParams.width = LayoutParams.WRAP_CONTENT;
@@ -262,7 +347,7 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 			frame.setBackgroundColor(_frameOffColor);
 		}
 	}
-	
+
 	@Override
 	public ImageToLoad getItem(int position) {
 		return _images.get(position);
@@ -277,7 +362,7 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-	
+
 	public void unbindImageViews() {
 		if (_images != null) {
 			ImageCacheManager icm = ImageCacheManager.getInstance(_context);
@@ -293,23 +378,26 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 		return _defaultImageFailedToLoadResourceId;
 	}
 
-	public void setDefaultImageFailedToLoadResourceId(int defaultImageFailedToLoadResourceId) {
+	public void setDefaultImageFailedToLoadResourceId(
+			int defaultImageFailedToLoadResourceId) {
 		_defaultImageFailedToLoadResourceId = defaultImageFailedToLoadResourceId;
 	}
-	
-	/** Returns the bitmap of the image at the given
-	 * index of the scroller
-	 * @param index The location in the scroller
-	 * @return The image shown at this location, or null if it is not available 
+
+	/**
+	 * Returns the bitmap of the image at the given index of the scroller
+	 * 
+	 * @param index
+	 *            The location in the scroller
+	 * @return The image shown at this location, or null if it is not available
 	 */
 	public Bitmap getImageAtPos(int index) {
 		// Image cache manager keeps track of the bitmaps.
 		// It uses a ImageUrlRequest to create a key into the
 		// cache
 		ImageToLoadUrl imageToLoadUrl = (ImageToLoadUrl) _images.get(index);
-		ImageUrlRequest imageUrlRequest = new ImageUrlRequest(imageToLoadUrl, _imageSize, _imageSize);
+		ImageUrlRequest imageUrlRequest = new ImageUrlRequest(imageToLoadUrl,
+				_imageSize, _imageSize);
 		return _imageCacheManager.getBitmap(imageUrlRequest);
 	}
-	
-	
+
 }
