@@ -7,8 +7,8 @@
         android:background="@color/primary_color" >
 		<ImageButton
             android:id="@+id/logo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@android:color/transparent"
@@ -22,13 +22,14 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:textColor="#FFF"
-		    android:textSize="40sp"
-		    android:layout_centerHorizontal="true" />
+		    android:textSize="30sp"
+		    android:layout_centerHorizontal="true" 
+		    android:layout_centerVertical="true"/>
 
         <ImageButton
             android:id="@+id/help"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
 			android:background="@layout/button_question"
@@ -37,7 +38,7 @@
             android:onClick="getHelp"/>
         
         <View 
-            android:layout_height="40dp"
+            android:layout_height="25dp"
 			android:layout_width="2dp"
 			android:layout_toLeftOf="@id/help"
 			android:layout_centerVertical="true"
@@ -46,12 +47,13 @@
          
          <ImageButton
 	        android:id="@+id/home"
-	        android:layout_width="60dp"
-	        android:layout_height="60dp"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
 	        android:layout_alignParentTop="true"
 			android:layout_toLeftOf="@id/barOne"
 	        android:background="@layout/button_home"
 	        android:padding="5dp"
+	        android:layout_marginRight="6dp"
 	        android:scaleType="fitCenter"
 	        android:onClick="home" />
 

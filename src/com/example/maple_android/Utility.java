@@ -183,7 +183,6 @@ public class Utility {
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
-                Log.d("MapleSyrup", "failed to create directory");
                 return null;
             }
         }

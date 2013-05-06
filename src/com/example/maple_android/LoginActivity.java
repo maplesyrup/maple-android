@@ -17,8 +17,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class LoginActivity extends Activity {
-	// set whether or not to skip login
-	private final boolean skipLogin = false;
 	private final String TAG = "Maple Syrup";
 	
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
@@ -29,13 +27,6 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		// sync local company data with server
 		CompanyData.syncWithServer(this);
-		
-		/*** Skip Login For Testing ***/
-		 if(skipLogin){
-			 Intent i = new Intent(this, PopularAdsActivity.class);
-			 startActivity(i);
-		 }
-		/*******************************/
 
 		Button buttonLoginLogout = (Button) findViewById(R.id.loginB);
 		buttonLoginLogout.setOnClickListener(new OnClickListener() {
@@ -90,7 +81,6 @@ public class LoginActivity extends Activity {
 	private void updateView() {
 		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
-			Log.d(TAG, "Access token: " + session.getAccessToken());
 			saveUserData((MapleApplication) this.getApplication(), session.getAccessToken());
 			
 			Intent i = new Intent(LoginActivity.this, PopularAdsActivity.class);
@@ -126,18 +116,17 @@ public class LoginActivity extends Activity {
 		MapleHttpClient.get("users/check_mobile_login", params, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, String response) {
-				Log.d(TAG, response);
 				try {
 					User appUser = new User(response, token);
 					mApp.setUser(appUser);
 				} catch (JSONException e) {
-					Log.d(TAG, "could not parse user JSON");
 					e.printStackTrace();
 				}	
 			}
 			@Override
 		    public void onFailure(Throwable error, String response) {
-				Log.d(TAG, "Panic time- could not retrieve user data");
+				Intent i = new Intent(mApp, LoginActivity.class);
+				mApp.startActivity(i);
 		    }
 		});
 	}

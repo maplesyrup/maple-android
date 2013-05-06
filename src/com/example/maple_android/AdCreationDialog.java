@@ -35,15 +35,15 @@ public class AdCreationDialog {
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
 		// 2. Chain together various setter methods to set the dialog characteristics
-		builder.setMessage("Take a photo or pick one from the Gallery")
-		       .setTitle("Choose");
+		builder.setMessage("Pick a photo to use in your ad!")
+		       .setTitle("Create New Ad");
 		
-		builder.setPositiveButton("Take photo", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("Take New Photo", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               openCamera();
 	           }
 	       });
-		builder.setNegativeButton("Pick from gallery", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("Pick From Gallery", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               openGallery();
 	           }

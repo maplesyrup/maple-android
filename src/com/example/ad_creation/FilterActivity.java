@@ -76,12 +76,7 @@ public class FilterActivity extends FunnelActivity {
 	 * The indices match up to those of filterList
 	 */
 	private MapleFilter[] filterInstances = new MapleFilter[filterList.length];
-	
-	/* If we generate a filtered image, save it for later instead of needing to generate
-	 * it again if the user comes back to it.
-	 * The indices match up to those of filterList
-	 */
-	private Bitmap[] filterResults = new Bitmap[filterList.length];
+
 	
 	
 	@Override
@@ -151,17 +146,9 @@ public class FilterActivity extends FunnelActivity {
 					long id) {
 				// Updates the background color to indicate selection				
 				mScroller.setCurrentImageIndex(pos);
-				
-				// check if we have previously used this filter. If we have, used the saved image
-				// instead of generating it again
-				mFilteredAd = filterResults[pos];				
-				if(mFilteredAd == null){
-					mFilteredAd = filterInstances[pos].filterBitmap(mOriginalAd);
-					// cache for use later
-					filterResults[pos] = mFilteredAd;
-				}
-				
-				mAdView.setImageBitmap(mFilteredAd);
+
+				// apply filter and update view
+				mAdView.setImageBitmap(filterInstances[pos].filterBitmap(mOriginalAd));
 				
 			}
 		});
