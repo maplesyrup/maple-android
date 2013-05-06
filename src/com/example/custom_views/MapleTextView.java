@@ -27,8 +27,7 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	private Bitmap mCurrAd;
 	private String mText;
 	private PointF mTextPos;
-	private Paint mPaint;
-    private static final float DEFAULT_TEXT_SIZE = 14;
+    private static final float DEFAULT_TEXT_SIZE = 30;
 	private PointF mPrevTouch;
 	private TextStyle mTextStyle;
 	
@@ -37,6 +36,7 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	private Builder mAddTextDialogBuilder;
 	private AlertDialog mAddTextDialog;
 	private GestureDetector mGestureDetector;
+	private float mRatio;
 
 	public MapleTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -45,9 +45,7 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		mGestureDetector = new GestureDetector(context, new GestureListener());
 
 		mText = "";
-		mPaint = new Paint();
-		mPaint.setTextSize(DEFAULT_TEXT_SIZE);
-		mTextPos = new PointF(100, 100);
+		mTextPos = new PointF(0, DEFAULT_TEXT_SIZE);
 		
 		/****** Dialog for user to enter text ****************/
 		mAddTextDialogBuilder = new AlertDialog.Builder(context);
@@ -77,16 +75,22 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		
 	}
 	
+	private void drawText(Canvas canvas, PointF pos) {
+		if (mText != null && mText != "") {
+			Iterator<Paint> iter = mTextStyle.iterator();
+			while (iter.hasNext()) {
+				Paint p = iter.next();
+				p.setTextSize(DEFAULT_TEXT_SIZE * mScaleFactor);
+
+				canvas.drawText(mText, pos.x, pos.y, p);
+			}
+		}
+	}
+	
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
-		if (mText != null && mText != "") {
-			Iterator<Paint> iter = mTextStyle.iterator();
-			
-			while (iter.hasNext()) {
-				canvas.drawText(mText, mTextPos.x, mTextPos.y, iter.next());
-			}
-		}
+		drawText(canvas, mTextPos);
 	}
 	
 	private void moveText(float deltaX, float deltaY) {
@@ -103,9 +107,10 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	 * @param ad
 	 * @param ratio
 	 */
-	public void setAd(Bitmap ad) {
+	public void setAd(Bitmap ad, float ratio) {
 		setImageBitmap(ad);
 		mCurrAd = ad;
+		mRatio = ratio;
 	}
 
 	@Override
@@ -151,13 +156,8 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		Bitmap newAd = Bitmap.createBitmap(mCurrAd.getWidth(), mCurrAd.getHeight(), mCurrAd.getConfig());
         Canvas canvas = new Canvas(newAd);
         canvas.drawBitmap(mCurrAd, new Matrix(), null);
-        if (mText != null && mText != "") {
-			Iterator<Paint> iter = mTextStyle.iterator();
-			
-			while (iter.hasNext()) {
-				canvas.drawText(mText, mTextPos.x, mTextPos.y, iter.next());
-			}
-		}
+		drawText(canvas, new PointF(mTextPos.x / mRatio, mTextPos.y / mRatio));
+
         return newAd;
         
 	}
@@ -176,7 +176,11 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	
 	        // Don't let the object get too small or too large.
 	        mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
-	        mPaint.setTextSize(DEFAULT_TEXT_SIZE * mScaleFactor);
+	        Iterator<Paint> iter = mTextStyle.iterator();
+			
+			while (iter.hasNext()) {
+				iter.next().setTextSize(DEFAULT_TEXT_SIZE * mScaleFactor);
+			}
 	        invalidate();
 	        return true;
 	    }

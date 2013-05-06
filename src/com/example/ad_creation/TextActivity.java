@@ -66,7 +66,7 @@ public class TextActivity extends FunnelActivity {
 		mConfig.put(Config.NAME, "Text");
 		
 		mAdView = (MapleTextView) findViewById(R.id.ad);
-		mAdView.setAd(mAdCreationManager.getCurrentBitmap());
+		mAdView.setAd(mAdCreationManager.getCurrentBitmap(), mAdCreationManager.getRatio());
 		mAdCreationManager.setup(this);
 
 		
