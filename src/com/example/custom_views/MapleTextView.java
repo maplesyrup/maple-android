@@ -82,11 +82,8 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	 */
 	private void drawText(Canvas canvas, PointF pos) {
 		if (mText != null && mText != "") {
-			Iterator<Paint> iter = mTextStyle.iterator();
-			while (iter.hasNext()) {
-				Paint p = iter.next();
+			for (Paint p : mTextStyle) {
 				p.setTextSize(DEFAULT_TEXT_SIZE * mScaleFactor);
-
 				canvas.drawText(mText, pos.x, pos.y, p);
 			}
 		}
@@ -194,11 +191,10 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	
 	        // Don't let the object get too small or too large.
 	        mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
-	        Iterator<Paint> iter = mTextStyle.iterator();
-			
-			while (iter.hasNext()) {
-				iter.next().setTextSize(DEFAULT_TEXT_SIZE * mScaleFactor);
-			}
+	        for (Paint p : mTextStyle) {
+				p.setTextSize(DEFAULT_TEXT_SIZE * mScaleFactor);
+
+	        }
 	        invalidate();
 	        return true;
 	    }
