@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,6 +12,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -18,6 +21,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.example.custom_views.MapleTextView;
 import com.example.maple_android.R;
 import com.example.maple_android.StyleList;
 
@@ -33,9 +37,7 @@ public class TextActivity extends FunnelActivity {
 	private HorizontalImageScroller mScroller;
 	private ArrayList<TextStyle> mStyles;
 
-	private float mTextXPos;
-	private float mTextYPos;
-	private TextView mPhotoText;	
+	private MapleTextView mAdView;
 
 	// the background color of the scroller styles
 	private final int FRAME_COLOR = Color.BLACK; 
@@ -63,30 +65,11 @@ public class TextActivity extends FunnelActivity {
 				"Add humorous, sincere, or sophic text to your ad, and decide where to put it.");
 		mConfig.put(Config.NAME, "Text");
 		
+		mAdView = (MapleTextView) findViewById(R.id.ad);
+		mAdView.setAd(mAdCreationManager.getCurrentBitmap(), mAdCreationManager.getRatio());
 		mAdCreationManager.setup(this);
 
-		/****** Dialog for user to enter text ****************/
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-		alert.setTitle("Add Text");
-		alert.setMessage("Enter the text you would like to include in your ad");
-
-		final EditText input = new EditText(this);
-		alert.setView(input);
-
-		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				String value = input.getText().toString();
-				// Do something with value!
-			}
-		});
-
-		alert.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						// Canceled.
-					}
-				});
+		
 
 		// alert.show();
 		/******************************************************/
@@ -127,7 +110,7 @@ public class TextActivity extends FunnelActivity {
 
 		mScroller.setAdapter(adapter);
 
-
+		mAdView.setStyle(mStyles.get(0));
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {
 
@@ -143,29 +126,11 @@ public class TextActivity extends FunnelActivity {
 				}
 				mLastFrame = border;
 
-				// do something with the selected style
-				// TODO: apply mStyles.get(pos)
+				mAdView.setStyle(mStyles.get(pos));
 			}
 		});
 		/******************************************************/
 
-	}
-
-	/**
-	 * This function is used to generate a bitmap from the TextView that holds
-	 * the currently created text
-	 * 
-	 * @param v
-	 *            The TextView containing the text we want to write
-	 * @return The text converted to a bitmap
-	 */
-	private Bitmap loadBitmapFromView(View v) {
-		Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
-				Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(b);
-		v.layout(0, 0, v.getWidth(), v.getHeight());
-		v.draw(c);
-		return b;
 	}
 
 	/**
@@ -176,24 +141,7 @@ public class TextActivity extends FunnelActivity {
 	public void nextStage(View view) {
 		selectNext();
 
-		// if text has been added, merge it with the ad
-		Bitmap bmOverlay = mAdCreationManager.getCurrentBitmap();
-		if (!mPhotoText.getText().equals("")) {
-			// get text bitmap
-			Bitmap textBitmap = loadBitmapFromView(mPhotoText);
-			Bitmap currBitmap = mAdCreationManager.getCurrentBitmap();
-
-			// combine two bitmaps
-			bmOverlay = Bitmap.createBitmap(currBitmap.getWidth(),
-					currBitmap.getHeight(), currBitmap.getConfig());
-			Canvas canvas = new Canvas(bmOverlay);
-			canvas.drawBitmap(currBitmap, new Matrix(), null);
-			canvas.drawBitmap(
-					textBitmap,
-					mTextXPos / mAdCreationManager.getRatio(),
-					(mTextYPos - mPhotoText.getHeight())
-							/ mAdCreationManager.getRatio(), null);
-		}
+		Bitmap bmOverlay = mAdView.addText();
 		mAdCreationManager.nextStage(this, bmOverlay);
 	}
 
@@ -206,5 +154,6 @@ public class TextActivity extends FunnelActivity {
 		selectPrev();
 		mAdCreationManager.previousStage(this);
 	}
-
+	
+	
 }
