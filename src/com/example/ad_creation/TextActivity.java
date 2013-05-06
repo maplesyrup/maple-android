@@ -19,11 +19,12 @@ import android.widget.TextView;
 
 import com.example.maple_android.R;
 import com.example.maple_android.StyleList;
-import com.example.maple_android.TextStyle;
+
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadUrl;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScrollerAdapter;
+import com.twotoasters.android.horizontalimagescroller.widget.TextStyle;
 
 public class TextActivity extends FunnelActivity {
 
@@ -38,11 +39,17 @@ public class TextActivity extends FunnelActivity {
 	// the background color of the scroller styles
 	private final int FRAME_COLOR = Color.TRANSPARENT; 
 	// the color behind the selected style
-	private final int FRAME_SELECTED_COLOR = Color.BLACK; 
-	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_item;
+	private final int FRAME_SELECTED_COLOR = Color.rgb(247, 187, 57); 
+	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_text_style;
 	// the text of the style preview shown in the scroller
 	private final String SCROLLER_TEXT = "Style";
-
+	// size of text in scroller
+	private final float TEXT_SIZE = 40.0f;
+	// height of text image display in scroller
+	private final int TEXT_HEIGHT = 50;
+	// width of text
+	private final int TEXT_WIDTH = 100;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,9 +118,9 @@ public class TextActivity extends FunnelActivity {
 		adapter.setFrameOffColor(FRAME_COLOR);
 		// which view to use for layout
 		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
-
 		// set up scroller to show off text styles
-		adapter.setTextOnlyMode(true, SCROLLER_TEXT, mStyles);
+		adapter.setTextOnlyMode(true, SCROLLER_TEXT, TEXT_SIZE, mStyles,
+				TEXT_WIDTH, TEXT_HEIGHT);
 
 		mScroller.setAdapter(adapter);
 
@@ -130,7 +137,7 @@ public class TextActivity extends FunnelActivity {
 				mScroller.setCurrentImageIndex(pos);
 
 				// do something with the selected style
-
+				// TODO: apply mStyles.get(pos)
 			}
 		});
 		/******************************************************/

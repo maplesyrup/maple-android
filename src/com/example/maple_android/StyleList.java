@@ -1,7 +1,7 @@
 package com.example.maple_android;
 
 import java.util.ArrayList;
-
+import com.twotoasters.android.horizontalimagescroller.widget.TextStyle;
 import android.graphics.Color;
 import android.graphics.Paint;
 
@@ -40,7 +40,7 @@ public class StyleList {
 		// behind main text
 		p = new Paint();
 		p.setStyle(Paint.Style.STROKE);
-		p.setStrokeWidth(2);
+		p.setStrokeWidth(4);
 		style.addPaint(p);
 		styles.add(style);
 		// create paint for white text
