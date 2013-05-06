@@ -75,6 +75,11 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		
 	}
 	
+	/**
+	 * Draws text on the canvas given a position. This is used twice so it needs to be abstracted.
+	 * @param canvas
+	 * @param pos
+	 */
 	private void drawText(Canvas canvas, PointF pos) {
 		if (mText != null && mText != "") {
 			Iterator<Paint> iter = mTextStyle.iterator();
@@ -93,17 +98,26 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		drawText(canvas, mTextPos);
 	}
 	
+	/**
+	 * Moves text by provided delta
+	 * @param deltaX
+	 * @param deltaY
+	 */
 	private void moveText(float deltaX, float deltaY) {
 		mTextPos.set(mTextPos.x + deltaX, mTextPos.y + deltaY);
 		invalidate();
 	}
 	
+	/**
+	 * Sets the styel of the text
+	 * @param textStyle
+	 */
 	public void setStyle(TextStyle textStyle) {
 		mTextStyle = textStyle;
 		invalidate();
 	}
 	/**
-	 * Sets the ad. Also takes a ratio so that we can scale the logo to the same size later.
+	 * Sets the ad. Also takes a ratio so that we can scale the text to the same size later.
 	 * @param ad
 	 * @param ratio
 	 */
@@ -119,8 +133,8 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	}
 	
 	/**
-	 * When it detects a scaling gesture, it will scale. Moves the logo if there is only
-	 * one pointer and it's on the logo.
+	 * When it detects a scaling gesture, it will scale. Moves the text if there is only
+	 * one pointer. Also will activate long click to edit text.
 	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
@@ -152,6 +166,10 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	    return true;
 	}
 	
+	/**
+	 * Creates a bitmap from the displayed image with the text included.
+	 * @return
+	 */
 	public Bitmap addText() {
 		Bitmap newAd = Bitmap.createBitmap(mCurrAd.getWidth(), mCurrAd.getHeight(), mCurrAd.getConfig());
         Canvas canvas = new Canvas(newAd);
