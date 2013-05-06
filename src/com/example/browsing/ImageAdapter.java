@@ -111,7 +111,6 @@ public class ImageAdapter extends BaseAdapter {
 	        		MapleHttpClient.post("posts/vote_up", params, new AsyncHttpResponseHandler(){
 	            		@Override
 	        			public void onSuccess(int statusCode, String response) {
-	        				Log.d(TAG, response);
 	        				disableButton(voteButton);
 	        				// Add one more to the numVotes textview
 	        				int numVotesAdded = ad.getNumVotes() + 1;

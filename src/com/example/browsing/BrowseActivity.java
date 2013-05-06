@@ -63,7 +63,6 @@ public class BrowseActivity extends Activity {
         mGridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Log.d(TAG, "clicked on item");
             	Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
                 DisplayAd displayAd = (DisplayAd) parent.getAdapter().getItem(position);
 				i.putExtra("url", displayAd.getUrl());
@@ -78,7 +77,6 @@ public class BrowseActivity extends Activity {
 			// Example json response: http://maplesyrup.herokuapp.com/posts?user_id=3
 			@Override
 			public void onSuccess(int statusCode, String response) {
-				Log.d(TAG, response);	
 				try {
 					JSONArray jObjectAds = new JSONArray(response);
 					if (jObjectAds.length() == 0) {
@@ -98,7 +96,6 @@ public class BrowseActivity extends Activity {
 						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds, appUser.getToken()));
 					}
 				} catch (JSONException e) {
-					Log.d(TAG, "Could not parse JSON; unexpected response from the server.");	
 					e.printStackTrace();
 				}
 			}
