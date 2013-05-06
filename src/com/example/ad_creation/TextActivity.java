@@ -37,10 +37,6 @@ public class TextActivity extends FunnelActivity {
 	private HorizontalImageScroller mScroller;
 	private ArrayList<TextStyle> mStyles;
 
-	private float mTextXPos;
-	private float mTextYPos;
-	private TextView mPhotoText;	
-	
 	private MapleTextView mAdView;
 
 	// the background color of the scroller styles
@@ -70,6 +66,7 @@ public class TextActivity extends FunnelActivity {
 		mConfig.put(Config.NAME, "Text");
 		
 		mAdView = (MapleTextView) findViewById(R.id.ad);
+		mAdView.setAd(mAdCreationManager.getCurrentBitmap());
 		mAdCreationManager.setup(this);
 
 		
@@ -113,7 +110,7 @@ public class TextActivity extends FunnelActivity {
 
 		mScroller.setAdapter(adapter);
 
-
+		mAdView.setStyle(mStyles.get(0));
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {
 
@@ -129,8 +126,6 @@ public class TextActivity extends FunnelActivity {
 				}
 				mLastFrame = border;
 
-				// do something with the selected style
-				// TODO: apply mStyles.get(pos)
 				mAdView.setStyle(mStyles.get(pos));
 			}
 		});

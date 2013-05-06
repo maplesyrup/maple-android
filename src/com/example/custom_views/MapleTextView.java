@@ -1,5 +1,7 @@
 package com.example.custom_views;
 
+import java.util.Iterator;
+
 import com.twotoasters.android.horizontalimagescroller.widget.TextStyle;
 
 import android.app.AlertDialog;
@@ -28,10 +30,12 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	private Paint mPaint;
     private static final float DEFAULT_TEXT_SIZE = 14;
 	private PointF mPrevTouch;
+	private TextStyle mTextStyle;
 	
 	private ScaleGestureDetector mScaleDetector;
 	private float mScaleFactor = 1.f;
-	private Builder mAddTextDialog;
+	private Builder mAddTextDialogBuilder;
+	private AlertDialog mAddTextDialog;
 	private GestureDetector mGestureDetector;
 
 	public MapleTextView(Context context, AttributeSet attrs) {
@@ -43,50 +47,55 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		mText = "";
 		mPaint = new Paint();
 		mPaint.setTextSize(DEFAULT_TEXT_SIZE);
-		mTextPos = new PointF(0, 0);
+		mTextPos = new PointF(100, 100);
 		
 		/****** Dialog for user to enter text ****************/
-		mAddTextDialog = new AlertDialog.Builder(context);
-		mAddTextDialog.setTitle("Add Text");
-		mAddTextDialog.setMessage("Enter the text you would like to include in your ad");
+		mAddTextDialogBuilder = new AlertDialog.Builder(context);
+		mAddTextDialogBuilder.setTitle("Add Text");
+		mAddTextDialogBuilder.setMessage("Enter the text you would like to include in your ad");
 
 		final EditText input = new EditText(context);
-		mAddTextDialog.setView(input);
-
-		mAddTextDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		mAddTextDialogBuilder.setView(input);
+		mAddTextDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String value = input.getText().toString();
 				mText = value;
+				invalidate();
 			}
 		});
 
-		mAddTextDialog.setNegativeButton("Cancel",
+		mAddTextDialogBuilder.setNegativeButton("Cancel",
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
+					mAddTextDialog.dismiss();
 				}
-			});
+	
+		});
+		
+		mAddTextDialog = mAddTextDialogBuilder.create();
+		
+		
 	}
 	
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
 		if (mText != null && mText != "") {
-			canvas.drawText(mText, mTextPos.x, mTextPos.y, mPaint);
+			Iterator<Paint> iter = mTextStyle.iterator();
+			
+			while (iter.hasNext()) {
+				canvas.drawText(mText, mTextPos.x, mTextPos.y, iter.next());
+			}
 		}
 	}
 	
-	public void setText(String text) {
-		mText = text;
-		invalidate();
-	}
-	
-	private void moveText(float x, float y) {
-		mTextPos.set(x, y);
+	private void moveText(float deltaX, float deltaY) {
+		mTextPos.set(mTextPos.x + deltaX, mTextPos.y + deltaY);
 		invalidate();
 	}
 	
 	public void setStyle(TextStyle textStyle) {
-		//mPaint = textStyle;
+		mTextStyle = textStyle;
 		invalidate();
 	}
 	/**
@@ -143,7 +152,11 @@ public class MapleTextView extends ImageView implements OnTouchListener {
         Canvas canvas = new Canvas(newAd);
         canvas.drawBitmap(mCurrAd, new Matrix(), null);
         if (mText != null && mText != "") {
-			canvas.drawText(mText, mTextPos.x, mTextPos.y, mPaint);
+			Iterator<Paint> iter = mTextStyle.iterator();
+			
+			while (iter.hasNext()) {
+				canvas.drawText(mText, mTextPos.x, mTextPos.y, iter.next());
+			}
 		}
         return newAd;
         
