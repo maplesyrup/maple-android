@@ -29,7 +29,6 @@ public class DisplayAd {
     private String TAG = "DisplayAd";
 	
 	public DisplayAd(JSONObject ad) throws JSONException { 
-		Log.d(TAG, ad.toString());
     	mUrl = ad.getString("image_url");
         mTitle = ad.getString("title");
         mCreator = ad.getJSONObject("user").getString("name");
