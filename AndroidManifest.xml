@@ -23,7 +23,7 @@
         android:name="com.additt.maple_android.MapleApplication"
         android:allowBackup="true"
         android:debuggable="true"
-        android:icon="@drawable/maple"
+        android:icon="@drawable/additt_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity

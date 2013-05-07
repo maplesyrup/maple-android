@@ -15,7 +15,7 @@
             android:padding="5dp"
             android:scaleType="fitCenter"
             android:onClick="home"
-            android:src="@drawable/maple" />
+            android:src="@drawable/additt_icon" />
 
 		<TextView
 		    android:id="@+id/title"
