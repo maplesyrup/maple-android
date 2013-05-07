@@ -12,7 +12,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +26,9 @@ import android.widget.Toast;
 import com.additt.maple_android.AdCreationDialog;
 import com.additt.maple_android.MapleApplication;
 import com.additt.maple_android.MapleHttpClient;
+import com.additt.maple_android.R;
 import com.additt.maple_android.User;
 import com.additt.maple_android.Utility;
-import com.additt.maple_android.R;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -131,11 +130,11 @@ public class BrowseActivity extends Activity {
 	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		MapleApplication app = ((MapleApplication) this.getApplication());
-		
+		if (resultCode == Activity.RESULT_CANCELED) {
+			return;
+		}
 		switch (requestCode) {
-//		if (resultCode == Activity.RESULT_CANCELLED) {
-//	        // Do something
-//	    }
+
 		case AdCreationDialog.CAMERA_REQUEST:
 			if (resultCode == Activity.RESULT_OK) {
 				// Load bitmap into byteArray so that we can pass the data to the
