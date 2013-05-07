@@ -10,9 +10,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.PointF;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -28,6 +32,10 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	private String mText;
 	private PointF mTextPos;
     private static final float DEFAULT_TEXT_SIZE = 30;
+    
+    // Percent size of image
+    private static final float BANNER_SIZE = .2f;
+    private static final float BANNER_TEXT_SIZE = .4f;
 	private PointF mPrevTouch;
 	private TextStyle mTextStyle;
 	
@@ -37,6 +45,9 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	private AlertDialog mAddTextDialog;
 	private GestureDetector mGestureDetector;
 	private float mRatio;
+	private RectF mBanner;
+	private Paint mBannerPaint;
+	private Paint mBannerTextPaint;
 
 	public MapleTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -46,6 +57,16 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 
 		mText = "";
 		mTextPos = new PointF(0, DEFAULT_TEXT_SIZE);
+		
+		mBannerPaint = new Paint();
+		mBannerPaint.setARGB(170, 0, 0, 0);
+		
+		mBannerTextPaint = new Paint();
+		mBannerTextPaint.setColor(Color.WHITE);
+		mBannerTextPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+		mBannerTextPaint.setTextAlign(Align.CENTER);
+		
+		mBanner = new RectF();
 		
 		/****** Dialog for user to enter text ****************/
 		mAddTextDialogBuilder = new AlertDialog.Builder(context);
@@ -93,6 +114,14 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		super.onDraw(canvas);
 		
 		drawText(canvas, mTextPos);
+		
+		// If there's no text draw a banner with instructions.
+		if (mText == null || mText == "") {
+			canvas.drawRect(mBanner, mBannerPaint);
+			canvas.drawText("Hold to add text", mBanner.width() / 2,
+					mBanner.bottom - (mBanner.height() / 2) + (mBannerTextPaint.getTextSize() / 2), 
+					mBannerTextPaint);
+		}
 	}
 	
 	/**
@@ -122,6 +151,12 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		setImageBitmap(ad);
 		mCurrAd = ad;
 		mRatio = ratio;
+		
+		float top = (mCurrAd.getHeight() * mRatio) - (BANNER_SIZE * mCurrAd.getHeight() * mRatio);
+		float right = (mCurrAd.getWidth() * mRatio);
+		float bottom = mCurrAd.getHeight() * mRatio;
+		mBanner.set(0, top, right, bottom);
+		mBannerTextPaint.setTextSize(BANNER_TEXT_SIZE * mBanner.height());
 	}
 
 	@Override
