@@ -1,11 +1,11 @@
-package com.example.maple_android.test;
+package com.additt.maple_android.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.TextView;
 
-import com.example.maple_android.LoginActivity;
-import com.example.maple_android.MainActivity;
-import com.example.maple_android.R;
+import com.additt.maple_android.LoginActivity;
+import com.additt.maple_android.MainActivity;
+import com.additt.maple_android.R;
 import com.jayway.android.robotium.solo.Solo;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
