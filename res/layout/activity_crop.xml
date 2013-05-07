@@ -5,7 +5,7 @@
      android:id="@+id/crop_layout" >
      
     
-    <com.example.custom_views.CropView
+    <com.additt.custom_views.CropView
         android:id="@+id/cropView"
         android:layout_width="match_parent"
         android:paddingTop="@dimen/ad_padding"
