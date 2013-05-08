@@ -2,23 +2,20 @@ package com.additt.maple_android;
 
 import org.json.JSONException;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.additt.browsing.PopularAdsActivity;
-import com.additt.maple_android.R;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends SherlockActivity {
 	private final String TAG = "Maple Syrup";
 	
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
@@ -29,7 +26,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		
 		// hide action bar for login page
-		getActionBar().hide();
+		getSupportActionBar().hide();
 
 		Button buttonLoginLogout = (Button) findViewById(R.id.loginB);
 		buttonLoginLogout.setOnClickListener(new OnClickListener() {

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Build;
 import android.view.View;
 
+import com.actionbarsherlock.app.SherlockActivity;
+
 /**
  * A utility class that helps with showing and hiding system UI such as the
  * status bar and navigation/system bar. This class uses backward-compatibility
@@ -56,7 +58,7 @@ public abstract class SystemUiHider {
 	/**
 	 * The activity associated with this UI hider object.
 	 */
-	protected Activity mActivity;
+	protected SherlockActivity mActivity;
 
 	/**
 	 * The view on which {@link View#setSystemUiVisibility(int)} will be called.
@@ -103,7 +105,7 @@ public abstract class SystemUiHider {
 		}
 	}
 
-	protected SystemUiHider(Activity activity, View anchorView, int flags) {
+	protected SystemUiHider(SherlockActivity activity, View anchorView, int flags) {
 		mActivity = activity;
 		mAnchorView = anchorView;
 		mFlags = flags;
