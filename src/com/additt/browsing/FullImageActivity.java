@@ -1,7 +1,6 @@
 package com.additt.browsing;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,8 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.additt.maple_android.util.SystemUiHider;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.additt.maple_android.R;
+import com.additt.maple_android.util.SystemUiHider;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
@@ -22,7 +22,7 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
  * 
  * @see SystemUiHider
  */
-public class FullImageActivity extends Activity {
+public class FullImageActivity extends SherlockActivity {
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.

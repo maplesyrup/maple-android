@@ -1,10 +1,11 @@
 package com.additt.maple_android.util;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.actionbarsherlock.app.SherlockActivity;
 
 /**
  * An API 11+ implementation of {@link SystemUiHider}. Uses APIs available in
@@ -42,7 +43,7 @@ public class SystemUiHiderHoneycomb extends SystemUiHiderBase {
 	 * Constructor not intended to be called by clients. Use
 	 * {@link SystemUiHider#getInstance} to obtain an instance.
 	 */
-	protected SystemUiHiderHoneycomb(Activity activity, View anchorView,
+	protected SystemUiHiderHoneycomb(SherlockActivity activity, View anchorView,
 			int flags) {
 		super(activity, anchorView, flags);
 

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.additt.ad_creation.ColorAdjustmentActivity;
 import com.additt.ad_creation.CompanyTagActivity;
 import com.additt.ad_creation.CropActivity;
@@ -264,7 +265,7 @@ public class AdCreationManager {
 	public void setup(FunnelActivity activity) {
 		/* Hides action bar */
 		// Action bar needs minSdk = 11, have fallback
-		com.actionbarsherlock.app.ActionBar actionBar = activity.getSupportActionBar();
+		ActionBar actionBar = activity.getSupportActionBar();
 		actionBar.hide();
 		
 		/* Sets up topbar */
