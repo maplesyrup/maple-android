@@ -22,15 +22,12 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
+import com.actionbarsherlock.view.MenuItem;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.additt.browsing.BrowseActivity;
 import com.additt.browsing.PersonalAdsActivity;
 import com.additt.browsing.PopularAdsActivity;
-import com.additt.maple_android.R;
 import com.facebook.Session;
 
 public class Utility {
@@ -133,7 +130,11 @@ public class Utility {
 	}
 	
 	public static Uri getOutputMediaFileUri(int type){
-        return Uri.fromFile(getOutputMediaFile(type));
+		try {
+			return Uri.fromFile(getOutputMediaFile(type));
+		} catch (Exception e) {
+			return null;
+		}
     }
 	
 	public static Bitmap getBitmapFromUrl(String src) {
@@ -175,7 +176,10 @@ public class Utility {
     public static File getOutputMediaFile(int type){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-
+    	String state = Environment.getExternalStorageState();
+    	if (!Environment.MEDIA_MOUNTED.equals(state)) {
+    		return null;
+    	}
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                   Environment.DIRECTORY_PICTURES), "MapleSyrup");
         // This location works best if you want the created images to be shared
@@ -216,7 +220,7 @@ public class Utility {
 		activity.startActivity(i);
 	}
 	
-    public static boolean myOnOptionsItemSelected(final Activity activity, MenuItem item) {
+    public static boolean myOnOptionsItemSelected(final SherlockActivity activity, MenuItem item) {
     	Intent intent = null;
     	// respond to menu item selection
     	switch (item.getItemId()) {

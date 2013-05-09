@@ -2,26 +2,26 @@ package com.additt.ad_creation;
 
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.additt.browsing.PopularAdsActivity;
 import com.additt.maple_android.AdCreationManager;
 import com.additt.maple_android.LoginActivity;
 import com.additt.maple_android.MapleApplication;
-import com.additt.maple_android.Utility;
 import com.additt.maple_android.R;
+import com.additt.maple_android.Utility;
 import com.facebook.Session;
 
-public abstract class FunnelActivity extends Activity {
+public abstract class FunnelActivity extends SherlockActivity {
 	
 	public enum Config {
 		HELP_MESSAGE,
@@ -146,7 +146,7 @@ public abstract class FunnelActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.ad_creation, menu);
+		getSherlock().getMenuInflater().inflate(R.menu.ad_creation, menu);
 		return true;
 	}
 	
