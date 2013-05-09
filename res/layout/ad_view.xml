@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:contentDescription="User-created ad"
-        android:src="@drawable/maple" />
+        android:src="@drawable/additt_icon_large" />
 
     <RelativeLayout
         android:layout_width="match_parent"

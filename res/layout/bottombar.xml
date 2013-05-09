@@ -30,7 +30,7 @@
          android:background="@color/primary_color"
          android:src="@drawable/right_arrow" />
      
-     <com.example.custom_views.ProgressView
+     <com.additt.custom_views.ProgressView
          android:id="@+id/progressBar"
          android:layout_width="60dp"
          android:layout_height="60dp"

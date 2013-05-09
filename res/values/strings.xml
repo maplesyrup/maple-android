@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Maple: Sticky advertising</string>
+    <string name="app_name">Additt</string>
     <string name="menu_settings">Settings</string>
     <string name="app_id">429573013803786</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -10,7 +10,7 @@
     <string name="logout">Logout</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="title_activity_text">TextActivity</string>
-    <string name="instructions">Sticky Advertising with Maple</string>
+    <string name="instructions">Sticky Advertising with Additt</string>
     <string name="takePhoto">Take Photo</string>
     <string name="new_ad">Create A New Ad</string>
     <string name="welcome">Welcome</string>
