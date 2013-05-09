@@ -3,7 +3,6 @@ package com.additt.maple_android;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,20 +11,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.additt.ad_creation.ColorAdjustmentActivity;
 import com.additt.ad_creation.CompanyTagActivity;
 import com.additt.ad_creation.CropActivity;
 import com.additt.ad_creation.FilterActivity;
 import com.additt.ad_creation.FunnelActivity;
+import com.additt.ad_creation.FunnelActivity.Config;
 import com.additt.ad_creation.LogoActivity;
 import com.additt.ad_creation.PublishActivity;
 import com.additt.ad_creation.TextActivity;
-import com.additt.ad_creation.FunnelActivity.Config;
 import com.additt.custom_views.ProgressView;
-import com.additt.filters.MapleFilter;
-import com.additt.filters.MapleGaussianFilter;
-import com.additt.filters.MaplePosterizeFilter;
-import com.additt.maple_android.R;
 
 /**
  * This class exists to manage the creation of an ad between activities. It
@@ -269,7 +265,7 @@ public class AdCreationManager {
 	public void setup(FunnelActivity activity) {
 		/* Hides action bar */
 		// Action bar needs minSdk = 11, have fallback
-		ActionBar actionBar = activity.getActionBar();
+		ActionBar actionBar = activity.getSupportActionBar();
 		actionBar.hide();
 		
 		/* Sets up topbar */

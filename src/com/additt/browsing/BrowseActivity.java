@@ -12,8 +12,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -23,6 +21,9 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.additt.maple_android.AdCreationDialog;
 import com.additt.maple_android.MapleApplication;
 import com.additt.maple_android.MapleHttpClient;
@@ -37,7 +38,7 @@ import com.loopj.android.http.RequestParams;
  * @author rkpandey
  *
  */
-public class BrowseActivity extends Activity {
+public class BrowseActivity extends SherlockActivity {
 	private static final String TAG = "BrowseAds";
 	// the view we are using to display the ads
 	private GridView mGridview; 
@@ -83,7 +84,6 @@ public class BrowseActivity extends Activity {
 						((RelativeLayout) mGridview.getParent()).removeView(mGridview);
 						TextView adsTitle = (TextView) findViewById(R.id.adsTitle);
 						adsTitle.setText("There are no ads to show; you should create one!");
-						// Still not centering, sigh...
 						LayoutParams p = (LayoutParams) mGridview.getLayoutParams();
 						p.addRule(RelativeLayout.CENTER_HORIZONTAL);
 						adsTitle.setLayoutParams(p);
@@ -109,7 +109,7 @@ public class BrowseActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		getSherlock().getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
