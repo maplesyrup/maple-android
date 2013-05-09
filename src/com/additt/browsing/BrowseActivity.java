@@ -84,7 +84,6 @@ public class BrowseActivity extends SherlockActivity {
 						((RelativeLayout) mGridview.getParent()).removeView(mGridview);
 						TextView adsTitle = (TextView) findViewById(R.id.adsTitle);
 						adsTitle.setText("There are no ads to show; you should create one!");
-						// Still not centering, sigh...
 						LayoutParams p = (LayoutParams) mGridview.getLayoutParams();
 						p.addRule(RelativeLayout.CENTER_HORIZONTAL);
 						adsTitle.setLayoutParams(p);
