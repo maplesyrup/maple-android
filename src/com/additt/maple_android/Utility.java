@@ -130,7 +130,11 @@ public class Utility {
 	}
 	
 	public static Uri getOutputMediaFileUri(int type){
-        return Uri.fromFile(getOutputMediaFile(type));
+		try {
+			return Uri.fromFile(getOutputMediaFile(type));
+		} catch (Exception e) {
+			return null;
+		}
     }
 	
 	public static Bitmap getBitmapFromUrl(String src) {
@@ -172,7 +176,10 @@ public class Utility {
     public static File getOutputMediaFile(int type){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-
+    	String state = Environment.getExternalStorageState();
+    	if (!Environment.MEDIA_MOUNTED.equals(state)) {
+    		return null;
+    	}
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                   Environment.DIRECTORY_PICTURES), "MapleSyrup");
         // This location works best if you want the created images to be shared

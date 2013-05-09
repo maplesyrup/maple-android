@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
 import com.additt.browsing.BrowseActivity;
 
@@ -53,8 +54,12 @@ public class AdCreationDialog {
 	 */
 	public void openCamera() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		
-		mActivity.setFileUri(Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE)); 
+		Uri u = Utility.getOutputMediaFileUri(Utility.MEDIA_TYPE_IMAGE);
+		if (u == null) {
+			Toast.makeText(mActivity, "Unable to open Camera", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		mActivity.setFileUri(u); 
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, mActivity.getFileUri());
 		
 		mActivity.startActivityForResult(intent, CAMERA_REQUEST);
