@@ -57,7 +57,6 @@ public class TextActivity extends FunnelActivity {
 		mAdView = (MapleTextView) findViewById(R.id.ad);
 		mAdView.setAd(mAdCreationManager.getCurrentBitmap(), mAdCreationManager.getRatio());
 		mAdCreationManager.setup(this);
-
 		
 
 		// alert.show();
@@ -98,6 +97,9 @@ public class TextActivity extends FunnelActivity {
 				TEXT_WIDTH, TEXT_HEIGHT);
 
 		mScroller.setAdapter(adapter);
+		
+		// set scroller, so styles can be hidden when there is no text
+		mAdView.setStyleScroller(mScroller);
 
 		mAdView.setStyle(mStyles.get(0));
 		
