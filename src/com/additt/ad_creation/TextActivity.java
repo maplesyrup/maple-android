@@ -3,28 +3,17 @@ package com.additt.ad_creation;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.additt.custom_views.MapleTextView;
-import com.additt.maple_android.StyleList;
 import com.additt.maple_android.R;
-
+import com.additt.maple_android.StyleList;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadUrl;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
@@ -111,6 +100,7 @@ public class TextActivity extends FunnelActivity {
 		mScroller.setAdapter(adapter);
 
 		mAdView.setStyle(mStyles.get(0));
+		
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {
 
@@ -118,14 +108,17 @@ public class TextActivity extends FunnelActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
 				// visually select the chosen style
-				FrameLayout border = (FrameLayout) view.findViewById(R.id.image_frame);
-				border.setBackgroundColor(FRAME_SELECTED_COLOR);
+				//FrameLayout border = (FrameLayout) view.findViewById(R.id.image_frame);
+				//border.setBackgroundColor(FRAME_SELECTED_COLOR);
 				// unselect last frame
-				if(mLastFrame != null){
-					mLastFrame.setBackgroundColor(FRAME_COLOR);
-				}
-				mLastFrame = border;
-
+				//if(mLastFrame != null){
+				//	mLastFrame.setBackgroundColor(FRAME_COLOR);
+				//}
+				//mLastFrame = border;
+				// highlight choice
+				mScroller.setCurrentImageIndex(pos);
+				
+				// update the text with the new style
 				mAdView.setStyle(mStyles.get(pos));
 			}
 		});
