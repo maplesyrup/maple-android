@@ -63,10 +63,6 @@
             android:value="@string/app_id" />
 
         <activity
-            android:name="com.additt.ad_creation.LogoPickerActivity"
-            android:label="@string/title_activity_logo_picker" >
-        </activity>
-        <activity
             android:name="com.additt.ad_creation.CropActivity"
             android:label="@string/title_activity_crop" >
         </activity>

@@ -80,9 +80,6 @@ public class LogoActivity extends FunnelActivity {
 
 		mScroller.setAdapter(adapter);
 
-		// start with the first company selected
-		mScroller.setCurrentImageIndex(0);
-
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {
 

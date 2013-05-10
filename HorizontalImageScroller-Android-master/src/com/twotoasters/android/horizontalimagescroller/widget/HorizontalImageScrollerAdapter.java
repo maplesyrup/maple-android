@@ -247,10 +247,20 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 			if (view == null) {
 				view = _inflater.inflate(_imageLayoutResourceId, null);
 			}
+			
+			
 
 			// if text only mode is enabled, set up text styles 
 			if (_textOnlyMode) {
 				ImageView imageView = (ImageView) view.findViewById(_imageIdInLayout);
+				
+				if (_imageOnClickListener != null)
+					imageView.setOnClickListener(_imageOnClickListener);
+				
+				// adjust layout
+				_setupImageViewLayout(view, null, position);
+				_setupInnerWrapper(view, null, position);
+				
 				// create bitmap showing the text with given style
 				Bitmap bm = myDrawText(_textToShow, _styles.get(position));
 				imageView.setImageBitmap(bm);
@@ -262,9 +272,6 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 						.findViewById(_imageIdInLayout);
 				_imageCacheManager.unbindImage(imageView);
 				imageToLoad.setImageView(imageView);
-
-				if (_imageOnClickListener != null)
-					imageView.setOnClickListener(_imageOnClickListener);
 
 				_setupImageViewLayout(view, imageToLoad, position);
 				_setupInnerWrapper(view, imageToLoad, position);
