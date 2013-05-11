@@ -169,7 +169,13 @@ public class LogoView extends ImageView implements OnTouchListener {
 	
 	        // Don't let the object get too small or too large.
 	        mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
-	
+	        
+	        if (mLogoRect != null) {
+		        float deltaWidth = mScaleFactor*mLogoRect.width() - mLogoRect.width();
+		        float deltaHeight = mScaleFactor*mLogoRect.height() - mLogoRect.height();
+		        
+		        mLogoRect.inset(deltaWidth / 2, deltaHeight / 2);
+	        }
 	        invalidate();
 	        return true;
 	    }
