@@ -100,7 +100,7 @@ public class ImageAdapter extends BaseAdapter {
 		// Session session = Session.getActiveSession();
 		// params.put("token", session.getAccessToken());
 		params.put("post_id", ad.getImageId());
-		params.put("token", mToken);
+		params.put("auth_token", mToken);
 		
         if (ad.getVotedOn()) {
 			disableButton(voteButton);

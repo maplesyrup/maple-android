@@ -20,6 +20,8 @@ public class LoginActivity extends Activity {
 	private final String TAG = "Maple Syrup";
 	
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
+
+	private Button mButtonLoginLogout;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,8 +31,8 @@ public class LoginActivity extends Activity {
 		// hide action bar for login page
 		getActionBar().hide();
 
-		Button buttonLoginLogout = (Button) findViewById(R.id.loginB);
-		buttonLoginLogout.setOnClickListener(new OnClickListener() {
+		mButtonLoginLogout = (Button) findViewById(R.id.loginB);
+		mButtonLoginLogout.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				onClickLogin();
 			}
@@ -70,7 +72,6 @@ public class LoginActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(this, requestCode,
 				resultCode, data);
-		updateView();
 	}
 
 	@Override
@@ -85,8 +86,10 @@ public class LoginActivity extends Activity {
 		if (session.isOpened()) {
 			saveUserData((MapleApplication) this.getApplication(), session.getAccessToken());
 			
-			Intent i = new Intent(LoginActivity.this, PopularAdsActivity.class);
-			startActivity(i);
+			// Session is opened hide login button.
+			mButtonLoginLogout.setVisibility(View.INVISIBLE);
+			
+		
 		}
 	}
 
@@ -121,15 +124,19 @@ public class LoginActivity extends Activity {
 				try {
 					User appUser = new User(response, token);
 					mApp.setUser(appUser);
+					Intent i = new Intent(LoginActivity.this, PopularAdsActivity.class);
+					startActivity(i);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}	
 			}
 			@Override
 		    public void onFailure(Throwable error, String response) {
+				// Something went wrong so let's start up the LoginActivity again
 				Intent i = new Intent(mApp, LoginActivity.class);
 				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				mApp.startActivity(i);
+
 		    }
 		});
 	}
