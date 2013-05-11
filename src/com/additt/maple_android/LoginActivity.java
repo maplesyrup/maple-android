@@ -2,6 +2,7 @@ package com.additt.maple_android;
 
 import org.json.JSONException;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,7 @@ import com.facebook.SessionState;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class LoginActivity extends SherlockActivity {
+public class LoginActivity extends Activity {
 	private final String TAG = "Maple Syrup";
 	
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
@@ -26,7 +27,7 @@ public class LoginActivity extends SherlockActivity {
 		setContentView(R.layout.activity_login);
 		
 		// hide action bar for login page
-		getSupportActionBar().hide();
+		getActionBar().hide();
 
 		Button buttonLoginLogout = (Button) findViewById(R.id.loginB);
 		buttonLoginLogout.setOnClickListener(new OnClickListener() {
@@ -69,6 +70,7 @@ public class LoginActivity extends SherlockActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		Session.getActiveSession().onActivityResult(this, requestCode,
 				resultCode, data);
+		updateView();
 	}
 
 	@Override

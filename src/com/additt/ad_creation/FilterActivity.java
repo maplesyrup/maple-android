@@ -146,9 +146,12 @@ public class FilterActivity extends FunnelActivity {
 					long id) {
 				// Updates the background color to indicate selection				
 				mScroller.setCurrentImageIndex(pos);
-
+				
+				// save result
+				mFilteredAd = filterInstances[pos].filterBitmap(mOriginalAd);
+				
 				// apply filter and update view
-				mAdView.setImageBitmap(filterInstances[pos].filterBitmap(mOriginalAd));
+				mAdView.setImageBitmap(mFilteredAd);
 				
 			}
 		});
