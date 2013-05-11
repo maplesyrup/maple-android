@@ -3,8 +3,6 @@ package com.additt.browsing;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 import com.additt.maple_android.R;
 
 /**
@@ -26,7 +24,6 @@ public class DisplayAd {
 	private String mRelativeTime;
     private boolean mVotedOn;
     private String mImageId;
-    private String TAG = "DisplayAd";
 	
 	public DisplayAd(JSONObject ad) throws JSONException { 
     	mUrl = ad.getString("image_url");

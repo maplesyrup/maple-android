@@ -39,7 +39,6 @@ import com.loopj.android.http.RequestParams;
  *
  */
 public class BrowseActivity extends SherlockActivity {
-	private static final String TAG = "BrowseAds";
 	// the view we are using to display the ads
 	private GridView mGridview; 
 	// Contains file uri of photo being taken
