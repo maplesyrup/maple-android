@@ -74,11 +74,25 @@ public class LogoView extends ImageView implements OnTouchListener {
 		invalidate();
 	}
 	
+	/**
+	 * Generates scaled logo based on the gesture tracking scale factor.
+	 * @return
+	 */
+	private RectF generateScaledLogo() {
+		RectF scaledRect = new RectF(mLogoRect);
+		
+		float deltaWidth = mLogoRect.width() - mLogoRect.width()*mScaleFactor;
+		float deltaHeight = mLogoRect.height() - mLogoRect.height()*mScaleFactor;
+		
+		scaledRect.inset(deltaWidth, deltaHeight);
+		return scaledRect;
+	}
+	
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
 		if (mCurrLogo != null) {
-			canvas.drawBitmap(mCurrLogo, null, mLogoRect, null);
+			canvas.drawBitmap(mCurrLogo, null, generateScaledLogo(), null);
 		}
 	}
 	/**
@@ -142,13 +156,13 @@ public class LogoView extends ImageView implements OnTouchListener {
         
         
         // We must scale down the logo now that we aren't displaying it on a scaled Ad.
-
+        RectF scaledLogo = generateScaledLogo();
         RectF scaledDown = new RectF();
         
-        float scaledLeft = mLogoRect.left / mRatio;
-        float scaledTop = mLogoRect.top / mRatio;
-        float scaledRight = scaledLeft + (mLogoRect.width() / mRatio);
-        float scaledBottom = scaledTop + (mLogoRect.height() / mRatio);
+        float scaledLeft = scaledLogo.left / mRatio;
+        float scaledTop = scaledLogo.top / mRatio;
+        float scaledRight = scaledLeft + (scaledLogo.width() / mRatio);
+        float scaledBottom = scaledTop + (scaledLogo.height() / mRatio);
         scaledDown.set(scaledLeft, scaledTop, scaledRight, scaledBottom);
         canvas.drawBitmap(mCurrLogo, null, scaledDown, null);
 
@@ -170,12 +184,6 @@ public class LogoView extends ImageView implements OnTouchListener {
 	        // Don't let the object get too small or too large.
 	        mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
 	        
-	        if (mLogoRect != null) {
-		        float deltaWidth = mScaleFactor*mLogoRect.width() - mLogoRect.width();
-		        float deltaHeight = mScaleFactor*mLogoRect.height() - mLogoRect.height();
-		        
-		        mLogoRect.inset(deltaWidth / 2, deltaHeight / 2);
-	        }
 	        invalidate();
 	        return true;
 	    }
