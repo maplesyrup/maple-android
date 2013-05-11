@@ -47,6 +47,7 @@ public class PersonalAdsActivity extends BrowseActivity {
 		RequestParams params = new RequestParams();
 		// No params means just getting the most popular ads
 		params.put("user_id", appUser.getId());
+		params.put("auth_token", appUser.getAuthToken());
 		super.requestUserAds(params);
 	}
 }

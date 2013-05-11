@@ -44,9 +44,11 @@ public class BrowseActivity extends SherlockActivity {
 	private GridView mGridview; 
 	// Contains file uri of photo being taken
 	protected Uri mFileUri;
+	protected MapleApplication mApp;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mApp = (MapleApplication) getApplication();	
 	}
 	
 	/**
@@ -73,6 +75,7 @@ public class BrowseActivity extends SherlockActivity {
 	}
 	
 	public void requestUserAds(RequestParams params) {
+
 		MapleHttpClient.get("posts", params, new AsyncHttpResponseHandler(){
 			// Example json response: http://maplesyrup.herokuapp.com/posts?user_id=3
 			@Override
@@ -90,9 +93,8 @@ public class BrowseActivity extends SherlockActivity {
 						adsTitle.setTextSize(22);
 						adsTitle.setTypeface(null, Typeface.BOLD);
 					} else {
-						MapleApplication mApp = (MapleApplication) getApplication();
 						User appUser = mApp.getUser();
-						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds, appUser.getToken()));
+						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds, appUser.getAuthToken()));
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
