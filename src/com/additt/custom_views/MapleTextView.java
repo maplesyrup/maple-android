@@ -2,6 +2,7 @@ package com.additt.custom_views;
 
 import java.util.Iterator;
 
+import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
 import com.twotoasters.android.horizontalimagescroller.widget.TextStyle;
 
 import android.app.AlertDialog;
@@ -48,6 +49,9 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	private RectF mBanner;
 	private Paint mBannerPaint;
 	private Paint mBannerTextPaint;
+	
+	// The scroller holding the text styles
+	private HorizontalImageScroller mScroller;
 
 	public MapleTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -102,7 +106,7 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	 * @param pos
 	 */
 	private void drawText(Canvas canvas, PointF pos) {
-		if (mText != null && mText != "") {
+		if (mText != null && !mText.equals("")) {
 			for (Paint p : mTextStyle) {
 				p.setTextSize(DEFAULT_TEXT_SIZE * mScaleFactor);
 				canvas.drawText(mText, pos.x, pos.y, p);
@@ -116,12 +120,16 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		drawText(canvas, mTextPos);
 		
 		// If there's no text draw a banner with instructions.
-		if (mText == null || mText == "") {
+		if (mText == null || mText.equals("")) {
 			canvas.drawRect(mBanner, mBannerPaint);
 			canvas.drawText("Hold to add text", mBanner.width() / 2,
 					mBanner.bottom - (mBanner.height() / 2) + (mBannerTextPaint.getTextSize() / 2), 
 					mBannerTextPaint);
+			if(mScroller != null) mScroller.setVisibility(INVISIBLE);
 		}
+		
+		// show the style scroller if there is text
+		else if(mScroller != null) mScroller.setVisibility(VISIBLE);
 	}
 	
 	/**
@@ -242,6 +250,14 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		public void onLongPress(MotionEvent e) {
 			mAddTextDialog.show();
 		}
+	}
+
+	/** Pass in the style scroller so that it can be hidden
+	 * when there is no text shown
+	 * @param mScroller The scroller displaying the text styles
+	 */
+	public void setStyleScroller(HorizontalImageScroller scroller) {
+		mScroller = scroller;		
 	}
 
 }
