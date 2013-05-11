@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.additt.browsing.PopularAdsActivity;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -17,7 +16,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class LoginActivity extends Activity {
-	private final String TAG = "Maple Syrup";
 	
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 	
