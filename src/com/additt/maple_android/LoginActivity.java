@@ -18,6 +18,8 @@ import com.loopj.android.http.RequestParams;
 
 public class LoginActivity extends Activity {
 	
+	private static final String TAG = "Login Activity";
+
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 
 	private Button mButtonLoginLogout;
