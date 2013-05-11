@@ -20,6 +20,7 @@ public class User {
 	private String mId;
 	private String mPersonalInfo;
 	private String mToken;
+	private String mAuthToken;
 
 	public User(String jsonResponse, String token) throws JSONException {
 		JSONObject jObject = new JSONObject(jsonResponse);
@@ -27,6 +28,10 @@ public class User {
         mEmail = jObject.getString("email");
         mId = jObject.getString("id");
         mPersonalInfo = jObject.getString("personal_info"); 
+        //Devise token
+        mAuthToken = jObject.getString("authentication_token");
+        
+        //Facebook token
         mToken = token;
 	}
 	
@@ -38,6 +43,14 @@ public class User {
 		this.mName = mName;
 	}
 
+	public String getAuthToken() {
+		return mAuthToken;
+	}
+
+	public void setAuthToken(String authToken) {
+		this.mAuthToken = authToken;
+	}
+	
 	public String getPersonalInfo() {
 		return mPersonalInfo;
 	}

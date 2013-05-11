@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.additt.maple_android.R;
+import com.loopj.android.http.RequestParams;
 
 public class PopularAdsActivity extends BrowseActivity {
 
@@ -13,7 +14,13 @@ public class PopularAdsActivity extends BrowseActivity {
 		setTitle("Popular");
 		super.onCreate(savedInstanceState);
 		super.setLayout(R.layout.activity_popular_ads);
-		super.requestUserAds(null);
+		
+		RequestParams params = new RequestParams();
+
+		if (mApp.getUser() != null) {
+			params.put("auth_token", mApp.getUser().getAuthToken());
+		}
+		super.requestUserAds(params);
 		
 		String success = getIntent().getStringExtra("successMessage");
 		if (success != null) {
