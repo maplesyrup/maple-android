@@ -64,12 +64,18 @@ public class LoginActivity extends Activity {
 	public void onStart() {
 		super.onStart();
 		Session.getActiveSession().addCallback(statusCallback);
+		
+		// start analytics tracking for this activity
+		EasyTracker.getInstance().activityStart(this);
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
 		Session.getActiveSession().removeCallback(statusCallback);
+		
+		// stop analytics tracking for this activity
+		EasyTracker.getInstance().activityStop(this);
 	}
 
 	@Override

@@ -210,4 +210,20 @@ public abstract class FunnelActivity extends SherlockActivity {
 	abstract void nextStage(View v);
 	
 	abstract void prevStage(View v);
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		// start analytics tracking for this activity
+		EasyTracker.getInstance().activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		
+		// stop analytics tracking for this activity
+		EasyTracker.getInstance().activityStop(this);
+	}
 }
