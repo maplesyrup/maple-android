@@ -150,5 +150,18 @@ public class TextActivity extends FunnelActivity {
 		mAdCreationManager.previousStage(this);
 	}
 	
+	@Override
+	public void onStart() {
+		/* Super handles starting tracking */
+		super.onStart();
+	}
+
+	
+	@Override
+	public void onStop() {
+		/* Super handles stopping tracking */
+		super.onStop();
+	}
+	
 	
 }

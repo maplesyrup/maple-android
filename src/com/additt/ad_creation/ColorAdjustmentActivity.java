@@ -145,4 +145,17 @@ public class ColorAdjustmentActivity extends FunnelActivity {
 		mContrastSeek.setProgress(100);
 		mBrightnessSeek.setProgress(100);
 	}
+	
+	@Override
+	public void onStart() {
+		/* Super handles starting tracking */
+		super.onStart();
+	}
+
+	
+	@Override
+	public void onStop() {
+		/* Super handles stopping tracking */
+		super.onStop();
+	}
 }
