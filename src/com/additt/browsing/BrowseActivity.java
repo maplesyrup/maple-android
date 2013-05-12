@@ -30,6 +30,8 @@ import com.additt.maple_android.MapleHttpClient;
 import com.additt.maple_android.R;
 import com.additt.maple_android.User;
 import com.additt.maple_android.Utility;
+import com.facebook.Session;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -175,6 +177,22 @@ public class BrowseActivity extends SherlockActivity {
 	
 	public Uri getFileUri() {
 		return mFileUri;
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		// start analytics tracking for this activity
+		EasyTracker.getInstance().activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		
+		// stop analytics tracking for this activity
+		EasyTracker.getInstance().activityStop(this);
 	}
 	
 }

@@ -22,11 +22,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	private RelativeLayout mTopBar;
 	
 	private float mPrevTouchX;
-	private float mPrevTouchY;
-	
-
-
-	
+	private float mPrevTouchY;	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +84,19 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 	@Override
 	void prevStage(View v) {
 		// Do nothing
+	}
+	
+	@Override
+	public void onStart() {
+		/* Super handles starting tracking */
+		super.onStart();
+	}
+
+	
+	@Override
+	public void onStop() {
+		/* Super handles stopping tracking */
+		super.onStop();
 	}
 
 }

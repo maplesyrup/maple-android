@@ -50,4 +50,17 @@ public class PersonalAdsActivity extends BrowseActivity {
 		params.put("auth_token", appUser.getAuthToken());
 		super.requestUserAds(params);
 	}
+	
+	@Override
+	public void onStart() {
+		/* Super handles starting tracking */
+		super.onStart();
+	}
+
+	
+	@Override
+	public void onStop() {
+		/* Super handles stopping tracking */
+		super.onStop();
+	}
 }

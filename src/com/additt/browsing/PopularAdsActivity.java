@@ -31,4 +31,17 @@ public class PopularAdsActivity extends BrowseActivity {
 		
 	}
 	
+	@Override
+	public void onStart() {
+		/* Super handles starting tracking */
+		super.onStart();
+	}
+
+	
+	@Override
+	public void onStop() {
+		/* Super handles stopping tracking */
+		super.onStop();
+	}
+	
 }
