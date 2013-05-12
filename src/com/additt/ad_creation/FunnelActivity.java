@@ -20,6 +20,7 @@ import com.additt.maple_android.MapleApplication;
 import com.additt.maple_android.R;
 import com.additt.maple_android.Utility;
 import com.facebook.Session;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public abstract class FunnelActivity extends SherlockActivity {
 	

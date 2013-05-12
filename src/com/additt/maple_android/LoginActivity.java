@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.additt.browsing.PopularAdsActivity;
 import com.facebook.Session;
 import com.facebook.SessionState;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 

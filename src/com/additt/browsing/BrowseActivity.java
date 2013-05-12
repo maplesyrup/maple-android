@@ -31,6 +31,7 @@ import com.additt.maple_android.R;
 import com.additt.maple_android.User;
 import com.additt.maple_android.Utility;
 import com.facebook.Session;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
