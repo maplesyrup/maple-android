@@ -64,7 +64,6 @@ public class CropView extends ImageView {
 	
 	/* Length of crop square */
 	private float mLength;
-	private int mViewWidth;
 	
 	/* Min length of crop box */
 	private float mMinLength;
@@ -110,7 +109,6 @@ public class CropView extends ImageView {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		
-		mViewWidth = display.getWidth();
 	}
 	
 	/**
@@ -120,19 +118,14 @@ public class CropView extends ImageView {
 	 */
 	public void setBitmap(Bitmap bitmap) {
 		mCurrBitmap = bitmap;
-		
-		// Determine aspect ratio so we can accurately get height without skew
-		mRatio = (mViewWidth - 2*MARGIN) / (float) mCurrBitmap.getWidth();
 		mFirstRender = true;
-		
-		requestLayout();
 		invalidate();
 	}
 	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int desiredWidth = mViewWidth;
-	    int desiredHeight = mCurrBitmap != null && mRatio != null ? (int) (mRatio * mCurrBitmap.getHeight()) : 0;
+		int desiredWidth = mCurrBitmap != null && mBoundingBox != null ? (int) (mBoundingBox.width() + 2*MARGIN) : 0;
+	    int desiredHeight = mCurrBitmap != null && mBoundingBox != null ? (int) (mBoundingBox.height() + 2*MARGIN) : 0;
 
 	    int widthMode = MeasureSpec.getMode(widthMeasureSpec);
 	    int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -172,10 +165,24 @@ public class CropView extends ImageView {
 		
 		if (mCurrBitmap != null) {
 			
-			if (mFirstRender) {				
+			if (mFirstRender) {
 				int bBoxWidth = canvas.getWidth() - 2*MARGIN;
+				int bBoxHeight = (int) ((canvas.getHeight() / 2) - 2 * MARGIN);
 				
-				int bBoxHeight = (int) (mRatio * (mCurrBitmap.getHeight() - 2 * MARGIN));
+				float bBoxAspectRatio = (float) bBoxWidth / bBoxHeight;
+				float adAspectRatio = (float) mCurrBitmap.getWidth() / mCurrBitmap.getHeight();
+				
+				// Width in relation to height is larger
+				if (adAspectRatio > bBoxAspectRatio) {
+					
+					// Ratio to match the bitmap width of the screen
+					mRatio = ((float) bBoxWidth / mCurrBitmap.getWidth());
+					bBoxHeight = (int) (mRatio * mCurrBitmap.getHeight());
+				} else {
+					// Ratio to match the bitmap with the height of the screen
+					mRatio = ((float) bBoxHeight / mCurrBitmap.getHeight());
+					bBoxWidth = (int) (mRatio * mCurrBitmap.getWidth());
+				}
 				
 				mBoundingBox.set(MARGIN, MARGIN, MARGIN + bBoxWidth, MARGIN + bBoxHeight);
 
@@ -190,6 +197,8 @@ public class CropView extends ImageView {
 				
 	
 				mFirstRender = false;
+				requestLayout();
+
 			}
 			
 			canvas.drawARGB(50, 255, 255, 255);
@@ -266,8 +275,8 @@ public class CropView extends ImageView {
 	 * @return
 	 */
 	public Bitmap crop() {
-		int x = (int) (mCropBox.left / mRatio);
-		int y = (int) (mCropBox.top / mRatio);
+		int x = (int) ((mCropBox.left - MARGIN) / mRatio);
+		int y = (int) ((mCropBox.top - MARGIN) / mRatio);
 		int length = (int) (mCropBox.width() / mRatio);
 		
 		/* Take care of rounding errors */
