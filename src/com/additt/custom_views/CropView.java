@@ -130,8 +130,8 @@ public class CropView extends ImageView {
 	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int desiredWidth = mViewWidth;
-	    int desiredHeight = mCurrBitmap != null && mRatio != null ? (int) (mRatio * mCurrBitmap.getHeight()) : 0;
+		int desiredWidth = mCurrBitmap != null && mBoundingBox != null ? (int) (mBoundingBox.width() + 2*MARGIN) : 0;
+	    int desiredHeight = mCurrBitmap != null && mBoundingBox != null ? (int) (mBoundingBox.height() + 2*MARGIN) : 0;
 
 	    int widthMode = MeasureSpec.getMode(widthMeasureSpec);
 	    int widthSize = MeasureSpec.getSize(widthMeasureSpec);
