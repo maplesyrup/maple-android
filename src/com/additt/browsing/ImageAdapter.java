@@ -1,5 +1,6 @@
 package com.additt.browsing;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -60,7 +61,17 @@ public class ImageAdapter extends BaseAdapter {
             protected int sizeOf(String key, Bitmap bitmap) {
                 // The cache size will be measured in kilobytes rather than
                 // number of items.
-                return bitmap.getByteCount() / 1024;
+    			
+    			int nBytes = 0;
+    			try {
+    				nBytes = bitmap.getByteCount() / 1024;
+    			} catch (NoSuchMethodError e) {
+    				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    			    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+    			    byte[] imageInByte = stream.toByteArray();
+        			nBytes = imageInByte.length;
+    			}
+                return nBytes;
             }
         };
     }
