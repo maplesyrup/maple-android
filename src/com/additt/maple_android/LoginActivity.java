@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.additt.browsing.PopularAdsActivity;
 import com.facebook.Session;
@@ -57,8 +58,9 @@ public class LoginActivity extends Activity {
 				session.openForRead(new Session.OpenRequest(this)
 						.setCallback(statusCallback));
 			}
+		} else {
+			updateView();
 		}
-		updateView();
 	}
 
 	@Override
@@ -145,9 +147,9 @@ public class LoginActivity extends Activity {
 			@Override
 		    public void onFailure(Throwable error, String response) {
 				// Something went wrong so let's start up the LoginActivity again
-				Intent i = new Intent(mApp, LoginActivity.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				mApp.startActivity(i);
+				// No let's not try again. This will throw us into an infinite loop.
+				Log.d(TAG, "Failed to login. Check heroku logs for error");
+				Toast.makeText(LoginActivity.this, "Failed to login", Toast.LENGTH_SHORT).show();
 
 		    }
 		});
