@@ -100,9 +100,6 @@ public class LoginActivity extends Activity {
 		if (session.isOpened()) {
 			saveUserData((MapleApplication) this.getApplication(), session.getAccessToken());
 			
-			// Session is opened hide login button.
-			mButtonLoginLogout.setVisibility(View.INVISIBLE);
-			
 		
 		}
 	}
