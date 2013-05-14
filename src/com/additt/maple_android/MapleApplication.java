@@ -20,7 +20,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  */
 
 public class MapleApplication extends Application{
-	
 	private AdCreationManager mAdCreationManager;
 	private User mAppUser;
 	
@@ -42,7 +41,7 @@ public class MapleApplication extends Application{
 	public AdCreationManager getAdCreationManager() {
 		return mAdCreationManager;
 	}
-	
+    
 	/** Universal Image Loader is a library
 	 * that helps with loading images from the web.
 	 * It is asynchronous and multithreaded, and offers
