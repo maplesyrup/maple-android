@@ -144,15 +144,12 @@ public class BrowseActivity extends SherlockActivity {
 
 		case AdCreationDialog.CAMERA_REQUEST:
 			if (resultCode == Activity.RESULT_OK) {
-				// Load bitmap into byteArray so that we can pass the data to the
-				// new Activity
-				
-				Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), 240, 320);				
-				mApp.initAdCreationManager(currBitmap, mApp.getFileUri());		
+				// Don't actually have to do anything here						
 			}
 			break;
 		case AdCreationDialog.PICK_IMAGE:
-	        if(resultCode == Activity.RESULT_OK){  
+	        // if the image was picked from gallery, get the result Uri
+			if(resultCode == Activity.RESULT_OK){  
 	            Uri selectedImage = data.getData();
 	            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -163,14 +160,17 @@ public class BrowseActivity extends SherlockActivity {
 	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 	            String filePath = cursor.getString(columnIndex);
 	            cursor.close();
-	            mApp.setFileUri(Uri.parse(filePath));
-	            mApp.initAdCreationManager(BitmapFactory.decodeFile(filePath), Uri.parse(filePath));
-	            
+	            // save Uri
+	            mApp.setFileUri(Uri.parse(filePath));	            
 	        }
 	        break;
-
 		}
-		// Reset companyTag from any previous ad creations
+		
+		// Get the result bitmap and use it to init the Ad Creation Manager
+		Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), mApp.AD_WIDTH, mApp.AD_HEIGHT);				
+		mApp.initAdCreationManager(currBitmap, mApp.getFileUri());
+		
+		// Load the first activity in the ad creation funnel
 		mApp.getAdCreationManager().nextStage(this, mApp.getAdCreationManager().getCurrentBitmap());
 	}
 	
