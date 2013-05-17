@@ -23,6 +23,7 @@ public class MapleApplication extends Application{
 	
 	private AdCreationManager mAdCreationManager;
 	private User mAppUser;
+	private Uri mFileUri;
 	
 	public static final int GREEN = 0xff21ab27;
 
@@ -74,5 +75,13 @@ public class MapleApplication extends Application{
 	
 	public User getUser() {
 		return mAppUser;
+	}
+
+	public void setFileUri(Uri u) {
+		mFileUri = u;		
+	}
+	
+	public Uri getFileUri(){
+		return mFileUri;
 	}
 }
