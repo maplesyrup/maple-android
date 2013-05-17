@@ -98,6 +98,8 @@ public class BrowseActivity extends SherlockActivity {
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
+					// TODO: sometimes mGridview.SetAdapter crashes with a null pointer. Which one of these
+					// is null in that case? Need to figure this bug out
 					System.out.println("gridview:" + mGridview);
 					System.out.println("application context:" + getApplicationContext());
 					System.out.println("jObjectAds:" + jObjectAds);
@@ -145,8 +147,7 @@ public class BrowseActivity extends SherlockActivity {
 				// Load bitmap into byteArray so that we can pass the data to the
 				// new Activity
 				
-				Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), 240, 320);
-				
+				Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), 240, 320);				
 				mApp.initAdCreationManager(currBitmap, mApp.getFileUri());		
 			}
 			break;
@@ -162,7 +163,7 @@ public class BrowseActivity extends SherlockActivity {
 	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 	            String filePath = cursor.getString(columnIndex);
 	            cursor.close();
-
+	            mApp.setFileUri(Uri.parse(filePath));
 	            mApp.initAdCreationManager(BitmapFactory.decodeFile(filePath), Uri.parse(filePath));
 	            
 	        }

@@ -23,6 +23,7 @@ public class MapleApplication extends Application{
 	
 	private AdCreationManager mAdCreationManager;
 	private User mAppUser;
+	// the most recently used picture
 	private Uri mFileUri;
 	
 	public static final int GREEN = 0xff21ab27;
@@ -77,10 +78,18 @@ public class MapleApplication extends Application{
 		return mAppUser;
 	}
 
+	/** Set the file Uri for a picture that
+	 * was just taken.
+	 * @param u
+	 */
 	public void setFileUri(Uri u) {
 		mFileUri = u;		
 	}
 	
+	/** Get the mostly recently taken
+	 * picture file
+	 * @return
+	 */
 	public Uri getFileUri(){
 		return mFileUri;
 	}
