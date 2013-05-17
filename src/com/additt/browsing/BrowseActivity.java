@@ -30,7 +30,6 @@ import com.additt.maple_android.MapleHttpClient;
 import com.additt.maple_android.R;
 import com.additt.maple_android.User;
 import com.additt.maple_android.Utility;
-import com.facebook.Session;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -44,7 +43,6 @@ public class BrowseActivity extends SherlockActivity {
 	// the view we are using to display the ads
 	private GridView mGridview; 
 	// Contains file uri of photo being taken
-	protected Uri mFileUri;
 	protected MapleApplication mApp;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +79,9 @@ public class BrowseActivity extends SherlockActivity {
 			// Example json response: http://maplesyrup.herokuapp.com/posts?user_id=3
 			@Override
 			public void onSuccess(int statusCode, String response) {
+				JSONArray jObjectAds = null;
 				try {
-					JSONArray jObjectAds = new JSONArray(response);
+					jObjectAds = new JSONArray(response);
 					if (jObjectAds.length() == 0) {
 						mGridview = (GridView) findViewById(R.id.gridviewAds);
 						((RelativeLayout) mGridview.getParent()).removeView(mGridview);
@@ -99,6 +98,12 @@ public class BrowseActivity extends SherlockActivity {
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
+					// TODO: sometimes mGridview.SetAdapter crashes with a null pointer. Which one of these
+					// is null in that case? Need to figure this bug out
+					System.out.println("gridview:" + mGridview);
+					System.out.println("application context:" + getApplicationContext());
+					System.out.println("jObjectAds:" + jObjectAds);
+					System.out.println("authToken:" + mApp.getUser());
 				}
 			}
 			
@@ -132,7 +137,6 @@ public class BrowseActivity extends SherlockActivity {
 	 * @param data Various data about the photo that Android supplies us.
 	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		MapleApplication app = ((MapleApplication) this.getApplication());
 		if (resultCode == Activity.RESULT_CANCELED) {
 			return;
 		}
@@ -143,9 +147,8 @@ public class BrowseActivity extends SherlockActivity {
 				// Load bitmap into byteArray so that we can pass the data to the
 				// new Activity
 				
-				Bitmap currBitmap = Utility.retrieveBitmap(mFileUri, 240, 320);
-				
-				app.initAdCreationManager(currBitmap, mFileUri);		
+				Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), 240, 320);				
+				mApp.initAdCreationManager(currBitmap, mApp.getFileUri());		
 			}
 			break;
 		case AdCreationDialog.PICK_IMAGE:
@@ -160,23 +163,15 @@ public class BrowseActivity extends SherlockActivity {
 	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 	            String filePath = cursor.getString(columnIndex);
 	            cursor.close();
-
-	            app.initAdCreationManager(BitmapFactory.decodeFile(filePath), Uri.parse(filePath));
+	            mApp.setFileUri(Uri.parse(filePath));
+	            mApp.initAdCreationManager(BitmapFactory.decodeFile(filePath), Uri.parse(filePath));
 	            
 	        }
 	        break;
 
 		}
 		// Reset companyTag from any previous ad creations
-		app.getAdCreationManager().nextStage(this, app.getAdCreationManager().getCurrentBitmap());
-	}
-	
-	public void setFileUri(Uri fileUri) {
-		mFileUri = fileUri;
-	}
-	
-	public Uri getFileUri() {
-		return mFileUri;
+		mApp.getAdCreationManager().nextStage(this, mApp.getAdCreationManager().getCurrentBitmap());
 	}
 	
 	@Override

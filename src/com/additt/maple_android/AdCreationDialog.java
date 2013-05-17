@@ -12,7 +12,6 @@ import com.additt.browsing.BrowseActivity;
 public class AdCreationDialog {
 	
 	private BrowseActivity mActivity;
-	private Uri mFileUri;
 	public static final int CAMERA_REQUEST = 1;
 	public static final int PICK_IMAGE = 2;
 
@@ -59,9 +58,8 @@ public class AdCreationDialog {
 			Toast.makeText(mActivity, "Unable to open Camera", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		mActivity.setFileUri(u); 
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, mActivity.getFileUri());
-		
+		((MapleApplication) mActivity.getApplication()).setFileUri(u); 
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, u);		
 		mActivity.startActivityForResult(intent, CAMERA_REQUEST);
 	}
 	
