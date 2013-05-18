@@ -31,12 +31,8 @@ public class MapleApplication extends Application {
 	// the most recently used picture
 	private Uri mFileUri;
 
+
 	public static final int GREEN = 0xff21ab27;
-	// maximum height and width of an image being used
-	// for an ad. If it is greater than this it is scaled
-	// down before being used
-	public static final int AD_HEIGHT = 600;
-	public static final int AD_WIDTH = 600;
 
 	// Exception handler for when the program crashes
 	private Thread.UncaughtExceptionHandler _unCaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
@@ -46,12 +42,11 @@ public class MapleApplication extends Application {
 			// we can implement some sort of logging system here
 			ex.printStackTrace();
 			
-			// I don't know if Google Analytics will still get the error reports 
-			// if we do things this way (I don't think it will)
-			
+			// exit the app			
 			System.exit(2);
 		}
 	};
+ 
 
 	@Override
 	public void onCreate() {

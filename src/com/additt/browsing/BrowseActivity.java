@@ -25,6 +25,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.additt.maple_android.AdCreationDialog;
+import com.additt.maple_android.AdCreationManager;
 import com.additt.maple_android.MapleApplication;
 import com.additt.maple_android.MapleHttpClient;
 import com.additt.maple_android.R;
@@ -167,7 +168,7 @@ public class BrowseActivity extends SherlockActivity {
 		}
 		
 		// Get the result bitmap and use it to init the Ad Creation Manager
-		Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), mApp.AD_WIDTH, mApp.AD_HEIGHT);				
+		Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), AdCreationManager.AD_WIDTH, AdCreationManager.AD_HEIGHT);				
 		mApp.initAdCreationManager(currBitmap, mApp.getFileUri());
 		
 		// Load the first activity in the ad creation funnel
