@@ -44,9 +44,10 @@ public class MapleApplication extends Application {
 		public void uncaughtException(Thread thread, Throwable ex) {
 
 			// we can implement some sort of logging system here
+			ex.printStackTrace();
 			
 			// I don't know if Google Analytics will still get the error reports 
-			// if we do things this way
+			// if we do things this way (I don't think it will)
 			
 			System.exit(2);
 		}
