@@ -26,8 +26,8 @@ public class MapleApplication extends Application{
 	// the most recently used picture
 	private Uri mFileUri;
 	
-	public static final int GREEN = 0xff21ab27;
-
+	public static final int GREEN = 0xff21ab27;	
+ 
 	@Override
 	public void onCreate()
 	{
