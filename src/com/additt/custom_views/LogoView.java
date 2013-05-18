@@ -114,8 +114,13 @@ public class LogoView extends ImageView implements OnTouchListener {
 		    		}
 			    	break;
 				case MotionEvent.ACTION_MOVE:
-					moveLogo(ev.getX() - mPrevTouch.x, ev.getY() - mPrevTouch.y);
-		    		mPrevTouch.set(ev.getX(), ev.getY());
+					if (mPrevTouch == null) {
+						mPrevTouch = new PointF(ev.getX(), ev.getY());
+					} else {
+						moveLogo(ev.getX() - mPrevTouch.x, ev.getY() - mPrevTouch.y);
+						mPrevTouch.set(ev.getX(), ev.getY());
+					}
+		    		
 					break;
 				case MotionEvent.ACTION_CANCEL:
 					break;
