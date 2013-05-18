@@ -26,12 +26,7 @@ public class MapleApplication extends Application{
 	// the most recently used picture
 	private Uri mFileUri;
 	
-	public static final int GREEN = 0xff21ab27;
-	// maximum height and width of an image being used
-	// for an ad. If it is greater than this it is scaled
-	// down before being used
-	public static final int AD_HEIGHT = 600;
-	public static final int AD_WIDTH = 600;
+	public static final int GREEN = 0xff21ab27;	
  
 	@Override
 	public void onCreate()
