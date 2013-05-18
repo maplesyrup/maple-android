@@ -114,8 +114,13 @@ public class LogoView extends ImageView implements OnTouchListener {
 		    		}
 			    	break;
 				case MotionEvent.ACTION_MOVE:
-					moveLogo(ev.getX() - mPrevTouch.x, ev.getY() - mPrevTouch.y);
-		    		mPrevTouch.set(ev.getX(), ev.getY());
+					if (mPrevTouch == null) {
+						mPrevTouch = new PointF(ev.getX(), ev.getY());
+					} else {
+						moveLogo(ev.getX() - mPrevTouch.x, ev.getY() - mPrevTouch.y);
+						mPrevTouch.set(ev.getX(), ev.getY());
+					}
+		    		
 					break;
 				case MotionEvent.ACTION_CANCEL:
 					break;
@@ -159,8 +164,8 @@ public class LogoView extends ImageView implements OnTouchListener {
         RectF scaledLogo = generateScaledLogo();
         RectF scaledDown = new RectF();
         
-        float scaledLeft = scaledLogo.left / mRatio;
-        float scaledTop = scaledLogo.top / mRatio;
+        float scaledLeft = ((scaledLogo.left - (this.getPaddingLeft() / 2)) / mRatio) ;
+        float scaledTop = ((scaledLogo.top - (this.getPaddingTop() / 2))/ mRatio);
         float scaledRight = scaledLeft + (scaledLogo.width() / mRatio);
         float scaledBottom = scaledTop + (scaledLogo.height() / mRatio);
         scaledDown.set(scaledLeft, scaledTop, scaledRight, scaledBottom);
