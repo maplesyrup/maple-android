@@ -81,6 +81,9 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		return true;
 	}
 
+	public void rotate(View v) {
+		mCropView.rotate();
+	}
 	@Override
 	void prevStage(View v) {
 		// Do nothing
