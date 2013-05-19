@@ -17,7 +17,7 @@ import com.loopj.android.http.RequestParams;
  */
 public class AddittException {
 	// where report() Posts to
-	private final String SERVER_PATH = "";
+	private final String SERVER_PATH = "https://additt:mapl3$ryuP@additt.cloudant.com/logs/";
 	private Thread mThread;
 	private Throwable mEx;
 	private MapleApplication mApp;
@@ -43,7 +43,8 @@ public class AddittException {
 		params.put("android_build", "" + Build.VERSION.SDK_INT);
 		// put time in PST
 		params.put("time", Calendar.getInstance(TimeZone.getTimeZone("America/Los_Angeles"), Locale.US).getTime().toString());
-		params.put("stack_trace", mEx.getStackTrace().toString());		
+		params.put("stack_trace", mEx.getStackTrace().toString());	
+		params.put("ad_creation_log", mApp.getAdCreationManager().getLog());
 		
 		
 		// post report details to the server. We don't need
