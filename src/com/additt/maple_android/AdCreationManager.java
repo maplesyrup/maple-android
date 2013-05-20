@@ -145,7 +145,6 @@ public class AdCreationManager {
 	 */
 	public void setCompanyLogo(Bitmap logo) {
 		mLogo = logo;
-		mLog.add("setCompanyLogo() - width: " + logo.getWidth() + " height: " + logo.getHeight());
 	}
 
 	/**
