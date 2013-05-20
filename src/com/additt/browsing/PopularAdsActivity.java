@@ -44,18 +44,6 @@ public class PopularAdsActivity extends BrowseActivity {
 			params.put("auth_token", appUser.getAuthToken());
 		}
 		populateView(params, appUser.getAuthToken());
-		// On Click event for Single Gridview Item
-        mGridview.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            	Log.d(TAG, "clicked item");
-            	Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
-                DisplayAd displayAd = (DisplayAd) parent.getAdapter().getItem(position);
-				i.putExtra("url", displayAd.getUrl());
-                i.putExtra("title", displayAd.getTitle());
-                startActivity(i);
-            }
-        });
 		
 		String success = getIntent().getStringExtra("successMessage");
 		if (success != null) {
@@ -77,7 +65,6 @@ public class PopularAdsActivity extends BrowseActivity {
 			    	// Build up ArrayList of DisplayAds from JSON array
 			    	for (int i = 0; i < jObjectAds.length(); i++) {
 			    		DisplayAd dAd = new DisplayAd(jObjectAds.getJSONObject(i));
-			    		Log.d(TAG, "Adding to arrlist");
 			    		ads.add(dAd);
 			    	}
 			    	if (ads.size() == 0) {
@@ -90,7 +77,21 @@ public class PopularAdsActivity extends BrowseActivity {
 						adsTitle.setTextSize(22);
 						adsTitle.setTypeface(null, Typeface.BOLD);
 					} else {
+						// Put in special image adapter here
 						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), ads, authToken));
+						Log.d(TAG, "hi");
+						// On Click event for Single Gridview Item
+				        mGridview.setOnItemClickListener(new OnItemClickListener() {
+				            @Override
+				            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				            	Log.d(TAG, "clicked item");
+				            	Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
+				                DisplayAd displayAd = (DisplayAd) parent.getAdapter().getItem(position);
+								i.putExtra("url", displayAd.getUrl());
+				                i.putExtra("title", displayAd.getTitle());
+				                startActivity(i);
+				            }
+				        });
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
