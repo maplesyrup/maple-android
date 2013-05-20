@@ -41,6 +41,9 @@ public class AdCreationManager {
 
 	/* The application context */
 	private Context mContext;
+	
+	/* Log for all interaction with the ad creation manager */
+	private static ArrayList<String> mLog = new ArrayList<String>();
 
 	/* The order of the ad creation funnel */
 	private Class<?>[] mFunnel = { CropActivity.class,
@@ -90,7 +93,11 @@ public class AdCreationManager {
 
 		mRatio = 1;
 
-		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
+		// -1 means the funnel hasn't been launched yet
+		mCurrentStage = -1; 
+		
+		// update log
+		mLog.add("New AdCreationManager - Uri: " + fileUri.toString() + " Width: " + currBitmap.getWidth() + " Height: " + currBitmap.getHeight());
 	}
 
 	/**
@@ -101,6 +108,7 @@ public class AdCreationManager {
 	 */
 	public void setCompany(Company company) {
 		mCompany = company;
+		mLog.add("setCompany(" + company + ")");
 	}
 
 	/**
@@ -137,6 +145,7 @@ public class AdCreationManager {
 	 */
 	public void setCompanyLogo(Bitmap logo) {
 		mLogo = logo;
+		mLog.add("setCompanyLogo() - width: " + logo.getWidth() + " height: " + logo.getHeight());
 	}
 
 	/**
@@ -161,8 +170,10 @@ public class AdCreationManager {
 	public void nextStage(Context context, Bitmap bitmap) {
 		// if we are in the last stage already
 		// don't do anything
-		if (mCurrentStage + 1 >= mFunnel.length)
+		if (mCurrentStage + 1 >= mFunnel.length){
+			mLog.add("nextStage() error: already at the end");
 			return;
+		}
 
 		// push bitmap onto stack
 		pushBitmap(bitmap);
@@ -170,6 +181,8 @@ public class AdCreationManager {
 		// increment stage counter and start that activity
 		Intent intent = new Intent(context, mFunnel[++mCurrentStage]);
 		context.startActivity(intent);
+		
+		mLog.add("nextStage() -> " + mFunnel[mCurrentStage].getName() + " pushing bitmap: " + bitmap.getWidth() + " x " + bitmap.getHeight());
 	}
 
 	/**
@@ -189,6 +202,8 @@ public class AdCreationManager {
 		// decrement stage counter and start that activity
 		Intent intent = new Intent(context, mFunnel[--mCurrentStage]);
 		context.startActivity(intent);
+		
+		mLog.add("prevStage() -> " + mFunnel[mCurrentStage].getName());
 	}
 
 	/**
@@ -317,6 +332,18 @@ public class AdCreationManager {
 		}
 
 		/* End Ad setup */
+	}
+	
+	/** Returns a string representing the history of the ad
+	 * creation manager
+	 */
+	public String getLog(){
+		String result = "";
+		// Concatenate all log entries and add line breaks
+		for(String entry : mLog){
+			result += entry + "\n";
+		}
+		return result;
 	}
 
 }
