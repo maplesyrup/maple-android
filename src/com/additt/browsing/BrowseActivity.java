@@ -7,14 +7,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -45,33 +41,15 @@ public class BrowseActivity extends SherlockActivity {
 	private GridView mGridview; 
 	// Contains file uri of photo being taken
 	protected MapleApplication mApp;
-
+	private static final String TAG = "BrowseAds";
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mApp = (MapleApplication) getApplication();	
 	}
 	
-	/**
-	 * Specify which layout to use (either popular ads or personal ads).
-	 * This is put in the parent class since the gridview shares common
-	 * functionality
-	 * @param layout
-	 */
-	public void setLayout(int layout) {
-		setContentView(layout);
-		mGridview = (GridView) findViewById(R.id.gridviewAds);
-
-		// On Click event for Single Gridview Item
-        mGridview.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            	Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
-                DisplayAd displayAd = (DisplayAd) parent.getAdapter().getItem(position);
-				i.putExtra("url", displayAd.getUrl());
-                i.putExtra("title", displayAd.getTitle());
-                startActivity(i);
-            }
-        });
+	public void setGridview(GridView gridView) {
+		mGridview = gridView;
 	}
 	
 	public void requestUserAds(RequestParams params) {
@@ -84,7 +62,6 @@ public class BrowseActivity extends SherlockActivity {
 				try {
 					jObjectAds = new JSONArray(response);
 					if (jObjectAds.length() == 0) {
-						mGridview = (GridView) findViewById(R.id.gridviewAds);
 						((RelativeLayout) mGridview.getParent()).removeView(mGridview);
 						TextView adsTitle = (TextView) findViewById(R.id.adsTitle);
 						adsTitle.setText("There are no ads to show; you should create one!");

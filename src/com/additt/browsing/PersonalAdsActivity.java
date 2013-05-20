@@ -1,6 +1,7 @@
 package com.additt.browsing;
 
 import android.os.Bundle;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.additt.maple_android.MapleApplication;
@@ -22,7 +23,10 @@ public class PersonalAdsActivity extends BrowseActivity {
 		setTitle("My Ads");
 		super.onCreate(savedInstanceState);
 
-		super.setLayout(R.layout.activity_personal_ads);
+		setContentView(R.layout.activity_personal_ads);
+		GridView mGridview = (GridView) findViewById(R.id.gridviewAdsPersonal);
+		setGridview(mGridview);
+		
 		Session session = Session.getActiveSession();
 		mProfilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);
 		mProfilePictureView.setCropped(true);
@@ -48,7 +52,7 @@ public class PersonalAdsActivity extends BrowseActivity {
 		// No params means just getting the most popular ads
 		params.put("user_id", appUser.getId());
 		params.put("auth_token", appUser.getAuthToken());
-		super.requestUserAds(params);
+		requestUserAds(params);
 	}
 	
 	@Override
