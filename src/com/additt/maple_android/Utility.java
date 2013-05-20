@@ -83,7 +83,8 @@ public class Utility {
 	    int photoWidth = bmOptions.outWidth;
 	    int photoHeight = bmOptions.outHeight;
 
-	    int scaleFactor = Math.min(photoWidth/width, photoHeight/height);
+	    // Needs to be at least 1, or a a power of two for scaling down
+	    int scaleFactor = Math.max(1, Math.min(photoWidth/width, photoHeight/height));
 
 	    bmOptions.inJustDecodeBounds = false;
 	    bmOptions.inSampleSize = scaleFactor;
@@ -228,9 +229,9 @@ public class Utility {
 			onClickLogout(activity);
 			return true;
 		case R.id.new_ad:
-			// TODO: This is pretty bad to assume BrowseActivity but we need for passing the fileUri
-			// of the photo. There are ways to do it via android, but it's very buggy and only works on some
-			// phones. We should just figure out a better way to handle it.
+			// Ad creation dialog stores the file uri in MapleApplication. Technically
+			// any activity can be used here, but only BrowseActivity has the correct
+			// onActivityResult code set up
 			AdCreationDialog dialog = new AdCreationDialog((BrowseActivity) activity);
 			dialog.show();
 			return true;

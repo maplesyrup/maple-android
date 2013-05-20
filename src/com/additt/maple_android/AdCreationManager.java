@@ -33,32 +33,35 @@ import com.additt.custom_views.ProgressView;
  * 
  */
 public class AdCreationManager {
-	
+	// maximum height and width of an image being used
+	// for an ad. If it is greater than this it is scaled
+	// down before being used
+	public static final int AD_HEIGHT = 600;
+	public static final int AD_WIDTH = 600;
+
 	/* The application context */
 	private Context mContext;
+	
+	/* Log for all interaction with the ad creation manager */
+	private static ArrayList<String> mLog = new ArrayList<String>();
 
 	/* The order of the ad creation funnel */
-	private Class<?>[] mFunnel = { 
-			CropActivity.class,
-			CompanyTagActivity.class,
-			ColorAdjustmentActivity.class,
-			FilterActivity.class,
-			LogoActivity.class,
-			TextActivity.class,
-			PublishActivity.class
-	};
+	private Class<?>[] mFunnel = { CropActivity.class,
+			CompanyTagActivity.class, ColorAdjustmentActivity.class,
+			FilterActivity.class, LogoActivity.class, TextActivity.class,
+			PublishActivity.class };
 	// keeps track of which stage of the funnel we
-	// are in as an index into mFunnel. 
+	// are in as an index into mFunnel.
 	// -1 for funnel not started yet.
-	private int mCurrentStage; 
-	
+	private int mCurrentStage;
+
 	private static final float AD_DISPLAY_SCALE = 0.4f;
 
 	private Company mCompany;
-	
+
 	// Array of logos for tagged company
 	private ArrayList<Bitmap> mCompanyLogos;
-	
+
 	// the logo the user has chosen to use
 	private Bitmap mLogo;
 
@@ -70,10 +73,9 @@ public class AdCreationManager {
 
 	// File path of saved bitmap image
 	private Uri mFileUri;
-	
+
 	// Ratio of the actual bitmap to the one displayed
 	private float mRatio;
-
 
 	public AdCreationManager(Context context, Bitmap currBitmap, Uri fileUri) {
 		mBitmapStack = new Stack<Bitmap>();
@@ -86,86 +88,101 @@ public class AdCreationManager {
 		mCompanyLogos = new ArrayList<Bitmap>();
 
 		mCompany = null;
-		
+
 		mContext = context;
-		
+
 		mRatio = 1;
+
+		// -1 means the funnel hasn't been launched yet
+		mCurrentStage = -1; 
 		
-		mCurrentStage = -1; // -1 means the funnel hasn't been launched yet
+		// update log
+		mLog.add("New AdCreationManager - Uri: " + fileUri.toString() + " Width: " + currBitmap.getWidth() + " Height: " + currBitmap.getHeight());
 	}
-	
-	/** 
-	 * Set which company this ad is tagged with
-	 * @param name The company name
-	 */
-	public void setCompany(Company company){
-		mCompany = company;
-	}
-	
+
 	/**
-	 * Returns what company the ad has been tagged with, or
-	 * null if no tag has been set yet.
+	 * Set which company this ad is tagged with
+	 * 
+	 * @param name
+	 *            The company name
+	 */
+	public void setCompany(Company company) {
+		mCompany = company;
+		mLog.add("setCompany(" + company + ")");
+	}
+
+	/**
+	 * Returns what company the ad has been tagged with, or null if no tag has
+	 * been set yet.
 	 * 
 	 * @return The company name
 	 */
-	public String getCompanyName(){
+	public String getCompanyName() {
 		return mCompany.getName();
 	}
-	
+
 	/**
-	 * Returns the company object of the company
-	 * this ad is tagged with
+	 * Returns the company object of the company this ad is tagged with
+	 * 
 	 * @return The tagged company
 	 */
-	public Company getCompany(){
+	public Company getCompany() {
 		return mCompany;
 	}
-	
+
 	/**
 	 * Gets the arraylist of logos for the tagged company
 	 */
-	public ArrayList<Bitmap> getCompanyLogoList(){
+	public ArrayList<Bitmap> getCompanyLogoList() {
 		return mCompanyLogos;
 	}
-	
+
 	/**
-	 * Sets which logo the user wants to use in 
-	 * the ad
-	 * @param logo The chosen logo
+	 * Sets which logo the user wants to use in the ad
+	 * 
+	 * @param logo
+	 *            The chosen logo
 	 */
-	public void setCompanyLogo(Bitmap logo){
+	public void setCompanyLogo(Bitmap logo) {
 		mLogo = logo;
+		mLog.add("setCompanyLogo() - width: " + logo.getWidth() + " height: " + logo.getHeight());
 	}
-	
+
 	/**
-	 * Returns the logo the user has chosen to
-	 * use for this ad.
+	 * Returns the logo the user has chosen to use for this ad.
+	 * 
 	 * @return The chosen logo. Null if none selected yet
 	 */
-	public Bitmap getCompanyLogo(){
+	public Bitmap getCompanyLogo() {
 		return mLogo;
 	}
 
 	/**
 	 * Go to the next stage in the ad creation funnel. You must push the updated
 	 * ad before calling this if you want to save the modifications from the
-	 * current stage. 
+	 * current stage.
 	 * 
 	 * @param context
 	 *            The activity context
-	 * @param bitmap The ad bitmap we want to save from the current stage
+	 * @param bitmap
+	 *            The ad bitmap we want to save from the current stage
 	 */
 	public void nextStage(Context context, Bitmap bitmap) {
 		// if we are in the last stage already
 		// don't do anything
-		if(mCurrentStage + 1 >= mFunnel.length) return;
-		
+		if (mCurrentStage + 1 >= mFunnel.length){
+			mLog.add("nextStage() error: already at the end");
+			return;
+		}
+
 		// push bitmap onto stack
 		pushBitmap(bitmap);
-		
+
 		// increment stage counter and start that activity
 		Intent intent = new Intent(context, mFunnel[++mCurrentStage]);
 		context.startActivity(intent);
+		
+		mLog.add("nextStage() -> " + mFunnel[mCurrentStage].getName() + " pushing bitmap: " + bitmap.getWidth() + " x " + bitmap.getHeight());
 	}
 
 	/**
@@ -176,14 +193,17 @@ public class AdCreationManager {
 	 */
 	public void previousStage(Context context) {
 		// if we are in the first stage there is nothing to go back to
-		if(mCurrentStage <= 0) return;
-		
+		if (mCurrentStage <= 0)
+			return;
+
 		// pop last ad to revert changes
 		popBitmap();
-		
+
 		// decrement stage counter and start that activity
 		Intent intent = new Intent(context, mFunnel[--mCurrentStage]);
 		context.startActivity(intent);
+		
+		mLog.add("prevStage() -> " + mFunnel[mCurrentStage].getName());
 	}
 
 	/**
@@ -205,12 +225,13 @@ public class AdCreationManager {
 	private Bitmap pushBitmap(Bitmap bitmap) {
 		return mBitmapStack.push(bitmap);
 	}
-	
+
 	/**
 	 * Returns the top bitmap on the stack
+	 * 
 	 * @return The last ad pushed to the stack
 	 */
-	private Bitmap popBitmap(){
+	private Bitmap popBitmap() {
 		return mBitmapStack.pop();
 	}
 
@@ -234,7 +255,8 @@ public class AdCreationManager {
 	}
 
 	/**
-	 * Gets the current stage number in the ad creation funnel. This is 1-indexed
+	 * Gets the current stage number in the ad creation funnel. This is
+	 * 1-indexed
 	 * 
 	 * @return the current step in the ad creation funnel
 	 */
@@ -245,6 +267,7 @@ public class AdCreationManager {
 	public int getCurrentStage() {
 		return mCurrentStage;
 	}
+
 	/**
 	 * Gets the number of steps in the ad creation funnel
 	 * 
@@ -253,59 +276,74 @@ public class AdCreationManager {
 	public int getNumStages() {
 		return mFunnel.length;
 	}
-	
+
 	public float getRatio() {
 		return mRatio;
 	}
-	
+
 	/**
-	 * Sets up some initial settings for most of the funnel views. Namely the progressBar and the Ad.
-	 * Must be called after setContentView
+	 * Sets up some initial settings for most of the funnel views. Namely the
+	 * progressBar and the Ad. Must be called after setContentView
 	 */
 	public void setup(FunnelActivity activity) {
 		/* Hides action bar */
 		// Action bar needs minSdk = 11, have fallback
 		ActionBar actionBar = activity.getSupportActionBar();
 		actionBar.hide();
-		
+
 		/* Sets up topbar */
 		TextView title = (TextView) activity.findViewById(R.id.title);
 		title.setText(activity.getConfig().get(Config.NAME));
 		/* End topbar setup */
-		
+
 		/* Sets up progress bar */
-		ProgressView progressBar = (ProgressView) activity.findViewById(R.id.progressBar);
-		
+		ProgressView progressBar = (ProgressView) activity
+				.findViewById(R.id.progressBar);
+
 		progressBar.setCurrentStage(this.getCurrentStage());
 		progressBar.setNumStages(this.getNumStages());
 		/* End progress bar setup */
-		
+
 		/* Ad setup */
-		// Deprecated for API level 13 but our min is 11 so we'll have to use this for now
-		int screenHeight = activity.getWindowManager().getDefaultDisplay().getHeight();
-		
-		ImageView ad = (ImageView) activity.findViewById(R.id.ad);	
-		
+		// Deprecated for API level 13 but our min is 11 so we'll have to use
+		// this for now
+		int screenHeight = activity.getWindowManager().getDefaultDisplay()
+				.getHeight();
+
+		ImageView ad = (ImageView) activity.findViewById(R.id.ad);
+
 		/* Will scaled the image view by a constant */
 		if (ad != null) {
 			ad.setImageBitmap(this.getCurrentBitmap());
 			int newHeight = (int) (AD_DISPLAY_SCALE * screenHeight);
 			int width = ad.getDrawable().getIntrinsicWidth();
 			int height = ad.getDrawable().getIntrinsicHeight();
-			
+
 			mRatio = (float) newHeight / height;
-	
+
 			int newWidth = (int) Math.floor((width * newHeight) / height);
-	
+
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-			    newWidth, newHeight);
+					newWidth, newHeight);
 			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 			params.addRule(RelativeLayout.BELOW, R.id.topbar_container);
 			ad.setLayoutParams(params);
 			ad.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		}
-		
+
 		/* End Ad setup */
 	}
 	
+	/** Returns a string representing the history of the ad
+	 * creation manager
+	 */
+	public String getLog(){
+		String result = "";
+		// Concatenate all log entries and add line breaks
+		for(String entry : mLog){
+			result += entry + "\n";
+		}
+		return result;
+	}
+
 }

@@ -25,12 +25,12 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.additt.maple_android.AdCreationDialog;
+import com.additt.maple_android.AdCreationManager;
 import com.additt.maple_android.MapleApplication;
 import com.additt.maple_android.MapleHttpClient;
 import com.additt.maple_android.R;
 import com.additt.maple_android.User;
 import com.additt.maple_android.Utility;
-import com.facebook.Session;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -44,7 +44,6 @@ public class BrowseActivity extends SherlockActivity {
 	// the view we are using to display the ads
 	private GridView mGridview; 
 	// Contains file uri of photo being taken
-	protected Uri mFileUri;
 	protected MapleApplication mApp;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +80,9 @@ public class BrowseActivity extends SherlockActivity {
 			// Example json response: http://maplesyrup.herokuapp.com/posts?user_id=3
 			@Override
 			public void onSuccess(int statusCode, String response) {
+				JSONArray jObjectAds = null;
 				try {
-					JSONArray jObjectAds = new JSONArray(response);
+					jObjectAds = new JSONArray(response);
 					if (jObjectAds.length() == 0) {
 						mGridview = (GridView) findViewById(R.id.gridviewAds);
 						((RelativeLayout) mGridview.getParent()).removeView(mGridview);
@@ -99,6 +99,12 @@ public class BrowseActivity extends SherlockActivity {
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
+					// TODO: sometimes mGridview.SetAdapter crashes with a null pointer. Which one of these
+					// is null in that case? Need to figure this bug out
+					System.out.println("gridview:" + mGridview);
+					System.out.println("application context:" + getApplicationContext());
+					System.out.println("jObjectAds:" + jObjectAds);
+					System.out.println("authToken:" + mApp.getUser());
 				}
 			}
 			
@@ -132,7 +138,6 @@ public class BrowseActivity extends SherlockActivity {
 	 * @param data Various data about the photo that Android supplies us.
 	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		MapleApplication app = ((MapleApplication) this.getApplication());
 		if (resultCode == Activity.RESULT_CANCELED) {
 			return;
 		}
@@ -140,16 +145,12 @@ public class BrowseActivity extends SherlockActivity {
 
 		case AdCreationDialog.CAMERA_REQUEST:
 			if (resultCode == Activity.RESULT_OK) {
-				// Load bitmap into byteArray so that we can pass the data to the
-				// new Activity
-				
-				Bitmap currBitmap = Utility.retrieveBitmap(mFileUri, 240, 320);
-				
-				app.initAdCreationManager(currBitmap, mFileUri);		
+				// Don't actually have to do anything here						
 			}
 			break;
 		case AdCreationDialog.PICK_IMAGE:
-	        if(resultCode == Activity.RESULT_OK){  
+	        // if the image was picked from gallery, get the result Uri
+			if(resultCode == Activity.RESULT_OK){  
 	            Uri selectedImage = data.getData();
 	            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -160,23 +161,18 @@ public class BrowseActivity extends SherlockActivity {
 	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 	            String filePath = cursor.getString(columnIndex);
 	            cursor.close();
-
-	            app.initAdCreationManager(BitmapFactory.decodeFile(filePath), Uri.parse(filePath));
-	            
+	            // save Uri
+	            mApp.setFileUri(Uri.parse(filePath));	            
 	        }
 	        break;
-
 		}
-		// Reset companyTag from any previous ad creations
-		app.getAdCreationManager().nextStage(this, app.getAdCreationManager().getCurrentBitmap());
-	}
-	
-	public void setFileUri(Uri fileUri) {
-		mFileUri = fileUri;
-	}
-	
-	public Uri getFileUri() {
-		return mFileUri;
+		
+		// Get the result bitmap and use it to init the Ad Creation Manager
+		Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), AdCreationManager.AD_WIDTH, AdCreationManager.AD_HEIGHT);				
+		mApp.initAdCreationManager(currBitmap, mApp.getFileUri());
+		
+		// Load the first activity in the ad creation funnel
+		mApp.getAdCreationManager().nextStage(this, mApp.getAdCreationManager().getCurrentBitmap());
 	}
 	
 	@Override

@@ -101,14 +101,15 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	}
 	
 	/**
-	 * Draws text on the canvas given a position. This is used twice so it needs to be abstracted.
+	 * Draws text on the canvas given a position.
 	 * @param canvas
 	 * @param pos
+	 * @param ratio, this denotes how much the text needs to be scaled for particular bitmap (the one displayed on screen vs the real one)
 	 */
-	private void drawText(Canvas canvas, PointF pos) {
+	private void drawText(Canvas canvas, PointF pos, float ratio) {
 		if (mText != null && !mText.equals("")) {
 			for (Paint p : mTextStyle) {
-				p.setTextSize(DEFAULT_TEXT_SIZE * mScaleFactor);
+				p.setTextSize((DEFAULT_TEXT_SIZE * mScaleFactor) / ratio);
 				canvas.drawText(mText, pos.x, pos.y, p);
 			}
 		}
@@ -117,7 +118,7 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
-		drawText(canvas, mTextPos);
+		drawText(canvas, mTextPos, 1.0f);
 		
 		// If there's no text draw a banner with instructions.
 		if (mText == null || mText.equals("")) {
@@ -214,7 +215,8 @@ public class MapleTextView extends ImageView implements OnTouchListener {
 		Bitmap newAd = Bitmap.createBitmap(mCurrAd.getWidth(), mCurrAd.getHeight(), mCurrAd.getConfig());
         Canvas canvas = new Canvas(newAd);
         canvas.drawBitmap(mCurrAd, new Matrix(), null);
-		drawText(canvas, new PointF(mTextPos.x / mRatio, mTextPos.y / mRatio));
+        PointF pos = new PointF((mTextPos.x - (this.getPaddingLeft() / 2)) / mRatio, (mTextPos.y - (this.getPaddingTop() / 2)) / mRatio);
+		drawText(canvas, pos, mRatio);
 
         return newAd;
         
