@@ -4,21 +4,19 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
- * This class exists to store application global variables
- * that are accessible from any context.
+ * This class exists to store application global variables that are accessible
+ * from any context.
  * 
- * You can access this from any activity by calling
- * getApplication()
+ * You can access this from any activity by calling getApplication()
  * 
- * We should be careful with how much stuff we keep
- * here, and try to keep it very clean.
- *
+ * We should be careful with how much stuff we keep here, and try to keep it
+ * very clean.
+ * 
  */
 
 public class MapleApplication extends Application{
@@ -26,33 +24,56 @@ public class MapleApplication extends Application{
 	private User mAppUser;
 	// the most recently used picture
 	private Uri mFileUri;
-	
-	public static final int GREEN = 0xff21ab27;	
+
+
+	public static final int GREEN = 0xff21ab27;
+
+	// Exception handler for when the program crashes
+	private Thread.UncaughtExceptionHandler mExceptionHandler;
  
+
 	@Override
-	public void onCreate()
-	{
+	public void onCreate() {
 		super.onCreate();
 		
+		// initialize exception handler
+		final MapleApplication app = this;
+		mExceptionHandler = new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread thread, Throwable ex) {
+
+				ex.printStackTrace();
+				
+				// log the exception with the server
+				AddittException e = new AddittException(app, thread, ex);
+				e.report();
+				
+				// exit the app			
+				System.exit(2);
+			}
+		};
+
+		// setup handler for uncaught exceptions
+		Thread.setDefaultUncaughtExceptionHandler(mExceptionHandler);
+
 		// Initialize the singletons so their instances
 		// are bound to the application process.
 		initUniversalImageLoader();
-		
+
 		// get most recent company data from server
 		CompanyData.syncWithServer(this);
 	}
-	
+
 	public AdCreationManager getAdCreationManager() {
 		return mAdCreationManager;
 	}
-    
-	/** Universal Image Loader is a library
-	 * that helps with loading images from the web.
-	 * It is asynchronous and multithreaded, and offers
-	 * caching (plus a bunch of other features). 
+
+	/**
+	 * Universal Image Loader is a library that helps with loading images from
+	 * the web. It is asynchronous and multithreaded, and offers caching (plus a
+	 * bunch of other features).
 	 * 
-	 * It needs to
-	 * be configured once, and then can be used by calling 
+	 * It needs to be configured once, and then can be used by calling
 	 * ImageLoader.getInstance()
 	 * 
 	 * Documentation and code at:
@@ -75,34 +96,35 @@ public class MapleApplication extends Application{
         	// insert other configuration details here
             .build();
         ImageLoader.getInstance().init(config);
-		
 	}
 
 	public void initAdCreationManager(Bitmap currBitmap, Uri fileUri) {
 		mAdCreationManager = new AdCreationManager(this, currBitmap, fileUri);
 	}
-	
+
 	public void setUser(User appUser) {
 		mAppUser = appUser;
 	}
-	
+
 	public User getUser() {
 		return mAppUser;
 	}
 
-	/** Set the file Uri for a picture that
-	 * was just taken.
+	/**
+	 * Set the file Uri for a picture that was just taken.
+	 * 
 	 * @param u
 	 */
 	public void setFileUri(Uri u) {
-		mFileUri = u;		
+		mFileUri = u;
 	}
-	
-	/** Get the mostly recently taken
-	 * picture file
+
+	/**
+	 * Get the mostly recently taken picture file
+	 * 
 	 * @return
 	 */
-	public Uri getFileUri(){
+	public Uri getFileUri() {
 		return mFileUri;
 	}
 }

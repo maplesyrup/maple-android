@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.additt.maple_android.Company;
 import com.additt.maple_android.CompanyData;
@@ -99,6 +100,7 @@ public class CompanyTagActivity extends FunnelActivity {
 		// start with the first company selected
 		mScroller.setCurrentImageIndex(0);
 		mCompany = mCompanies.get(0);
+		Toast.makeText(CompanyTagActivity.this, "Your ad is now associated with: " + mCompany.getName(), Toast.LENGTH_SHORT).show();
 
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {
@@ -111,6 +113,8 @@ public class CompanyTagActivity extends FunnelActivity {
 
 				// keep track of which company has been picked
 				mCompany = mCompanies.get(pos);
+				
+				Toast.makeText(CompanyTagActivity.this, "Your ad is now associated with: " + mCompany.getName(), Toast.LENGTH_SHORT).show();
 			}
 		});
 

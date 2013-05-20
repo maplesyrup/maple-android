@@ -83,7 +83,8 @@ public class Utility {
 	    int photoWidth = bmOptions.outWidth;
 	    int photoHeight = bmOptions.outHeight;
 
-	    int scaleFactor = Math.min(photoWidth/width, photoHeight/height);
+	    // Needs to be at least 1, or a a power of two for scaling down
+	    int scaleFactor = Math.max(1, Math.min(photoWidth/width, photoHeight/height));
 
 	    bmOptions.inJustDecodeBounds = false;
 	    bmOptions.inSampleSize = scaleFactor;
