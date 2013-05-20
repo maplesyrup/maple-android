@@ -87,7 +87,7 @@ public class DisplayAd {
 	     bundle.putString("url", mUrl);
 	     bundle.putString("title", mTitle);
 	     bundle.putString("time", mRelativeTime);
-	     bundle.putString("creator", mRelativeTime);
+	     bundle.putString("creator", mCreator);
 	     bundle.putInt("numVotes", mNumVotes);
 	     bundle.putBoolean("votedOn", mVotedOn);
 	   
