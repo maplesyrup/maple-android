@@ -1,5 +1,7 @@
 package com.additt.maple_android;
-import com.loopj.android.http.*;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 /**
  * This class provides easy methods for get and post requests to our main website.
@@ -34,6 +36,7 @@ public class MapleHttpClient {
 	  public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 	      client.post(getAbsoluteUrl(url), params, responseHandler);
 	  }
+	  
 
 	/** This help function combines the relative url with the base url to
 	 * get the complete path.

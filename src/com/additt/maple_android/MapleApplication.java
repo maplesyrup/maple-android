@@ -1,12 +1,6 @@
 package com.additt.maple_android;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -31,31 +25,29 @@ public class MapleApplication extends Application {
 	// the most recently used picture
 	private Uri mFileUri;
 
-
 	public static final int GREEN = 0xff21ab27;
 
 	// Exception handler for when the program crashes
 	private Thread.UncaughtExceptionHandler mExceptionHandler;
- 
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		// initialize exception handler
 		final MapleApplication app = this;
 		mExceptionHandler = new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread thread, Throwable ex) {
-
 				ex.printStackTrace();
-				
+
 				// log the exception with the server
+
 				AddittException e = new AddittException(app, thread, ex);
 				e.report();
 				
-				// exit the app			
-				System.exit(2);
+				// go back to main activity
+				System.exit(0);
 			}
 		};
 
