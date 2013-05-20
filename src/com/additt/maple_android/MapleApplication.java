@@ -4,6 +4,8 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -56,10 +58,21 @@ public class MapleApplication extends Application{
 	 * Documentation and code at:
 	 * https://github.com/nostra13/Android-Universal-Image-Loader
 	 */
-	private void initUniversalImageLoader() {
-		// Create global configuration and initialize ImageLoader with this configuration
+	private void initUniversalImageLoader() {		
+
+	    /**
+	     * Default in API 9 or higher in this lib is LRU cache:
+	     * As described in http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html
+	     */
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+			.cacheInMemory()
+			//.cacheOnDisc();
+			.build();
+			
+        // Create global configuration and initialize ImageLoader with this configuration
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-            // insert other configuration details here
+    		.defaultDisplayImageOptions(options)
+        	// insert other configuration details here
             .build();
         ImageLoader.getInstance().init(config);
 		

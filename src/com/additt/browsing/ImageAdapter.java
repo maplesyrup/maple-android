@@ -8,6 +8,7 @@ import org.json.JSONException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +24,8 @@ import com.additt.maple_android.R;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 /**
  * Extend BaseAdapter to allow grid to show pictures and other attributes of ad
@@ -34,7 +36,7 @@ public class ImageAdapter extends BaseAdapter {
     private ArrayList<DisplayAd> mAds;
     private int MAX_TO_SHOW = 20;
     private ImageLoader mImageLoader;
-    private Cache imageCache;
+    private static final String TAG = "ImageAdapter";
     
     public ImageAdapter(Context c, JSONArray ads, String token) throws JSONException {
     	mAds = new ArrayList<DisplayAd>();
@@ -46,7 +48,6 @@ public class ImageAdapter extends BaseAdapter {
     	mContext = c;
         mToken = token;
         mImageLoader = ImageLoader.getInstance();
-        imageCache = Cache.getInstance();
     }
     
     public int getCount() {
@@ -60,24 +61,30 @@ public class ImageAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    
     /**
-     * Cache set up as descibed in:
-     * As described in http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html
+     * Uses caching in the Android Image Loader lib 
+     * @param url the image to load from server
+     * @param imageView the Android view to populate
      */
     public void loadBitmap(final String url, final ImageView imageView) {
-        final Bitmap bitmap = imageCache.getBitmapFromMemCache(url);
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
-        } else {
-        	mImageLoader.loadImage(url, new SimpleImageLoadingListener() {
-            	@Override
-            	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            		imageCache.addBitmapToMemoryCache(url, loadedImage);
-            		imageView.setImageBitmap(loadedImage);
-            	}
-            });
-        }
+    	mImageLoader.displayImage(url, imageView, new ImageLoadingListener() {
+    	    @Override
+    	    public void onLoadingStarted(String imageUri, View view) {
+    	    	Log.d(TAG, "Image loading started- here we will show a laoding icon.");
+    	    }
+    	    @Override
+    	    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+    	    	Log.d(TAG, "Image loading failed");
+    	    }
+    	    @Override
+    	    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+    	    	Log.d(TAG, "Image loading complete!");
+    	    }
+    	    @Override
+    	    public void onLoadingCancelled(String imageUri, View view) {
+    	        Log.d(TAG, "Image loading cancelled");
+    	    }
+    	});
     }
     
     // 
