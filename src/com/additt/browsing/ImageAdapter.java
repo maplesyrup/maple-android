@@ -66,7 +66,7 @@ public class ImageAdapter extends BaseAdapter {
      * @param url the image to load from server
      * @param imageView the Android view to populate
      */
-    public void loadBitmap(final String url, final ImageView imageView) {
+    public void loadBitmap(String url, ImageView imageView) {
     	mImageLoader.displayImage(url, imageView, new ImageLoadingListener() {
     	    @Override
     	    public void onLoadingStarted(String imageUri, View view) {
@@ -98,7 +98,7 @@ public class ImageAdapter extends BaseAdapter {
     	final DisplayAd dAd = mAds.get(position);
     	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     	adView = inflater.inflate(R.layout.ad_view, null);
-    	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
+    	ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setPadding(8, 8, 8, 8);
         loadBitmap(dAd.getUrl(), imageView);
