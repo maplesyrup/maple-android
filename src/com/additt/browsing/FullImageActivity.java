@@ -85,7 +85,7 @@ public class FullImageActivity extends SherlockActivity {
     	createdText.setText(dAd.getRelativeTime() + " ago");
     	
         final Button voteButton = (Button) findViewById(R.id.voteBtn);
-    	//addButtonActions(dAd, voteButton, numVotesText);
+    	ImageAdapterPopular.addButtonActions(dAd, voteButton, numVotesText);
         
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.

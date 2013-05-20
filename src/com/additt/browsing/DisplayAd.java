@@ -43,12 +43,13 @@ public class DisplayAd {
         mImageId = ad.getString("id");
 	}
 	
-	private DisplayAd(String url, String title, String creator, String time, int numVotes, boolean votedOn) {
+	private DisplayAd(String url, String title, String creator, String time, String imageId, int numVotes, boolean votedOn) {
 		mUrl = url;
 		mTitle = title;
 		mCreator = creator;
 		mNumVotes = numVotes;
 		mRelativeTime = time;
+		mImageId = imageId;
 		mVotedOn = votedOn;
 	}
     
@@ -87,6 +88,7 @@ public class DisplayAd {
 	     bundle.putString("url", mUrl);
 	     bundle.putString("title", mTitle);
 	     bundle.putString("time", mRelativeTime);
+	     bundle.putString("imageId", mImageId);
 	     bundle.putString("creator", mCreator);
 	     bundle.putInt("numVotes", mNumVotes);
 	     bundle.putBoolean("votedOn", mVotedOn);
@@ -99,9 +101,10 @@ public class DisplayAd {
 		String title = adBundle.getString("title");
 		String creator = adBundle.getString("creator");
 		String time = adBundle.getString("time");
+		String imageId = adBundle.getString("imageId");
 		int numVotes = adBundle.getInt("numVotes");
 		boolean votedOn = adBundle.getBoolean("votedOn");
-		DisplayAd dAd = new DisplayAd(url, title, creator, time, numVotes, votedOn);
+		DisplayAd dAd = new DisplayAd(url, title, creator, time, imageId, numVotes, votedOn);
 		return dAd;
 		
 	}

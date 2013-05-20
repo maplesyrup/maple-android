@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +27,8 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
  * Extend BaseAdapter to allow grid to show pictures and other attributes of ad
  */
 public class ImageAdapterPopular extends BaseAdapter {
-	private Context mContext;
-	private String mToken;
+	private static Context mContext;
+	private static String mToken;
     private ArrayList<DisplayAd> mAds;
     private int MAX_TO_SHOW = 20;
     private ImageLoader mImageLoader;
@@ -97,7 +96,7 @@ public class ImageAdapterPopular extends BaseAdapter {
         return adView;
     }
     
-    private void addButtonActions(final DisplayAd ad, final Button voteButton, final TextView numVotesText) {
+    public static void addButtonActions(final DisplayAd ad, final Button voteButton, final TextView numVotesText) {
 		final RequestParams params = new RequestParams();
 		// Another way to get the token
 		// Session session = Session.getActiveSession();
@@ -130,7 +129,7 @@ public class ImageAdapterPopular extends BaseAdapter {
         }
     }
     
-    private void disableButton(final Button voteButton) {
+    private static void disableButton(final Button voteButton) {
 		voteButton.setBackgroundResource(R.drawable.thumbs_up_pressed);
 		voteButton.setClickable(false);
     	voteButton.setEnabled(false);
