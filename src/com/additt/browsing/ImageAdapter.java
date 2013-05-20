@@ -2,9 +2,6 @@ package com.additt.browsing;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -38,13 +35,8 @@ public class ImageAdapter extends BaseAdapter {
     private ImageLoader mImageLoader;
     private static final String TAG = "ImageAdapter";
     
-    public ImageAdapter(Context c, JSONArray ads, String token) throws JSONException {
-    	mAds = new ArrayList<DisplayAd>();
-    	// Build up ArrayList of DisplayAds from JSON array
-    	for (int i = 0; i < ads.length(); i++) {
-    		DisplayAd dAd = new DisplayAd(ads.getJSONObject(i));
-    		mAds.add(dAd);
-    	}
+    public ImageAdapter(Context c, ArrayList<DisplayAd> ads, String token) {
+    	mAds = ads;
     	mContext = c;
         mToken = token;
         mImageLoader = ImageLoader.getInstance();

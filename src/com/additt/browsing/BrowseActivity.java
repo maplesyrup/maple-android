@@ -1,25 +1,12 @@
 package com.additt.browsing;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -27,13 +14,9 @@ import com.actionbarsherlock.view.MenuItem;
 import com.additt.maple_android.AdCreationDialog;
 import com.additt.maple_android.AdCreationManager;
 import com.additt.maple_android.MapleApplication;
-import com.additt.maple_android.MapleHttpClient;
 import com.additt.maple_android.R;
-import com.additt.maple_android.User;
 import com.additt.maple_android.Utility;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 /**
  * This is the base class for the ad browsing tabs on the home screen
@@ -41,78 +24,13 @@ import com.loopj.android.http.RequestParams;
  *
  */
 public class BrowseActivity extends SherlockActivity {
-	// the view we are using to display the ads
-	private GridView mGridview; 
 	// Contains file uri of photo being taken
 	protected MapleApplication mApp;
-
+	private static final String TAG = "BrowseAds";
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mApp = (MapleApplication) getApplication();	
-	}
-	
-	/**
-	 * Specify which layout to use (either popular ads or personal ads).
-	 * This is put in the parent class since the gridview shares common
-	 * functionality
-	 * @param layout
-	 */
-	public void setLayout(int layout) {
-		setContentView(layout);
-		mGridview = (GridView) findViewById(R.id.gridviewAds);
-
-		// On Click event for Single Gridview Item
-        mGridview.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            	Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
-                DisplayAd displayAd = (DisplayAd) parent.getAdapter().getItem(position);
-				i.putExtra("url", displayAd.getUrl());
-                i.putExtra("title", displayAd.getTitle());
-                startActivity(i);
-            }
-        });
-	}
-	
-	public void requestUserAds(RequestParams params) {
-
-		MapleHttpClient.get("posts", params, new AsyncHttpResponseHandler(){
-			// Example json response: http://maplesyrup.herokuapp.com/posts?user_id=3
-			@Override
-			public void onSuccess(int statusCode, String response) {
-				JSONArray jObjectAds = null;
-				try {
-					jObjectAds = new JSONArray(response);
-					if (jObjectAds.length() == 0) {
-						mGridview = (GridView) findViewById(R.id.gridviewAds);
-						((RelativeLayout) mGridview.getParent()).removeView(mGridview);
-						TextView adsTitle = (TextView) findViewById(R.id.adsTitle);
-						adsTitle.setText("There are no ads to show; you should create one!");
-						LayoutParams p = (LayoutParams) mGridview.getLayoutParams();
-						p.addRule(RelativeLayout.CENTER_HORIZONTAL);
-						adsTitle.setLayoutParams(p);
-						adsTitle.setTextSize(22);
-						adsTitle.setTypeface(null, Typeface.BOLD);
-					} else {
-						User appUser = mApp.getUser();
-						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), jObjectAds, appUser.getAuthToken()));
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-					// TODO: sometimes mGridview.SetAdapter crashes with a null pointer. Which one of these
-					// is null in that case? Need to figure this bug out
-					System.out.println("gridview:" + mGridview);
-					System.out.println("application context:" + getApplicationContext());
-					System.out.println("jObjectAds:" + jObjectAds);
-					System.out.println("authToken:" + mApp.getUser());
-				}
-			}
-			
-			@Override
-		    public void onFailure(Throwable error, String response) {
-				Toast.makeText(getApplicationContext(), "Sugar! We ran into a problem fetching user ads!", Toast.LENGTH_LONG).show();
-		    }
-		});
+		mApp = (MapleApplication) getApplication();
 	}
 	
 	@Override
