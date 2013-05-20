@@ -1,6 +1,5 @@
 package com.additt.browsing;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -9,7 +8,7 @@ import org.json.JSONException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.support.v4.util.LruCache;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,18 +24,19 @@ import com.additt.maple_android.R;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 /**
  * Extend BaseAdapter to allow grid to show pictures and other attributes of ad
  */
 public class ImageAdapter extends BaseAdapter {
-	private LruCache<String, Bitmap> mMemoryCache;
 	private Context mContext;
 	private String mToken;
     private ArrayList<DisplayAd> mAds;
     private int MAX_TO_SHOW = 20;
     private ImageLoader mImageLoader;
+    private static final String TAG = "ImageAdapter";
     
     public ImageAdapter(Context c, JSONArray ads, String token) throws JSONException {
     	mAds = new ArrayList<DisplayAd>();
@@ -48,48 +48,6 @@ public class ImageAdapter extends BaseAdapter {
     	mContext = c;
         mToken = token;
         mImageLoader = ImageLoader.getInstance();
-        // Get max available VM memory, exceeding this amount will throw an
-        // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-        // int in its constructor.
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
-        // Use 1/8th of the available memory for this memory cache.
-        final int cacheSize = maxMemory / 8;
-
-        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                // The cache size will be measured in kilobytes rather than
-                // number of items.
-    			
-    			int nBytes = 0;
-    			try {
-    				nBytes = bitmap.getByteCount() / 1024;
-    			} catch (NoSuchMethodError e) {
-    				ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    			    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-    			    byte[] imageInByte = stream.toByteArray();
-        			nBytes = imageInByte.length;
-    			}
-                return nBytes;
-            }
-        };
-    }
-    
-    /**
-     * Add bitmap with key (in our case, the url) to the cache
-     */
-    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemCache(key) == null) {
-            mMemoryCache.put(key, bitmap);
-        }
-    }
-
-    /**
-     * Get bitmap from cache based on key
-     */
-    public Bitmap getBitmapFromMemCache(String key) {
-        return mMemoryCache.get(key);
     }
     
     public int getCount() {
@@ -103,24 +61,30 @@ public class ImageAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    
     /**
-     * Cache set up as descibed in:
-     * As described in http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html
+     * Uses caching in the Android Image Loader lib 
+     * @param url the image to load from server
+     * @param imageView the Android view to populate
      */
-    public void loadBitmap(final String url, final ImageView imageView) {
-        final Bitmap bitmap = getBitmapFromMemCache(url);
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
-        } else {
-        	mImageLoader.loadImage(url, new SimpleImageLoadingListener() {
-            	@Override
-            	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            		addBitmapToMemoryCache(url, loadedImage);
-            		imageView.setImageBitmap(loadedImage);
-            	}
-            });
-        }
+    public void loadBitmap(String url, ImageView imageView) {
+    	mImageLoader.displayImage(url, imageView, new ImageLoadingListener() {
+    	    @Override
+    	    public void onLoadingStarted(String imageUri, View view) {
+    	    	Log.d(TAG, "Image loading started- here we will show a laoding icon.");
+    	    }
+    	    @Override
+    	    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+    	    	Log.d(TAG, "Image loading failed");
+    	    }
+    	    @Override
+    	    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+    	    	Log.d(TAG, "Image loading complete!");
+    	    }
+    	    @Override
+    	    public void onLoadingCancelled(String imageUri, View view) {
+    	        Log.d(TAG, "Image loading cancelled");
+    	    }
+    	});
     }
     
     // 
@@ -134,7 +98,7 @@ public class ImageAdapter extends BaseAdapter {
     	final DisplayAd dAd = mAds.get(position);
     	LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     	adView = inflater.inflate(R.layout.ad_view, null);
-    	final ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
+    	ImageView imageView = (ImageView) adView.findViewById(R.id.ad);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setPadding(8, 8, 8, 8);
         loadBitmap(dAd.getUrl(), imageView);

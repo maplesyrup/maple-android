@@ -32,8 +32,6 @@ public class DisplayAd {
         mNumVotes = Integer.parseInt(ad.getString("total_votes"));
         mRelativeTime = ad.getString("relative_time");
         
-		// Currently the mobile response to this gives back "unavailable" for all images,
-		// probably because there are issues with current user auth
         String strVotedOn = ad.getString("voted_on");
         if (strVotedOn.equals("yes")) {
         	mVotedOn = true;
