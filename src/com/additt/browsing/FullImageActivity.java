@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +24,9 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
  * @see SystemUiHider
  */
 public class FullImageActivity extends SherlockActivity {
+	
+	private static final String TAG = "FullImage";
+	
 	/**
 	 * Whether or not the system UI should be auto-hidden after
 	 * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -56,22 +60,27 @@ public class FullImageActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_full_image);
-		setTitle("Detail View");
-
-		final View controlsView = findViewById(R.id.fullscreen_content_controls);
-		final ImageView contentView = (ImageView) findViewById(R.id.full_image_view);
 		// get intent data
         Bundle extras = getIntent().getExtras();
-        String url = extras.getString("url");
+        Bundle adBundle = extras.getBundle("displayAd");
+		DisplayAd dAd = DisplayAd.unBundleAd(adBundle);
+		
+		setTitle(dAd.getTitle());
+		final View controlsView = findViewById(R.id.fullscreen_content_controls);
+		final ImageView contentView = (ImageView) findViewById(R.id.full_image_view);
+		
+		Log.d(TAG, "Url: " + dAd.getUrl());
+		Log.d(TAG, "Title: " + dAd.getTitle());
+		Log.d(TAG, "Relative time: " + dAd.getRelativeTime());
         ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+        imageLoader.loadImage(dAd.getUrl(), new SimpleImageLoadingListener() {
         	@Override
         	public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
         		contentView.setImageBitmap(loadedImage);
         	}
         });
         TextView titleView = (TextView) findViewById(R.id.titleText);
-        titleView.setText(extras.getString("title"));
+        titleView.setText(dAd.getTitle());
         
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.

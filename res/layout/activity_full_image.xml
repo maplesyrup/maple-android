@@ -39,11 +39,10 @@
             <TextView
                 android:id="@+id/titleText"
                 style="?buttonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="1dp" 
+                android:layout_height="61dp"
                 android:clickable="false"
-                android:text="Ad Title" />
+                android:text="Ad Creator" />
 
         </LinearLayout>
     </FrameLayout>
