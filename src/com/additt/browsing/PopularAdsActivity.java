@@ -78,17 +78,15 @@ public class PopularAdsActivity extends BrowseActivity {
 						adsTitle.setTypeface(null, Typeface.BOLD);
 					} else {
 						// Put in special image adapter here
-						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), ads, authToken));
-						Log.d(TAG, "hi");
+						mGridview.setAdapter(new ImageAdapterPopular(getApplicationContext(), ads, authToken));
 						// On Click event for Single Gridview Item
 				        mGridview.setOnItemClickListener(new OnItemClickListener() {
 				            @Override
 				            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				            	Log.d(TAG, "clicked item");
+				            	Log.d(TAG, "clicked item at position: " + position);
 				            	Intent i = new Intent(getApplicationContext(), FullImageActivity.class);
 				                DisplayAd displayAd = (DisplayAd) parent.getAdapter().getItem(position);
-								i.putExtra("url", displayAd.getUrl());
-				                i.putExtra("title", displayAd.getTitle());
+				                i.putExtra("displayAd", displayAd.bundleAd());
 				                startActivity(i);
 				            }
 				        });

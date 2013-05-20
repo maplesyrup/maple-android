@@ -3,6 +3,8 @@ package com.additt.browsing;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
+
 import com.additt.maple_android.R;
 
 /**
@@ -40,6 +42,16 @@ public class DisplayAd {
         }
         mImageId = ad.getString("id");
 	}
+	
+	private DisplayAd(String url, String title, String creator, String time, String imageId, int numVotes, boolean votedOn) {
+		mUrl = url;
+		mTitle = title;
+		mCreator = creator;
+		mNumVotes = numVotes;
+		mRelativeTime = time;
+		mImageId = imageId;
+		mVotedOn = votedOn;
+	}
     
 	// Example image:
     //http://s3.amazonaws.com/maplesyrup-assets/posts/images/000/000/006/medium/IMG_20130311_233546.jpg?1363070132
@@ -69,5 +81,31 @@ public class DisplayAd {
 
 	public String getImageId() {
 		return mImageId;
+	}
+	
+	public Bundle bundleAd(){
+	     Bundle bundle = new Bundle();
+	     bundle.putString("url", mUrl);
+	     bundle.putString("title", mTitle);
+	     bundle.putString("time", mRelativeTime);
+	     bundle.putString("imageId", mImageId);
+	     bundle.putString("creator", mCreator);
+	     bundle.putInt("numVotes", mNumVotes);
+	     bundle.putBoolean("votedOn", mVotedOn);
+	   
+	     return bundle;
+	}
+	
+	public static DisplayAd unBundleAd(Bundle adBundle) {
+		String url = adBundle.getString("url");
+		String title = adBundle.getString("title");
+		String creator = adBundle.getString("creator");
+		String time = adBundle.getString("time");
+		String imageId = adBundle.getString("imageId");
+		int numVotes = adBundle.getInt("numVotes");
+		boolean votedOn = adBundle.getBoolean("votedOn");
+		DisplayAd dAd = new DisplayAd(url, title, creator, time, imageId, numVotes, votedOn);
+		return dAd;
+		
 	}
 }
