@@ -85,8 +85,7 @@
         <activity
             android:name="com.additt.browsing.FullImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_full_image"
-            android:theme="@style/FullscreenTheme" >
+            android:label="@string/title_activity_full_image" >
         </activity>
     </application>
 
