@@ -51,7 +51,7 @@ public class MapleApplication extends Application{
 	 * the web. It is asynchronous and multithreaded, and offers caching (plus a
 	 * bunch of other features).
 	 * 
-	 * It needs to be configured once, and then can be used by calling
+	 * It needs to be configured once, and can then be used by calling
 	 * ImageLoader.getInstance()
 	 * 
 	 * Documentation and code at:

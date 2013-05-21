@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 
@@ -81,16 +82,20 @@ public class AddittUncaughtExceptionHandler implements UncaughtExceptionHandler 
 						Locale.US).getTime().toString();
 		params.put("time", time);
 		params.put("stack_trace", stackTrace);
-		params.put("ad_creation_log", mApp.getAdCreationManager().getLog());
+		
+		// get ad creation log if one has been started
+		AdCreationManager manager =  mApp.getAdCreationManager();
+		if(manager != null){
+			params.put("ad_creation_log", manager.getLog());
+		} else {
+			params.put("ad_creation_log", "Ad creation not started");
+		}
 
 		// post report details to the server. We don't need
 		// to register a response callback because we don't care
 		// about the response
 		MapleHttpClient.post(SERVER_PATH, params,
 				new AsyncHttpResponseHandler());
-
-		// pass the exception along to the original handler
-		mDefaultUEH.uncaughtException(thread, ex);
 
 		System.exit(0);
 	}
