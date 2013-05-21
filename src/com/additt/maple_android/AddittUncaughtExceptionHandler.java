@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 
@@ -23,8 +22,10 @@ import com.loopj.android.http.RequestParams;
  */
 public class AddittUncaughtExceptionHandler implements UncaughtExceptionHandler {
 	private final String SERVER_PATH = "log_entries";
+	// save the original exception handler in case we want to use it later
+	@SuppressWarnings("unused")
 	private Thread.UncaughtExceptionHandler mDefaultUEH;
-	private MapleApplication mApp = null;
+	private MapleApplication mApp;
 
 	/**
 	 * This initializes an uncaught exception handler for Additt. It should be
@@ -34,7 +35,6 @@ public class AddittUncaughtExceptionHandler implements UncaughtExceptionHandler 
 	 * @param app
 	 */
 	public AddittUncaughtExceptionHandler(MapleApplication app) {
-
 		mDefaultUEH = Thread.getDefaultUncaughtExceptionHandler();
 		mApp = app;
 	}
