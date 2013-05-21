@@ -27,32 +27,12 @@ public class MapleApplication extends Application{
 
 	public static final int GREEN = 0xff21ab27;
 
-	// Exception handler for when the program crashes
-	private Thread.UncaughtExceptionHandler mExceptionHandler;
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
-		// initialize exception handler
-		final MapleApplication app = this;
-		mExceptionHandler = new Thread.UncaughtExceptionHandler() {
-			@Override
-			public void uncaughtException(Thread thread, Throwable ex) {
-				ex.printStackTrace();
-
-				// log the exception with the server
-
-				AddittException e = new AddittException(app, thread, ex);
-				e.report();
-				
-				// go back to main activity
-				System.exit(0);
-			}
-		};
-
 		// setup handler for uncaught exceptions
-		Thread.setDefaultUncaughtExceptionHandler(mExceptionHandler);
+		Thread.setDefaultUncaughtExceptionHandler(new AddittUncaughtExceptionHandler(this));
 
 		// Initialize the singletons so their instances
 		// are bound to the application process.
