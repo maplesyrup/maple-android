@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.additt.custom_views.CropView;
@@ -43,8 +44,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		mCropView.setBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 		mCropView.setOnTouchListener(this);
 		
-		mAdCreationManager.setup(this);
-		
+		mAdCreationManager.setup(this);		
 	}
 
 	/**

@@ -19,23 +19,24 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class LoginActivity extends Activity {
-	
+
 	private static final String TAG = "Login Activity";
 
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 
 	private Button mButtonLoginLogout;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
+
 		// hide action bar for login page
 		try {
 			getActionBar().hide();
 		} catch (NoSuchMethodError e) {
-			Log.d(TAG, "Well, not high enough SDK for action bar so it won't be shown anyways");
+			Log.d(TAG,
+					"Well, not high enough SDK for action bar so it won't be shown anyways");
 		}
 
 		mButtonLoginLogout = (Button) findViewById(R.id.loginB);
@@ -67,7 +68,7 @@ public class LoginActivity extends Activity {
 	public void onStart() {
 		super.onStart();
 		Session.getActiveSession().addCallback(statusCallback);
-		
+
 		// start analytics tracking for this activity
 		EasyTracker.getInstance().activityStart(this);
 	}
@@ -76,7 +77,7 @@ public class LoginActivity extends Activity {
 	public void onStop() {
 		super.onStop();
 		Session.getActiveSession().removeCallback(statusCallback);
-		
+
 		// stop analytics tracking for this activity
 		EasyTracker.getInstance().activityStop(this);
 	}
@@ -98,9 +99,9 @@ public class LoginActivity extends Activity {
 	private void updateView() {
 		Session session = Session.getActiveSession();
 		if (session.isOpened()) {
-			saveUserData((MapleApplication) this.getApplication(), session.getAccessToken());
-			
-		
+			saveUserData((MapleApplication) this.getApplication(),
+					session.getAccessToken());
+
 		}
 	}
 
@@ -121,35 +122,62 @@ public class LoginActivity extends Activity {
 			updateView();
 		}
 	}
-	
+
 	/**
 	 * Retrieves user data from server based on access token
-	 * @param token The Facebook access token
+	 * 
+	 * @param token
+	 *            The Facebook access token
 	 */
 	private void saveUserData(final MapleApplication mApp, final String token) {
 		RequestParams params = new RequestParams();
 		params.put("token", token);
-		MapleHttpClient.get("users/check_mobile_login", params, new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(int statusCode, String response) {
-				try {
-					User appUser = new User(response, token);
-					mApp.setUser(appUser);
-					Intent i = new Intent(LoginActivity.this, PopularAdsActivity.class);
-					startActivity(i);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}	
-			}
-			@Override
-		    public void onFailure(Throwable error, String response) {
-				// Something went wrong so let's start up the LoginActivity again
-				// No let's not try again. This will throw us into an infinite loop.
-				Log.d(TAG, "Failed to login. Check heroku logs for error");
-				Toast.makeText(LoginActivity.this, "Failed to login", Toast.LENGTH_SHORT).show();
+		MapleHttpClient.get("users/check_mobile_login", params,
+				new AsyncHttpResponseHandler() {
 
-		    }
-		});
+					@Override
+					public void onStart() {
+						// update login button to say loading and disallow more
+						// clicks
+						Button loginB = (Button) findViewById(R.id.loginB);
+						loginB.setEnabled(false);
+						loginB.setBackgroundResource(R.drawable.loading);
+					}
+
+					@Override
+					public void onSuccess(int statusCode, String response) {
+						try {
+							User appUser = new User(response, token);
+							mApp.setUser(appUser);
+							Intent i = new Intent(LoginActivity.this,
+									PopularAdsActivity.class);
+							startActivity(i);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void onFailure(Throwable error, String response) {
+						// Something went wrong so let's start up the
+						// LoginActivity again
+						// No let's not try again. This will throw us into an
+						// infinite loop.
+						Log.d(TAG,
+								"Failed to login. Check heroku logs for error");
+						Toast.makeText(LoginActivity.this, "Failed to login",
+								Toast.LENGTH_SHORT).show();
+
+					}
+					
+					@Override
+					public void onFinish(){
+						// restore the login button in case of failure, or
+						// if they return to this page
+						Button loginB = (Button) findViewById(R.id.loginB);
+						loginB.setEnabled(true);
+						loginB.setBackgroundResource(R.layout.button_sign_in);
+					}
+				});
 	}
-	
 }
