@@ -104,7 +104,7 @@ public class LogoView extends ImageView implements OnTouchListener {
 	    // Let the ScaleGestureDetector inspect all events.
 	    mScaleDetector.onTouchEvent(ev);
 	    
-	    if (ev.getPointerCount() == 1 && mLogoRect.contains((int)ev.getX(), (int)ev.getY())) {
+	    if (ev.getPointerCount() == 1) {
 		    switch (ev.getAction()) {
 			    case MotionEvent.ACTION_DOWN:
 			    	if (mPrevTouch == null) {
