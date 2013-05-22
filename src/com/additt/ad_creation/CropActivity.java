@@ -44,11 +44,7 @@ public class CropActivity extends FunnelActivity implements OnTouchListener {
 		mCropView.setBitmap(mApp.getAdCreationManager().getCurrentBitmap());
 		mCropView.setOnTouchListener(this);
 		
-		mAdCreationManager.setup(this);
-		
-		ImageView test = (ImageView) findViewById(R.id.imageTest);
-		test.setImageBitmap(mApp.getAdCreationManager().getCurrentBitmap());
-		
+		mAdCreationManager.setup(this);		
 	}
 
 	/**
