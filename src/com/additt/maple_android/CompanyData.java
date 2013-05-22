@@ -56,7 +56,7 @@ public class CompanyData {
 		// context must be declared final to be used in callback
 		final Context c = context;
 		RequestParams params = new RequestParams();
-		params.put("include_current_campaigns", "true");
+		params.put("options[include_current_campaigns]", "true");
 		// start an Async get request
 		MapleHttpClient.get(LIST_URL, params, new AsyncHttpResponseHandler() {
 			
@@ -276,7 +276,7 @@ public class CompanyData {
 			}
 			
 			Company c = new Company(id, name, splash_image, blurb_title, blurb_body, 
-					more_info_title, more_info_body, company_url, logos, editable);
+					more_info_title, more_info_body, company_url, logos, editable, campaigns);
 			
 			companies.add(c);
 		}
