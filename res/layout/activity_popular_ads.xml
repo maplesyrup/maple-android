@@ -13,14 +13,14 @@
         android:id="@+id/adsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="The most popular ads" />
+        android:text="The most popular ads (click for more info!)" />
 	
 	<GridView 
-	    android:id="@+id/gridviewAds"
+	    android:id="@+id/gridviewAdsPopular"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="fill_parent"
-	    android:columnWidth="400dp"
-	    android:numColumns="auto_fit"
+	    android:columnWidth="200dp"
+	    android:numColumns="2"
 	    android:verticalSpacing="10dp"
 	    android:horizontalSpacing="10dp"
 	    android:stretchMode="columnWidth"
