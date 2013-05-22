@@ -12,6 +12,14 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+    
+    <ImageView
+        android:id="@+id/imageTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cropView"
+        android:layout_centerHorizontal="true" />
+        />
 
     <Button
         android:id="@+id/rotate"

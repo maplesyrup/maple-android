@@ -86,11 +86,11 @@ public class BrowseActivity extends SherlockActivity {
 		}
 		
 		// Get the result bitmap and use it to init the Ad Creation Manager
-		Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), AdCreationManager.AD_WIDTH, AdCreationManager.AD_HEIGHT);				
+		Bitmap currBitmap = Utility.retrieveBitmap(mApp.getFileUri(), AdCreationManager.AD_WIDTH, AdCreationManager.AD_HEIGHT);			
 		mApp.initAdCreationManager(currBitmap, mApp.getFileUri());
 		
 		// Load the first activity in the ad creation funnel
-		mApp.getAdCreationManager().nextStage(this, mApp.getAdCreationManager().getCurrentBitmap());
+		mApp.getAdCreationManager().nextStage(this, currBitmap);
 	}
 	
 	@Override
