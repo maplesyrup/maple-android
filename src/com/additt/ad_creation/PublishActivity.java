@@ -159,9 +159,13 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 		
 		if (pos > 0) {
 			// Subtract 1 for the offset of NONE
-			mCampaignId = mAdCreationManager.getCompany().getCampaigns().get(pos - 1).getId();
+			Campaign c = mAdCreationManager.getCompany().getCampaigns().get(pos - 1);
+			mCampaignId = c.getId();
+			Toast.makeText(PublishActivity.this, "Your ad is now part of the " + c.getTitle() + " campaign!", Toast.LENGTH_SHORT).show();
 		} else {
 			mCampaignId = null;
+			Toast.makeText(PublishActivity.this, "Your ad is not part of any campaign.", Toast.LENGTH_SHORT).show();
+
 		}		
 	}
 
