@@ -56,9 +56,7 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 		mAdCreationManager.setup(this);
 		
 		mCampaignSpinner = (Spinner) findViewById(R.id.campaign_spinner);
-		// Create an ArrayAdapter using the string array and a default spinner layout
 		ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getCampaignList());
-		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		mCampaignSpinner.setAdapter(adapter);
