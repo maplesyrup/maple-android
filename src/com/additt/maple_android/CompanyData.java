@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
@@ -54,9 +55,10 @@ public class CompanyData {
 	public static void syncWithServer(Context context) {
 		// context must be declared final to be used in callback
 		final Context c = context;
-
+		RequestParams params = new RequestParams();
+		params.put("options[include_current_campaigns]", "true");
 		// start an Async get request
-		MapleHttpClient.get(LIST_URL, null, new AsyncHttpResponseHandler() {
+		MapleHttpClient.get(LIST_URL, params, new AsyncHttpResponseHandler() {
 			
 			@Override
 			public void onSuccess(String response) {
@@ -193,6 +195,27 @@ public class CompanyData {
 				return companies;
 			}
 			
+			JSONArray jsonCampaigns = null;
+			try {
+				jsonCampaigns = entry.getJSONArray("current_campaigns");
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+				return companies;
+			}
+			
+			// load all campaigns from array
+			ArrayList<Campaign> campaigns = new ArrayList<Campaign>();
+			for (int j = 0; j < jsonCampaigns.length(); j++) {
+				JSONObject jsonCampaign;
+				try {
+					jsonCampaign = jsonCampaigns.getJSONObject(j);
+				} catch (JSONException e) {
+					e.printStackTrace();
+					return companies;
+				}
+				campaigns.add(new Campaign(jsonCampaign));
+			}
+			
 			// the list of logos is it's own JSON Array
 			JSONArray jsonLogos = null;
 			try {
@@ -253,7 +276,7 @@ public class CompanyData {
 			}
 			
 			Company c = new Company(id, name, splash_image, blurb_title, blurb_body, 
-					more_info_title, more_info_body, company_url, logos, editable);
+					more_info_title, more_info_body, company_url, logos, editable, campaigns);
 			
 			companies.add(c);
 		}
