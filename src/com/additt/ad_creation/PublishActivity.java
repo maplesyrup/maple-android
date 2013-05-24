@@ -40,7 +40,7 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 	private Spinner mCampaignSpinner;
 	private String mCampaignId;
 	
-	private static final String NONE = "None";
+	private final String NONE = "None";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

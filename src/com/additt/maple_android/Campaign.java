@@ -18,7 +18,7 @@ public class Campaign {
 		} catch(JSONException e) {
 			e.printStackTrace();
 			Log.d(TAG, "Couldn't extract id field");
-			mTitle = null;
+			mId = null;
 		}
 		try {
 			mTitle = jsonCampaign.getString("title");
@@ -45,16 +45,7 @@ public class Campaign {
 		return mTitle;
 	}
 
-	public void setTitle(String mTitle) {
-		this.mTitle = mTitle;
-	}
-
 	public String getDesription() {
 		return mDesription;
 	}
-
-	public void setDesription(String mDesription) {
-		this.mDesription = mDesription;
-	}
-
 }
