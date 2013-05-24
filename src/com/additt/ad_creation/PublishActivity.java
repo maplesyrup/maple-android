@@ -2,6 +2,7 @@ package com.additt.ad_creation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,16 +10,21 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.additt.browsing.PopularAdsActivity;
 import com.additt.custom_views.ProgressView;
 import com.additt.maple_android.AdCreationManager;
+import com.additt.maple_android.Campaign;
 import com.additt.maple_android.MapleApplication;
 import com.additt.maple_android.MapleHttpClient;
 import com.additt.maple_android.Utility;
@@ -27,10 +33,14 @@ import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class PublishActivity extends FunnelActivity {
+public class PublishActivity extends FunnelActivity implements OnItemSelectedListener {
 	private ImageView mAdView;
 	private ProgressView mProgressBar;
 	private RelativeLayout mLoading;
+	private Spinner mCampaignSpinner;
+	private String mCampaignId;
+	
+	private final String NONE = "None";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +54,25 @@ public class PublishActivity extends FunnelActivity {
 		setNextBtn(R.drawable.check, R.drawable.check_pressed);
 
 		mAdCreationManager.setup(this);
+		
+		mCampaignSpinner = (Spinner) findViewById(R.id.campaign_spinner);
+		ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getCampaignList());
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		mCampaignSpinner.setAdapter(adapter);
+		mCampaignSpinner.setOnItemSelectedListener(this);
 		mLoading = (RelativeLayout) findViewById(R.id.ad_loading);
 	}
 
+	private ArrayList<String> getCampaignList() {
+		ArrayList<String> campaignList = new ArrayList<String>();
+		campaignList.add(NONE);
+		for (Campaign c : mAdCreationManager.getCompany().getCampaigns()) {
+			campaignList.add(c.getTitle());
+		}
+		return campaignList;
+	}
+	
 	public void publish(View view) {
 		// get user's session details
 		//TODO: Handle session error edge cases?
@@ -69,6 +95,9 @@ public class PublishActivity extends FunnelActivity {
 		params.put("post[title]", titleView.getText().toString());
 		params.put("post[content]", contentView.getText().toString());
 		params.put("post[company_id]", Integer.toString(mAdCreationManager.getCompany().getId()));
+		if (mCampaignId != null) {
+			params.put("post[campaign_id]", mCampaignId);
+		}
 		params.put("token", session.getAccessToken());
 		mLoading.setVisibility(View.VISIBLE);
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
@@ -120,6 +149,27 @@ public class PublishActivity extends FunnelActivity {
 	public void onStop() {
 		/* Super handles stopping tracking */
 		super.onStop();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
+			long id) {
+		
+		if (pos > 0) {
+			// Subtract 1 for the offset of NONE
+			Campaign c = mAdCreationManager.getCompany().getCampaigns().get(pos - 1);
+			mCampaignId = c.getId();
+			Toast.makeText(PublishActivity.this, "Your ad is now part of the " + c.getTitle() + " campaign!", Toast.LENGTH_SHORT).show();
+		} else {
+			mCampaignId = null;
+			Toast.makeText(PublishActivity.this, "Your ad is not part of any campaign.", Toast.LENGTH_SHORT).show();
+
+		}		
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		
 	}
 	
 }

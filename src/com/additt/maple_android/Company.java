@@ -21,6 +21,7 @@ public class Company {
 	private String mCompanyUrl;
 	private ArrayList<CompanyLogo> mLogos;
 	private boolean mEditable;
+	private ArrayList<Campaign> mCampaigns;
 	
 	/** Take all the fields of the JSON string and create a
 	 * Company Object with it
@@ -35,9 +36,10 @@ public class Company {
 	 * @param companyUrl
 	 * @param logoUrls
 	 * @param editable
+	 * @param campaigns 
 	 */
 	public Company(int id, String name, String splashImage, String blurbTitle, String blurbBody, String moreInfoTitle, 
-			String moreInfoBody, String companyUrl, ArrayList<CompanyLogo> logos, boolean editable){
+			String moreInfoBody, String companyUrl, ArrayList<CompanyLogo> logos, boolean editable, ArrayList<Campaign> campaigns){
 		
 		mId = id;
 		mName = name;
@@ -49,6 +51,7 @@ public class Company {
 		mCompanyUrl = companyUrl;
 		mLogos = logos;
 		mEditable = editable;		
+		setCampaigns(campaigns);
 	}
 	
 	public int getId(){
@@ -99,6 +102,14 @@ public class Company {
 				+ mMoreInfoTitle + ", mMoreInfoBody=" + mMoreInfoBody
 				+ ", mCompanyUrl=" + mCompanyUrl + ", mLogoUrls=" + mLogos
 				+ ", mEditable=" + mEditable + "]";
+	}
+
+	public ArrayList<Campaign> getCampaigns() {
+		return mCampaigns;
+	}
+
+	public void setCampaigns(ArrayList<Campaign> mCampaigns) {
+		this.mCampaigns = mCampaigns;
 	}
 
 
