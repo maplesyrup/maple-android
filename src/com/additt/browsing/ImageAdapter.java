@@ -53,6 +53,19 @@ public class ImageAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
+    
+    public Context getContext() {
+    	return mContext;
+    }
+    
+    public String getToken() {
+    	return mToken;
+    }
+    
+    public ArrayList<DisplayAd> getAds() {
+    	return mAds;
+    }
+    
     /**
      * Uses caching in the Android Image Loader lib 
      * @param url the image to load from server
@@ -111,7 +124,7 @@ public class ImageAdapter extends BaseAdapter {
         return adView;
     }
     
-    private void addButtonActions(final DisplayAd ad, final Button voteButton, final TextView numVotesText) {
+    public void addButtonActions(final DisplayAd ad, final Button voteButton, final TextView numVotesText) {
 		final RequestParams params = new RequestParams();
 		// Another way to get the token
 		// Session session = Session.getActiveSession();

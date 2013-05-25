@@ -1,11 +1,12 @@
 package com.additt.browsing;
 
+import java.util.ArrayList;
+
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.additt.maple_android.MapleApplication;
 import com.additt.maple_android.R;
 import com.additt.maple_android.util.SystemUiHider;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -84,8 +86,15 @@ public class FullImageActivity extends SherlockActivity {
     	TextView createdText = (TextView) findViewById(R.id.dateCreated);
     	createdText.setText(dAd.getRelativeTime() + " ago");
     	
-        final Button voteButton = (Button) findViewById(R.id.voteBtn);
-    	ImageAdapterPopular.addButtonActions(dAd, voteButton, numVotesText);
+    	// Create dummy adapter with just this ad so we can call button action creation on it
+    	ArrayList<DisplayAd> ads = new ArrayList<DisplayAd>();
+    	ads.add(dAd);
+    	MapleApplication mApp = (MapleApplication) getApplication();
+    	String token = mApp.getUser().getToken();
+    	ImageAdapterPopular popAdapter = new ImageAdapterPopular(getApplicationContext(), ads, token);
+    	
+        Button voteButton = (Button) findViewById(R.id.voteBtn);
+        popAdapter.addButtonActions(dAd, voteButton, numVotesText);
         
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.
