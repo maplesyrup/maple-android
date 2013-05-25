@@ -99,17 +99,20 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 			@Override
 			public void onSuccess(int statusCode, String response) {
 				Intent i = new Intent(PublishActivity.this, PersonalAdsActivity.class);
-				i.putExtra("successMessage", "Posted picture successfully!");
-				startActivity(i);
-				mLoading.setVisibility(View.GONE);
-
-				
+				i.putExtra("successMessage", "Your ad was submitted!");
+				startActivity(i);				
 			}
 			
 			@Override
 		    public void onFailure(Throwable error, String response) {
-				Toast.makeText(getApplicationContext(), "Sugar! We ran into a problem!", Toast.LENGTH_LONG).show();
-				mLoading.setVisibility(View.GONE);
+				Toast.makeText(getApplicationContext(), "Sugar! We ran into a problem!", Toast.LENGTH_LONG).show();	
+				// allow them to try to submit again
+				enableNext();
+			}
+			
+			@Override
+			public void onFinish(){
+				mLoading.setVisibility(View.GONE);				
 			}
 		});
 	}

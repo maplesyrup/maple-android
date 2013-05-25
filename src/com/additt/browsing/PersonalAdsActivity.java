@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.GridView;
@@ -44,7 +45,16 @@ public class PersonalAdsActivity extends BrowseActivity {
 			params.put("auth_token", appUser.getAuthToken());
 			params.put("user_id", appUser.getId());
 		}
+		
 		populateView(params, appUser.getAuthToken());
+		
+		// success message after posting an ad
+		String success = getIntent().getStringExtra("successMessage");
+		if (success != null) {
+			Context context = getApplicationContext();
+			Toast toast = Toast.makeText(context, success, Toast.LENGTH_LONG);
+			toast.show();	
+		}
 		
 		Session session = Session.getActiveSession();
 		mProfilePictureView = (ProfilePictureView) findViewById(R.id.selection_profile_pic);

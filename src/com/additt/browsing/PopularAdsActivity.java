@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -43,15 +42,7 @@ public class PopularAdsActivity extends BrowseActivity {
 		if (appUser != null) {
 			params.put("auth_token", appUser.getAuthToken());
 		}
-		populateView(params, appUser.getAuthToken());
-		
-		String success = getIntent().getStringExtra("successMessage");
-		if (success != null) {
-			Context context = getApplicationContext();
-			Toast toast = Toast.makeText(context, success, Toast.LENGTH_LONG);
-			toast.show();	
-		}
-		
+		populateView(params, appUser.getAuthToken());		
 	}
 	
 	public void populateView(RequestParams params, final String authToken) {
