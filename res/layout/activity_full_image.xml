@@ -16,59 +16,49 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    <!--
-         This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows.
-    -->
-
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/fullscreen_content_controls"
+        style="?buttonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true" >
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent" >
 
-        <RelativeLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?buttonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent" >
-		
-		<TextView
-            android:id="@+id/creatorName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="Name" />
+	<TextView
+          android:id="@+id/creatorName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentTop="true"
+          android:text="Name" />
 
-        <TextView
-            android:id="@+id/dateCreated"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/creatorName"
-            android:text="Time" />
-        
-        <TextView
-            android:id="@+id/numVotes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/creatorName"
-            android:layout_toLeftOf="@+id/voteBtn"
-            android:text="Votes:" />
+      <TextView
+          android:id="@+id/dateCreated"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/creatorName"
+          android:text="Time" />
+      
+      <TextView
+          android:id="@+id/numVotes"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBottom="@+id/creatorName"
+          android:layout_toLeftOf="@+id/voteBtn"
+          android:text="Votes:" />
 
-        <Button
-            android:id="@+id/voteBtn"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignBottom="@+id/creatorName"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="5dp"
-            android:background="@layout/button_vote" />
-        </RelativeLayout>
-    </FrameLayout>
+      <Button
+          android:id="@+id/voteBtn"
+          style="?android:attr/buttonStyleSmall"
+          android:layout_width="25dp"
+          android:layout_height="25dp"
+          android:layout_alignBottom="@+id/creatorName"
+          android:layout_alignParentRight="true"
+          android:layout_marginLeft="5dp"
+          android:background="@layout/button_vote" />
+      </RelativeLayout>
 
 </FrameLayout>
