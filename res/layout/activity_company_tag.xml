@@ -11,6 +11,16 @@
         android:paddingTop="@dimen/ad_padding"
         android:layout_below="@+id/topbar_container"
         android:layout_centerHorizontal="true" />
+    
+    <TextView
+         android:id="@+id/errorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ad"
+        android:layout_centerHorizontal="true" 
+        android:textSize="25sp"
+        android:text="Oops, there are no companies!"
+        android:visibility="gone" />
 
     <com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller
         android:id="@+id/companyScroller"
