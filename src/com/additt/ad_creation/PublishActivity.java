@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -15,20 +14,16 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.additt.browsing.PopularAdsActivity;
+import com.additt.browsing.PersonalAdsActivity;
 import com.additt.custom_views.ProgressView;
-import com.additt.maple_android.AdCreationManager;
 import com.additt.maple_android.Campaign;
-import com.additt.maple_android.MapleApplication;
 import com.additt.maple_android.MapleHttpClient;
-import com.additt.maple_android.Utility;
 import com.additt.maple_android.R;
+import com.additt.maple_android.Utility;
 import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -103,9 +98,8 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
 			@Override
 			public void onSuccess(int statusCode, String response) {
-				Intent i = new Intent(PublishActivity.this, PopularAdsActivity.class);
-				i.putExtra("successMessage",
-						"Posted picture successfully! Go to the website to check it out.");
+				Intent i = new Intent(PublishActivity.this, PersonalAdsActivity.class);
+				i.putExtra("successMessage", "Posted picture successfully!");
 				startActivity(i);
 				mLoading.setVisibility(View.GONE);
 
