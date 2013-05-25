@@ -65,7 +65,7 @@ public class MapleApplication extends Application{
 	     */
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 			.cacheInMemory()
-			//.cacheOnDisc();
+			.cacheOnDisc()
 			.build();
 			
         // Create global configuration and initialize ImageLoader with this configuration

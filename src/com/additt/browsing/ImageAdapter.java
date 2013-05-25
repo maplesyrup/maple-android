@@ -72,24 +72,9 @@ public class ImageAdapter extends BaseAdapter {
      * @param imageView the Android view to populate
      */
     public void loadBitmap(String url, ImageView imageView) {
-    	mImageLoader.displayImage(url, imageView, new ImageLoadingListener() {
-    	    @Override
-    	    public void onLoadingStarted(String imageUri, View view) {
-    	    	Log.d(TAG, "Image loading started- here we will show a laoding icon.");
-    	    }
-    	    @Override
-    	    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-    	    	Log.d(TAG, "Image loading failed");
-    	    }
-    	    @Override
-    	    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-    	    	Log.d(TAG, "Image loading complete!");
-    	    }
-    	    @Override
-    	    public void onLoadingCancelled(String imageUri, View view) {
-    	        Log.d(TAG, "Image loading cancelled");
-    	    }
-    	});
+    	mImageLoader.displayImage(url, imageView); //, new ImageLoadingListener()
+    	// could pass in new ImageLoadingListener to get callbacks for:
+    	// onLoadingStarted, Failed, Complete, Cancelled
     }
     
     // 
