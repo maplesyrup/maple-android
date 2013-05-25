@@ -192,8 +192,11 @@ public class AdCreationManager {
 	 */
 	public void previousStage(Context context) {
 		// if we are in the first stage there is nothing to go back to
-		if (mCurrentStage <= 0)
+		if (mCurrentStage <= 0){
+			mLog.add("prevStage() error: already at the beginning");
 			return;
+		}
+			
 
 		// pop last ad to revert changes
 		popBitmap();

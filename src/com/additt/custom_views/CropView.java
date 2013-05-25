@@ -80,13 +80,15 @@ public class CropView extends ImageView {
 	
 	/* The list of 4 rects that provide the background shadow */
 	private ArrayList<Rect> mShadowRects;
+
+	private Context mContext;
 	
 	public CropView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
 		mPaint = new Paint();
 		mCurrBitmap = null;
-		
+		mContext = context;
 
 		mBoundingBox = new RectF();
 		mCropBox = new RectF();
@@ -118,6 +120,7 @@ public class CropView extends ImageView {
 	 * @param bitmap New bitmap
 	 */
 	public void setBitmap(Bitmap bitmap) {
+		setImageBitmap(bitmap);
 		mCurrBitmap = bitmap;
 		mFirstRender = true;
 		invalidate();
@@ -160,6 +163,7 @@ public class CropView extends ImageView {
 	    }
 	    
 	    setMeasuredDimension(width, height);
+	    invalidate();
 	}
 
 	protected void onDraw(Canvas canvas) {
@@ -167,8 +171,12 @@ public class CropView extends ImageView {
 		if (mCurrBitmap != null) {
 			
 			if (mFirstRender) {
-				int bBoxWidth = canvas.getWidth() - 2*MARGIN;
-				int bBoxHeight = (int) ((canvas.getHeight() / 2) - 2 * MARGIN);
+				WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+				Display display = wm.getDefaultDisplay(); 
+				int canvasWidth = display.getWidth();  // deprecated
+				int canvasHeight = display.getHeight();  // deprecated
+				int bBoxWidth = canvasWidth - 2*MARGIN;
+				int bBoxHeight = (int) ((canvasHeight / 2) - 2 * MARGIN);
 				
 				float bBoxAspectRatio = (float) bBoxWidth / bBoxHeight;
 				float adAspectRatio = (float) mCurrBitmap.getWidth() / mCurrBitmap.getHeight();
