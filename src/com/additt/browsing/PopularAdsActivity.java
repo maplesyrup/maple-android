@@ -78,7 +78,8 @@ public class PopularAdsActivity extends BrowseActivity {
 						adsTitle.setTypeface(null, Typeface.BOLD);
 					} else {
 						// Put in special image adapter here
-						mGridview.setAdapter(new ImageAdapterPopular(getApplicationContext(), ads, authToken));
+						ImageAdapterPopular popAdapter = new ImageAdapterPopular(getApplicationContext(), ads, authToken); 
+						mGridview.setAdapter(popAdapter);
 						// On Click event for Single Gridview Item
 				        mGridview.setOnItemClickListener(new OnItemClickListener() {
 				            @Override
