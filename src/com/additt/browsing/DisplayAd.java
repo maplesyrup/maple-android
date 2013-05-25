@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.additt.maple_android.R;
 
@@ -26,7 +27,8 @@ public class DisplayAd {
 	private String mRelativeTime;
     private boolean mVotedOn;
     private String mImageId;
-	
+    private final String TAG = "DisplayAd";
+    
 	public DisplayAd(JSONObject ad) throws JSONException { 
     	mUrl = ad.getString("image_url");
         mTitle = ad.getString("title");
@@ -54,8 +56,8 @@ public class DisplayAd {
 	}
     
 	// Example image:
-    //http://s3.amazonaws.com/maplesyrup-assets/posts/images/000/000/006/medium/IMG_20130311_233546.jpg?1363070132
-    public String getUrl() {
+    // http://s3.amazonaws.com/maplesyrup-assets/posts/images/000/000/126/medium/justin-bieber.jpg?1369474180
+	public String getUrl() {
 		return mUrl;
 	}
 
