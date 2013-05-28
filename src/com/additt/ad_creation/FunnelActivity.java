@@ -89,12 +89,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 */
 	public void enableNext() {
 		mNextBtn.setImageResource(mNextBtnEnableDrawable);
-		mNextBtn.setOnClickListener(new View.OnClickListener() {
-		    @Override
-		    public void onClick(View v) {
-		        nextStage(v);
-		    }
-		});
+		mNextBtn.setEnabled(true);
 	}
 	
 	/**
@@ -102,7 +97,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 */
 	public void disableNext() {
 		mNextBtn.setImageResource(mNextBtnDisableDrawable);
-		mNextBtn.setOnClickListener(null);
+		mNextBtn.setEnabled(false);
 	}
 	
 	/**
@@ -111,7 +106,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 */
 	public void selectNext() {
 		mNextBtn.setImageResource(mNextBtnPressedDrawable);
-		mNextBtn.setOnClickListener(null);
+		mNextBtn.setEnabled(false);
 	}
 	
 	/**
@@ -120,7 +115,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 */
 	public void selectPrev() {
 		mPrevBtn.setImageResource(mPrevBtnPressedDrawable);
-		mPrevBtn.setOnClickListener(null);
+		mPrevBtn.setEnabled(false);
 	}
 	
 	/**
@@ -128,7 +123,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 */
 	public void disablePrev() {
 		mPrevBtn.setImageResource(mPrevBtnDisableDrawable);
-		mPrevBtn.setOnClickListener(null);
+		mPrevBtn.setEnabled(false);
 
 	}
 	
@@ -137,13 +132,9 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 */
 	public void enablePrev() {
 		mPrevBtn.setImageResource(mPrevBtnEnableDrawable);
-		mPrevBtn.setOnClickListener(new View.OnClickListener() {
-		    @Override
-		    public void onClick(View v) {
-		        prevStage(v);
-		    }
-		});
+		mPrevBtn.setEnabled(true);
 	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
