@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivity"
+    android:background="#191919" >
+
+    <ImageView
+        android:id="@+id/additt_logo"
+        android:layout_width="wrap_content"
+        android:contentDescription="Additt logo"
+        android:layout_height="wrap_content"
+        android:src="@drawable/additt_logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+ 	<TextView
+            android:id="@+id/profile_name"
+            android:layout_width="174dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:lines="2"
+            android:textSize="17sp"
+            android:textColor="#FFFFFF"
+            android:text="To get started, log in using Facebook"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"/>
+
+    <com.facebook.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
+
+</LinearLayout>
