@@ -10,7 +10,7 @@
     <FrameLayout
         android:id="@+id/image_frame"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/default_image_size"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="2dp"
@@ -19,10 +19,10 @@
         <ImageView
             android:id="@+id/image"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/default_image_size"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:padding="2dp"
+            android:padding="3dp"
             android:scaleType="fitCenter" />
     </FrameLayout>
 

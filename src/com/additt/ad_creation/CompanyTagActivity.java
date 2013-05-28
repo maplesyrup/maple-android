@@ -23,12 +23,11 @@ public class CompanyTagActivity extends FunnelActivity {
 	private Company mCompany;
 	private HorizontalImageScroller mScroller;
 	private ArrayList<Company> mCompanies;
-
-	private final int FRAME_COLOR = Color.TRANSPARENT; // the background color
-														// of the filter images
-	private final int FRAME_SELECTED_COLOR = Color.BLACK; // the color behind
-															// the selected
-															// filter
+	// the background color of the filter images
+	private final int FRAME_COLOR = Color.TRANSPARENT; 
+	// the color behind the selected filter
+	private final int FRAME_SELECTED_COLOR = R.color.scroller_select_color; 
+	// the layout used to display each logo
 	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
 	// this image is displayed as the company picture when we are unable to load
 	// any logos
@@ -101,7 +100,7 @@ public class CompanyTagActivity extends FunnelActivity {
 			// only shows frame when item is selected
 			adapter.setHighlightActiveImage(true);
 			// the background color when selected
-			adapter.setFrameColor(FRAME_SELECTED_COLOR);
+			adapter.setFrameColor(getResources().getColor(FRAME_SELECTED_COLOR));
 			// the default background color
 			adapter.setFrameOffColor(FRAME_COLOR);
 			// set image to be used while loading

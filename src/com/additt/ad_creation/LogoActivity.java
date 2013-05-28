@@ -23,7 +23,7 @@ public class LogoActivity extends FunnelActivity {
 	private Bitmap mLogo;
 
 	private final int FRAME_COLOR = Color.TRANSPARENT;
-	private final int FRAME_SELECTED_COLOR = Color.BLACK;
+	private final int FRAME_SELECTED_COLOR = R.color.scroller_select_color;
 	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
 	// this image is displayed as the company picture when we are unable to load
 	// any logos
@@ -71,7 +71,7 @@ public class LogoActivity extends FunnelActivity {
 		// only shows frame when item is selected
 		adapter.setHighlightActiveImage(true);
 		// the background color when selected
-		adapter.setFrameColor(FRAME_SELECTED_COLOR);
+		adapter.setFrameColor(getResources().getColor(FRAME_SELECTED_COLOR));
 		// the default background color
 		adapter.setFrameOffColor(FRAME_COLOR);
 		// set image to be used while loading

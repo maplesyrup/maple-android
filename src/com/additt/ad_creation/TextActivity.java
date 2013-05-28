@@ -30,9 +30,9 @@ public class TextActivity extends FunnelActivity {
 	private MapleTextView mAdView;
 
 	// the background color of the scroller styles
-	private final int FRAME_COLOR = Color.BLACK; 
+	private final int FRAME_COLOR = Color.TRANSPARENT; 
 	// the color behind the selected style
-	private final int FRAME_SELECTED_COLOR = Color.rgb(247, 187, 57); 
+	private final int FRAME_SELECTED_COLOR = R.color.scroller_select_color; 
 	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_item;
 	// keep track of the last selected frame 
 	private FrameLayout mLastFrame;
@@ -77,7 +77,7 @@ public class TextActivity extends FunnelActivity {
 		// only shows frame when item is selected
 		adapter.setHighlightActiveImage(true);
 		// the background color when selected
-		adapter.setFrameColor(FRAME_SELECTED_COLOR);
+		adapter.setFrameColor(getResources().getColor(FRAME_SELECTED_COLOR));
 		// the default background color
 		adapter.setFrameOffColor(FRAME_COLOR);
 		// which view to use for layout
@@ -90,6 +90,7 @@ public class TextActivity extends FunnelActivity {
 
 		// default to first style in the list
 		mAdView.setStyle(mStyles.get(0));
+		mScroller.setCurrentImageIndex(0);
 		
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {

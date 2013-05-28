@@ -35,10 +35,11 @@ import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScr
  * 
  */
 public class FilterActivity extends FunnelActivity {
-	
-	private static final int FRAME_COLOR = Color.TRANSPARENT; // the background color of the filter images
-	private static final int FRAME_SELECTED_COLOR = Color.BLACK; // the color behind the selected filter
-	private static final int FILTER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
+	// the background color of the filter images
+	private final int FRAME_COLOR = Color.TRANSPARENT; 
+	// the color behind the selected filter
+	private final int FRAME_SELECTED_COLOR = R.color.scroller_select_color; 
+	private final int FILTER_VIEW = R.layout.horizontal_image_scroller_with_text_item;
 	
 	private ImageView mAdView;
 	private Bitmap mOriginalAd; // the starting ad without any filters
@@ -127,7 +128,7 @@ public class FilterActivity extends FunnelActivity {
 		// set adapter options		
 		adapter.setShowImageFrame(true); // shows the frame around the view
 		adapter.setHighlightActiveImage(true); // only shows frame when item is selected
-		adapter.setFrameColor(FRAME_SELECTED_COLOR); // the background color when selected
+		adapter.setFrameColor(getResources().getColor(FRAME_SELECTED_COLOR)); // the background color when selected
 		adapter.setFrameOffColor(FRAME_COLOR); // the default background color		
 		adapter.setImageLayoutResourceId(FILTER_VIEW);
 		adapter.setShowText(true); // we want the filter name to be shown beneath the filter image
