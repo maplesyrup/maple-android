@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -30,8 +31,6 @@ import com.loopj.android.http.RequestParams;
 
 public class PublishActivity extends FunnelActivity implements OnItemSelectedListener {
 	private ImageView mAdView;
-	private ProgressView mProgressBar;
-	private RelativeLayout mLoading;
 	private Spinner mCampaignSpinner;
 	private String mCampaignId;
 	
@@ -56,7 +55,6 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 		// Apply the adapter to the spinner
 		mCampaignSpinner.setAdapter(adapter);
 		mCampaignSpinner.setOnItemSelectedListener(this);
-		mLoading = (RelativeLayout) findViewById(R.id.ad_loading);
 	}
 
 	private ArrayList<String> getCampaignList() {
@@ -85,6 +83,7 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 		currBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		byte[] photoByteArray = stream.toByteArray();
 		
+		// create post request parameters
 		RequestParams params = new RequestParams();
 		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
 		params.put("post[title]", titleView.getText().toString());
@@ -94,8 +93,17 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 			params.put("post[campaign_id]", mCampaignId);
 		}
 		params.put("token", session.getAccessToken());
-		mLoading.setVisibility(View.VISIBLE);
+		
+		// do post in separate thread
 		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
+			private ProgressDialog mProgressDialog;
+			
+			@Override
+			public void onStart(){
+				// start loading dialog
+				mProgressDialog = ProgressDialog.show(PublishActivity.this,
+						"Publishing your ad", "Please wait...", true);
+			}
 			@Override
 			public void onSuccess(int statusCode, String response) {
 				Intent i = new Intent(PublishActivity.this, PersonalAdsActivity.class);
@@ -112,7 +120,7 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 			
 			@Override
 			public void onFinish(){
-				mLoading.setVisibility(View.GONE);				
+				mProgressDialog.dismiss();	
 			}
 		});
 	}

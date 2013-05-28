@@ -71,18 +71,5 @@
 	        </LinearLayout>
             
         </LinearLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone"
-         	android:id="@+id/ad_loading"
-            android:background="#70000000" >
-	        <ProgressBar
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_centerHorizontal="true"
-		            android:layout_centerVertical="true" />
-        </RelativeLayout>
 
 </RelativeLayout>
