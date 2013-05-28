@@ -239,6 +239,7 @@ public class HorizontalImageScrollerAdapter extends BaseAdapter {
 	public void setShowImageFrame(boolean b) {
 		_showImageFrame = b;
 	}
+	
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
