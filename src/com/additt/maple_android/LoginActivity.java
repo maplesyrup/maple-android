@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.additt.browsing.PopularAdsActivity;
@@ -19,6 +18,8 @@ import com.facebook.UiLifecycleHelper;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+// From https://developers.facebook.com/docs/tutorials/androidsdk/3.0/scrumptious/authenticate/
 
 public class LoginActivity extends FragmentActivity {
 
@@ -32,9 +33,15 @@ public class LoginActivity extends FragmentActivity {
 
 //	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 	private UiLifecycleHelper uiHelper;
-	
-	private Button mButtonLoginLogout;
 
+	private Session.StatusCallback callback = 
+	    new Session.StatusCallback() {
+	    @Override
+	    public void call(Session session, SessionState state, Exception exception) {
+	        onSessionStateChange(session, state, exception);
+	    }
+	};
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,13 +102,6 @@ public class LoginActivity extends FragmentActivity {
 	    }
 	}
 	
-	private Session.StatusCallback callback = 
-	    new Session.StatusCallback() {
-	    @Override
-	    public void call(Session session, SessionState state, Exception exception) {
-	        onSessionStateChange(session, state, exception);
-	    }
-	};
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
 	    // Only make changes if the activity is visible
@@ -142,8 +142,6 @@ public class LoginActivity extends FragmentActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		//Session.getActiveSession().addCallback(statusCallback);
-
 		// start analytics tracking for this activity
 		EasyTracker.getInstance().activityStart(this);
 	}
@@ -151,8 +149,6 @@ public class LoginActivity extends FragmentActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
-		//Session.getActiveSession().removeCallback(statusCallback);
-
 		// stop analytics tracking for this activity
 		EasyTracker.getInstance().activityStop(this);
 	}
@@ -201,11 +197,7 @@ public class LoginActivity extends FragmentActivity {
 
 			@Override
 			public void onFailure(Throwable error, String response) {
-				// Something went wrong so let's start up the
-				// LoginActivity again
-				// No let's not try again. This will throw us into an
-				// infinite loop.
-				Log.d(TAG, "Failed to login. Check heroku logs for error");
+				Log.d(TAG, "Failed to login. Check logs for error");
 				Toast.makeText(LoginActivity.this, "Failed to login", Toast.LENGTH_SHORT).show();
 			}
 
