@@ -31,7 +31,6 @@ public class LoginActivity extends FragmentActivity {
 	private static final String TAG = "Login Activity";
 	private boolean isResumed = false;
 
-//	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 	private UiLifecycleHelper uiHelper;
 
 	private Session.StatusCallback callback = 
