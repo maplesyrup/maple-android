@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,28 +30,32 @@ import com.facebook.Session;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class PublishActivity extends FunnelActivity implements OnItemSelectedListener {
+public class PublishActivity extends FunnelActivity implements
+		OnItemSelectedListener {
 	private ImageView mAdView;
 	private Spinner mCampaignSpinner;
 	private String mCampaignId;
-	
+	private ProgressDialog mProgressDialog;
+
 	private final String NONE = "None";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setCustomContent(R.layout.activity_publish);
-	
+
 		mConfig.put(Config.HELP_MESSAGE, "You're done! Congrats");
 		mConfig.put(Config.NAME, "Publish");
-		
+
 		setNextBtn(R.drawable.check, R.drawable.check_pressed);
 
 		mAdCreationManager.setup(this);
-		
+
 		mCampaignSpinner = (Spinner) findViewById(R.id.campaign_spinner);
-		ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getCampaignList());
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_dropdown_item,
+				getCampaignList());
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		mCampaignSpinner.setAdapter(adapter);
@@ -65,72 +70,17 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 		}
 		return campaignList;
 	}
-	
-	public void publish(View view) {
-		// get user's session details
-		//TODO: Handle session error edge cases?
-		Session session = Session.getActiveSession();
-		
-		EditText contentView = (EditText) findViewById(R.id.ad_content);
-		EditText titleView = (EditText) findViewById(R.id.ad_title);
 
-		
-		Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
-		Uri fileUri = mApp.getAdCreationManager().getFileUri();
-		Utility.saveBitmap(fileUri, currBitmap, this);
-		
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		currBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		byte[] photoByteArray = stream.toByteArray();
-		
-		// create post request parameters
-		RequestParams params = new RequestParams();
-		params.put("post[image]", new ByteArrayInputStream(photoByteArray), fileUri.getPath());
-		params.put("post[title]", titleView.getText().toString());
-		params.put("post[content]", contentView.getText().toString());
-		params.put("post[company_id]", Integer.toString(mAdCreationManager.getCompany().getId()));
-		if (mCampaignId != null) {
-			params.put("post[campaign_id]", mCampaignId);
-		}
-		params.put("token", session.getAccessToken());
-		
-		// do post in separate thread
-		MapleHttpClient.post("posts", params, new AsyncHttpResponseHandler(){
-			private ProgressDialog mProgressDialog;
-			
-			@Override
-			public void onStart(){
-				// start loading dialog
-				mProgressDialog = ProgressDialog.show(PublishActivity.this,
-						"Publishing your ad", "Please wait...", true);
-			}
-			@Override
-			public void onSuccess(int statusCode, String response) {
-				Intent i = new Intent(PublishActivity.this, PersonalAdsActivity.class);
-				i.putExtra("successMessage", "Your ad was submitted!");
-				startActivity(i);				
-			}
-			
-			@Override
-		    public void onFailure(Throwable error, String response) {
-				Toast.makeText(getApplicationContext(), "Sugar! We ran into a problem!", Toast.LENGTH_LONG).show();	
-				// allow them to try to submit again
-				enableNext();
-			}
-			
-			@Override
-			public void onFinish(){
-				mProgressDialog.dismiss();	
-			}
-		});
-	}
 	/**
 	 * Publish the ad to the website
+	 * 
 	 * @param view
 	 */
 	public void nextStage(View view) {
 		selectNext();
-		publish(view);
+
+		PublishTask task = new PublishTask();
+		task.execute();
 	}
 
 	/**
@@ -142,14 +92,13 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 		selectPrev();
 		mAdCreationManager.previousStage(this);
 	}
-	
+
 	@Override
 	public void onStart() {
 		/* Super handles starting tracking */
 		super.onStart();
 	}
 
-	
 	@Override
 	public void onStop() {
 		/* Super handles stopping tracking */
@@ -159,22 +108,135 @@ public class PublishActivity extends FunnelActivity implements OnItemSelectedLis
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
 			long id) {
-		
+
 		if (pos > 0) {
 			// Subtract 1 for the offset of NONE
-			Campaign c = mAdCreationManager.getCompany().getCampaigns().get(pos - 1);
+			Campaign c = mAdCreationManager.getCompany().getCampaigns()
+					.get(pos - 1);
 			mCampaignId = c.getId();
-			Toast.makeText(PublishActivity.this, "Your ad is now part of the " + c.getTitle() + " campaign!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(
+					PublishActivity.this,
+					"Your ad is now part of the " + c.getTitle() + " campaign!",
+					Toast.LENGTH_SHORT).show();
 		} else {
 			mCampaignId = null;
-			Toast.makeText(PublishActivity.this, "Your ad is not part of any campaign.", Toast.LENGTH_SHORT).show();
-
-		}		
+			Toast.makeText(PublishActivity.this,
+					"Your ad is not part of any campaign.", Toast.LENGTH_SHORT)
+					.show();
+		}
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
-		
+
 	}
-	
+
+	/**
+	 * Asynchronous class to handle the publishing. This makes the ui a lot more
+	 * responsive instead of lagging when the publish button is pressed.
+	 * 
+	 * @author Eli
+	 * 
+	 */
+	private class PublishTask extends AsyncTask<Void, Void, Void> {
+		private ProgressDialog mProgressDialog;
+
+		/** No parameters needed. Use .execute()
+		 * to run once the task is created.
+		 */
+		public PublishTask() {}
+
+		@Override
+		protected void onPreExecute() {
+			// start loading dialog
+			mProgressDialog = ProgressDialog.show(PublishActivity.this,
+					"Publishing your ad", "Please wait...", true);
+
+		};
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			// get user's session details
+			// TODO: Handle session error edge cases?
+			Session session = Session.getActiveSession();
+
+			EditText contentView = (EditText) findViewById(R.id.ad_content);
+			EditText titleView = (EditText) findViewById(R.id.ad_title);
+
+			Bitmap currBitmap = mApp.getAdCreationManager().getCurrentBitmap();
+			Uri fileUri = mApp.getAdCreationManager().getFileUri();
+
+			/*
+			 * Save the finished ad. Fails for some reason. Also, we shouldn't
+			 * overwrite the original.
+			 */
+			// Utility.saveBitmap(fileUri, currBitmap, this);
+
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			currBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			byte[] photoByteArray = stream.toByteArray();
+
+			// create post request parameters
+			RequestParams requestParams = new RequestParams();
+			requestParams.put("post[image]", new ByteArrayInputStream(
+					photoByteArray), fileUri.getPath());
+			requestParams.put("post[title]", titleView.getText().toString());
+			requestParams
+					.put("post[content]", contentView.getText().toString());
+			requestParams.put("post[company_id]",
+					Integer.toString(mAdCreationManager.getCompany().getId()));
+			if (mCampaignId != null) {
+				requestParams.put("post[campaign_id]", mCampaignId);
+			}
+			requestParams.put("token", session.getAccessToken());
+
+			// do post in separate thread
+			MapleHttpClient.post("posts", requestParams,
+					new AsyncHttpResponseHandler() {
+
+						@Override
+						public void onStart() {
+						}
+
+						@Override
+						public void onSuccess(int statusCode, String response) {
+							Intent i = new Intent(PublishActivity.this,
+									PersonalAdsActivity.class);
+							i.putExtra("successMessage",
+									"Your ad was submitted!");
+							startActivity(i);
+						}
+
+						@Override
+						public void onFailure(Throwable error, String response) {
+							Toast.makeText(
+									getApplicationContext(),
+									"Oops, we ran into a problem! Please try again :)",
+									Toast.LENGTH_LONG).show();
+
+							// log error
+							//TODO: Submit errors to additt
+							//System.out.println(response);
+							//error.printStackTrace();
+
+							// allow them to try to submit again
+							enableNext();
+						}
+
+						@Override
+						public void onFinish() {
+							mProgressDialog.dismiss();
+							mProgressDialog = null;
+						}
+					});
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+		};
+	}
+
 }
