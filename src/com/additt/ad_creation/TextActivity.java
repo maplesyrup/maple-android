@@ -15,6 +15,7 @@ import com.additt.custom_views.MapleTextView;
 import com.additt.maple_android.R;
 import com.additt.maple_android.StyleList;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoad;
+import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadDrawableResource;
 import com.twotoasters.android.horizontalimagescroller.image.ImageToLoadUrl;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller;
 import com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScrollerAdapter;
@@ -29,18 +30,10 @@ public class TextActivity extends FunnelActivity {
 	private MapleTextView mAdView;
 
 	// the background color of the scroller styles
-	private final int FRAME_COLOR = Color.BLACK; 
+	private final int FRAME_COLOR = Color.TRANSPARENT; 
 	// the color behind the selected style
-	private final int FRAME_SELECTED_COLOR = Color.rgb(247, 187, 57); 
-	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_text_style;
-	// the text of the style preview shown in the scroller
-	private final String SCROLLER_TEXT = "Style";
-	// size of text in scroller
-	private final float TEXT_SIZE = 40.0f;
-	// height of text image display in scroller
-	private final int TEXT_HEIGHT = 50;
-	// width of text
-	private final int TEXT_WIDTH = 100;
+	private final int FRAME_SELECTED_COLOR = R.color.scroller_select_color; 
+	private final int SCROLLER_VIEW = R.layout.horizontal_image_scroller_item;
 	// keep track of the last selected frame 
 	private FrameLayout mLastFrame;
 	
@@ -59,7 +52,6 @@ public class TextActivity extends FunnelActivity {
 		mAdCreationManager.setup(this);
 		
 
-		// alert.show();
 		/******************************************************/
 
 		/******* Set up scroller for style options ************/
@@ -70,12 +62,10 @@ public class TextActivity extends FunnelActivity {
 		// get list of text styles
 		mStyles = StyleList.getStyles();
 
-		// We need to make sure not having
-		// images doesn't break things, so we create as many images
-		// as we have paints
+		// Load the preview image for each style
 		List<ImageToLoad> images = new ArrayList<ImageToLoad>();
 		for (int i = 0; i < mStyles.size(); i++) {
-			images.add(new ImageToLoadUrl("www.thiswillneverbeused.com"));
+			images.add(new ImageToLoadDrawableResource(mStyles.get(i).getPreview()));
 		}
 
 		// set adapter options
@@ -87,21 +77,20 @@ public class TextActivity extends FunnelActivity {
 		// only shows frame when item is selected
 		adapter.setHighlightActiveImage(true);
 		// the background color when selected
-		adapter.setFrameColor(FRAME_SELECTED_COLOR);
+		adapter.setFrameColor(getResources().getColor(FRAME_SELECTED_COLOR));
 		// the default background color
 		adapter.setFrameOffColor(FRAME_COLOR);
 		// which view to use for layout
 		adapter.setImageLayoutResourceId(SCROLLER_VIEW);
-		// set up scroller to show off text styles
-		adapter.setTextOnlyMode(true, SCROLLER_TEXT, TEXT_SIZE, mStyles,
-				TEXT_WIDTH, TEXT_HEIGHT);
-
+	
 		mScroller.setAdapter(adapter);
 		
 		// set scroller, so styles can be hidden when there is no text
 		mAdView.setStyleScroller(mScroller);
 
+		// default to first style in the list
 		mAdView.setStyle(mStyles.get(0));
+		mScroller.setCurrentImageIndex(0);
 		
 		// add callback function when image in scroller is selected
 		mScroller.setOnItemClickListener(new OnItemClickListener() {
@@ -109,15 +98,7 @@ public class TextActivity extends FunnelActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long id) {
-				// visually select the chosen style
-				//FrameLayout border = (FrameLayout) view.findViewById(R.id.image_frame);
-				//border.setBackgroundColor(FRAME_SELECTED_COLOR);
-				// unselect last frame
-				//if(mLastFrame != null){
-				//	mLastFrame.setBackgroundColor(FRAME_COLOR);
-				//}
-				//mLastFrame = border;
-				// highlight choice
+				// visually select the chosen style				
 				mScroller.setCurrentImageIndex(pos);
 				
 				// update the text with the new style

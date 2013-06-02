@@ -19,14 +19,17 @@ import android.graphics.Paint;
  */
 
 public class TextStyle implements Iterable<Paint> {
-	ArrayList<Paint> mPaints;
+	private ArrayList<Paint> mPaints;
+	// a drawable image that demonstrates the style
+	private int mPreview;
 
 	/**
 	 * Create a new TextStyle. It will be empty at first. Call addPaint() to add
 	 * paints to the style after it is created
 	 */
-	public TextStyle() {
+	public TextStyle(int preview) {
 		mPaints = new ArrayList<Paint>();
+		mPreview = preview;
 	}
 	
 	/** Returns the height of the given style
@@ -37,6 +40,14 @@ public class TextStyle implements Iterable<Paint> {
 		// height is descent + ascent
 		Paint p = mPaints.get(0);
 		return (int) (p.ascent() + p.descent());
+	}
+	
+	/** Returns a drawable that displays
+	 * an example of this style
+	 * @return
+	 */
+	public int getPreview(){
+		return mPreview;
 	}
 	
 	/** Returns the width of the given text
