@@ -195,25 +195,25 @@ public class CompanyData {
 			}
 			
 			JSONArray jsonCampaigns = null;
-//			try {
-//				jsonCampaigns = entry.getJSONArray("current_campaigns");
-//			} catch (JSONException e1) {
-//				e1.printStackTrace();
-//				return companies;
-//			}
+			try {
+				jsonCampaigns = entry.getJSONArray("current_campaigns");
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+				return companies;
+			}
 			
 			// load all campaigns from array
 			ArrayList<Campaign> campaigns = new ArrayList<Campaign>();
-//			for (int j = 0; j < jsonCampaigns.length(); j++) {
-//				JSONObject jsonCampaign;
-//				try {
-//					jsonCampaign = jsonCampaigns.getJSONObject(j);
-//				} catch (JSONException e) {
-//					e.printStackTrace();
-//					return companies;
-//				}
-//				campaigns.add(new Campaign(jsonCampaign));
-//			}
+			for (int j = 0; j < jsonCampaigns.length(); j++) {
+				JSONObject jsonCampaign;
+				try {
+					jsonCampaign = jsonCampaigns.getJSONObject(j);
+				} catch (JSONException e) {
+					e.printStackTrace();
+					return companies;
+				}
+				campaigns.add(new Campaign(jsonCampaign));
+			}
 			
 			// the list of logos is it's own JSON Array
 			JSONArray jsonLogos = null;
