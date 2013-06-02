@@ -2,5 +2,5 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="support_text">#3E6B85</color>
-
+	<color name="scroller_select_color">#FBBA2E</color>
 </resources>

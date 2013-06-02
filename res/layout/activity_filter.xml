@@ -1,27 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     android:orientation="vertical" 
-     android:id="@+id/filter_layout" >
+    android:id="@+id/filter_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/ad"
-        android:paddingTop="@dimen/ad_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/topbar_container"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:paddingTop="@dimen/ad_padding" />
 
     <com.twotoasters.android.horizontalimagescroller.widget.HorizontalImageScroller
         android:id="@+id/filterScroller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_below="@+id/ad"
-        android:layout_centerHorizontal="true" />
-
- 
-
-
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>
