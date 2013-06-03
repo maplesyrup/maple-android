@@ -41,8 +41,8 @@ public class PopularAdsActivity extends BrowseActivity {
 		User appUser = mApp.getUser();
 		if (appUser != null) {
 			params.put("auth_token", appUser.getAuthToken());
+			populateView(params, appUser.getAuthToken());
 		}
-		populateView(params, appUser.getAuthToken());		
 	}
 	
 	public void populateView(RequestParams params, final String authToken) {
