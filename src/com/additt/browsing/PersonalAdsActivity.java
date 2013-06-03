@@ -44,9 +44,8 @@ public class PersonalAdsActivity extends BrowseActivity {
 		if (appUser != null) {
 			params.put("auth_token", appUser.getAuthToken());
 			params.put("user_id", appUser.getId());
+			populateView(params, appUser.getAuthToken());
 		}
-		
-		populateView(params, appUser.getAuthToken());
 		
 		// success message after posting an ad
 		String success = getIntent().getStringExtra("successMessage");
@@ -100,7 +99,7 @@ public class PersonalAdsActivity extends BrowseActivity {
 						adsTitle.setTextSize(22);
 						adsTitle.setTypeface(null, Typeface.BOLD);
 					} else {
-						mGridview.setAdapter(new ImageAdapter(getApplicationContext(), ads, authToken));
+						mGridview.setAdapter(new ImageAdapterPopular(getApplicationContext(), ads, authToken));
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
