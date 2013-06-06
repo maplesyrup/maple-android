@@ -88,7 +88,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 * Enables the next button
 	 */
 	public void enableNext() {
-		mNextBtn.setImageResource(mNextBtnEnableDrawable);
+		mNextBtn.setImageDrawable(getResources().getDrawable(mNextBtnEnableDrawable));
 		mNextBtn.setEnabled(true);
 	}
 	
@@ -96,7 +96,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 * Disables the next button
 	 */
 	public void disableNext() {
-		mNextBtn.setImageResource(mNextBtnDisableDrawable);
+		mNextBtn.setImageDrawable(getResources().getDrawable(mNextBtnDisableDrawable));
 		mNextBtn.setEnabled(false);
 	}
 	
@@ -105,7 +105,10 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 * and disallow it to be pressed again
 	 */
 	public void selectNext() {
-		mNextBtn.setImageResource(mNextBtnPressedDrawable);
+		/* Setimageresource uses UI thread and can cause lag.
+		 * Setimagedrawable should prevent this.
+		 */
+		mNextBtn.setImageDrawable(getResources().getDrawable(mNextBtnPressedDrawable));
 		mNextBtn.setEnabled(false);
 	}
 	
@@ -114,7 +117,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 * and disallow it to be pressed again
 	 */
 	public void selectPrev() {
-		mPrevBtn.setImageResource(mPrevBtnPressedDrawable);
+		mPrevBtn.setImageDrawable(getResources().getDrawable(mPrevBtnPressedDrawable));
 		mPrevBtn.setEnabled(false);
 	}
 	
@@ -122,7 +125,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 * Disables the previous button
 	 */
 	public void disablePrev() {
-		mPrevBtn.setImageResource(mPrevBtnDisableDrawable);
+		mPrevBtn.setImageDrawable(getResources().getDrawable(mPrevBtnDisableDrawable));
 		mPrevBtn.setEnabled(false);
 
 	}
@@ -131,7 +134,7 @@ public abstract class FunnelActivity extends SherlockActivity {
 	 * Enables the previous button
 	 */
 	public void enablePrev() {
-		mPrevBtn.setImageResource(mPrevBtnEnableDrawable);
+		mPrevBtn.setImageDrawable(getResources().getDrawable(mPrevBtnEnableDrawable));
 		mPrevBtn.setEnabled(true);
 	}
 	
