@@ -21,8 +21,7 @@
         android:layout_height="350dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:contentDescription="User-created ad"
-        android:src="@drawable/additt_icon_large" />
+        android:contentDescription="User-created ad" />
 
     <RelativeLayout
         android:layout_width="match_parent"
