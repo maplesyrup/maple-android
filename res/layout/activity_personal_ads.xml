@@ -36,17 +36,16 @@
         android:text="Your own creations:" 
 	    android:layout_below="@+id/selection_profile_pic" />
 
-    
-     <GridView 
-         android:id="@+id/gridviewAdsPersonal"
-         android:layout_width="fill_parent"
-         android:layout_height="fill_parent"
-         android:columnWidth="400dp"
-         android:numColumns="1"
-	     android:verticalSpacing="10dp"
-	     android:horizontalSpacing="10dp"
-	     android:stretchMode="columnWidth"
-	     android:gravity="center"
-         android:layout_below="@+id/adsTitle" />
+    <GridView 
+	    android:id="@+id/gridviewAdsPersonal"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="fill_parent"
+	    android:columnWidth="200dp"
+	    android:numColumns="2"
+	    android:verticalSpacing="10dp"
+	    android:horizontalSpacing="10dp"
+	    android:stretchMode="columnWidth"
+	    android:gravity="center"
+        android:layout_below="@+id/adsTitle" />
 
 </RelativeLayout>

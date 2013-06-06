@@ -31,7 +31,7 @@ public class ImageAdapter extends BaseAdapter {
 	private Context mContext;
 	private String mToken;
     private ArrayList<DisplayAd> mAds;
-    private int MAX_TO_SHOW = 20;
+    private int MAX_TO_SHOW = 40;
     private ImageLoader mImageLoader;
     private static final String TAG = "ImageAdapter";
     
